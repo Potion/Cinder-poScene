@@ -6,11 +6,15 @@
 //
 //
 
-#include "poNode.h"
-
 #pragma once
 
+#include "poNode.h"
+
 namespace po {
+    //Forward declare node
+    class Node;
+    typedef std::shared_ptr<Node> NodeRef;
+    
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
     
@@ -30,6 +34,6 @@ namespace po {
         
     protected:
         //Root node of scene
-        po::NodeRef rootNode;
+        NodeRef rootNode;
     };
 }

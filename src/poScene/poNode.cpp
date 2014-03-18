@@ -9,19 +9,51 @@
 #include "poNode.h"
 
 namespace po {
+    static uint OBJECT_UID = 0;
+    
     NodeRef Node::create()
     {
         return std::make_shared<Node>();
     }
     
-    Node::~Node() {}
-    
-    NodeRef Node::getParent() {
-        return parent;
+    Node::Node()
+    :   uid(OBJECT_UID++)
+    {
     }
     
-    void Node::setParent(NodeRef node) {
+    Node::~Node() {}
+    
+    SceneRef Node::getScene()
+    {
+        return scene;
+    }
+    
+    NodeRef Node::getParent() const {
+        return parent.lock();
+    }
+    
+    void Node::setParent(NodeRef node)
+    {
+        scene = node->getScene();
         parent = node;
+    }
+        
+    bool Node::hasParent()
+    {
+        if(parent.lock()) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    void Node::removeParent() {
+        parent.reset();
+    }
+    
+    int Node::getNumChildren()
+    {
+        return children.size();
     }
     
     NodeRef Node::addChild(NodeRef node)
@@ -45,8 +77,12 @@ namespace po {
         std::vector<NodeRef>::iterator iter = std::find(children.begin(), children.end(), node);
         
         if(iter != children.end()) {
-            node->getParent().reset();
+            //Remove reference to this node in child
+            node->removeParent();
+            
+            //Erase node
             children.erase(iter);
+            
             return true;
         }
         
