@@ -23,6 +23,16 @@ namespace po {
     
     Node::~Node() {}
     
+    void Node::update()
+    {
+        
+    }
+    
+    void Node::draw()
+    {
+    }
+    
+    
     SceneRef Node::getScene()
     {
         return scene;

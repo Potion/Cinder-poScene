@@ -26,11 +26,23 @@ namespace po {
     
     void Scene::update()
     {
+        getRootNode()->updateTree();
+    }
+    
+    void Scene::draw()
+    {
+        drawOrderCounter = 0;
+        getRootNode()->drawTree();
     }
     
     NodeRef Scene::getRootNode()
     {
         return rootNode;
+    }
+    
+    uint Scene::getNextDrawOrder()
+    {
+        return drawOrderCounter++;
     }
     
 }

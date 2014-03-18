@@ -25,11 +25,18 @@ namespace po {
     class Node
     : public std::enable_shared_from_this<Node>
     {
+    friend class Scene;
     public:
         static NodeRef create();
         
         Node();
         ~Node();
+        
+        //------------------
+        //UPDATE/DRAW
+        
+        virtual void update();
+        virtual void draw();
         
         //------------------
         //SCENE GRAPH
@@ -58,10 +65,14 @@ namespace po {
         Vec2f offset;
         bool visible;
         bool drawBounds;
-    
-    protected:
+        
+        int getDrawOrder();
         
     private:
+        //Update and Draw trees, traverse child nodes
+        virtual void updateTree();
+        virtual void drawTree();
+        
         //Scene this node belongs to
         SceneRef scene;
         

@@ -26,14 +26,20 @@ namespace po {
         Scene();
         ~Scene();
         
-        void update();
-        void draw();
+        virtual void update();
+        virtual void draw();
         
         //Root Node
         NodeRef getRootNode();
         
+        //Each object get's its own draw order every frame.
+        //This lets us sort objects for hit testing
+        uint getNextDrawOrder();
+        
     protected:
         //Root node of scene
         NodeRef rootNode;
+        
+        uint drawOrderCounter;
     };
 }
