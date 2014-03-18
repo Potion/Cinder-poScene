@@ -20,11 +20,18 @@ void BasicTestApp::setup()
     po::NodeRef myNode = po::Node::create();
     po::NodeRef myOtherNode = po::Node::create();
     
+    std::cout << "Has Parent: " << myNode->hasParent() << std::endl;
+    
     myNode->addChild(myOtherNode);
     
     myOtherNode->addChild(myNode);
     
     std::cout << (myNode->getParent() == myOtherNode) << std::endl;
+    std::cout << myNode->hasParent() << std::endl;
+    
+    std::cout << "Remove Child Successful: " << myOtherNode->removeChild(myNode) << std::endl;;
+    
+    std::cout << "Has Parent: " << myNode->hasParent() << std::endl;
 }
 
 void BasicTestApp::mouseDown( MouseEvent event )
