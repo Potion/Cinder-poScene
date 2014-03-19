@@ -55,6 +55,10 @@ namespace po {
         NodeRef addChild(NodeRef node);
         bool removeChild(NodeRef node);
         
+        //Bounds & Frame
+        ci::Rectf getBounds();
+        ci::Rectf getFrame();
+        
         //------------------
         //ATTRIBUTES
         std::string name;
@@ -90,17 +94,13 @@ namespace po {
         SceneRef scene;
         
         //Translation matrix
-        
-        //Attributes for dirty update of matrix
-//        bool attributesAreDirty();
-//        Vec2f prevPosition;
-//        Vec2f prevScale;
-//        Vec2f prevPos;
+        void setMatrix(const ci::Matrix44f &parentMatrix);
+        ci::Matrix44f matrix;
         
         //Bounds and frame
-//        void calculateBounds();
-//        ci::Rectf bounds, frame;
-//        bool bDrawBounds, bDrawFrame;
+        void calculateBounds();
+        ci::Rectf bounds, frame;
+        bool bDrawBounds, bDrawFrame;
         
         //Parent and child nodes
         void removeParent();

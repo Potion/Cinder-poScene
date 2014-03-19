@@ -53,6 +53,9 @@ namespace po {
     }
     
     
+    //------------------------------------------------------
+    #pragma mark - SceneGraph -
+    
     SceneRef Node::getScene()
     {
         return scene;
@@ -117,5 +120,19 @@ namespace po {
         }
         
         return false;
+    }
+    
+    
+    //------------------------------------------------------
+    #pragma mark  - Dimensions -
+    
+    ci::Rectf Node::getBounds()
+    {
+        return bounds;
+    }
+    
+    ci::Rectf Node::getFrame()
+    {
+        return frame;
     }
 }
