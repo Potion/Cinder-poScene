@@ -27,6 +27,7 @@ namespace po {
     {
     friend class Scene;
     public:
+        
         static NodeRef create();
         
         Node();
@@ -54,19 +55,31 @@ namespace po {
         NodeRef addChild(NodeRef node);
         bool removeChild(NodeRef node);
         
-        
         //------------------
         //ATTRIBUTES
         std::string name;
         Vec2f position;
-        Vec2f scale;
-        float alpha;
-        Vec2f rotation;
+        Vec3f scale;
+        Vec3f rotation;
         Vec2f offset;
-        bool visible;
-        bool drawBounds;
         
-        int getDrawOrder();
+        float alpha;
+        ci::Color fillColor;
+        ci::Color strokeColor;
+        
+        bool visible;
+        
+        //------------------
+        //BOUNDS & FRAME
+//        ci::Rectf getBounds();
+//        void setDrawBounds(bool bDrawBounds);
+//        bool getDrawBounds();
+//        
+//        ci::Rectf getFrame();
+//        void setDrawFrame();
+//        bool getDrawFrame();
+//        
+//        int getDrawOrder();
         
     private:
         //Update and Draw trees, traverse child nodes
@@ -75,6 +88,19 @@ namespace po {
         
         //Scene this node belongs to
         SceneRef scene;
+        
+        //Translation matrix
+        
+        //Attributes for dirty update of matrix
+//        bool attributesAreDirty();
+//        Vec2f prevPosition;
+//        Vec2f prevScale;
+//        Vec2f prevPos;
+        
+        //Bounds and frame
+//        void calculateBounds();
+//        ci::Rectf bounds, frame;
+//        bool bDrawBounds, bDrawFrame;
         
         //Parent and child nodes
         void removeParent();

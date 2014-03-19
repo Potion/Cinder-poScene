@@ -18,18 +18,38 @@ namespace po {
     
     Node::Node()
     :   uid(OBJECT_UID++)
+    ,   scale(1.0,1.0,1.0)
     {
     }
     
     Node::~Node() {}
     
-    void Node::update()
+    void Node::updateTree()
     {
-        
+        update();
+        for(NodeRef node : children)
+            node->updateTree();
     }
     
-    void Node::draw()
+    void Node::update() {}
+    
+    void Node::drawTree()
     {
+        #pragma message "Need to implement matrix order"
+        ci::gl::pushMatrices();
+        ci::gl::translate(position);
+        ci::gl::rotate(rotation);
+        ci::gl::scale(scale);
+        
+        draw();
+        
+        for(NodeRef node : children)
+            node->drawTree();
+        
+        ci::gl::popMatrices();
+    }
+    
+    void Node::draw(){
     }
     
     

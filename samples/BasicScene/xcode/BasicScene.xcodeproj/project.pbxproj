@@ -20,6 +20,7 @@
 		53495BD905A74F379F942103 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 837F175ADAD8458FB33BC6FB /* CinderApp.icns */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */; };
+		E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E470F2BD18D9212400CC7E13 /* TestNode.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,8 @@
 		922BE9C1AD3E425CAF55F7D9 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		C8ABFDF58EBE4DC6A939BFD5 /* BasicScene_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicScene_Prefix.pch; sourceTree = "<group>"; };
 		E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = BasicTestApp.cpp; path = ../src/BasicTestApp.cpp; sourceTree = "<group>"; };
+		E470F2BD18D9212400CC7E13 /* TestNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestNode.cpp; path = ../src/TestNode.cpp; sourceTree = "<group>"; };
+		E470F2BE18D9212400CC7E13 /* TestNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestNode.h; path = ../src/TestNode.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,8 @@
 			isa = PBXGroup;
 			children = (
 				E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */,
+				E470F2BD18D9212400CC7E13 /* TestNode.cpp */,
+				E470F2BE18D9212400CC7E13 /* TestNode.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				0E5A42F918D7AF8B0019913F /* poEventCenter.cpp in Sources */,
 				0E5A42FB18D7AF8B0019913F /* poScene.cpp in Sources */,
 				B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */,
+				E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */,
 				0E5A42FA18D7AF8B0019913F /* poNode.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
