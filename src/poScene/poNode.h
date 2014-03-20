@@ -55,8 +55,15 @@ namespace po {
         NodeRef addChild(NodeRef node);
         bool removeChild(NodeRef node);
         
+        //Dimensions
+        float getWidth();
+        float getHeight();
+        
         //Bounds & Frame
-        ci::Rectf getBounds();
+        void setDrawBounds(bool shouldDraw);
+        virtual ci::Rectf getBounds();
+        
+        void setDrawFrame(bool shouldDraw);
         ci::Rectf getFrame();
         
         //------------------
@@ -65,7 +72,6 @@ namespace po {
         Vec2f position;
         Vec3f scale;
         Vec3f rotation;
-        Vec2f offset;
         
         float alpha;
         ci::Color fillColor;
@@ -93,14 +99,12 @@ namespace po {
         //Scene this node belongs to
         SceneRef scene;
         
-        //Translation matrix
-        void setMatrix(const ci::Matrix44f &parentMatrix);
-        ci::Matrix44f matrix;
-        
         //Bounds and frame
-        void calculateBounds();
-        ci::Rectf bounds, frame;
-        bool bDrawBounds, bDrawFrame;
+        void drawBounds();
+        bool bDrawBounds;
+        
+        void drawFrame();
+        bool bDrawFrame;
         
         //Parent and child nodes
         void removeParent();

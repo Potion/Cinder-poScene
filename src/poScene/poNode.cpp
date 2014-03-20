@@ -19,6 +19,8 @@ namespace po {
     Node::Node()
     :   uid(OBJECT_UID++)
     ,   scale(1.0,1.0,1.0)
+    ,   bDrawBounds(false)
+    ,   bDrawFrame(false)
     {
     }
     
@@ -45,6 +47,12 @@ namespace po {
         
         for(NodeRef node : children)
             node->drawTree();
+        
+        if(bDrawBounds)
+            drawBounds();
+        
+        if(bDrawFrame)
+            drawFrame();
         
         ci::gl::popMatrices();
     }
@@ -128,11 +136,41 @@ namespace po {
     
     ci::Rectf Node::getBounds()
     {
+        //Reset Bounds
+        ci::Rectf bounds = ci::Rectf(0,0,0,0);
+        
+        for(NodeRef child : children)
+            bounds.include(child->getFrame());
+        
         return bounds;
+    }
+    
+    void Node::setDrawBounds(bool shouldDraw)
+    {
+        bDrawBounds = shouldDraw;
+    }
+    
+    void Node::drawBounds()
+    {
+        ci::gl::color(255,0,0);
+        ci::gl::drawStrokedRect(getBounds());
     }
     
     ci::Rectf Node::getFrame()
     {
+        ci::Rectf frame = getBounds();
+        frame.offset(position);
         return frame;
+    }
+    
+    void Node::setDrawFrame(bool shouldDraw)
+    {
+        bDrawFrame = shouldDraw;
+    }
+    
+    void Node::drawFrame()
+    {
+        ci::gl::color(255,0,0);
+        ci::gl::drawStrokedRect(getBounds());
     }
 }
