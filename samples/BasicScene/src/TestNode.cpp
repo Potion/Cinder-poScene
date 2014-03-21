@@ -13,5 +13,6 @@ TestNodeRef TestNode::create() {
 }
 
 void TestNode::draw() {
+    ci::gl::color(fillColor);
     ci::gl::drawSolidRect(ci::Rectf(0,0, 50,50));
 }

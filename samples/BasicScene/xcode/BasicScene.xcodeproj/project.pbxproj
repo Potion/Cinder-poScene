@@ -21,6 +21,7 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */; };
 		E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E470F2BD18D9212400CC7E13 /* TestNode.cpp */; };
+		E47BF5E918DA6BFA00E58C15 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E47BF5E718DA6BFA00E58C15 /* poShape.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,8 @@
 		E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = BasicTestApp.cpp; path = ../src/BasicTestApp.cpp; sourceTree = "<group>"; };
 		E470F2BD18D9212400CC7E13 /* TestNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestNode.cpp; path = ../src/TestNode.cpp; sourceTree = "<group>"; };
 		E470F2BE18D9212400CC7E13 /* TestNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestNode.h; path = ../src/TestNode.h; sourceTree = "<group>"; };
+		E47BF5E718DA6BFA00E58C15 /* poShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poShape.cpp; sourceTree = "<group>"; };
+		E47BF5E818DA6BFA00E58C15 /* poShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poShape.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +99,8 @@
 				0E5A42F618D7AF8B0019913F /* poNode.h */,
 				0E5A42F718D7AF8B0019913F /* poScene.cpp */,
 				0E5A42F818D7AF8B0019913F /* poScene.h */,
+				E47BF5E718DA6BFA00E58C15 /* poShape.cpp */,
+				E47BF5E818DA6BFA00E58C15 /* poShape.h */,
 			);
 			name = poScene;
 			path = ../../../src/poScene;
@@ -236,6 +241,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E47BF5E918DA6BFA00E58C15 /* poShape.cpp in Sources */,
 				0E5A42F918D7AF8B0019913F /* poEventCenter.cpp in Sources */,
 				0E5A42FB18D7AF8B0019913F /* poScene.cpp in Sources */,
 				B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */,
