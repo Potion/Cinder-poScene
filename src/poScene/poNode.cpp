@@ -13,7 +13,7 @@ namespace po {
     
     NodeRef Node::create()
     {
-        return std::make_shared<Node>();
+        return std::shared_ptr<Node>(new Node());
     }
     
     Node::Node()

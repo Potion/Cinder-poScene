@@ -30,7 +30,6 @@ namespace po {
         
         static NodeRef create();
         
-        Node();
         ~Node();
         
         //------------------
@@ -90,6 +89,8 @@ namespace po {
 //        bool getDrawFrame();
 //        
 //        int getDrawOrder();
+    protected:
+        Node();
         
     private:
         //Update and Draw trees, traverse child nodes

@@ -22,6 +22,7 @@ namespace po {
     {
     public:
         static ShapeRef create();
+        
         ~Shape();
         
         virtual void draw();
@@ -40,8 +41,9 @@ namespace po {
         ci::Color fillColor;
         ci::Color strokeColor;
         
-    private:
+    protected:
         Shape();
+    private:
         bool fillEnabled, strokeEnabled;
     };
     
@@ -58,6 +60,9 @@ namespace po {
         static RectShapeRef create(float width, float height);
         
         ~RectShape();
-    private:
+    protected:
+        RectShape(float width, float height);
+        
+        void construct(float width, float height);
     };
 }
