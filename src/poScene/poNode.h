@@ -10,22 +10,22 @@
 #include "cinder/Cinder.h"
 #include "cinder/CinderMath.h"
 
-#include "poScene.h"
-
-using namespace ci;
-
 namespace po {
-    //Forward declare Scene
+    //Forward declare Scene + NodeContainer
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
     
+    class NodeContainer;
+    typedef std::shared_ptr<NodeContainer> NodeContainerRef;
+    
+    //Forward declare NodeRef typedef
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
     class Node
-    : public std::enable_shared_from_this<Node>
     {
-    friend class Scene;
+        friend class Scene;
+        friend class NodeContainer;
     public:
         
         static NodeRef create();
@@ -45,52 +45,38 @@ namespace po {
         SceneRef getScene();
         
         //Parent
-        void setParent(NodeRef node);
-        NodeRef getParent() const;
+        NodeContainerRef getParent() const;
         bool hasParent();
-        
-        //Children
-        int getNumChildren();
-        NodeRef addChild(NodeRef node);
-        bool removeChild(NodeRef node);
         
         //Dimensions
         float getWidth();
         float getHeight();
         
         //Bounds & Frame
-        void setDrawBounds(bool shouldDraw);
+        void setDrawBoundsEnabled(bool enabled);
         virtual ci::Rectf getBounds();
         
-        void setDrawFrame(bool shouldDraw);
+        void setDrawFrameEnabled(bool enabled);
         ci::Rectf getFrame();
         
         //------------------
         //ATTRIBUTES
         std::string name;
-        Vec2f position;
-        Vec3f scale;
-        Vec3f rotation;
+        ci::Vec2f position;
+        ci::Vec2f scale;
+        ci::Vec3f rotation;
         
         float alpha;
         ci::Color fillColor;
         ci::Color strokeColor;
         
-        bool visible;
-        
-        //------------------
-        //BOUNDS & FRAME
-//        ci::Rectf getBounds();
-//        void setDrawBounds(bool bDrawBounds);
-//        bool getDrawBounds();
-//        
-//        ci::Rectf getFrame();
-//        void setDrawFrame();
-//        bool getDrawFrame();
-//        
 //        int getDrawOrder();
     protected:
         Node();
+        void setParent(NodeContainerRef node);
+        
+        //Tranformation
+        void setTransformation();
         
     private:
         //Update and Draw trees, traverse child nodes
@@ -107,11 +93,12 @@ namespace po {
         void drawFrame();
         bool bDrawFrame;
         
-        //Parent and child nodes
+        //Parent
         void removeParent();
+        std::weak_ptr<NodeContainer> parent;
         
-        std::weak_ptr<Node> parent;
-        std::vector<NodeRef> children;
+        //Visibility
+        bool visible;
         
         //Unique identifier
         uint uid;

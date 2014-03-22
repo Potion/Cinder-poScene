@@ -10,28 +10,30 @@
 #include "poNode.h"
 
 namespace po {
-    //Base Class
+    //Forward declare ShapeRef typedef
     class Shape;
     typedef std::shared_ptr<Shape> ShapeRef;
     
     class Shape
     :   public Node
-        #pragma message "Is this the best way to do this? Would be cool to make these compatible."
-        #pragma message "Should we use Path2d instead?"
-    ,   public ci::Shape2d
     {
     public:
         static ShapeRef create();
+        static ShapeRef createRect(float width, float height);
+        static ShapeRef createRect(float size); //Square
+        static ShapeRef createEllipse(float width, float height);
+        static ShapeRef createEllipse(float size); //Circle
         
         ~Shape();
         
         virtual void draw();
         
+        //Return the backing ci::Shape2d
+        ci::Shape2d getCiShape2d();
+        
         //Fill & Stroke
-        void enableFill();
-        void disableFill();
-        void enableStroke();
-        void disableStroke();
+        void setFillEnabled(bool enabled)   { fillEnabled = enabled; };
+        void setStrokeEnabled(bool enabled) { strokeEnabled = enabled; };
         
         //Bounds
         virtual ci::Rectf getBounds();
@@ -43,26 +45,12 @@ namespace po {
         
     protected:
         Shape();
+        
     private:
+        virtual void addChild() {};
+        virtual void removeChild() {};
+        
+        ci::Shape2d ciShape2d;
         bool fillEnabled, strokeEnabled;
-    };
-    
-    
-    //RECTANGLE
-    class RectShape;
-    typedef std::shared_ptr<RectShape> RectShapeRef;
-    
-    class RectShape
-    :   public Shape
-    {
-    public:
-        static RectShapeRef create();
-        static RectShapeRef create(float width, float height);
-        
-        ~RectShape();
-    protected:
-        RectShape(float width, float height);
-        
-        void construct(float width, float height);
     };
 }

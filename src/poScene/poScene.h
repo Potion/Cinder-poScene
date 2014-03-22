@@ -8,13 +8,14 @@
 
 #pragma once
 
-#include "poNode.h"
+#include "poNodeContainer.h"
 
 namespace po {
     //Forward declare node
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
+    //Forward declare SceneRef typedef
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
     
@@ -30,7 +31,7 @@ namespace po {
         virtual void draw();
         
         //Root Node
-        NodeRef getRootNode();
+        NodeContainerRef getRootNode();
         
         //Each object get's its own draw order every frame.
         //This lets us sort objects for hit testing
@@ -38,7 +39,7 @@ namespace po {
         
     protected:
         //Root node of scene
-        NodeRef rootNode;
+        NodeContainerRef rootNode;
         
         uint drawOrderCounter;
     };

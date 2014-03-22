@@ -7,6 +7,7 @@
 //
 
 #include "poScene.h"
+#include "poNodeContainer.h"
 
 namespace po {
     SceneRef Scene::create()
@@ -15,7 +16,7 @@ namespace po {
     }
     
     Scene::Scene()
-    : rootNode(po::Node::create())
+    : rootNode(po::NodeContainer::create())
     {
     }
     
@@ -35,7 +36,7 @@ namespace po {
         getRootNode()->drawTree();
     }
     
-    NodeRef Scene::getRootNode()
+    NodeContainerRef Scene::getRootNode()
     {
         return rootNode;
     }

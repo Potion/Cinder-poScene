@@ -7,9 +7,11 @@
 //
 
 #include "poNode.h"
+#include "poNodeContainer.h"
 
 namespace po {
-    static uint OBJECT_UID = 0;
+    static uint OBJECT_UID  = 0;
+    static const int ORIGIN_SIZE   = 2;
     
     NodeRef Node::create()
     {
@@ -18,7 +20,7 @@ namespace po {
     
     Node::Node()
     :   uid(OBJECT_UID++)
-    ,   scale(1.0,1.0,1.0)
+    ,   scale(1.0,1.0)
     ,   bDrawBounds(false)
     ,   bDrawFrame(false)
     {
@@ -29,35 +31,44 @@ namespace po {
     void Node::updateTree()
     {
         update();
-        for(NodeRef node : children)
-            node->updateTree();
     }
     
     void Node::update() {}
     
     void Node::drawTree()
     {
-        #pragma message "Need to implement matrix order"
+        //Push our Matrix
         ci::gl::pushMatrices();
-        ci::gl::translate(position);
-        ci::gl::rotate(rotation);
-        ci::gl::scale(scale);
+        setTransformation();
         
+        //Draw this item
         draw();
         
-        for(NodeRef node : children)
-            node->drawTree();
+        //Draw bounds and/or frame if necessary
+        if(bDrawBounds || bDrawFrame) {
+            if(bDrawBounds)
+                drawBounds();
+            
+            if(bDrawFrame)
+                drawFrame();
+        }
         
-        if(bDrawBounds)
-            drawBounds();
-        
-        if(bDrawFrame)
-            drawFrame();
-        
+        //Pop our Matrix
         ci::gl::popMatrices();
     }
     
-    void Node::draw(){
+    void Node::draw() {
+    }
+    
+    //------------------------------------------------------
+    #pragma mark - Transformation -
+    
+    void Node::setTransformation()
+    {
+        #pragma message "Need to implement matrix order"
+        ci::gl::translate(position);
+        ci::gl::rotate(rotation);
+        ci::gl::scale(scale);
     }
     
     
@@ -69,11 +80,11 @@ namespace po {
         return scene;
     }
     
-    NodeRef Node::getParent() const {
+    NodeContainerRef Node::getParent() const {
         return parent.lock();
     }
     
-    void Node::setParent(NodeRef node)
+    void Node::setParent(NodeContainerRef node)
     {
         scene = node->getScene();
         parent = node;
@@ -92,44 +103,6 @@ namespace po {
         parent.reset();
     }
     
-    int Node::getNumChildren()
-    {
-        return children.size();
-    }
-    
-    NodeRef Node::addChild(NodeRef node)
-    {
-        //See if the node is already a child of another node.
-        if(node->getParent()) {
-            node->getParent()->removeChild(node);
-        }
-        
-        //Assign ourselves as the parent
-        node->setParent(shared_from_this());
-        
-        //Track Node
-        children.push_back(node);
-        
-        return node;
-    }
-    
-    bool Node::removeChild(NodeRef node)
-    {
-        std::vector<NodeRef>::iterator iter = std::find(children.begin(), children.end(), node);
-        
-        if(iter != children.end()) {
-            //Remove reference to this node in child
-            node->removeParent();
-            
-            //Erase node
-            children.erase(iter);
-            
-            return true;
-        }
-        
-        return false;
-    }
-    
     
     //------------------------------------------------------
     #pragma mark  - Dimensions -
@@ -138,34 +111,39 @@ namespace po {
     {
         //Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
-        
-        for(NodeRef child : children)
-            bounds.include(child->getFrame());
-        
         return bounds;
     }
     
-    void Node::setDrawBounds(bool shouldDraw)
+    void Node::setDrawBoundsEnabled(bool enabled)
     {
-        bDrawBounds = shouldDraw;
+        bDrawBounds = enabled;
     }
     
     void Node::drawBounds()
     {
         ci::gl::color(255,0,0);
+        
+        //Draw bounding box
         ci::gl::drawStrokedRect(getBounds());
+        
+        //Draw origin
+        ci::gl::pushMatrices();
+        ci::gl::scale(ci::Vec2f(1.f,1.f)/ scale);
+        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
+        ci::gl::popMatrices();
     }
     
     ci::Rectf Node::getFrame()
     {
         ci::Rectf frame = getBounds();
+        frame.scale(scale);
         frame.offset(position);
         return frame;
     }
     
-    void Node::setDrawFrame(bool shouldDraw)
+    void Node::setDrawFrameEnabled(bool enabled)
     {
-        bDrawFrame = shouldDraw;
+        bDrawFrame = enabled;
     }
     
     void Node::drawFrame()
