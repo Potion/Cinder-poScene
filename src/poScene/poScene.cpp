@@ -13,7 +13,6 @@ namespace po {
     SceneRef Scene::create()
     {
         SceneRef scene(new Scene());
-        std::cout << scene.get() << std::endl;
         //#pragma message "Need to call this here, can't do it in the constructor with shared_from_this"
         scene->getRootNode()->setScene(scene);
         return scene;
@@ -41,6 +40,11 @@ namespace po {
         getRootNode()->drawTree();
     }
     
+    uint Scene::getNextDrawOrder()
+    {
+        return drawOrderCounter++;
+    }
+    
     NodeContainerRef Scene::getRootNode()
     {
         return rootNode;
@@ -56,10 +60,4 @@ namespace po {
         if(iter != allChildren.end())
             allChildren.erase(iter);
     }
-    
-    uint Scene::getNextDrawOrder()
-    {
-        return drawOrderCounter++;
-    }
-    
 }

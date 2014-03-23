@@ -32,7 +32,6 @@ namespace po {
     public:
         
         static NodeRef create();
-        
         ~Node();
         
         //------------------
@@ -64,9 +63,12 @@ namespace po {
         
         //Interaction
         void setInteractionEnabled(bool enabled) { bInteractionEnabled = enabled; };
+        bool isInteractionEnabled() { return bInteractionEnabled; };
         
         //Visibility
         void setVisibilityEnabled(bool enabled) { bVisible = enabled; };
+        #pragma message "This should probably step up to see if any of it's parents aren't visible"
+        bool isVisible() { return bVisible; };
         
         //------------------
         //ATTRIBUTES
@@ -76,8 +78,9 @@ namespace po {
         ci::Vec3f rotation;
         
         float alpha;
-        ci::Color fillColor;
-        ci::Color strokeColor;
+        
+        uint getDrawOrder() { return drawOrder; };
+        uint getUID() { return uid; };
         
         //------------------
         //GLOBAL EVENTS
@@ -90,7 +93,7 @@ namespace po {
         //------------------
         //NODE EVENTS
         
-//        int getDrawOrder();
+
     protected:
         Node();
         
@@ -101,6 +104,12 @@ namespace po {
         
         //Tranformation
         void setTransformation();
+        
+        //Visibility
+        bool bVisible;
+        
+        //Interaction
+        bool bInteractionEnabled;
         
     private:
         //Update and Draw trees, traverse child nodes
@@ -123,13 +132,8 @@ namespace po {
         //Parent
         std::weak_ptr<NodeContainer> parent;
         
-        //Visibility
-        bool bVisible;
-        
-        //Interaction
-        bool bInteractionEnabled;
-        
-        //Unique identifier
+        //Unique identifiers
+        uint drawOrder;
         uint uid;
     };
 }

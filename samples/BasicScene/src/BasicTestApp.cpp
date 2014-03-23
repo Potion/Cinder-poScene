@@ -42,7 +42,7 @@ void BasicTestApp::setup()
 //    std::cout << "Remove Child Successful: " << myOtherNode->removeChild(myNode) << std::endl;;
 //    std::cout << "Has Parent: " << myNode->hasParent() << std::endl;
 //    
-//    TestNodeRef testNode    = TestNode::create();
+        TestNodeRef testNode    = TestNode::create();
 //    TestNodeRef testNode2   = TestNode::create();
     
     r = po::Shape::createEllipse(200,100);
@@ -58,28 +58,15 @@ void BasicTestApp::setup()
     e->fillColor.set(0,255,255);
     e->rotation.set(0, 0, 45);
     e->setDrawBoundsEnabled(true);
+    e->setInteractionEnabled(true);
     
     //Test scene graph
     scene->getRootNode()->addChild(r);
     scene->getRootNode()->addChild(e);
+    scene->getRootNode()->addChild(testNode);
     
-    //Stress test
-//    for(int i=0; i<10000; i++) {
-//        po::ShapeRef s = po::Shape::createRect(20, 20);
-//        s->position.set(ci::Vec2f(ci::randFloat(0, 400), ci::randFloat(0, 400)));
-//        s->fillColor.set(ci::Color(ci::randFloat(0, 255), ci::randFloat(0, 255), ci::randFloat(0.f,255.f)));
-//        scene->getRootNode()->addChild(s);
-//    }
-    
-//    scene->getRootNode()->addChild(testNode);
     scene->getRootNode()->setDrawBoundsEnabled(true);
-//    testNode->position.set(50, 50);
-//    testNode->fillColor.set(0,255,0);
-//    //testNode->rotation.set(0, 0, 45);
-//    
-//    scene->getRootNode()->addChild(testNode2);
-//    
-    //ci::Shape2d s = po::Shape();
+
 }
 
 void BasicTestApp::mouseDown( MouseEvent event )
@@ -96,7 +83,6 @@ void BasicTestApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-//    gl::color(255, 0, 0);
     scene->draw();
 }
 

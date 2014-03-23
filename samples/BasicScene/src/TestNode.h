@@ -19,4 +19,9 @@ class TestNode
 public:
     static TestNodeRef create();
     void draw();
+    
+    void mouseDown(po::MouseEvent event);
+    void mouseUp(po::MouseEvent event);
+protected:
+    TestNode();
 };

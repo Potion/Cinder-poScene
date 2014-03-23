@@ -14,7 +14,7 @@ namespace po {
     class Event {
     public:
         Event() : shouldPropagate(false) {};
-        void continuePropagation();
+        void continuePropagation() { shouldPropagate = true; };
     private:
         bool shouldPropagate;
     };
@@ -46,7 +46,7 @@ namespace po {
         void getWindowY();
         void getWindowPos();
         
-        Type getType();
+        Type getType() { return type; };
         
     private:
         Type type;

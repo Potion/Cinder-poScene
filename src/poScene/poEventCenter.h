@@ -31,6 +31,7 @@ namespace po {
         EventCenter();
         
         void processMouseEvents(SceneRef scene);
+        void notifyAllNodes(SceneRef scene, po::MouseEvent event);
         
         //----------------------------
         //CALLBACKS

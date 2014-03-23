@@ -21,6 +21,7 @@ namespace po {
     
     Node::Node()
     :   uid(OBJECT_UID++)
+    ,   position(0,0)
     ,   scale(1.0,1.0)
     ,   bDrawBounds(false)
     ,   bDrawFrame(false)
@@ -40,6 +41,12 @@ namespace po {
     
     void Node::drawTree()
     {
+        //If we're invisible, nothing to do here
+        if(!bVisible) return;
+        
+        //Update our draw order
+        drawOrder = scene.lock()->getNextDrawOrder();
+        
         //Push our Matrix
         ci::gl::pushMatrices();
         setTransformation();

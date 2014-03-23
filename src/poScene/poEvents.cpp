@@ -13,6 +13,7 @@ namespace po {
     #pragma mark - Mouse Event -
     MouseEvent::MouseEvent(MouseEvent::Type type, ci::Vec2f windowPos) {
         this->windowPos = pos;
+        this->type = type;
     }
     
     void MouseEvent::getPos(){}

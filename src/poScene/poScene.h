@@ -36,10 +36,6 @@ namespace po {
         //Root Node
         NodeContainerRef getRootNode();
         
-        //Each object get's its own draw order every frame.
-        //This lets us sort objects for hit testing
-        uint getNextDrawOrder();
-        
     protected:
         Scene();
         
@@ -54,8 +50,11 @@ namespace po {
         void untrackChildNode(NodeRef node);
         std::vector<NodeRef> allChildren;
         
-        //Item draw order
-        uint drawOrderCounter;
+        
     private:
+        //Each object get's its own draw order every frame.
+        //This lets us sort objects for hit testing
+        uint getNextDrawOrder();
+        uint drawOrderCounter;
     };
 }
