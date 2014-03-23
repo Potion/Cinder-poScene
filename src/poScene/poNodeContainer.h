@@ -10,13 +10,13 @@
 #include "poNode.h"
 
 namespace po {
-    //Forward declare NodeContainerRef
+    ///Create NodeContainerRef typedef
     class NodeContainer;
     typedef std::shared_ptr<NodeContainer> NodeContainerRef;
     
     class NodeContainer
     : public Node
-    , public std::enable_shared_from_this<NodeContainer>
+    //, public std::enable_shared_from_this<NodeContainer>
     {
         friend class Scene;
     public:
@@ -31,6 +31,8 @@ namespace po {
         virtual ci::Rectf getBounds();
     protected:
         NodeContainer();
+        void setScene(SceneRef scene);
+        void removeScene();
         
     private:
         //Update and Draw trees, traverse child nodes

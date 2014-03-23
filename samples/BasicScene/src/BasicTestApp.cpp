@@ -1,5 +1,6 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Rand.h"
 
 #include "poScene.h"
 #include "TestNode.h"
@@ -18,7 +19,7 @@ class BasicTestApp : public AppNative {
 	void update();
 	void draw();
     
-    po::SceneRef scene;
+    po::SceneRef scene, scene2;
     po::ShapeRef r,e;
 };
 
@@ -55,10 +56,20 @@ void BasicTestApp::setup()
     e = po::Shape::createRect(50, 100);
     e->position.set(200,200);
     e->fillColor.set(0,255,255);
+    e->rotation.set(0, 0, 45);
+    e->setDrawBoundsEnabled(true);
     
     //Test scene graph
     scene->getRootNode()->addChild(r);
     scene->getRootNode()->addChild(e);
+    
+    //Stress test
+//    for(int i=0; i<10000; i++) {
+//        po::ShapeRef s = po::Shape::createRect(20, 20);
+//        s->position.set(ci::Vec2f(ci::randFloat(0, 400), ci::randFloat(0, 400)));
+//        s->fillColor.set(ci::Color(ci::randFloat(0, 255), ci::randFloat(0, 255), ci::randFloat(0.f,255.f)));
+//        scene->getRootNode()->addChild(s);
+//    }
     
 //    scene->getRootNode()->addChild(testNode);
     scene->getRootNode()->setDrawBoundsEnabled(true);
@@ -73,6 +84,7 @@ void BasicTestApp::setup()
 
 void BasicTestApp::mouseDown( MouseEvent event )
 {
+    scene->getRootNode()->removeChild(e);
 }
 
 void BasicTestApp::update()

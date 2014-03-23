@@ -22,6 +22,23 @@ namespace po {
     {
         return children.size();
     }
+    
+    #pragma mark Set and Remove Scene
+    void NodeContainer::setScene(SceneRef scene)
+    {
+        Node::setScene(scene);
+        for(NodeRef childNode : children) {
+            childNode->setScene(scene);
+        }
+    }
+    
+    void NodeContainer::removeScene()
+    {
+        Node::removeScene();
+        for(NodeRef node : children) {
+            node->removeScene();
+        }
+    }
 
     void NodeContainer::addChild(NodeRef node)
     {
@@ -31,7 +48,10 @@ namespace po {
         }
         
         //Assign ourselves as the parent
-        node->setParent(shared_from_this());
+        #pragma message "This is ugly...if this needs to be done a lot its gonna get messy with inheritance and shared_from_this"
+        //node->setParent(enable_shared_from_this<NodeContainer>::shared_from_this());
+        node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
+        node->setScene(scene.lock());
         
         //Track Node
         children.push_back(node);
@@ -44,6 +64,7 @@ namespace po {
         if(iter != children.end()) {
             //Remove reference to this node in child
             node->removeParent();
+            node->removeScene();
             
             //Erase node
             children.erase(iter);
@@ -57,8 +78,8 @@ namespace po {
     void NodeContainer::updateTree()
     {
         update();
-        for(NodeRef node : children)
-            node->updateTree();
+        for(NodeRef childNode : children)
+            childNode->updateTree();
     }
 
     void NodeContainer::drawTree()
@@ -67,8 +88,8 @@ namespace po {
         ci::gl::pushMatrices();
         setTransformation();
         
-        for(NodeRef node : children)
-            node->drawTree();
+        for(NodeRef childNode : children)
+            childNode->drawTree();
         
         if(bDrawBounds || bDrawFrame) {
             if(bDrawBounds)
@@ -86,8 +107,8 @@ namespace po {
         //Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         
-        for(NodeRef child : children)
-            bounds.include(child->getFrame());
+        for(NodeRef childNode : children)
+            bounds.include(childNode->getFrame());
         
         return bounds;
     }

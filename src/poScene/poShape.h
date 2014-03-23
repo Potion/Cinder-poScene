@@ -10,7 +10,7 @@
 #include "poNode.h"
 
 namespace po {
-    //Forward declare ShapeRef typedef
+    //Create ShapeRef typedef
     class Shape;
     typedef std::shared_ptr<Shape> ShapeRef;
     

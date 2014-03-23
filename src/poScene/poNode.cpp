@@ -8,6 +8,7 @@
 
 #include "poNode.h"
 #include "poNodeContainer.h"
+#include "poScene.h"
 
 namespace po {
     static uint OBJECT_UID  = 0;
@@ -23,6 +24,8 @@ namespace po {
     ,   scale(1.0,1.0)
     ,   bDrawBounds(false)
     ,   bDrawFrame(false)
+    ,   bVisible(true)
+    ,   bInteractionEnabled(false)
     {
     }
     
@@ -69,34 +72,47 @@ namespace po {
         ci::gl::translate(position);
         ci::gl::rotate(rotation);
         ci::gl::scale(scale);
+        
+        matrix = ci::gl::getProjection();
     }
     
     
     //------------------------------------------------------
-    #pragma mark - SceneGraph -
+    #pragma mark - Parent & Scene weak refs -
+    
+    void Node::setScene(SceneRef sceneRef) {
+        scene = sceneRef;
+        if(hasScene()) scene.lock()->trackChildNode(shared_from_this());
+    }
     
     SceneRef Node::getScene()
     {
-        return scene;
+        return scene.lock();
+    }
+    
+    bool Node::hasScene()
+    {
+        return (scene.lock() ? true : false);
+    }
+    
+    void Node::removeScene()
+    {
+        if(hasScene()) scene.lock()->untrackChildNode(shared_from_this());
+        scene.reset();
+    }
+    
+    void Node::setParent(NodeContainerRef containerNode)
+    {
+        parent = containerNode;
     }
     
     NodeContainerRef Node::getParent() const {
         return parent.lock();
     }
-    
-    void Node::setParent(NodeContainerRef node)
-    {
-        scene = node->getScene();
-        parent = node;
-    }
         
     bool Node::hasParent()
     {
-        if(parent.lock()) {
-            return true;
-        }
-        
-        return false;
+        return (parent.lock() ? true : false);
     }
     
     void Node::removeParent() {
@@ -112,11 +128,6 @@ namespace po {
         //Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         return bounds;
-    }
-    
-    void Node::setDrawBoundsEnabled(bool enabled)
-    {
-        bDrawBounds = enabled;
     }
     
     void Node::drawBounds()
@@ -139,11 +150,6 @@ namespace po {
         frame.scale(scale);
         frame.offset(position);
         return frame;
-    }
-    
-    void Node::setDrawFrameEnabled(bool enabled)
-    {
-        bDrawFrame = enabled;
     }
     
     void Node::drawFrame()

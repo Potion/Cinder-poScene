@@ -12,14 +12,18 @@
 namespace po {
     SceneRef Scene::create()
     {
-         return std::make_shared<Scene>();
+        SceneRef scene(new Scene());
+        std::cout << scene.get() << std::endl;
+        //#pragma message "Need to call this here, can't do it in the constructor with shared_from_this"
+        scene->getRootNode()->setScene(scene);
+        return scene;
     }
     
     Scene::Scene()
     : rootNode(po::NodeContainer::create())
+    , eventCenter(EventCenter::create())
     {
     }
-    
     
     Scene::~Scene()
     {
@@ -27,6 +31,7 @@ namespace po {
     
     void Scene::update()
     {
+        eventCenter->processEvents(shared_from_this());
         getRootNode()->updateTree();
     }
     
@@ -39,6 +44,17 @@ namespace po {
     NodeContainerRef Scene::getRootNode()
     {
         return rootNode;
+    }
+    
+    //Child node tracking
+    void Scene::trackChildNode(NodeRef node) {
+        allChildren.push_back(node);
+    }
+    
+    void Scene::untrackChildNode(NodeRef node) {
+        std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
+        if(iter != allChildren.end())
+            allChildren.erase(iter);
     }
     
     uint Scene::getNextDrawOrder()

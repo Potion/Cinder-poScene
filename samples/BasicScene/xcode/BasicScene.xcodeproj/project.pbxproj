@@ -20,6 +20,7 @@
 		53495BD905A74F379F942103 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 837F175ADAD8458FB33BC6FB /* CinderApp.icns */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */; };
+		E434D46118DE4F64002CE960 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E434D45F18DE4F64002CE960 /* poEvents.cpp */; };
 		E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E470F2BD18D9212400CC7E13 /* TestNode.cpp */; };
 		E47BF5E918DA6BFA00E58C15 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E47BF5E718DA6BFA00E58C15 /* poShape.cpp */; };
 		E47BF5EC18DE313500E58C15 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E47BF5EA18DE313500E58C15 /* poNodeContainer.cpp */; };
@@ -48,6 +49,8 @@
 		922BE9C1AD3E425CAF55F7D9 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		C8ABFDF58EBE4DC6A939BFD5 /* BasicScene_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicScene_Prefix.pch; sourceTree = "<group>"; };
 		E3D866E3C5DD447899C29BA2 /* BasicTestApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = BasicTestApp.cpp; path = ../src/BasicTestApp.cpp; sourceTree = "<group>"; };
+		E434D45E18DE4F35002CE960 /* poEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = poEvents.h; sourceTree = "<group>"; };
+		E434D45F18DE4F64002CE960 /* poEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poEvents.cpp; sourceTree = "<group>"; };
 		E470F2BD18D9212400CC7E13 /* TestNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TestNode.cpp; path = ../src/TestNode.cpp; sourceTree = "<group>"; };
 		E470F2BE18D9212400CC7E13 /* TestNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestNode.h; path = ../src/TestNode.h; sourceTree = "<group>"; };
 		E47BF5E718DA6BFA00E58C15 /* poShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poShape.cpp; sourceTree = "<group>"; };
@@ -96,6 +99,8 @@
 		0E5A42F218D7AF8B0019913F /* poScene */ = {
 			isa = PBXGroup;
 			children = (
+				E434D45E18DE4F35002CE960 /* poEvents.h */,
+				E434D45F18DE4F64002CE960 /* poEvents.cpp */,
 				0E5A42F318D7AF8B0019913F /* poEventCenter.cpp */,
 				0E5A42F418D7AF8B0019913F /* poEventCenter.h */,
 				0E5A42F518D7AF8B0019913F /* poNode.cpp */,
@@ -251,6 +256,7 @@
 				0E5A42FB18D7AF8B0019913F /* poScene.cpp in Sources */,
 				B70C33CC22E640AFA8A5C7C9 /* BasicTestApp.cpp in Sources */,
 				E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */,
+				E434D46118DE4F64002CE960 /* poEvents.cpp in Sources */,
 				0E5A42FA18D7AF8B0019913F /* poNode.cpp in Sources */,
 				E47BF5EC18DE313500E58C15 /* poNodeContainer.cpp in Sources */,
 			);

@@ -10,6 +10,8 @@
 #include "cinder/Cinder.h"
 #include "cinder/CinderMath.h"
 
+#include "poEventCenter.h"
+
 namespace po {
     //Forward declare Scene + NodeContainer
     class Scene;
@@ -18,11 +20,12 @@ namespace po {
     class NodeContainer;
     typedef std::shared_ptr<NodeContainer> NodeContainerRef;
     
-    //Forward declare NodeRef typedef
+    //Create NodeRef typedef
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
     class Node
+    : public std::enable_shared_from_this<Node>
     {
         friend class Scene;
         friend class NodeContainer;
@@ -41,10 +44,10 @@ namespace po {
         //------------------
         //SCENE GRAPH
         
-        //Scene
+        //Scene & Parent
         SceneRef getScene();
+        bool hasScene();
         
-        //Parent
         NodeContainerRef getParent() const;
         bool hasParent();
         
@@ -53,11 +56,17 @@ namespace po {
         float getHeight();
         
         //Bounds & Frame
-        void setDrawBoundsEnabled(bool enabled);
+        void setDrawBoundsEnabled(bool enabled) { bDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
         
-        void setDrawFrameEnabled(bool enabled);
+        void setDrawFrameEnabled(bool enabled) { bDrawFrame = enabled; };
         ci::Rectf getFrame();
+        
+        //Interaction
+        void setInteractionEnabled(bool enabled) { bInteractionEnabled = enabled; };
+        
+        //Visibility
+        void setVisibilityEnabled(bool enabled) { bVisible = enabled; };
         
         //------------------
         //ATTRIBUTES
@@ -70,10 +79,25 @@ namespace po {
         ci::Color fillColor;
         ci::Color strokeColor;
         
+        //------------------
+        //GLOBAL EVENTS
+        virtual void mouseDown(po::MouseEvent event) { std::cout << "Mouse Down! " << uid << std::endl; };
+        virtual void mouseMove(po::MouseEvent event) { std::cout << "Mouse Move! " << uid << std::endl; }
+        virtual void mouseDrag(po::MouseEvent event) { std::cout << "Mouse Drag! " << uid << std::endl; };
+        virtual void mouseUp(po::MouseEvent event) { std::cout << "Mouse Up! " << uid << std::endl; };
+        virtual void mouseWheel( po::MouseEvent event) { std::cout << "Mouse Wheel! " << uid << std::endl; };
+        
+        //------------------
+        //NODE EVENTS
+        
 //        int getDrawOrder();
     protected:
         Node();
+        
         void setParent(NodeContainerRef node);
+        void removeParent();
+        virtual void setScene(SceneRef scene);
+        virtual void removeScene();
         
         //Tranformation
         void setTransformation();
@@ -83,8 +107,11 @@ namespace po {
         virtual void updateTree();
         virtual void drawTree();
         
+        //Transformation Matrix
+        ci::Matrix44f matrix;
+        
         //Scene this node belongs to
-        SceneRef scene;
+        std::weak_ptr<Scene> scene;
         
         //Bounds and frame
         void drawBounds();
@@ -94,11 +121,13 @@ namespace po {
         bool bDrawFrame;
         
         //Parent
-        void removeParent();
         std::weak_ptr<NodeContainer> parent;
         
         //Visibility
-        bool visible;
+        bool bVisible;
+        
+        //Interaction
+        bool bInteractionEnabled;
         
         //Unique identifier
         uint uid;
