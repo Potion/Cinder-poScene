@@ -10,6 +10,7 @@
 #include "cinder/Cinder.h"
 #include "cinder/CinderMath.h"
 
+#include "poMatrixSet.h"
 #include "poEventCenter.h"
 
 namespace po {
@@ -29,16 +30,22 @@ namespace po {
     {
         friend class Scene;
         friend class NodeContainer;
+        friend class EventCenter;
     public:
         
         static NodeRef create();
         ~Node();
         
         //------------------
-        //UPDATE/DRAW
+        //SETUP
+        //Use this to do non-initializing construction of your object, add events, etc.
+        virtual void setup()    {};
         
-        virtual void update();
-        virtual void draw();
+        //------------------
+        //UPDATE/DRAW
+        //These are called automatically when your node is in the scene
+        virtual void update()   {};
+        virtual void draw()     {};
         
         //------------------
         //SCENE GRAPH
@@ -65,6 +72,12 @@ namespace po {
         void setInteractionEnabled(bool enabled) { bInteractionEnabled = enabled; };
         bool isInteractionEnabled() { return bInteractionEnabled; };
         
+        //Hit Testing & Transformation
+        virtual bool pointInside(ci::Vec2f  point);
+        ci::Vec2f sceneToLocal(ci::Vec2f    point);
+        ci::Vec2f globalToLocal(ci::Vec2f   point);
+        
+        
         //Visibility
         void setVisibilityEnabled(bool enabled) { bVisible = enabled; };
         #pragma message "This should probably step up to see if any of it's parents aren't visible"
@@ -84,15 +97,22 @@ namespace po {
         
         //------------------
         //GLOBAL EVENTS
-        virtual void mouseDown(po::MouseEvent event) { std::cout << "Mouse Down! " << uid << std::endl; };
-        virtual void mouseMove(po::MouseEvent event) { std::cout << "Mouse Move! " << uid << std::endl; }
-        virtual void mouseDrag(po::MouseEvent event) { std::cout << "Mouse Drag! " << uid << std::endl; };
-        virtual void mouseUp(po::MouseEvent event) { std::cout << "Mouse Up! " << uid << std::endl; };
-        virtual void mouseWheel( po::MouseEvent event) { std::cout << "Mouse Wheel! " << uid << std::endl; };
+        //Override these methods to receive events
+        //Global events, these fire for all Nodes
+        virtual void mouseDown(po::MouseEvent event)        {};
+        virtual void mouseMove(po::MouseEvent event)        {};
+        virtual void mouseDrag(po::MouseEvent event)        {};
+        virtual void mouseUp(po::MouseEvent event)          {};
+        virtual void mouseWheel( po::MouseEvent event)      {};
         
-        //------------------
-        //NODE EVENTS
-        
+        //These are po::Scene events, you need to subscribe to them
+        virtual void mouseDownInside(po::MouseEvent event)  {};
+        virtual void mouseMoveInside(po::MouseEvent event)  {};
+        virtual void mouseDragInside(po::MouseEvent event)  {};
+        virtual void mouseEnter(po::MouseEvent event)       {};
+        virtual void mouseLeave(po::MouseEvent event)       {};
+        virtual void mouseOver(po::MouseEvent event)        {};
+        virtual void mouseUpInside(po::MouseEvent event)    {};
 
     protected:
         Node();
@@ -111,13 +131,20 @@ namespace po {
         //Interaction
         bool bInteractionEnabled;
         
+        //Event registration
+        void addEvent(po::MouseEvent::Type type, NodeRef source);
+        void removeEvent(po::MouseEvent::Type type, NodeRef source);
+        void removeAllEvents();
+        
+        void registerEventCallback(po::MouseEvent::Type type, NodeRef listener);
+        
     private:
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
         virtual void drawTree();
         
         //Transformation Matrix
-        ci::Matrix44f matrix;
+        po::MatrixSet matrix;
         
         //Scene this node belongs to
         std::weak_ptr<Scene> scene;
@@ -135,5 +162,28 @@ namespace po {
         //Unique identifiers
         uint drawOrder;
         uint uid;
+        
+        //------------------
+        //NODE EVENTS
+        struct EventCallback {
+            EventCallback() : markedForRemoval(false) {};
+            
+            bool markedForRemoval;
+            std::weak_ptr<Node> listener;
+        };
+        
+        bool callbackAlreadyExistsForListener(NodeRef listener, std::vector<EventCallback> &callbackList);
+        
+        //Mouse Events
+        //Global events (just send route it to this)
+        virtual void notifyGlobal(po::MouseEvent event);
+        
+        //Callback events
+        bool hasCallbacks(po::MouseEvent::Type type);
+        virtual po::MouseEvent notifyCallbacks(po::MouseEvent event);
+        
+        #pragma message "Is vector the best thing to use here?"
+        std::map<po::MouseEvent::Type, std::vector<EventCallback> > mouseEventSubscriptions;
+        std::map<po::MouseEvent::Type, std::vector<EventCallback> > mouseEventCallbacks;
     };
 }

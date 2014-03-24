@@ -32,12 +32,12 @@ namespace po {
     
     Node::~Node() {}
     
+    #pragma mark - Update & Draw Trees -
+    
     void Node::updateTree()
     {
         update();
     }
-    
-    void Node::update() {}
     
     void Node::drawTree()
     {
@@ -67,8 +67,6 @@ namespace po {
         ci::gl::popMatrices();
     }
     
-    void Node::draw() {
-    }
     
     //------------------------------------------------------
     #pragma mark - Transformation -
@@ -79,13 +77,28 @@ namespace po {
         ci::gl::translate(position);
         ci::gl::rotate(rotation);
         ci::gl::scale(scale);
+    
+        matrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
+    }
+    
+    ci::Vec2f Node::sceneToLocal(ci::Vec2f scenePoint)
+    {
         
-        matrix = ci::gl::getProjection();
+    }
+    
+    ci::Vec2f Node::globalToLocal(ci::Vec2f globalPoint)
+    {
+        return matrix.globalToLocal(globalPoint);
+    }
+    
+    bool Node::pointInside(ci::Vec2f point)
+    {
+        return true;
     }
     
     
     //------------------------------------------------------
-    #pragma mark - Parent & Scene weak refs -
+    #pragma mark - Parent & Scene -
     
     void Node::setScene(SceneRef sceneRef) {
         scene = sceneRef;
@@ -163,5 +176,132 @@ namespace po {
     {
         ci::gl::color(255,0,0);
         ci::gl::drawStrokedRect(getBounds());
+    }
+
+    
+    
+    
+    
+    //------------------------------------------------------
+    #pragma mark  - Events -
+    
+    #pragma mark General
+    void Node::removeAllEvents() {}
+    
+    //Check any list of event callbacks to see if there is already a callback for a given listener
+    bool Node::callbackAlreadyExistsForListener(NodeRef listener, std::vector<EventCallback> &callbackList)
+    {
+        for(EventCallback callback : callbackList) {
+            if(callback.listener.lock() == listener) {
+                return true;
+            }
+        }
+               
+        return false;
+    }
+    
+    
+    #pragma mark Mouse Events
+    
+    //Global Events
+    void Node::notifyGlobal(po::MouseEvent event) {
+        #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
+        switch (event.getType()) {
+            case po::MouseEvent::Type::DOWN:
+                mouseDown(event);
+                break;
+                
+            case po::MouseEvent::Type::MOVE:
+                mouseMove(event);
+                break;
+                
+            case po::MouseEvent::Type::DRAG:
+                mouseDrag(event);
+                break;
+                
+            case po::MouseEvent::Type::UP:
+                mouseUp(event);
+                break;
+                
+            case po::MouseEvent::Type::WHEEL:
+                mouseWheel(event);
+                break;
+        }
+    }
+    
+    //Callbacks
+    void Node::addEvent(po::MouseEvent::Type type, NodeRef source)
+    {
+        //Subscribe to the source
+        source->registerEventCallback(type, shared_from_this());
+        #pragma message "Now we need to track our subscriptions on this end for removing events"
+        //Track this Subscription
+    }
+    
+    void Node::removeEvent(po::MouseEvent::Type type, NodeRef source) {}
+    
+    //Sets this event
+    void Node::registerEventCallback(po::MouseEvent::Type type, NodeRef listener)
+    {
+        //Check to see if we already have the callback
+        if(callbackAlreadyExistsForListener(listener, mouseEventCallbacks[type]))
+            return;
+        
+        //Otherwise Insert this callback
+        EventCallback callback;
+        callback.listener = listener;
+        mouseEventCallbacks[type].push_back(callback);
+    }
+    
+    //See if we care about an event
+    bool Node::hasCallbacks(po::MouseEvent::Type type)
+    {
+        if(type == po::MouseEvent::Type::DOWN_INSIDE) {
+            "Yea!";
+        }
+        return mouseEventCallbacks[type].size();
+    }
+    
+    //For the given event, notify everyone that we have as a subscriber
+    po::MouseEvent Node::notifyCallbacks(po::MouseEvent event)
+    {
+        //Iterate through all callbacks
+        for(EventCallback callback : mouseEventCallbacks[event.getType()])
+        {
+            //Notify the callback
+            NodeRef listener = callback.listener.lock();
+            
+            #pragma message "Can we do this any better, maybe using templates?"
+            if(listener && !callback.markedForRemoval) {
+                switch (event.getType()) {
+                    case po::MouseEvent::Type::DOWN_INSIDE:
+                        listener->mouseDownInside(event);
+                        break;
+                        
+                    case po::MouseEvent::Type::MOVE_INSIDE:
+                        listener->mouseMoveInside(event);
+                        break;
+                        
+                    case po::MouseEvent::Type::DRAG_INSIDE:
+                        listener->mouseDragInside(event);
+                        break;
+                        
+                    case po::MouseEvent::Type::UP_INSIDE:
+                        listener->mouseUpInside(event);
+                        break;
+                }
+            }
+        }
+        
+        //Cleanup our callbacks, checking for deleted node refs or callbacks that have been markedForRemoval
+        std::vector<EventCallback>::iterator iter = mouseEventCallbacks[event.getType()].begin();
+        for(; iter != mouseEventCallbacks[event.getType()].end(); ++iter)
+        {
+            if(!(*iter).listener.lock() || (*iter).markedForRemoval) {
+                iter = mouseEventCallbacks[event.getType()].erase(iter);
+            }
+        }
+        
+        return event;
     }
 }

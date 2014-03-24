@@ -55,6 +55,7 @@ namespace po {
                 //Create a po::MouseEvent
                 po::MouseEvent poEvent(type, ciEvent.getPos());
                 notifyAllNodes(scene, poEvent);
+                notifyCallbacks(scene,poEvent);
             }
             
             //Clear out the events
@@ -66,33 +67,47 @@ namespace po {
     void EventCenter::notifyAllNodes(SceneRef scene, po::MouseEvent event) {
         for(NodeRef node : scene->allChildren) {
             if(!node->isInteractionEnabled()) continue;
-            switch (event.getType()) {
-                case po::MouseEvent::Type::DOWN:
-                    node->mouseDown(event);
-                    break;
-                    
-                case po::MouseEvent::Type::MOVE:
-                    node->mouseMove(event);
-                    break;
-                    
-                case po::MouseEvent::Type::DRAG:
-                    node->mouseDrag(event);
-                    break;
-                    
-                case po::MouseEvent::Type::UP:
-                    node->mouseUp(event);
-                    break;
-                    
-                case po::MouseEvent::Type::WHEEL:
-                    node->mouseWheel(event);
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
+            node->notifyGlobal(event);
         }
-
     }
+    
+    //Dispatch callback to top item, going up through draw tree
+    void EventCenter::notifyCallbacks(SceneRef scene, po::MouseEvent event)
+    {
+        switch (event.type) {
+            case MouseEvent::Type::DOWN:
+                event.type = MouseEvent::Type::DOWN_INSIDE;
+                break;
+                
+            case MouseEvent::Type::MOVE:
+                event.type = MouseEvent::Type::MOVE_INSIDE;
+                break;
+                
+            case MouseEvent::Type::UP:
+                event.type = MouseEvent::Type::UP_INSIDE;
+                break;
+                
+            default:
+                break;
+        }
+        
+        for(NodeRef node : scene->allChildren) {
+            //If the node is registered for this callback and it qualifies, send it off
+            bool shouldNotify = node->isInteractionEnabled()         &&
+                                node->hasCallbacks(event.getType())   &&
+                                node->pointInside(event.getWindowPos());
+            if(shouldNotify)
+            {
+                node->notifyCallbacks(event);
+                #pragma message "This is where we would check for propagation"
+                return;
+            }
+               
+
+        }
+    }
+    
+    #pragma mark - Keyboard Events -
+    #pragma mark - Touch Events -
+    
 }

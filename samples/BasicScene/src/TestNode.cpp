@@ -9,12 +9,31 @@
 #include "TestNode.h"
 
 TestNodeRef TestNode::create() {
-    return std::shared_ptr<TestNode>(new TestNode());
+    return TestNodeRef(new TestNode());
 }
 
 TestNode::TestNode()
 {
     setInteractionEnabled(true);
+}
+
+void TestNode::setup()
+{
+    //position.set(50,50);
+    
+    rect = po::Shape::createRect(150, 150);
+    rect->setInteractionEnabled(true);
+    rect->position.set(50,50);
+    rect->rotation.set(0, 0, 45);
+    addChild(rect);
+    
+//    addEvent(po::MouseEvent::Type::DOWN_INSIDE, shared_from_this());
+//    addEvent(po::MouseEvent::Type::MOVE_INSIDE, shared_from_this());
+//    addEvent(po::MouseEvent::Type::UP_INSIDE, shared_from_this());
+    
+    addEvent(po::MouseEvent::Type::DOWN_INSIDE, rect);
+    addEvent(po::MouseEvent::Type::MOVE_INSIDE, rect);
+    addEvent(po::MouseEvent::Type::UP_INSIDE,   rect);
 }
 
 void TestNode::draw() {
@@ -23,13 +42,27 @@ void TestNode::draw() {
 }
 
 //Events
-
 void TestNode::mouseDown(po::MouseEvent event)
 {
-    std::cout << "Test node mouse down!" << std::endl;
+}
+
+void TestNode::mouseDownInside(po::MouseEvent event)
+{
+    rect->fillColor.set(255,0,0);
+}
+
+void TestNode::mouseMoveInside(po::MouseEvent event)
+{
+    std::cout << "Test node mouse move inside!" << std::endl;
+}
+
+void TestNode::mouseUpInside(po::MouseEvent event)
+{
+    std::cout << "Test node mouse up inside!" << std::endl;
 }
 
 void TestNode::mouseUp(po::MouseEvent event)
 {
-    std::cout << "Test node Mouse Up event!" << std::endl;
+    //std::cout << "Test node Mouse Up event!" << std::endl;
+    rect->fillColor.set(255,255,255);
 }

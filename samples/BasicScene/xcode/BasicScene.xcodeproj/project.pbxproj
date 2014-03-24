@@ -24,6 +24,7 @@
 		E470F2BF18D9212400CC7E13 /* TestNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E470F2BD18D9212400CC7E13 /* TestNode.cpp */; };
 		E47BF5E918DA6BFA00E58C15 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E47BF5E718DA6BFA00E58C15 /* poShape.cpp */; };
 		E47BF5EC18DE313500E58C15 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E47BF5EA18DE313500E58C15 /* poNodeContainer.cpp */; };
+		E4FD8CCC18DFBCC8002F6CF2 /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4FD8CCA18DFBCC8002F6CF2 /* poMatrixSet.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,8 @@
 		E47BF5E818DA6BFA00E58C15 /* poShape.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poShape.h; sourceTree = "<group>"; };
 		E47BF5EA18DE313500E58C15 /* poNodeContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poNodeContainer.cpp; sourceTree = "<group>"; };
 		E47BF5EB18DE313500E58C15 /* poNodeContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poNodeContainer.h; sourceTree = "<group>"; };
+		E4FD8CCA18DFBCC8002F6CF2 /* poMatrixSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poMatrixSet.cpp; sourceTree = "<group>"; };
+		E4FD8CCB18DFBCC8002F6CF2 /* poMatrixSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poMatrixSet.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +102,8 @@
 		0E5A42F218D7AF8B0019913F /* poScene */ = {
 			isa = PBXGroup;
 			children = (
+				E4FD8CCA18DFBCC8002F6CF2 /* poMatrixSet.cpp */,
+				E4FD8CCB18DFBCC8002F6CF2 /* poMatrixSet.h */,
 				E434D45E18DE4F35002CE960 /* poEvents.h */,
 				E434D45F18DE4F64002CE960 /* poEvents.cpp */,
 				0E5A42F318D7AF8B0019913F /* poEventCenter.cpp */,
@@ -251,6 +256,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4FD8CCC18DFBCC8002F6CF2 /* poMatrixSet.cpp in Sources */,
 				E47BF5E918DA6BFA00E58C15 /* poShape.cpp in Sources */,
 				0E5A42F918D7AF8B0019913F /* poEventCenter.cpp in Sources */,
 				0E5A42FB18D7AF8B0019913F /* poScene.cpp in Sources */,

@@ -7,6 +7,7 @@
 //
 
 #pragma once
+#include "cinder/Shape2d.h"
 #include "poNode.h"
 
 namespace po {
@@ -37,6 +38,9 @@ namespace po {
         
         //Bounds
         virtual ci::Rectf getBounds();
+        
+        //Hit testing
+        bool pointInside(ci::Vec2f point);
         
         //------------------
         //ATTRIBUTES

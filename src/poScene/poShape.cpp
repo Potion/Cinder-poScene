@@ -76,6 +76,12 @@ namespace po {
     
     Shape::~Shape() {}
     
+    bool Shape::pointInside(ci::Vec2f point)
+    {
+        std::cout << globalToLocal(point) << std::endl;
+        return ciShape2d.contains(globalToLocal(point));
+    }
+    
     void Shape::draw()
     {
         //Draw fill
@@ -94,6 +100,8 @@ namespace po {
     ci::Rectf Shape::getBounds()
     {
         #pragma message "Not sure if this is gonna work"
+        ci::Rectf boundingBox = ciShape2d.calcBoundingBox();
+
         return ciShape2d.calcBoundingBox();
     }
 }

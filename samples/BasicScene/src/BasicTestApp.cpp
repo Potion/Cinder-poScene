@@ -43,6 +43,8 @@ void BasicTestApp::setup()
 //    std::cout << "Has Parent: " << myNode->hasParent() << std::endl;
 //    
         TestNodeRef testNode    = TestNode::create();
+    testNode->setup();
+    
 //    TestNodeRef testNode2   = TestNode::create();
     
     r = po::Shape::createEllipse(200,100);
@@ -61,11 +63,15 @@ void BasicTestApp::setup()
     e->setInteractionEnabled(true);
     
     //Test scene graph
-    scene->getRootNode()->addChild(r);
-    scene->getRootNode()->addChild(e);
+//    scene->getRootNode()->addChild(r);
+//    scene->getRootNode()->addChild(e);
     scene->getRootNode()->addChild(testNode);
     
     scene->getRootNode()->setDrawBoundsEnabled(true);
+    
+//    for(int i=0; i<100000; i++) {
+//        scene->getRootNode()->addChild(po::Node::create());
+//    }
 
 }
 

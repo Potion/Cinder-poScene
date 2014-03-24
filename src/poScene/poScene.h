@@ -11,6 +11,8 @@
 #include "poNodeContainer.h"
 #include "poEventCenter.h"
 
+#include "cinder/Camera.h"
+
 namespace po {
     //Forward declare node
     class Node;
@@ -56,5 +58,7 @@ namespace po {
         //This lets us sort objects for hit testing
         uint getNextDrawOrder();
         uint drawOrderCounter;
+        
+        ci::CameraOrtho mCamera;
     };
 }
