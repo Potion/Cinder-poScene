@@ -34,6 +34,8 @@ namespace po {
         return ci::Vec2f(r.x, r.y);
     }
     
+    
+    //Adapted from code by Paul Houx https://forum.libcinder.org/topic/glu-s-gluunproject-substitute
     ci::Vec3f MatrixSet::unproject(const ci::Vec3f &pt)
     {
         /* find the inverse modelview-projection-matrix */

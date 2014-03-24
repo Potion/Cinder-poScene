@@ -11,6 +11,9 @@
 #include "poEvents.h"
 
 namespace po {
+    class Node;
+    typedef std::shared_ptr<Node> NodeRef;
+    
     class Event {
     public:
         Event() : shouldPropagate(false) {};
@@ -39,23 +42,26 @@ namespace po {
         
         MouseEvent(Type type, ci::Vec2f windowPos);
         
-        int getX();
-        int getY();
-        ci::Vec2i getPos();
+        float getX();
+        float getY();
+        ci::Vec2f getPos();
         
-        void getSceneX();
-        void getSceneY();
-        void getScenePos();
+        float getSceneX();
+        float getSceneY();
+        ci::Vec2f getScenePos();
         
-        int getWindowX();
-        int getWindowY();
-        ci::Vec2i getWindowPos() { return windowPos; };
+        float getWindowX() { return windowPos.x; };
+        float getWindowY() { return windowPos.y; };
+        ci::Vec2f getWindowPos() { return windowPos; };
         
         Type getType() { return type; };
         
+        #pragma message "This should not be public, we should have a weak_ptr with a comparison func that locks it!"
+        NodeRef source;
+        
     private:
         Type type;
-        ci::Vec2i pos, scenePos, windowPos;
+        ci::Vec2f pos, scenePos, windowPos;
     };
 }
 

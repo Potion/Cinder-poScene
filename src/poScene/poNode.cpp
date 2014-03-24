@@ -21,21 +21,45 @@ namespace po {
     
     Node::Node()
     :   uid(OBJECT_UID++)
-    ,   position(0,0)
-    ,   scale(1.0,1.0)
+    ,   position(0.f,0.f)
+    ,   positionAnim(ci::Vec2f(0.f,0.f))
+    ,   scale(1.f,1.f)
+    ,   scaleAnim(ci::Vec2f(1.f,1.f))
+    ,   rotation(0)
+    ,   rotationAnim(0)
+    ,   bUpdatePositionFromAnim(false)
+    ,   bUpdateScaleFromAnim(false)
+    ,   bUpdateRotationFromAnim(false)
     ,   bDrawBounds(false)
     ,   bDrawFrame(false)
     ,   bVisible(true)
     ,   bInteractionEnabled(false)
     {
+        positionAnim.stop();
+        scaleAnim.stop();
+        rotationAnim.stop();
     }
     
-    Node::~Node() {}
+    Node::~Node() {
+        
+    }
     
     #pragma mark - Update & Draw Trees -
     
     void Node::updateTree()
     {
+        //See if a tween is in progress, if so we want to use that value
+        //setting position calls stop() so that will override this
+        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
+        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim = true;
+        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
+        
+        //Update Anims if we care
+        if(bUpdatePositionFromAnim)  position    = positionAnim;
+        if(bUpdateScaleFromAnim)     scale       = scaleAnim;
+        if(bUpdateRotationFromAnim)  rotation    = rotationAnim;
+        
+        //Call our update function
         update();
     }
     
@@ -65,6 +89,29 @@ namespace po {
         
         //Pop our Matrix
         ci::gl::popMatrices();
+    }
+    
+    #pragma mark - Attributes -
+    //We stop Anims when attributes are manually set
+    
+    void Node::setPosition(float x, float y)
+    {
+        positionAnim.stop();
+        bUpdatePositionFromAnim = false;
+        position.set(x, y);
+    }
+    
+    void Node::setScale(float x, float y)
+    {
+        scaleAnim.stop();
+        bUpdateScaleFromAnim = false;
+        scale.set(x, y);
+    }
+    
+    void Node::setRotation(float rotation) {
+        rotationAnim.stop();
+        bUpdateRotationFromAnim = false;
+        this->rotation = rotation;
     }
     
     
@@ -265,6 +312,8 @@ namespace po {
     //For the given event, notify everyone that we have as a subscriber
     po::MouseEvent Node::notifyCallbacks(po::MouseEvent event)
     {
+        event.source = shared_from_this();
+        
         //Iterate through all callbacks
         for(EventCallback callback : mouseEventCallbacks[event.getType()])
         {

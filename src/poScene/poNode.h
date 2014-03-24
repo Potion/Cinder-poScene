@@ -9,6 +9,7 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/CinderMath.h"
+#include "cinder/Timeline.h"
 
 #include "poMatrixSet.h"
 #include "poEventCenter.h"
@@ -85,10 +86,25 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
-        std::string name;
-        ci::Vec2f position;
-        ci::Vec2f scale;
-        ci::Vec3f rotation;
+        std::string         name;
+        
+        //Position
+        void setPosition(float x, float y);
+        void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
+        ci::Vec2f getPosition() { return position; };
+        ci::Anim<ci::Vec2f> positionAnim;
+        
+        //Scale
+        void setScale(float x, float y);
+        void setScale(ci::Vec2f scale) { setPosition(scale.x, scale.y); };
+        ci::Vec2f getScale() { return scale; };
+        ci::Anim<ci::Vec2f> scaleAnim;
+        
+        //Rotation
+        void setRotation(float rotation);
+        float getRotation() { return rotation; };
+        ci::Anim<float>     rotationAnim;
+        
         
         float alpha;
         
@@ -139,6 +155,14 @@ namespace po {
         void registerEventCallback(po::MouseEvent::Type type, NodeRef listener);
         
     private:
+        //Private attributes
+        ci::Vec2f position;
+        ci::Vec2f scale;
+        float     rotation;
+        bool bUpdatePositionFromAnim;
+        bool bUpdateScaleFromAnim;
+        bool bUpdateRotationFromAnim;
+        
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
         virtual void drawTree();
