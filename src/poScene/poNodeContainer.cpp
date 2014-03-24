@@ -91,13 +91,8 @@ namespace po {
         for(NodeRef childNode : children)
             childNode->drawTree();
         
-        if(bDrawBounds || bDrawFrame) {
-            if(bDrawBounds)
-                drawBounds();
-            
-            if(bDrawFrame)
-                drawFrame();
-        }
+        if(bDrawBounds)
+            drawBounds();
         
         ci::gl::popMatrices();
     }
