@@ -29,6 +29,7 @@ namespace po {
         
         //Bounds
         virtual ci::Rectf getBounds();
+        
     protected:
         NodeContainer();
         void setScene(SceneRef scene);

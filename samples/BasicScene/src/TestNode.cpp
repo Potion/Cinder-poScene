@@ -64,7 +64,8 @@ void TestNode::mouseMove(po::MouseEvent event)
 
 void TestNode::mouseDownInside(po::MouseEvent event)
 {
-    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
+    
+    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
     
     if(!thisRect->rotationAnim.isComplete()) {
         thisRect->setRotation(thisRect->getRotation());

@@ -27,6 +27,7 @@ namespace po {
     , public po::Event
     {
         friend class EventCenter;
+        friend class Node;
     public:
         enum Type {
             DOWN,
@@ -55,11 +56,10 @@ namespace po {
         ci::Vec2f getWindowPos() { return windowPos; };
         
         Type getType() { return type; };
-        
-        #pragma message "This should not be public, we should have a weak_ptr with a comparison func that locks it!"
-        NodeRef source;
+        NodeRef getSource() { return source.lock(); };
         
     private:
+        std::weak_ptr<Node> source;
         Type type;
         ci::Vec2f pos, scenePos, windowPos;
     };
