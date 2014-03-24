@@ -66,7 +66,6 @@ namespace po {
         void setDrawBoundsEnabled(bool enabled) { bDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
         
-        void setDrawFrameEnabled(bool enabled) { bDrawFrame = enabled; };
         ci::Rectf getFrame();
         
         //Interaction
@@ -176,9 +175,6 @@ namespace po {
         //Bounds and frame
         void drawBounds();
         bool bDrawBounds;
-        
-        void drawFrame();
-        bool bDrawFrame;
         
         //Parent
         std::weak_ptr<NodeContainer> parent;

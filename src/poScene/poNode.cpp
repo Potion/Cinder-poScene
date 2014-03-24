@@ -31,9 +31,8 @@ namespace po {
     ,   bUpdateScaleFromAnim(false)
     ,   bUpdateRotationFromAnim(false)
     ,   bDrawBounds(false)
-    ,   bDrawFrame(false)
     ,   bVisible(true)
-    ,   bInteractionEnabled(false)
+    ,   bInteractionEnabled(true)
     {
         positionAnim.stop();
         scaleAnim.stop();
@@ -44,6 +43,9 @@ namespace po {
         
     }
     
+    
+    
+    //------------------------------------------------------
     #pragma mark - Update & Draw Trees -
     
     void Node::updateTree()
@@ -78,21 +80,19 @@ namespace po {
         //Draw this item
         draw();
         
-        //Draw bounds and/or frame if necessary
-        if(bDrawBounds || bDrawFrame) {
-            if(bDrawBounds)
-                drawBounds();
-            
-            if(bDrawFrame)
-                drawFrame();
-        }
+        //Draw bounds if necessary
+        if(bDrawBounds)
+            drawBounds();
         
         //Pop our Matrix
         ci::gl::popMatrices();
     }
     
+    
+    
+    
+    //------------------------------------------------------
     #pragma mark - Attributes -
-    //We stop Anims when attributes are manually set
     
     void Node::setPosition(float x, float y)
     {
@@ -115,6 +115,8 @@ namespace po {
     }
     
     
+    
+    
     //------------------------------------------------------
     #pragma mark - Transformation -
     
@@ -130,7 +132,7 @@ namespace po {
     
     ci::Vec2f Node::sceneToLocal(ci::Vec2f scenePoint)
     {
-        
+        return ci::Vec2f();
     }
     
     ci::Vec2f Node::globalToLocal(ci::Vec2f globalPoint)
@@ -142,6 +144,8 @@ namespace po {
     {
         return true;
     }
+    
+    
     
     
     //------------------------------------------------------
@@ -187,6 +191,8 @@ namespace po {
     }
     
     
+    
+    
     //------------------------------------------------------
     #pragma mark  - Dimensions -
     
@@ -218,13 +224,6 @@ namespace po {
         frame.offset(position);
         return frame;
     }
-    
-    void Node::drawFrame()
-    {
-        ci::gl::color(255,0,0);
-        ci::gl::drawStrokedRect(getBounds());
-    }
-
     
     
     

@@ -31,7 +31,7 @@ namespace po {
     //------------------------------------------------------------------------
     //Sort nodes to be top down
     bool sortByDrawOrderFunc(NodeRef &a, NodeRef &b) {
-        return a->getDrawOrder() < b->getDrawOrder();
+        return a->getDrawOrder() > b->getDrawOrder();
     }
     
     //Process all the event queues for this scene
