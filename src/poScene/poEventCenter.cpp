@@ -54,7 +54,7 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(type, ciEvent.getPos());
+                po::MouseEvent poEvent(ciEvent, type);
                 notifyAllNodes(nodes,   poEvent);
                 notifyCallbacks(nodes,  poEvent);
             }
@@ -66,16 +66,13 @@ namespace po {
     
     //Dispatch to the appropriate mouse event function for each node in the scene
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event) {
-        for(std::weak_ptr<Node> node : nodes) {
-            //Lock the shared ptr
-            NodeRef nodeRef = node.lock();
-            
+        for(NodeRef node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!nodeRef || !nodeRef->isInteractionEnabled()) continue;
+            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
             
             //Notify the node
             event.setShouldPropagate(true);
-            nodeRef->notifyGlobal(event);
+            node->notifyGlobal(event);
         }
     }
     
@@ -98,7 +95,8 @@ namespace po {
         }
         
         for(NodeRef node : nodes) {
-            if(node->isInteractionEnabled() &&
+            if(node->hasScene() &&
+               node->isInteractionEnabled() &&
                node->hasCallbacks(event.getType()) &&
                node->pointInside(event.getWindowPos())
             ) {
