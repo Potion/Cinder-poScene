@@ -29,6 +29,9 @@ namespace po {
         
         //Bounds
         virtual ci::Rectf getBounds();
+        
+        //Interaction
+        virtual bool pointInside(const ci::Vec2f &point);
     protected:
         NodeContainer();
         void setScene(SceneRef scene);

@@ -73,7 +73,7 @@ namespace po {
         bool isInteractionEnabled() { return bInteractionEnabled; };
         
         //Hit Testing & Transformation
-        virtual bool pointInside(ci::Vec2f  point);
+        virtual bool pointInside(const ci::Vec2f  &point);
         ci::Vec2f sceneToLocal(ci::Vec2f    point);
         ci::Vec2f globalToLocal(ci::Vec2f   point);
         
@@ -147,8 +147,8 @@ namespace po {
         bool bInteractionEnabled;
         
         //Event registration
-        void addEvent(po::MouseEvent::Type type, NodeRef source);
-        void removeEvent(po::MouseEvent::Type type, NodeRef source);
+        void subscribeToEvent(po::MouseEvent::Type type, NodeRef source = nullptr);
+        void unsubscribeFromEvent(po::MouseEvent::Type type, NodeRef source = nullptr);
         void removeAllEvents();
         
         void registerEventCallback(po::MouseEvent::Type type, NodeRef listener);

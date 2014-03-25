@@ -76,7 +76,7 @@ namespace po {
     
     Shape::~Shape() {}
     
-    bool Shape::pointInside(ci::Vec2f point)
+    bool Shape::pointInside(const ci::Vec2f &point)
     {
         return ciShape2d.contains(globalToLocal(point));
     }

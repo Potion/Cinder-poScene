@@ -140,9 +140,9 @@ namespace po {
         return matrix.globalToLocal(globalPoint);
     }
     
-    bool Node::pointInside(ci::Vec2f point)
+    bool Node::pointInside(const ci::Vec2f &point)
     {
-        return true;
+        return false;
     }
     
     
@@ -276,15 +276,24 @@ namespace po {
     }
     
     //Callbacks
-    void Node::addEvent(po::MouseEvent::Type type, NodeRef source)
+    void Node::subscribeToEvent(po::MouseEvent::Type type, NodeRef source)
     {
+        //If no source is provided, assume we want to subscribe to our own event
+        if(!source) source = shared_from_this();
+        
         //Subscribe to the source
         source->registerEventCallback(type, shared_from_this());
+        
         #pragma message "Now we need to track our subscriptions on this end for removing events"
         //Track this Subscription
     }
     
-    void Node::removeEvent(po::MouseEvent::Type type, NodeRef source) {}
+    
+    void Node::unsubscribeFromEvent(po::MouseEvent::Type type, NodeRef source) {
+        //If no source is provided, assume we want to unsubscribe to our own event
+        if(!source) source = shared_from_this();
+        #pragma message "Now just need to implement this shit!"
+    }
     
     //Sets this event
     void Node::registerEventCallback(po::MouseEvent::Type type, NodeRef listener)

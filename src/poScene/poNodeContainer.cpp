@@ -107,4 +107,15 @@ namespace po {
         
         return bounds;
     }
+    
+    bool NodeContainer::pointInside(const ci::Vec2f &point)
+    {
+        for (NodeRef node : children) {
+            if (node->pointInside(point)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
