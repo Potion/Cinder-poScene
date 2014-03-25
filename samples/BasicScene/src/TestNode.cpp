@@ -56,7 +56,15 @@ void TestNode::squareFinishedTweening(po::ShapeRef square) {
 //Events
 void TestNode::mouseDown(po::MouseEvent& event)
 {
+    std::cout << "Left down: " << event.isLeftDown() << std::endl;
+    std::cout << "Right down: " << event.isRightDown() << std::endl;
+    std::cout << "Center down: " << event.isMiddleDown() << std::endl;
 }
+
+void TestNode::mouseDrag(po::MouseEvent& event)
+{
+}
+
 
 void TestNode::mouseMove(po::MouseEvent& event)
 {
@@ -72,11 +80,12 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     } else {
         thisRect->fillColor.set(255,0,0);
         
-        if (thisRect->getRotation() == 360.f) {
+        if (round(thisRect->getRotation()) == 360.f) {
             thisRect->rotationAnim = 0.f;
         }
         
-        ci::app::timeline().apply(&thisRect->rotationAnim, 360.f, 4.0f)
+        float animationTime = 4.f - (4.0f * (thisRect->getRotation()/360.f));
+        ci::app::timeline().apply(&thisRect->rotationAnim, 360.f, animationTime)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
