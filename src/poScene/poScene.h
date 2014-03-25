@@ -52,7 +52,6 @@ namespace po {
         void untrackChildNode(NodeRef node);
         std::vector<NodeRef> allChildren;
         
-        
     private:
         //Each object get's its own draw order every frame.
         //This lets us sort objects for hit testing

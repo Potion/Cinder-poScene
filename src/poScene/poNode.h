@@ -114,20 +114,20 @@ namespace po {
         //GLOBAL EVENTS
         //Override these methods to receive events
         //Global events, these fire for all Nodes
-        virtual void mouseDown(po::MouseEvent event)        {};
-        virtual void mouseMove(po::MouseEvent event)        {};
-        virtual void mouseDrag(po::MouseEvent event)        {};
-        virtual void mouseUp(po::MouseEvent event)          {};
-        virtual void mouseWheel( po::MouseEvent event)      {};
+        virtual void mouseDown(po::MouseEvent &event)        {};
+        virtual void mouseMove(po::MouseEvent &event)        {};
+        virtual void mouseDrag(po::MouseEvent &event)        {};
+        virtual void mouseUp(po::MouseEvent &event)          {};
+        virtual void mouseWheel( po::MouseEvent &event)      {};
         
         //These are po::Scene events, you need to subscribe to them
-        virtual void mouseDownInside(po::MouseEvent event)  {};
-        virtual void mouseMoveInside(po::MouseEvent event)  {};
-        virtual void mouseDragInside(po::MouseEvent event)  {};
-        virtual void mouseEnter(po::MouseEvent event)       {};
-        virtual void mouseLeave(po::MouseEvent event)       {};
-        virtual void mouseOver(po::MouseEvent event)        {};
-        virtual void mouseUpInside(po::MouseEvent event)    {};
+        virtual void mouseDownInside(po::MouseEvent &event)  {};
+        virtual void mouseMoveInside(po::MouseEvent &event)  {};
+        virtual void mouseDragInside(po::MouseEvent &event)  {};
+        virtual void mouseEnter(po::MouseEvent &event)       {};
+        virtual void mouseLeave(po::MouseEvent &event)       {};
+        virtual void mouseOver(po::MouseEvent &event)        {};
+        virtual void mouseUpInside(po::MouseEvent &event)    {};
 
     protected:
         Node();
@@ -196,11 +196,11 @@ namespace po {
         
         //Mouse Events
         //Global events (just send route it to this)
-        virtual void notifyGlobal(po::MouseEvent event);
+        virtual void notifyGlobal(po::MouseEvent &event);
         
         //Callback events
         bool hasCallbacks(po::MouseEvent::Type type);
-        virtual po::MouseEvent notifyCallbacks(po::MouseEvent event);
+        virtual void notifyCallbacks(po::MouseEvent &event);
         
         #pragma message "Is vector the best thing to use here?"
         std::map<po::MouseEvent::Type, std::vector<EventCallback> > mouseEventSubscriptions;

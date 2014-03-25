@@ -54,15 +54,15 @@ void TestNode::squareFinishedTweening(po::ShapeRef square) {
 }
 
 //Events
-void TestNode::mouseDown(po::MouseEvent event)
+void TestNode::mouseDown(po::MouseEvent& event)
 {
 }
 
-void TestNode::mouseMove(po::MouseEvent event)
+void TestNode::mouseMove(po::MouseEvent& event)
 {
 }
 
-void TestNode::mouseDownInside(po::MouseEvent event)
+void TestNode::mouseDownInside(po::MouseEvent& event)
 {
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
     
@@ -80,17 +80,18 @@ void TestNode::mouseDownInside(po::MouseEvent event)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
+    //event.setShouldPropagate(true);
 }
 
-void TestNode::mouseMoveInside(po::MouseEvent event)
+void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
 }
 
-void TestNode::mouseUpInside(po::MouseEvent event)
+void TestNode::mouseUpInside(po::MouseEvent& event)
 {
 }
 
-void TestNode::mouseUp(po::MouseEvent event)
+void TestNode::mouseUp(po::MouseEvent& event)
 {
     //std::cout << "Test node Mouse Up event!" << std::endl;
     //rect->fillColor.set(255,255,255);

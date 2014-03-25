@@ -11,11 +11,9 @@
 #include "cinder/app/MouseEvent.h"
 
 #include "poEvents.h"
+#include "poNode.h"
 
 namespace po {
-    //Forward declare Scene
-    class Scene;
-    typedef std::shared_ptr<Scene> SceneRef;
     
     class EventCenter;
     typedef std::shared_ptr<EventCenter> EventCenterRef;
@@ -25,19 +23,22 @@ namespace po {
     public:
         static EventCenterRef create();
         
-        void processEvents(SceneRef scene);
+        void processEvents(std::vector<NodeRef> nodes);
         
     private:
         EventCenter();
         
-        void processMouseEvents(SceneRef scene);
-        void notifyAllNodes(SceneRef scene, po::MouseEvent event);
-        void notifyCallbacks(SceneRef scene, po::MouseEvent event);
+        //Mouse Events
+        void processMouseEvents(std::vector<NodeRef> &nodes);
+        void notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event);
+        void notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event);
+        
         
         //----------------------------
         //CALLBACKS
+        //Callbacks are connected to the ci::app signals, and queued up in order to be fired when we proces events
         
-        //Mouse Event Callbacks
+        //Mouse Event Callbacks,
         virtual void	mouseDown(ci::app::MouseEvent event)    { mouseEventQueues[MouseEvent::Type::DOWN].push_back(event);    };
         virtual void	mouseMove(ci::app::MouseEvent event)    { mouseEventQueues[MouseEvent::Type::MOVE].push_back(event);    };
         virtual void	mouseDrag(ci::app::MouseEvent event)    { mouseEventQueues[MouseEvent::Type::DRAG].push_back(event);    };

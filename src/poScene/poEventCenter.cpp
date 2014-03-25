@@ -35,15 +35,16 @@ namespace po {
     }
     
     //Process all the event queues for this scene
-    void EventCenter::processEvents(SceneRef scene)
+    void EventCenter::processEvents(std::vector<NodeRef> nodes)
     {
-        std::sort(scene->allChildren.begin(), scene->allChildren.end(), sortByDrawOrderFunc);
-        processMouseEvents(scene);
+        std::sort(nodes.begin(), nodes.end(), sortByDrawOrderFunc);
+        
+        processMouseEvents(nodes);
     }
     
     
     #pragma mark - Mouse Events -
-    void EventCenter::processMouseEvents(SceneRef scene)
+    void EventCenter::processMouseEvents(std::vector<NodeRef> &nodes)
     {
         //Go through the queue
         for(auto& queue : mouseEventQueues) {
@@ -54,8 +55,8 @@ namespace po {
             for(ci::app::MouseEvent ciEvent : queue.second) {
                 //Create a po::MouseEvent
                 po::MouseEvent poEvent(type, ciEvent.getPos());
-                notifyAllNodes(scene, poEvent);
-                notifyCallbacks(scene,poEvent);
+                notifyAllNodes(nodes,   poEvent);
+                notifyCallbacks(nodes,  poEvent);
             }
             
             //Clear out the events
@@ -64,15 +65,23 @@ namespace po {
     }
     
     //Dispatch to the appropriate mouse event function for each node in the scene
-    void EventCenter::notifyAllNodes(SceneRef scene, po::MouseEvent event) {
-        for(NodeRef node : scene->allChildren) {
-            if(!node->isInteractionEnabled()) continue;
-            node->notifyGlobal(event);
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event) {
+        for(std::weak_ptr<Node> node : nodes) {
+            //Lock the shared ptr
+            NodeRef nodeRef = node.lock();
+            
+            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+            if(!nodeRef || !nodeRef->isInteractionEnabled()) continue;
+            
+            //Notify the node
+            event.setShouldPropagate(true);
+            nodeRef->notifyGlobal(event);
         }
     }
     
+    #pragma message "I def think this could be done in a better way, too much code"
     //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(SceneRef scene, po::MouseEvent event)
+    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event)
     {
         switch (event.type) {
             case MouseEvent::Type::DOWN:
@@ -86,24 +95,20 @@ namespace po {
             case MouseEvent::Type::UP:
                 event.type = MouseEvent::Type::UP_INSIDE;
                 break;
-                
-            default:
-                break;
         }
         
-        for(NodeRef node : scene->allChildren) {
-            //If the node is registered for this callback and it qualifies, send it off
-            bool shouldNotify = node->isInteractionEnabled()         &&
-                                node->hasCallbacks(event.getType())   &&
-                                node->pointInside(event.getWindowPos());
-            if(shouldNotify)
-            {
+        for(NodeRef node : nodes) {
+            if(node->isInteractionEnabled() &&
+               node->hasCallbacks(event.getType()) &&
+               node->pointInside(event.getWindowPos())
+            ) {
                 node->notifyCallbacks(event);
-                #pragma message "This is where we would check for propagation"
-                return;
+                if(event.getShouldPropagate()) {
+                    event.setShouldPropagate(false);
+                } else {
+                    return;
+                }
             }
-               
-
         }
     }
     

@@ -250,7 +250,7 @@ namespace po {
     #pragma mark Mouse Events
     
     //Global Events
-    void Node::notifyGlobal(po::MouseEvent event) {
+    void Node::notifyGlobal(po::MouseEvent &event) {
         #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
@@ -309,7 +309,7 @@ namespace po {
     }
     
     //For the given event, notify everyone that we have as a subscriber
-    po::MouseEvent Node::notifyCallbacks(po::MouseEvent event)
+    void Node::notifyCallbacks(po::MouseEvent &event)
     {
         event.source = shared_from_this();
         
@@ -349,7 +349,5 @@ namespace po {
                 iter = mouseEventCallbacks[event.getType()].erase(iter);
             }
         }
-        
-        return event;
     }
 }

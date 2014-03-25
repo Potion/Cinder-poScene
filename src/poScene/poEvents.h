@@ -17,7 +17,8 @@ namespace po {
     class Event {
     public:
         Event() : shouldPropagate(false) {};
-        void continuePropagation() { shouldPropagate = true; };
+        void setShouldPropagate(bool shouldPropagate) { this->shouldPropagate = shouldPropagate; };
+        bool getShouldPropagate() { return shouldPropagate; };
     private:
         bool shouldPropagate;
     };
