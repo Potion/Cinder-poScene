@@ -38,7 +38,7 @@ void TestNode::setup()
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
             
-            addEvent(po::MouseEvent::Type::DOWN_INSIDE, r);
+            subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE);
             addChild(r);
         }
     }
@@ -72,6 +72,9 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
+    std::cout << "Down Inside!" << std::endl;
+    return;
+    
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
     
     if(!thisRect->rotationAnim.isComplete()) {

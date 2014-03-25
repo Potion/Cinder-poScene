@@ -1,4 +1,4 @@
-Cinder-poScene
+po::Scene, Cinder SceneGraph from Potion
 ==============
 
-Potion's SceneGraph CinderBlock.
+Work in progress, nothing much to see here yet :)
