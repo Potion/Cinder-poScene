@@ -1,6 +1,6 @@
-<u>po::Scene</u>
+#po::Scene
+####A Cinder scene graph from Potion
 ==============
-##A Cinder scene graph from Potion
 
 Work in progress, nothing much to see here yet :)
 :poop: 
