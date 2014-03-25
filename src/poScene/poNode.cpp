@@ -53,7 +53,7 @@ namespace po {
         //See if a tween is in progress, if so we want to use that value
         //setting position calls stop() so that will override this
         if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
-        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim = true;
+        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim    = true;
         if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
         
         //Update Anims if we care
