@@ -16,6 +16,9 @@
 #include "poMatrixSet.h"
 #include "poEventCenter.h"
 
+using namespace boost;
+using namespace signals2;
+
 namespace po {
     //Forward declare Scene + NodeContainer
     class Scene;
@@ -143,7 +146,20 @@ namespace po {
         uint getUID() { return uid; };
         
         //------------------
-        //GLOBAL EVENTS
+        //EVENTS
+        
+        //Signals
+        MouseEventSignal& getSignalMouseDownInside() { return signalMouseDownInside; };
+        
+        //signalMouseDownInside.connect(std::bind(&Node::mouseDownInside, node, std::_1 ));
+        
+        template<typename T, typename Y>
+        void connectMouseDownInside( T fn, Y *inst ) {
+            connections.push_back(std::unique_ptr<scoped_connection>(new scoped_connection(signalMouseDownInside.connect( std::bind( fn, inst, std::_1 )))));
+        };
+        void connectMouseDownInside(Node* node) { connectMouseDownInside(&Node::mouseDownInside, node); }
+        void emitMouseDownInside(po::MouseEvent &event);
+        
         //Override these methods to receive events
         //Global events, these fire for all Nodes
         virtual void mouseDown(po::MouseEvent &event)        {};
@@ -227,6 +243,11 @@ namespace po {
         //Unique identifiers
         uint drawOrder;
         uint uid;
+        
+        //NODE EVENTS
+        MouseEventSignal signalMouseDownInside, signalMoveInside, signalDragInside, signalMouseUpInside, signalMouseWheel;
+        std::vector<std::unique_ptr<boost::signals2::scoped_connection> > connections;
+        
         
         //------------------
         //NODE EVENTS

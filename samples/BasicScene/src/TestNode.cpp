@@ -40,6 +40,8 @@ void TestNode::setup()
             r->setAlignment(Alignment::CENTER_CENTER);
             
             subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE, r);
+            r->connectMouseDownInside(this);
+            r->connectMouseDownInside(&TestNode::mouseMoveInside, this);
             addChild(r);
         }
     }
@@ -52,14 +54,15 @@ void TestNode::draw() {
 
 void TestNode::squareFinishedTweening(po::ShapeRef square) {
     square->fillColor.set(255,255,255);
+    std::cout << "Finished!" << std::endl;
 }
 
 //Events
 void TestNode::mouseDown(po::MouseEvent& event)
 {
-    std::cout << "Left down: " << event.isLeftDown() << std::endl;
-    std::cout << "Right down: " << event.isRightDown() << std::endl;
-    std::cout << "Center down: " << event.isMiddleDown() << std::endl;
+//    std::cout << "Left down: " << event.isLeftDown() << std::endl;
+//    std::cout << "Right down: " << event.isRightDown() << std::endl;
+//    std::cout << "Center down: " << event.isMiddleDown() << std::endl;
 }
 
 void TestNode::mouseDrag(po::MouseEvent& event)
@@ -73,10 +76,11 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
-//    std::cout << "Down Inside!" << std::endl;
+    std::cout << "Down Inside!" << std::endl;
 //    return;
     
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
+    thisRect->fillColor.set(255,0,0);
     
     if(!thisRect->rotationAnim.isComplete()) {
         thisRect->setRotation(thisRect->getRotation());
@@ -86,7 +90,7 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
         thisRect->fillColor.set(255,0,0);
         
         if (round(thisRect->getRotation()) == 360.f) {
-            thisRect->rotationAnim = 0.f;
+            thisRect->setRotation(0);
         }
         
         float animationTime = 4.f - (4.0f * (thisRect->getRotation()/360.f));
@@ -99,6 +103,7 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
 
 void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
+    std::cout << "Mouse move biotch!" << std::endl;
 }
 
 void TestNode::mouseUpInside(po::MouseEvent& event)

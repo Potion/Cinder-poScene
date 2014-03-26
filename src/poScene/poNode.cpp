@@ -334,6 +334,7 @@ namespace po {
     
     #pragma mark Mouse Events
     
+    
     //Global Events
     void Node::notifyGlobal(po::MouseEvent &event) {
         #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
@@ -405,7 +406,13 @@ namespace po {
     //For the given event, notify everyone that we have as a subscriber
     void Node::notifyCallbacks(po::MouseEvent &event)
     {
+        
         event.source = shared_from_this();
+        
+        if(event.getType() == po::MouseEvent::DOWN_INSIDE) {
+            signalMouseDownInside(event);
+            return;
+        }
         
         //Iterate through all callbacks
         for(EventCallback callback : mouseEventCallbacks[event.getType()])
