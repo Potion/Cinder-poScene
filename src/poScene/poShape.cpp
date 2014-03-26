@@ -98,7 +98,6 @@ namespace po {
     
     ci::Rectf Shape::getBounds()
     {
-#pragma message "Not sure if this is gonna work"
         ci::MatrixAffine2f m;
         m.rotate(ci::toRadians(getRotation()));
         return ciShape2d.transformCopy(m).calcPreciseBoundingBox();

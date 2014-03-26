@@ -6,6 +6,8 @@
 //
 //
 
+#include "cinder/CinderMath.h"
+
 #include "poNode.h"
 #include "poNodeContainer.h"
 #include "poScene.h"
@@ -22,21 +24,26 @@ namespace po {
     Node::Node()
     :   uid(OBJECT_UID++)
     ,   position(0.f,0.f)
-    ,   positionAnim(ci::Vec2f(0.f,0.f))
     ,   scale(1.f,1.f)
-    ,   scaleAnim(ci::Vec2f(1.f,1.f))
     ,   rotation(0)
+    ,   offset(0.f,0.f)
+    ,   alpha(1.f)
+    ,   positionAnim(ci::Vec2f(0.f,0.f))
+    ,   scaleAnim(ci::Vec2f(1.f,1.f))
     ,   rotationAnim(0)
+    ,   offsetAnim(ci::Vec2f(0.f,0.f))
+    ,   alphaAnim(1.f)
     ,   bUpdatePositionFromAnim(false)
     ,   bUpdateScaleFromAnim(false)
     ,   bUpdateRotationFromAnim(false)
+    ,   bUpdateOffsetFromAnim(false)
+    ,   bUpdateAlphaFromAnim(false)
     ,   bDrawBounds(false)
     ,   bVisible(true)
     ,   bInteractionEnabled(true)
     {
-        positionAnim.stop();
-        scaleAnim.stop();
-        rotationAnim.stop();
+        //Initialize our animations
+        initAttrAnimations();
     }
     
     Node::~Node() {
@@ -50,16 +57,8 @@ namespace po {
     
     void Node::updateTree()
     {
-        //See if a tween is in progress, if so we want to use that value
-        //setting position calls stop() so that will override this
-        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
-        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim    = true;
-        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
-        
-        //Update Anims if we care
-        if(bUpdatePositionFromAnim)  position    = positionAnim;
-        if(bUpdateScaleFromAnim)     scale       = scaleAnim;
-        if(bUpdateRotationFromAnim)  rotation    = rotationAnim;
+        //Update our tween tie-in animations
+        updateAttributeAnimations();
         
         //Call our update function
         update();
@@ -108,13 +107,91 @@ namespace po {
         scale.set(x, y);
     }
     
-    void Node::setRotation(float rotation) {
+    void Node::setRotation(float rotation)
+    {
         rotationAnim.stop();
         bUpdateRotationFromAnim = false;
         this->rotation = rotation;
     }
     
+    void Node::setAlpha(float alpha)
+    {
+        alphaAnim.stop();
+        bUpdateAlphaFromAnim = false;
+        this->alpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
+    }
     
+    void Node::setOffset(float x, float y) {
+        offsetAnim.stop();
+        bUpdateOffsetFromAnim = false;
+        offset.set(x, y);
+        
+        //If we are manually setting the offset, we can't have alignment
+        setAlignment(Alignment::NONE);
+    }
+    
+    void Node::initAttrAnimations()
+    {
+        //Initialize the isComplete() method of each tween, a bit annoying
+        positionAnim.stop();
+        scaleAnim.stop();
+        rotationAnim.stop();
+        offsetAnim.stop();
+        alphaAnim.stop();
+    }
+    
+    void Node::updateAttributeAnimations()
+    {
+        //See if a tween is in progress, if so we want to use that value
+        //Setting an attribute calls stop(), so that will override this
+        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
+        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim    = true;
+        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
+        if(!alphaAnim.isComplete())     bUpdateAlphaFromAnim    = true;
+        if(!offsetAnim.isComplete())    bUpdateOffsetFromAnim   = true;
+        
+        //Update Anims if we care
+        if(bUpdatePositionFromAnim)     position    = positionAnim;
+        if(bUpdateScaleFromAnim)        scale       = scaleAnim;
+        if(bUpdateRotationFromAnim)     rotation    = rotationAnim;
+        if(bUpdateAlphaFromAnim)        alpha       = alphaAnim;
+        if(bUpdateOffsetFromAnim)       offset      = offsetAnim;
+    }
+    
+    //------------------------------------------------------
+    #pragma mark  - Alignment -
+    
+    void Node::setAlignment(po::Node::Alignment alignment)
+    {
+        this->alignment = alignment;
+        
+        if(alignment == Alignment::NONE) return;
+        
+        ci::Rectf bounds = getBounds();
+        
+        switch (alignment) {
+            case Alignment::TOP_LEFT:
+                offset.set(0,0); break;
+            case Alignment::TOP_CENTER:
+                offset.set(-bounds.getWidth()/2.f,0); break;
+            case Alignment::TOP_RIGHT:
+                offset.set(-bounds.getWidth(),0); break;
+            case Alignment::CENTER_LEFT:
+                offset.set(0,-bounds.getHeight()/2.f); break;
+            case Alignment::CENTER_CENTER:
+                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
+            case Alignment::CENTER_RIGHT:
+                offset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
+            case Alignment::BOTTOM_LEFT:
+                offset.set(0,-bounds.getHeight()); break;
+            case Alignment::BOTTOM_CENTER:
+                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
+            case Alignment::BOTTOM_RIGHT:
+                offset.set(-bounds.getWidth(),-bounds.getHeight()); break;
+        }
+        
+        offset = offset-bounds.getUpperLeft();
+    }
     
     
     //------------------------------------------------------
@@ -126,6 +203,8 @@ namespace po {
         ci::gl::translate(position);
         ci::gl::rotate(rotation);
         ci::gl::scale(scale);
+        
+        ci::gl::translate(offset);
     
         matrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
@@ -220,6 +299,7 @@ namespace po {
     ci::Rectf Node::getFrame()
     {
         ci::Rectf frame = getBounds();
+        frame += offset;
         frame.scale(scale);
         frame.offset(position);
         return frame;

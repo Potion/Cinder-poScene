@@ -32,7 +32,20 @@ namespace po {
         friend class Scene;
         friend class NodeContainer;
         friend class EventCenter;
+        
     public:
+        enum Alignment {
+            NONE,
+            TOP_LEFT,
+            TOP_CENTER,
+            TOP_RIGHT,
+            CENTER_LEFT,
+            CENTER_CENTER,
+            CENTER_RIGHT,
+            BOTTOM_LEFT,
+            BOTTOM_CENTER,
+            BOTTOM_RIGHT
+        };
         
         static NodeRef create();
         ~Node();
@@ -102,10 +115,24 @@ namespace po {
         //Rotation
         void setRotation(float rotation);
         float getRotation() { return rotation; };
-        ci::Anim<float>     rotationAnim;
+        ci::Anim<float> rotationAnim;
+        
+        //Alpha
+        void setAlpha(float alpha);
+        float getAlpha() { return alpha; };
+        ci::Anim<float> alphaAnim;
+        
+        //Offset
+        void setOffset(float x, float y);
+        void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
+        ci::Vec2f getOffset() { return offset; };
+        ci::Anim<ci::Vec2f> offsetAnim;
+        
+        //Alignment
+        void setAlignment(Alignment alignment);
+        Alignment getAlignment() { return alignment; };
         
         
-        float alpha;
         
         uint getDrawOrder() { return drawOrder; };
         uint getUID() { return uid; };
@@ -158,9 +185,22 @@ namespace po {
         ci::Vec2f position;
         ci::Vec2f scale;
         float     rotation;
+        ci::Vec2f offset;
+        
+        float alpha;
+        
+        //Anim update bools
+        void initAttrAnimations();
+        void updateAttributeAnimations();
+        
         bool bUpdatePositionFromAnim;
         bool bUpdateScaleFromAnim;
         bool bUpdateRotationFromAnim;
+        bool bUpdateOffsetFromAnim;
+        bool bUpdateAlphaFromAnim;
+        
+        //Alignment
+        Alignment alignment;
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();

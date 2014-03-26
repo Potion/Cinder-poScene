@@ -37,8 +37,9 @@ void TestNode::setup()
 			float xPos = j * (SIZE + SPACING);
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
+            r->setAlignment(Alignment::CENTER_CENTER);
             
-            subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE);
+            subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE, r);
             addChild(r);
         }
     }
@@ -72,15 +73,16 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
-    std::cout << "Down Inside!" << std::endl;
-    return;
+//    std::cout << "Down Inside!" << std::endl;
+//    return;
     
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
     
     if(!thisRect->rotationAnim.isComplete()) {
         thisRect->setRotation(thisRect->getRotation());
         squareFinishedTweening(thisRect);
-    } else {
+    }
+    else {
         thisRect->fillColor.set(255,0,0);
         
         if (round(thisRect->getRotation()) == 360.f) {
