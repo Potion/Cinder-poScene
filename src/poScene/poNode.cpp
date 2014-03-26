@@ -98,6 +98,7 @@ namespace po {
         positionAnim.stop();
         bUpdatePositionFromAnim = false;
         position.set(x, y);
+        positionAnim.ptr()->set(position);
     }
     
     void Node::setScale(float x, float y)
@@ -105,6 +106,7 @@ namespace po {
         scaleAnim.stop();
         bUpdateScaleFromAnim = false;
         scale.set(x, y);
+        scaleAnim.ptr()->set(scale);
     }
     
     void Node::setRotation(float rotation)
@@ -112,6 +114,7 @@ namespace po {
         rotationAnim.stop();
         bUpdateRotationFromAnim = false;
         this->rotation = rotation;
+        rotationAnim = rotation;
     }
     
     void Node::setAlpha(float alpha)
@@ -119,12 +122,14 @@ namespace po {
         alphaAnim.stop();
         bUpdateAlphaFromAnim = false;
         this->alpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
+        alphaAnim = this->alpha;
     }
     
     void Node::setOffset(float x, float y) {
         offsetAnim.stop();
         bUpdateOffsetFromAnim = false;
         offset.set(x, y);
+        offsetAnim.ptr()->set(offset);
         
         //If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);

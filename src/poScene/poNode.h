@@ -7,6 +7,8 @@
 //
 #pragma once
 
+#include "boost/signals2.hpp"
+
 #include "cinder/Cinder.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
@@ -25,6 +27,9 @@ namespace po {
     //Create NodeRef typedef
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
+    
+    //Signals
+    typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
