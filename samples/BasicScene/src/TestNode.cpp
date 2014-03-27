@@ -41,7 +41,8 @@ void TestNode::setup()
             
             subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE, r);
             r->connectMouseDownInside(this);
-            r->connectMouseDownInside(&TestNode::mouseMoveInside, this);
+//            r->connectMouseDownInside(this);
+            //r->connectMouseDownInside(&TestNode::mouseMoveInside, this);
             addChild(r);
         }
     }
@@ -76,10 +77,13 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
+    
     std::cout << "Down Inside!" << std::endl;
 //    return;
     
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
+    
+    thisRect->disconnectMouseDownInside(this);
     thisRect->fillColor.set(255,0,0);
     
     if(!thisRect->rotationAnim.isComplete()) {
@@ -97,6 +101,8 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
         ci::app::timeline().apply(&thisRect->rotationAnim, 360.f, animationTime)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
+    
+    thisRect->disconnectMouseDownInside(this);
     
     //event.setShouldPropagate(true);
 }

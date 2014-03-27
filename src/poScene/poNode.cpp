@@ -333,7 +333,35 @@ namespace po {
     
     
     #pragma mark Mouse Events
+    void Node::trackMouseConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
+        mouseConnections[type][listener] = std::unique_ptr<scoped_connection>(connection);
+    };
     
+    void Node::disconnectMouseConnection(MouseEvent::Type type, Node *listener) {
+        mouseConnections[type][listener]->disconnect();
+    }
+    
+    MouseEventSignal& Node::getSignalMouseDownInside()
+    {
+        return signalMouseDownInside;
+    };
+    
+    void Node::connectMouseDownInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
+        trackMouseConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseDownInside(Node* listener)
+    {
+        disconnectMouseConnection(po::MouseEvent::Type::DOWN_INSIDE, listener);
+    };
+    
+    void Node::emitMouseDownInside(po::MouseEvent &event)
+    {
+        signalMouseDownInside(event);
+    };
+
     
     //Global Events
     void Node::notifyGlobal(po::MouseEvent &event) {

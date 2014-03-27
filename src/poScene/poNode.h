@@ -149,16 +149,15 @@ namespace po {
         //EVENTS
         
         //Signals
-        MouseEventSignal& getSignalMouseDownInside() { return signalMouseDownInside; };
         
-        //signalMouseDownInside.connect(std::bind(&Node::mouseDownInside, node, std::_1 ));
-        
-        template<typename T, typename Y>
-        void connectMouseDownInside( T fn, Y *inst ) {
-            connections.push_back(std::unique_ptr<scoped_connection>(new scoped_connection(signalMouseDownInside.connect( std::bind( fn, inst, std::_1 )))));
-        };
-        void connectMouseDownInside(Node* node) { connectMouseDownInside(&Node::mouseDownInside, node); }
+        //Mouse Down Inside
+        MouseEventSignal& getSignalMouseDownInside();
+        void connectMouseDownInside(Node* listener);
+        void disconnectMouseDownInside(Node* listener);
         void emitMouseDownInside(po::MouseEvent &event);
+        template<typename T, typename Y>
+        connection connectMouseDownInside( T fn, Y *inst ) { return signalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
+    
         
         //Override these methods to receive events
         //Global events, these fire for all Nodes
@@ -245,9 +244,12 @@ namespace po {
         uint uid;
         
         //NODE EVENTS
-        MouseEventSignal signalMouseDownInside, signalMoveInside, signalDragInside, signalMouseUpInside, signalMouseWheel;
-        std::vector<std::unique_ptr<boost::signals2::scoped_connection> > connections;
+        //Mouse
+        MouseEventSignal signalMouseDownInside, signalMouseMoveInside, signalMouseDragInside, signalMouseUpInside;
         
+        void trackMouseConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection);
+        void disconnectMouseConnection(MouseEvent::Type type, Node *listener);
+        std::map<po::MouseEvent::Type, std::map<po::Node*, std::unique_ptr<scoped_connection> > > mouseConnections;
         
         //------------------
         //NODE EVENTS
