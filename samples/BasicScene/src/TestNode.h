@@ -31,8 +31,9 @@ public:
     void mouseMoveInside(po::MouseEvent &event);
     void mouseDragInside(po::MouseEvent &event);
     void mouseUpInside(po::MouseEvent &event);
+    
+    void myMouseHandler(po::MouseEvent &event);
 protected:
-    TestNode();
     
 private:
 	static const int NUM_ROWS;

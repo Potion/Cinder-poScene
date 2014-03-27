@@ -25,9 +25,11 @@ class BasicTestApp : public AppNative {
 
 void BasicTestApp::setup()
 {
+    //This
 //    scene = po::Scene::create();
 //    scene->setRootNode(TestNode::create());
     
+    //Or this
     scene = po::Scene::create(TestNode::create());
     
     mFont = Font( "Geneva", 18.0f );

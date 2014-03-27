@@ -423,7 +423,7 @@ namespace po {
     
     void Node::emitMouseUpInside(po::MouseEvent &event)
     {
-        signalMouseMoveInside(event);
+        signalMouseUpInside(event);
     };
 
     

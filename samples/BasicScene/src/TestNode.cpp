@@ -10,18 +10,15 @@
 #include "TestNode.h"
 
 const int TestNode::NUM_ROWS		= 100;
-const int TestNode::NUM_COLS		= 5;
+const int TestNode::NUM_COLS		= 10;
 const int TestNode::SIZE			= 70;
 const int TestNode::SPACING         = 10;
+
+
 TestNodeRef TestNode::create() {
     TestNodeRef t = TestNodeRef(new TestNode());
     t->setup();
     return t;
-}
-
-TestNode::TestNode()
-{
-    setInteractionEnabled(true);
 }
 
 void TestNode::setup()
@@ -32,19 +29,21 @@ void TestNode::setup()
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
             po::ShapeRef r = po::Shape::createRect(SIZE);
-            r->setInteractionEnabled(true);
+            //r->setInteractionEnabled(true);
             
             //Set Position in grid
 			float xPos = j * (SIZE + SPACING);
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
-            r->setAlignment(Alignment::CENTER_CENTER);
+            //r->setAlignment(Alignment::CENTER_CENTER);
             r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
-            r->connectMouseMoveInside(this);
-            r->connectMouseDragInside(this);
-            r->connectMouseUpInside(this);
+//            r->connectMouseMoveInside(this);
+//            r->connectMouseDragInside(this);
+//            r->connectMouseUpInside(this);
+            
+            //r->connectMouseDownInside(&TestNode::myMouseHandler, this);
             
             addChild(r);
         }
@@ -64,6 +63,11 @@ void TestNode::squareFinishedTweening(po::ShapeRef square) {
 }
 
 //Events
+void TestNode::myMouseHandler(po::MouseEvent &event)
+{
+    std::cout <<  "My Mouse Handler!!!" << std::endl;
+}
+
 void TestNode::mouseDown(po::MouseEvent& event)
 {
 //    std::cout << "Left down: " << event.isLeftDown() << std::endl;
@@ -104,15 +108,16 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     }
     
     //thisRect->disconnectMouseDownInside(this);
+    event.setShouldPropagate(true);
     
-    //event.setShouldPropagate(true);
+    //thisRect->emitMouseUpInside(event);
 }
 
 void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
 //    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
 //    thisRect->fillColor.set(0,0,255);
-//    std::cout << "Mouse move inside!" << std::endl;
+    std::cout << "Mouse move inside!" << std::endl;
 }
 
 void TestNode::mouseDragInside(po::MouseEvent& event)
