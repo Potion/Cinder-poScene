@@ -9,10 +9,10 @@
 
 #include "TestNode.h"
 
-const int TestNode::NUM_ROWS		= 3;
-const int TestNode::NUM_COLS		= 5;
-const int TestNode::SIZE			= 70;
-const int TestNode::SPACING         = 20;
+const int TestNode::NUM_ROWS		= 30;
+const int TestNode::NUM_COLS		= 50;
+const int TestNode::SIZE			= 10;
+const int TestNode::SPACING         = 155;
 
 TestNodeRef TestNode::create() {
     return TestNodeRef(new TestNode());
@@ -41,9 +41,9 @@ void TestNode::setup()
             r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
-            r->connectMouseMoveInside(this);
-            r->connectMouseDragInside(this);
-            r->connectMouseUpInside(this);
+//            r->connectMouseMoveInside(this);
+//            r->connectMouseDragInside(this);
+//            r->connectMouseUpInside(this);
             
             addChild(r);
         }

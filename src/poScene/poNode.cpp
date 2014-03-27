@@ -39,6 +39,8 @@ namespace po {
     ,   bUpdateOffsetFromAnim(false)
     ,   bUpdateAlphaFromAnim(false)
     ,   bDrawBounds(false)
+    ,   bBoundsDirty(true)
+    ,   bFrameDirty(true)
     ,   bVisible(true)
     ,   bInteractionEnabled(true)
     {
@@ -99,6 +101,7 @@ namespace po {
         bUpdatePositionFromAnim = false;
         position.set(x, y);
         positionAnim.ptr()->set(position);
+        bFrameDirty = true;
     }
     
     void Node::setScale(float x, float y)
@@ -107,6 +110,9 @@ namespace po {
         bUpdateScaleFromAnim = false;
         scale.set(x, y);
         scaleAnim.ptr()->set(scale);
+        
+        bFrameDirty     = true;
+        bBoundsDirty    = true;
     }
     
     void Node::setRotation(float rotation)
@@ -115,6 +121,9 @@ namespace po {
         bUpdateRotationFromAnim = false;
         this->rotation = rotation;
         rotationAnim = rotation;
+        
+        bFrameDirty     = true;
+        bBoundsDirty    = true;
     }
     
     void Node::setAlpha(float alpha)
@@ -130,6 +139,7 @@ namespace po {
         bUpdateOffsetFromAnim = false;
         offset.set(x, y);
         offsetAnim.ptr()->set(offset);
+        bFrameDirty = true;
         
         //If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
@@ -304,15 +314,18 @@ namespace po {
     
     ci::Rectf Node::getFrame()
     {
-        ci::Rectf frame = getBounds();
-        
-        ci::MatrixAffine2f m;
-        m.translate(position);
-        m.rotate(ci::toRadians(getRotation()));
-        m.scale(scale);
-        m.translate(offset);
-        
-        return frame.transformCopy(m);
+        if(bFrameDirty) {
+            ci::Rectf r = getBounds();
+            
+            ci::MatrixAffine2f m;
+            m.translate(position);
+            m.rotate(ci::toRadians(getRotation()));
+            m.scale(scale);
+            m.translate(offset);
+            
+            frame = r.transformCopy(m);
+            bFrameDirty = false;
+        }
         return frame;
     }
     

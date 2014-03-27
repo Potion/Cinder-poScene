@@ -98,6 +98,11 @@ namespace po {
     
     ci::Rectf Shape::getBounds()
     {
-        return ciShape2d.calcPreciseBoundingBox();
+        if(bBoundsDirty) {
+            bounds       = ciShape2d.calcPreciseBoundingBox();
+            bBoundsDirty = false;
+        }
+        
+        return bounds;
     }
 }

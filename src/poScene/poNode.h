@@ -221,6 +221,11 @@ namespace po {
         //Visibility
         bool bVisible;
         
+        //Bounds/Frame
+        ci::Rectf bounds;
+        ci::Rectf frame;
+        bool bBoundsDirty, bFrameDirty;
+        
         //Interaction
         bool bInteractionEnabled;
         
