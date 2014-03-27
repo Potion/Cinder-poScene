@@ -14,14 +14,18 @@ namespace po {
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
+    //BASE EVENT
     class Event {
     public:
         Event() : shouldPropagate(false) {};
-        void continuePropagation() { shouldPropagate = true; };
+        void setShouldPropagate(bool shouldPropagate) { this->shouldPropagate = shouldPropagate; };
+        bool getShouldPropagate() { return shouldPropagate; };
     private:
         bool shouldPropagate;
     };
 
+    
+    //MOUSE EVENTS
     class MouseEvent
     : public ci::app::MouseEvent
     , public po::Event
@@ -41,11 +45,11 @@ namespace po {
             WHEEL
         };
         
-        MouseEvent(Type type, ci::Vec2f windowPos);
+        MouseEvent(ci::app::MouseEvent event, Type type);
         
-        float getX();
-        float getY();
-        ci::Vec2f getPos();
+//        float getX();
+//        float getY();
+//        ci::Vec2f getPos();
         
         float getSceneX();
         float getSceneY();
@@ -62,6 +66,23 @@ namespace po {
         std::weak_ptr<Node> source;
         Type type;
         ci::Vec2f pos, scenePos, windowPos;
+    };
+    
+    
+    
+    //KEY EVENTS
+    class KeyEvent
+    : public ci::app::KeyEvent
+    , public po::Event
+    {
+        friend class EventCenter;
+    public:
+        enum Type {
+            DOWN,
+            UP
+        };
+        
+        KeyEvent(Type type);
     };
 }
 

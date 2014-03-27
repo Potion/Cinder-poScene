@@ -1,6 +1,7 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
+#include "cinder/Utilities.h";
 
 #include "poScene.h"
 #include "TestNode.h"
@@ -21,6 +22,8 @@ class BasicTestApp : public AppNative {
     
     po::SceneRef scene, scene2;
     po::ShapeRef r,e;
+    
+    ci::Font mFont;
 };
 
 void BasicTestApp::setup()
@@ -32,6 +35,8 @@ void BasicTestApp::setup()
     scene->getRootNode()->addChild(testNode);
     
     scene->getRootNode()->setDrawBoundsEnabled(true);
+    
+    mFont = Font( "Geneva", 18.0f );
 }
 
 void BasicTestApp::mouseDown( MouseEvent event )
@@ -49,6 +54,9 @@ void BasicTestApp::draw()
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
     scene->draw();
+    
+    
+    gl::drawString( "Framerate: " + ci::toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
 }
 
 void BasicTestApp::mouseDrag( MouseEvent event )

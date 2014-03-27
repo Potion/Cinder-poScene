@@ -1,4 +1,6 @@
-Cinder-poScene
-==============
+po::Scene
+======================================
+###A Cinder scene graph from Potion
 
-Potion's SceneGraph CinderBlock.
+Work in progress, nothing much to see here yet :)
+:poop: 

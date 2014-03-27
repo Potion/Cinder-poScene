@@ -40,7 +40,7 @@ namespace po {
         virtual ci::Rectf getBounds();
         
         //Hit testing
-        bool pointInside(ci::Vec2f point);
+        bool pointInside(const ci::Vec2f &point);
         
         //------------------
         //ATTRIBUTES

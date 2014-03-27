@@ -76,7 +76,7 @@ namespace po {
     
     Shape::~Shape() {}
     
-    bool Shape::pointInside(ci::Vec2f point)
+    bool Shape::pointInside(const ci::Vec2f &point)
     {
         return ciShape2d.contains(globalToLocal(point));
     }
@@ -98,9 +98,11 @@ namespace po {
     
     ci::Rectf Shape::getBounds()
     {
-#pragma message "Not sure if this is gonna work"
-        ci::MatrixAffine2f m;
-        m.rotate(ci::toRadians(getRotation()));
-        return ciShape2d.transformCopy(m).calcPreciseBoundingBox();
+        if(bBoundsDirty) {
+            bounds       = ciShape2d.calcPreciseBoundingBox();
+            bBoundsDirty = false;
+        }
+        
+        return bounds;
     }
 }

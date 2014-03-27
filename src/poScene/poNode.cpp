@@ -6,6 +6,8 @@
 //
 //
 
+#include "cinder/CinderMath.h"
+
 #include "poNode.h"
 #include "poNodeContainer.h"
 #include "poScene.h"
@@ -22,21 +24,28 @@ namespace po {
     Node::Node()
     :   uid(OBJECT_UID++)
     ,   position(0.f,0.f)
-    ,   positionAnim(ci::Vec2f(0.f,0.f))
     ,   scale(1.f,1.f)
-    ,   scaleAnim(ci::Vec2f(1.f,1.f))
     ,   rotation(0)
+    ,   offset(0.f,0.f)
+    ,   alpha(1.f)
+    ,   positionAnim(ci::Vec2f(0.f,0.f))
+    ,   scaleAnim(ci::Vec2f(1.f,1.f))
     ,   rotationAnim(0)
+    ,   offsetAnim(ci::Vec2f(0.f,0.f))
+    ,   alphaAnim(1.f)
     ,   bUpdatePositionFromAnim(false)
     ,   bUpdateScaleFromAnim(false)
     ,   bUpdateRotationFromAnim(false)
+    ,   bUpdateOffsetFromAnim(false)
+    ,   bUpdateAlphaFromAnim(false)
     ,   bDrawBounds(false)
+    ,   bBoundsDirty(true)
+    ,   bFrameDirty(true)
     ,   bVisible(true)
     ,   bInteractionEnabled(true)
     {
-        positionAnim.stop();
-        scaleAnim.stop();
-        rotationAnim.stop();
+        //Initialize our animations
+        initAttrAnimations();
     }
     
     Node::~Node() {
@@ -50,16 +59,8 @@ namespace po {
     
     void Node::updateTree()
     {
-        //See if a tween is in progress, if so we want to use that value
-        //setting position calls stop() so that will override this
-        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
-        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim = true;
-        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
-        
-        //Update Anims if we care
-        if(bUpdatePositionFromAnim)  position    = positionAnim;
-        if(bUpdateScaleFromAnim)     scale       = scaleAnim;
-        if(bUpdateRotationFromAnim)  rotation    = rotationAnim;
+        //Update our tween tie-in animations
+        updateAttributeAnimations();
         
         //Call our update function
         update();
@@ -99,6 +100,8 @@ namespace po {
         positionAnim.stop();
         bUpdatePositionFromAnim = false;
         position.set(x, y);
+        positionAnim.ptr()->set(position);
+        bFrameDirty = true;
     }
     
     void Node::setScale(float x, float y)
@@ -106,15 +109,104 @@ namespace po {
         scaleAnim.stop();
         bUpdateScaleFromAnim = false;
         scale.set(x, y);
+        scaleAnim.ptr()->set(scale);
+        
+        bFrameDirty     = true;
+        bBoundsDirty    = true;
     }
     
-    void Node::setRotation(float rotation) {
+    void Node::setRotation(float rotation)
+    {
         rotationAnim.stop();
         bUpdateRotationFromAnim = false;
         this->rotation = rotation;
+        rotationAnim = rotation;
+        
+        bFrameDirty     = true;
+        bBoundsDirty    = true;
     }
     
+    void Node::setAlpha(float alpha)
+    {
+        alphaAnim.stop();
+        bUpdateAlphaFromAnim = false;
+        this->alpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
+        alphaAnim = this->alpha;
+    }
     
+    void Node::setOffset(float x, float y) {
+        offsetAnim.stop();
+        bUpdateOffsetFromAnim = false;
+        offset.set(x, y);
+        offsetAnim.ptr()->set(offset);
+        bFrameDirty = true;
+        
+        //If we are manually setting the offset, we can't have alignment
+        setAlignment(Alignment::NONE);
+    }
+    
+    void Node::initAttrAnimations()
+    {
+        //Initialize the isComplete() method of each tween, a bit annoying
+        positionAnim.stop();
+        scaleAnim.stop();
+        rotationAnim.stop();
+        offsetAnim.stop();
+        alphaAnim.stop();
+    }
+    
+    void Node::updateAttributeAnimations()
+    {
+        //See if a tween is in progress, if so we want to use that value
+        //Setting an attribute calls stop(), so that will override this
+        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
+        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim    = true;
+        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
+        if(!alphaAnim.isComplete())     bUpdateAlphaFromAnim    = true;
+        if(!offsetAnim.isComplete())    bUpdateOffsetFromAnim   = true;
+        
+        //Update Anims if we care
+        if(bUpdatePositionFromAnim)     position    = positionAnim;
+        if(bUpdateScaleFromAnim)        scale       = scaleAnim;
+        if(bUpdateRotationFromAnim)     rotation    = rotationAnim;
+        if(bUpdateAlphaFromAnim)        alpha       = alphaAnim;
+        if(bUpdateOffsetFromAnim)       offset      = offsetAnim;
+    }
+    
+    //------------------------------------------------------
+    #pragma mark  - Alignment -
+    
+    void Node::setAlignment(po::Node::Alignment alignment)
+    {
+        this->alignment = alignment;
+        
+        if(alignment == Alignment::NONE) return;
+        
+        ci::Rectf bounds = getBounds();
+        
+        switch (alignment) {
+            case Alignment::TOP_LEFT:
+                offset.set(0,0); break;
+            case Alignment::TOP_CENTER:
+                offset.set(-bounds.getWidth()/2.f,0); break;
+            case Alignment::TOP_RIGHT:
+                offset.set(-bounds.getWidth(),0); break;
+            case Alignment::CENTER_LEFT:
+                offset.set(0,-bounds.getHeight()/2.f); break;
+            case Alignment::CENTER_CENTER:
+                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
+            case Alignment::CENTER_RIGHT:
+                offset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
+            case Alignment::BOTTOM_LEFT:
+                offset.set(0,-bounds.getHeight()); break;
+            case Alignment::BOTTOM_CENTER:
+                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
+            case Alignment::BOTTOM_RIGHT:
+                offset.set(-bounds.getWidth(),-bounds.getHeight()); break;
+        }
+        
+        offset = offset-bounds.getUpperLeft();
+    }
     
     
     //------------------------------------------------------
@@ -126,6 +218,8 @@ namespace po {
         ci::gl::translate(position);
         ci::gl::rotate(rotation);
         ci::gl::scale(scale);
+        
+        ci::gl::translate(offset);
     
         matrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
@@ -140,9 +234,9 @@ namespace po {
         return matrix.globalToLocal(globalPoint);
     }
     
-    bool Node::pointInside(ci::Vec2f point)
+    bool Node::pointInside(const ci::Vec2f &point)
     {
-        return true;
+        return false;
     }
     
     
@@ -212,6 +306,7 @@ namespace po {
         
         //Draw origin
         ci::gl::pushMatrices();
+        ci::gl::translate(-offset);
         ci::gl::scale(ci::Vec2f(1.f,1.f)/ scale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popMatrices();
@@ -219,9 +314,18 @@ namespace po {
     
     ci::Rectf Node::getFrame()
     {
-        ci::Rectf frame = getBounds();
-        frame.scale(scale);
-        frame.offset(position);
+        if(bFrameDirty) {
+            ci::Rectf r = getBounds();
+            
+            ci::MatrixAffine2f m;
+            m.translate(position);
+            m.rotate(ci::toRadians(getRotation()));
+            m.scale(scale);
+            m.translate(offset);
+            
+            frame = r.transformCopy(m);
+            bFrameDirty = false;
+        }
         return frame;
     }
     
@@ -234,24 +338,98 @@ namespace po {
     #pragma mark General
     void Node::removeAllEvents() {}
     
-    //Check any list of event callbacks to see if there is already a callback for a given listener
-    bool Node::callbackAlreadyExistsForListener(NodeRef listener, std::vector<EventCallback> &callbackList)
-    {
-        for(EventCallback callback : callbackList) {
-            if(callback.listener.lock() == listener) {
-                return true;
-            }
-        }
-               
-        return false;
-    }
-    
     
     #pragma mark Mouse Events
     
+    //Signals
+    void Node::trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
+        mouseConnections[type][listener] = std::unique_ptr<scoped_connection>(connection);
+    };
+    
+    void Node::disconnect(MouseEvent::Type type, Node *listener) {
+        mouseConnections[type][listener]->disconnect();
+    }
+    
+    
+    #pragma mark -
+    //Mouse Down Inside
+    void Node::connectMouseDownInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseDownInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::DOWN_INSIDE, listener);
+    };
+    
+    void Node::emitMouseDownInside(po::MouseEvent &event)
+    {
+        signalMouseDownInside(event);
+    };
+    
+    
+    #pragma mark -
+    //Mouse Move Inside
+    void Node::connectMouseMoveInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseMoveInside.connect(std::bind( &Node::mouseMoveInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::MOVE_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseMoveInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::MOVE_INSIDE, listener);
+    };
+    
+    void Node::emitMouseMoveInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
+    
+    
+    #pragma mark -
+    //Mouse Drag Inside
+    void Node::connectMouseDragInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseDragInside.connect(std::bind( &Node::mouseDragInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::DRAG_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseDragInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::DRAG_INSIDE, listener);
+    };
+    
+    void Node::emitMouseDragInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
+    
+    
+    #pragma mark -
+    //Mouse Up Inside
+    void Node::connectMouseUpInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseUpInside.connect(std::bind( &Node::mouseUpInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::UP_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseUpInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::UP_INSIDE, listener);
+    };
+    
+    void Node::emitMouseUpInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
+
+    
+    #pragma mark -
     //Global Events
-    void Node::notifyGlobal(po::MouseEvent event) {
-        #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
+    void Node::notifyGlobal(po::MouseEvent &event) {
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
                 mouseDown(event);
@@ -275,81 +453,48 @@ namespace po {
         }
     }
     
-    //Callbacks
-    void Node::addEvent(po::MouseEvent::Type type, NodeRef source)
-    {
-        //Subscribe to the source
-        source->registerEventCallback(type, shared_from_this());
-        #pragma message "Now we need to track our subscriptions on this end for removing events"
-        //Track this Subscription
-    }
-    
-    void Node::removeEvent(po::MouseEvent::Type type, NodeRef source) {}
-    
-    //Sets this event
-    void Node::registerEventCallback(po::MouseEvent::Type type, NodeRef listener)
-    {
-        //Check to see if we already have the callback
-        if(callbackAlreadyExistsForListener(listener, mouseEventCallbacks[type]))
-            return;
-        
-        //Otherwise Insert this callback
-        EventCallback callback;
-        callback.listener = listener;
-        mouseEventCallbacks[type].push_back(callback);
-    }
+    #pragma mark -
+    //SceneGraph Specific events
     
     //See if we care about an event
-    bool Node::hasCallbacks(po::MouseEvent::Type type)
+    bool Node::hasConnection(po::MouseEvent::Type type)
     {
-        if(type == po::MouseEvent::Type::DOWN_INSIDE) {
-            "Yea!";
+        if(!mouseConnections[type].size()) {
+           return false;
         }
-        return mouseEventCallbacks[type].size();
+        else {
+            std::map<po::Node*, std::unique_ptr<scoped_connection> >::iterator iter = mouseConnections[type].begin();
+            for(; iter!=mouseConnections[type].end(); ++iter) {
+                if(iter->second.get()->connected()) return true;
+            }
+        }
+        
+        return false;
     }
     
     //For the given event, notify everyone that we have as a subscriber
-    po::MouseEvent Node::notifyCallbacks(po::MouseEvent event)
+    void Node::emitEvent(po::MouseEvent &event)
     {
+        //Set the source
         event.source = shared_from_this();
         
-        //Iterate through all callbacks
-        for(EventCallback callback : mouseEventCallbacks[event.getType()])
-        {
-            //Notify the callback
-            NodeRef listener = callback.listener.lock();
-            
-            #pragma message "Can we do this any better, maybe using templates?"
-            if(listener && !callback.markedForRemoval) {
-                switch (event.getType()) {
-                    case po::MouseEvent::Type::DOWN_INSIDE:
-                        listener->mouseDownInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::MOVE_INSIDE:
-                        listener->mouseMoveInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::DRAG_INSIDE:
-                        listener->mouseDragInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::UP_INSIDE:
-                        listener->mouseUpInside(event);
-                        break;
-                }
-            }
+        //Emit the Event
+        switch (event.getType()) {
+            case po::MouseEvent::Type::DOWN_INSIDE:
+                signalMouseDownInside(event);
+                break;
+                
+            case po::MouseEvent::Type::MOVE_INSIDE:
+                signalMouseMoveInside(event);
+                break;
+                
+            case po::MouseEvent::Type::DRAG_INSIDE:
+                signalMouseDragInside(event);
+                break;
+                
+            case po::MouseEvent::Type::UP_INSIDE:
+                signalMouseUpInside(event);
+                break;
         }
-        
-        //Cleanup our callbacks, checking for deleted node refs or callbacks that have been markedForRemoval
-        std::vector<EventCallback>::iterator iter = mouseEventCallbacks[event.getType()].begin();
-        for(; iter != mouseEventCallbacks[event.getType()].end(); ++iter)
-        {
-            if(!(*iter).listener.lock() || (*iter).markedForRemoval) {
-                iter = mouseEventCallbacks[event.getType()].erase(iter);
-            }
-        }
-        
-        return event;
     }
 }

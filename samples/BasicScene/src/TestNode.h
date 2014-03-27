@@ -23,12 +23,14 @@ public:
     void setup();
     void draw();
     
-    void mouseDown(po::MouseEvent event);
-    void mouseMove(po::MouseEvent event);
-    void mouseUp(po::MouseEvent event);
-    void mouseDownInside(po::MouseEvent event);
-    void mouseMoveInside(po::MouseEvent event);
-    void mouseUpInside(po::MouseEvent event);
+    void mouseDown(po::MouseEvent &event);
+    void mouseMove(po::MouseEvent &event);
+    void mouseDrag(po::MouseEvent &event);
+    void mouseUp(po::MouseEvent &event);
+    void mouseDownInside(po::MouseEvent &event);
+    void mouseMoveInside(po::MouseEvent &event);
+    void mouseDragInside(po::MouseEvent &event);
+    void mouseUpInside(po::MouseEvent &event);
 protected:
     TestNode();
     

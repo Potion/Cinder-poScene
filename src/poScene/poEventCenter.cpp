@@ -35,15 +35,16 @@ namespace po {
     }
     
     //Process all the event queues for this scene
-    void EventCenter::processEvents(SceneRef scene)
+    void EventCenter::processEvents(std::vector<NodeRef> nodes)
     {
-        std::sort(scene->allChildren.begin(), scene->allChildren.end(), sortByDrawOrderFunc);
-        processMouseEvents(scene);
+        std::sort(nodes.begin(), nodes.end(), sortByDrawOrderFunc);
+        
+        processMouseEvents(nodes);
     }
     
     
     #pragma mark - Mouse Events -
-    void EventCenter::processMouseEvents(SceneRef scene)
+    void EventCenter::processMouseEvents(std::vector<NodeRef> &nodes)
     {
         //Go through the queue
         for(auto& queue : mouseEventQueues) {
@@ -51,11 +52,11 @@ namespace po {
             po::MouseEvent::Type type = (po::MouseEvent::Type)queue.first;
             
             //Go through all the ci::MouseEvents for this type
-            for(ci::app::MouseEvent ciEvent : queue.second) {
+            for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(type, ciEvent.getPos());
-                notifyAllNodes(scene, poEvent);
-                notifyCallbacks(scene,poEvent);
+                po::MouseEvent poEvent(ciEvent, type);
+                notifyAllNodes(nodes,   poEvent);
+                notifyCallbacks(nodes,  poEvent);
             }
             
             //Clear out the events
@@ -64,15 +65,20 @@ namespace po {
     }
     
     //Dispatch to the appropriate mouse event function for each node in the scene
-    void EventCenter::notifyAllNodes(SceneRef scene, po::MouseEvent event) {
-        for(NodeRef node : scene->allChildren) {
-            if(!node->isInteractionEnabled()) continue;
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event) {
+        for(NodeRef &node : nodes) {
+            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            
+            //Notify the node
+            event.setShouldPropagate(true);
             node->notifyGlobal(event);
         }
     }
     
+    #pragma message "I def think this could be done in a better way, too much code"
     //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(SceneRef scene, po::MouseEvent event)
+    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event)
     {
         switch (event.type) {
             case MouseEvent::Type::DOWN:
@@ -83,27 +89,28 @@ namespace po {
                 event.type = MouseEvent::Type::MOVE_INSIDE;
                 break;
                 
+            case MouseEvent::Type::DRAG:
+                event.type = MouseEvent::Type::DRAG_INSIDE;
+                break;
+                
             case MouseEvent::Type::UP:
                 event.type = MouseEvent::Type::UP_INSIDE;
                 break;
-                
-            default:
-                break;
         }
         
-        for(NodeRef node : scene->allChildren) {
-            //If the node is registered for this callback and it qualifies, send it off
-            bool shouldNotify = node->isInteractionEnabled()         &&
-                                node->hasCallbacks(event.getType())   &&
-                                node->pointInside(event.getWindowPos());
-            if(shouldNotify)
-            {
-                node->notifyCallbacks(event);
-                #pragma message "This is where we would check for propagation"
-                return;
+        for(NodeRef &node : nodes) {
+            if(node->hasScene() &&
+               node->isInteractionEnabled() &&
+               node->hasConnection(event.getType()) &&
+               node->pointInside(event.getWindowPos())
+            ) {
+                node->emitEvent(event);
+                if(event.getShouldPropagate()) {
+                    event.setShouldPropagate(false);
+                } else {
+                    return;
+                }
             }
-               
-
         }
     }
     

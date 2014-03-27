@@ -33,7 +33,8 @@ namespace po {
     
     void Scene::update()
     {
-        eventCenter->processEvents(shared_from_this());
+        //Send a copy of all over our children to be processed
+        eventCenter->processEvents(allChildren);
         getRootNode()->updateTree();
     }
     
