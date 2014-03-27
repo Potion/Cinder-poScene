@@ -44,8 +44,6 @@ void TestNode::setup()
             r->connectMouseDragInside(this);
             r->connectMouseUpInside(this);
             
-//            r->connectMouseDownInside(this);
-            //r->connectMouseDownInside(&TestNode::mouseMoveInside, this);
             addChild(r);
         }
     }

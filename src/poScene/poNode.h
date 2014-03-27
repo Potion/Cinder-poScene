@@ -106,7 +106,7 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
-        std::string         name;
+        std::string name;
         
         //Position
         void setPosition(float x, float y);
@@ -146,9 +146,8 @@ namespace po {
         uint getUID() { return uid; };
         
         //------------------
-        //EVENTS
-        
-        //Signals
+        //SIGNALS
+        #pragma mark - Signals -
         
         //Mouse Down Inside
         template<typename T, typename Y>
@@ -159,6 +158,7 @@ namespace po {
         MouseEventSignal& getSignalMouseDownInside() { return signalMouseDownInside; };
         
         //Mouse Move Inside
+        #pragma mark -
         template<typename T, typename Y>
         connection connectMouseMoveInside( T fn, Y *inst ) { return signalMouseMoveInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseMoveInside(Node* listener);
@@ -167,6 +167,7 @@ namespace po {
         MouseEventSignal& getSignalMouseMoveInside() { return signalMouseMoveInside; };
         
         //Mouse Drag Inside
+        #pragma mark -
         template<typename T, typename Y>
         connection connectMouseDragInside( T fn, Y *inst ) { return signalMouseDragInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseDragInside(Node* listener);
@@ -175,6 +176,7 @@ namespace po {
         MouseEventSignal& getSignalMouseDragInside() { return signalMouseDragInside; };
         
         //Mouse Up Inside
+        #pragma mark -
         template<typename T, typename Y>
         connection connectMouseUpInside( T fn, Y *inst ) { return signalMouseUpInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseUpInside(Node* listener);
@@ -182,6 +184,9 @@ namespace po {
         void emitMouseUpInside(po::MouseEvent &event);
         MouseEventSignal& getSignalMouseUpInside() { return signalMouseUpInside; };
     
+        //------------------
+        //SIGNALS
+        #pragma mark Events
         
         //Override these methods to receive events
         //Global events, these fire for all Nodes
@@ -192,6 +197,7 @@ namespace po {
         virtual void mouseWheel( po::MouseEvent &event)      {};
         
         //These are po::Scene events, you need to subscribe to them
+        #pragma mark -
         virtual void mouseDownInside(po::MouseEvent &event)  {};
         virtual void mouseMoveInside(po::MouseEvent &event)  {};
         virtual void mouseDragInside(po::MouseEvent &event)  {};
@@ -201,6 +207,7 @@ namespace po {
         virtual void mouseUpInside(po::MouseEvent &event)    {};
 
     protected:
+        #pragma mark -
         Node();
         
         void setParent(NodeContainerRef node);
@@ -267,8 +274,11 @@ namespace po {
         uint drawOrder;
         uint uid;
         
-        //NODE EVENTS
-        //Mouse
+        
+        #pragma mark - Events -
+        //EVENTS
+        
+        //Mouse Events
         //Global events (just send route it to this)
         virtual void notifyGlobal(po::MouseEvent &event);
         
@@ -281,11 +291,6 @@ namespace po {
         
         bool hasConnection(po::MouseEvent::Type type);
         virtual void emitEvent(po::MouseEvent &event);
-        
-
-        
-        
-        
         
     };
 }
