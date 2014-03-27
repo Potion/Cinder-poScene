@@ -314,7 +314,7 @@ namespace po {
     
     ci::Rectf Node::getFrame()
     {
-        if(bFrameDirty) {
+//        if(bFrameDirty) {
             ci::Rectf r = getBounds();
             
             ci::MatrixAffine2f m;
@@ -325,7 +325,7 @@ namespace po {
             
             frame = r.transformCopy(m);
             bFrameDirty = false;
-        }
+//        }
         return frame;
     }
     

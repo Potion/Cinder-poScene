@@ -27,18 +27,18 @@ namespace po {
         ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
     }
     
-    
-    //------------------------------------------------------------------------
-    //Sort nodes to be top down
-    bool sortByDrawOrderFunc(NodeRef &a, NodeRef &b) {
-        return a->getDrawOrder() > b->getDrawOrder();
-    }
-    
     //Process all the event queues for this scene
-    void EventCenter::processEvents(std::vector<NodeRef> nodes)
+    void EventCenter::processEvents(std::vector<NodeRef> &nodes)
     {
-        std::sort(nodes.begin(), nodes.end(), sortByDrawOrderFunc);
+        //Sort nodes to be top down
+        std::sort(nodes.begin(), nodes.end(),
+                  [&nodes] (const NodeRef &a, const NodeRef &b)
+                  {
+                      return a->getDrawOrder() > b->getDrawOrder();
+                  }
+        );
         
+        //Process them
         processMouseEvents(nodes);
     }
     

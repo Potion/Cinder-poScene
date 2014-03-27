@@ -30,16 +30,18 @@ namespace po {
         
     public:
         static SceneRef create();
+        static SceneRef create(NodeContainerRef rootNode);
         ~Scene();
         
         virtual void update();
         virtual void draw();
         
         //Root Node
-        NodeContainerRef getRootNode();
+        NodeContainerRef getRootNode() { return rootNode; };
+        void setRootNode(NodeContainerRef node);
         
     protected:
-        Scene();
+        Scene(NodeContainerRef rootNode);
         
         //Root node of scene
         NodeContainerRef rootNode;
@@ -59,5 +61,17 @@ namespace po {
         uint drawOrderCounter;
         
         ci::CameraOrtho mCamera;
+        
+        //Queue to track/untrack children on the next frame
+        //This lets us pass our children to the event center by reference but not risk
+        //Modifying the vector during iteration (i.e. add/remove child during event callback)
+        struct TrackedNode {
+            TrackedNode(NodeRef &node, bool bTrack) : node(node), bTrack(bTrack) {};
+            NodeRef node;
+            bool bTrack;
+        };
+        
+        void processTrackingQueue();
+        std::vector<TrackedNode> trackingQueue;
     };
 }

@@ -14,26 +14,36 @@
 namespace po {
     SceneRef Scene::create()
     {
-        SceneRef scene(new Scene());
-        //#pragma message "Need to call this here, can't do it in the constructor with shared_from_this"
+        return create(po::NodeContainer::create());
+    }
+    
+    
+    SceneRef Scene::create(NodeContainerRef rootNode)
+    {
+        SceneRef scene(new Scene(rootNode));
         scene->getRootNode()->setScene(scene);
         return scene;
     }
     
-    Scene::Scene()
-    : rootNode(po::NodeContainer::create())
+    Scene::Scene(NodeContainerRef rootNode)
+    : rootNode(rootNode)
     , eventCenter(EventCenter::create())
     {
         mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
+    Scene::
+    
     Scene::~Scene()
     {
     }
     
+    #pragma mark -
+    
     void Scene::update()
     {
         //Send a copy of all over our children to be processed
+        processTrackingQueue();
         eventCenter->processEvents(allChildren);
         getRootNode()->updateTree();
     }
@@ -45,24 +55,44 @@ namespace po {
         getRootNode()->drawTree();
     }
     
+    #pragma mark -
+    
     uint Scene::getNextDrawOrder()
     {
         return drawOrderCounter++;
     }
     
-    NodeContainerRef Scene::getRootNode()
+    void Scene::setRootNode(NodeContainerRef node)
     {
-        return rootNode;
+        rootNode->removeScene();
+        
+        rootNode = node;
+        rootNode->setScene(shared_from_this());
     }
     
-    //Child node tracking
+    
+    
+    #pragma mark -
     void Scene::trackChildNode(NodeRef node) {
-        allChildren.push_back(node);
+        trackingQueue.push_back(TrackedNode(node, true));
     }
     
     void Scene::untrackChildNode(NodeRef node) {
-        std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
-        if(iter != allChildren.end())
-            allChildren.erase(iter);
+        trackingQueue.push_back(TrackedNode(node, false));
+    }
+    
+    void Scene::processTrackingQueue()
+    {
+        for (const TrackedNode &node : trackingQueue) {
+            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node.node);
+            
+            if(node.bTrack && iter == allChildren.end()) {
+                allChildren.push_back(node.node);
+            }
+            
+            else if(!node.bTrack && iter != allChildren.end()) {
+                allChildren.erase(iter);
+            }
+        }
     }
 }

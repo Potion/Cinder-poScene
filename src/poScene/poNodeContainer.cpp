@@ -88,12 +88,13 @@ namespace po {
         ci::gl::pushMatrices();
         setTransformation();
         
+        draw();
         for(NodeRef &childNode : children) {
             childNode->drawTree();
             
-//                #pragma message "For testing, should be removed"
-//            ci::gl::color(0,255,0);
-//            ci::gl::drawStrokedRect(childNode->getFrame());
+            #pragma message "For testing, should be removed"
+            ci::gl::color(0,255,0);
+            ci::gl::drawStrokedRect(childNode->getFrame());
         }
         
         if(bDrawBounds)

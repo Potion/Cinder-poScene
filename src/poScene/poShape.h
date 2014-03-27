@@ -8,6 +8,8 @@
 
 #pragma once
 #include "cinder/Shape2d.h"
+#include "cinder/gl/Vbo.h"
+
 #include "poNode.h"
 
 namespace po {
@@ -30,7 +32,12 @@ namespace po {
         virtual void draw();
         
         //Return the backing ci::Shape2d
-        ci::Shape2d getCiShape2d();
+        ci::Shape2d getCiShape2dCopy() { return ciShape2d; };
+        void setCiShape2d(ci::Shape2d shape);
+        
+        //Set precision for triangulation/rendering
+        int getPrecision() { return precision; }
+        void setPrecision(int precision) { this->precision = precision; }
         
         //Fill & Stroke
         void setFillEnabled(bool enabled)   { fillEnabled = enabled; };
@@ -41,6 +48,9 @@ namespace po {
         
         //Hit testing
         bool pointInside(const ci::Vec2f &point);
+        
+        //Caching to VBO
+        void render();
         
         //------------------
         //ATTRIBUTES
@@ -53,6 +63,9 @@ namespace po {
     private:
         virtual void addChild() {};
         virtual void removeChild() {};
+        
+        int precision;
+        ci::gl::VboMeshRef vboMesh;
         
         ci::Shape2d ciShape2d;
         bool fillEnabled, strokeEnabled;

@@ -9,13 +9,14 @@
 
 #include "TestNode.h"
 
-const int TestNode::NUM_ROWS		= 30;
-const int TestNode::NUM_COLS		= 50;
-const int TestNode::SIZE			= 10;
-const int TestNode::SPACING         = 155;
-
+const int TestNode::NUM_ROWS		= 100;
+const int TestNode::NUM_COLS		= 5;
+const int TestNode::SIZE			= 70;
+const int TestNode::SPACING         = 10;
 TestNodeRef TestNode::create() {
-    return TestNodeRef(new TestNode());
+    TestNodeRef t = TestNodeRef(new TestNode());
+    t->setup();
+    return t;
 }
 
 TestNode::TestNode()
@@ -41,9 +42,9 @@ void TestNode::setup()
             r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
-//            r->connectMouseMoveInside(this);
-//            r->connectMouseDragInside(this);
-//            r->connectMouseUpInside(this);
+            r->connectMouseMoveInside(this);
+            r->connectMouseDragInside(this);
+            r->connectMouseUpInside(this);
             
             addChild(r);
         }
@@ -53,8 +54,8 @@ void TestNode::setup()
 }
 
 void TestNode::draw() {
-    ci::gl::color(ci::Color(255,0,0));
-    ci::gl::drawSolidRect(ci::Rectf(0,0, 50,50));
+//    ci::gl::color(ci::Color(255,0,0));
+//    ci::gl::drawSolidRect(ci::Rectf(0,0, 50,50));
 }
 
 void TestNode::squareFinishedTweening(po::ShapeRef square) {
@@ -84,11 +85,10 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
     
-    thisRect->disconnectMouseDownInside(this);
     thisRect->fillColor.set(255,0,0);
     
     if(!thisRect->rotationAnim.isComplete()) {
-        thisRect->setRotation(thisRect->getRotation());
+        thisRect->rotationAnim.stop();
         squareFinishedTweening(thisRect);
     }
     else {
@@ -103,14 +103,16 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
-    thisRect->disconnectMouseDownInside(this);
+    //thisRect->disconnectMouseDownInside(this);
     
     //event.setShouldPropagate(true);
 }
 
 void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
-    std::cout << "Mouse move inside!" << std::endl;
+//    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
+//    thisRect->fillColor.set(0,0,255);
+//    std::cout << "Mouse move inside!" << std::endl;
 }
 
 void TestNode::mouseDragInside(po::MouseEvent& event)

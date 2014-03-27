@@ -15,37 +15,27 @@ using namespace std;
 class BasicTestApp : public AppNative {
   public:
 	void setup();
-	void mouseDown( MouseEvent event );
-	void mouseDrag( MouseEvent event );
 	void update();
 	void draw();
     
-    po::SceneRef scene, scene2;
-    po::ShapeRef r,e;
+    po::SceneRef scene;
     
     ci::Font mFont;
 };
 
 void BasicTestApp::setup()
 {
-    scene = po::Scene::create();
+//    scene = po::Scene::create();
+//    scene->setRootNode(TestNode::create());
     
-    TestNodeRef testNode = TestNode::create();
-    testNode->setup();
-    scene->getRootNode()->addChild(testNode);
-    
-    scene->getRootNode()->setDrawBoundsEnabled(true);
+    scene = po::Scene::create(TestNode::create());
     
     mFont = Font( "Geneva", 18.0f );
 }
 
-void BasicTestApp::mouseDown( MouseEvent event )
-{
-    scene->getRootNode()->removeChild(e);
-}
-
 void BasicTestApp::update()
 {
+    //Update our scene
     scene->update();
 }
 
@@ -53,14 +43,11 @@ void BasicTestApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
+    
+    //Draw our scene
     scene->draw();
     
-    
     gl::drawString( "Framerate: " + ci::toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
-}
-
-void BasicTestApp::mouseDrag( MouseEvent event )
-{
 }
 
 CINDER_APP_NATIVE( BasicTestApp, RendererGl )

@@ -5,6 +5,8 @@
 //  Created by Stephen Varga on 3/19/14.
 //
 //
+#include "cinder/TriMesh.h"
+#include "cinder/Triangulate.h"
 
 #include "poShape.h"
 
@@ -22,11 +24,15 @@ namespace po {
     ShapeRef Shape::createRect(float width, float height)
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
+        
         s->ciShape2d.moveTo(0,0);
         s->ciShape2d.lineTo(width,0);
         s->ciShape2d.lineTo(width,height);
         s->ciShape2d.lineTo(0,height);
         s->ciShape2d.close();
+        
+        s->render();
+        
         return s;
     }
     
@@ -57,6 +63,8 @@ namespace po {
         s->ciShape2d.curveTo(xe, ym + oy, xm + ox, ye, xm, ye);
         s->ciShape2d.curveTo(xm - ox, ye, x, ym + oy, x, ym);
         s->ciShape2d.close();
+        
+        s->render();
 
         return s;
     }
@@ -71,6 +79,7 @@ namespace po {
     ,   fillEnabled(true)
     ,   strokeColor(255,255,255)
     ,   strokeEnabled(false)
+    ,   precision(100)
     {
     }
     
@@ -81,19 +90,33 @@ namespace po {
         return ciShape2d.contains(globalToLocal(point));
     }
     
+    void Shape::setCiShape2d(ci::Shape2d shape)
+    {
+        ciShape2d = shape;
+        render();
+    }
+    
     void Shape::draw()
     {
         //Draw fill
         if(fillEnabled) {
             ci::gl::color(fillColor);
-            ci::gl::drawSolid(ciShape2d, ci::app::getWindowContentScale());
+            ci::gl::draw(vboMesh);
+            //ci::gl::drawSolid(ciShape2d);
         }
         
         //Draw stroke
+        #pragma message "Need to implement better stroke stuff"
         if(strokeEnabled) {
             ci::gl::color(strokeColor);
             ci::gl::draw(ciShape2d, ci::app::getWindowContentScale());
         }
+    }
+    
+    void Shape::render()
+    {
+        ci::TriMesh2d mesh= ci::Triangulator( ciShape2d, precision).calcMesh( ci::Triangulator::WINDING_ODD);
+        vboMesh = ci::gl::VboMesh::create( mesh );
     }
     
     ci::Rectf Shape::getBounds()

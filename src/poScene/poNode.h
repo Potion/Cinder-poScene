@@ -60,7 +60,8 @@ namespace po {
         
         //------------------
         //SETUP
-        //Use this to do non-initializing construction of your object, add events, etc.
+        //Use this to do non-initializing construction of your object, add children, add events, etc.
+        //Since we're using shared_ptr's the constructor is a bit worthless, we can't call shared_from_this() or get a shared pointer to "this"
         virtual void setup()    {};
         
         //------------------
@@ -185,8 +186,8 @@ namespace po {
         MouseEventSignal& getSignalMouseUpInside() { return signalMouseUpInside; };
     
         //------------------
-        //SIGNALS
-        #pragma mark Events
+        //Events
+        #pragma mark - Events -
         
         //Override these methods to receive events
         //Global events, these fire for all Nodes
