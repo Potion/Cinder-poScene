@@ -52,7 +52,7 @@ namespace po {
             po::MouseEvent::Type type = (po::MouseEvent::Type)queue.first;
             
             //Go through all the ci::MouseEvents for this type
-            for(ci::app::MouseEvent ciEvent : queue.second) {
+            for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
                 po::MouseEvent poEvent(ciEvent, type);
                 notifyAllNodes(nodes,   poEvent);
@@ -66,7 +66,7 @@ namespace po {
     
     //Dispatch to the appropriate mouse event function for each node in the scene
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event) {
-        for(NodeRef node : nodes) {
+        for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(!node->hasScene() || !node->isInteractionEnabled()) continue;
             
@@ -98,7 +98,7 @@ namespace po {
                 break;
         }
         
-        for(NodeRef node : nodes) {
+        for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
                node->hasConnection(event.getType()) &&

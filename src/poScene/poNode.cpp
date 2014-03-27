@@ -296,6 +296,7 @@ namespace po {
         
         //Draw origin
         ci::gl::pushMatrices();
+        ci::gl::translate(-offset);
         ci::gl::scale(ci::Vec2f(1.f,1.f)/ scale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popMatrices();
@@ -304,9 +305,14 @@ namespace po {
     ci::Rectf Node::getFrame()
     {
         ci::Rectf frame = getBounds();
-        frame += offset;
-        frame.scale(scale);
-        frame.offset(position);
+        
+        ci::MatrixAffine2f m;
+        m.translate(position);
+        m.rotate(ci::toRadians(getRotation()));
+        m.scale(scale);
+        m.translate(offset);
+        
+        return frame.transformCopy(m);
         return frame;
     }
     

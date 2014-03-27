@@ -38,6 +38,7 @@ void TestNode::setup()
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
             r->setAlignment(Alignment::CENTER_CENTER);
+            r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
             r->connectMouseMoveInside(this);
@@ -47,6 +48,8 @@ void TestNode::setup()
             addChild(r);
         }
     }
+    
+    setPosition((ci::app::getWindowWidth()/2)-(getWidth()/2) - getBounds().x1, ci::app::getWindowHeight()/2-getHeight()/2 - getBounds().y1);
 }
 
 void TestNode::draw() {

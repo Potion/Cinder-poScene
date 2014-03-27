@@ -27,7 +27,7 @@ namespace po {
     void NodeContainer::setScene(SceneRef scene)
     {
         Node::setScene(scene);
-        for(NodeRef childNode : children) {
+        for(NodeRef &childNode : children) {
             childNode->setScene(scene);
         }
     }
@@ -35,8 +35,8 @@ namespace po {
     void NodeContainer::removeScene()
     {
         Node::removeScene();
-        for(NodeRef node : children) {
-            node->removeScene();
+        for(NodeRef &childNode : children) {
+            childNode->removeScene();
         }
     }
 
@@ -78,7 +78,7 @@ namespace po {
     void NodeContainer::updateTree()
     {
         update();
-        for(NodeRef childNode : children)
+        for(NodeRef &childNode : children)
             childNode->updateTree();
     }
 
@@ -88,8 +88,13 @@ namespace po {
         ci::gl::pushMatrices();
         setTransformation();
         
-        for(NodeRef childNode : children)
+        for(NodeRef &childNode : children) {
             childNode->drawTree();
+            
+                #pragma message "For testing, should be removed"
+            ci::gl::color(0,255,0);
+            ci::gl::drawStrokedRect(childNode->getFrame());
+        }
         
         if(bDrawBounds)
             drawBounds();
@@ -102,7 +107,7 @@ namespace po {
         //Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         
-        for(NodeRef childNode : children)
+        for(NodeRef &childNode : children)
             bounds.include(childNode->getFrame());
         
         return bounds;

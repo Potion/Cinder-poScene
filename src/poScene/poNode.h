@@ -80,8 +80,8 @@ namespace po {
         bool hasParent();
         
         //Dimensions
-        float getWidth();
-        float getHeight();
+        float getWidth()    { return getBounds().getWidth(); };
+        float getHeight()   { return getBounds().getHeight(); };
         
         //Bounds & Frame
         void setDrawBoundsEnabled(bool enabled) { bDrawBounds = enabled; };
