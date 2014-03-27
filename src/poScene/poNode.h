@@ -151,12 +151,36 @@ namespace po {
         //Signals
         
         //Mouse Down Inside
-        MouseEventSignal& getSignalMouseDownInside();
+        template<typename T, typename Y>
+        connection connectMouseDownInside( T fn, Y *inst ) { return signalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseDownInside(Node* listener);
         void disconnectMouseDownInside(Node* listener);
         void emitMouseDownInside(po::MouseEvent &event);
+        MouseEventSignal& getSignalMouseDownInside() { return signalMouseDownInside; };
+        
+        //Mouse Move Inside
         template<typename T, typename Y>
-        connection connectMouseDownInside( T fn, Y *inst ) { return signalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
+        connection connectMouseMoveInside( T fn, Y *inst ) { return signalMouseMoveInside.connect(std::bind( fn, inst, std::_1 )); };
+        void connectMouseMoveInside(Node* listener);
+        void disconnectMouseMoveInside(Node* listener);
+        void emitMouseMoveInside(po::MouseEvent &event);
+        MouseEventSignal& getSignalMouseMoveInside() { return signalMouseMoveInside; };
+        
+        //Mouse Drag Inside
+        template<typename T, typename Y>
+        connection connectMouseDragInside( T fn, Y *inst ) { return signalMouseDragInside.connect(std::bind( fn, inst, std::_1 )); };
+        void connectMouseDragInside(Node* listener);
+        void disconnectMouseDragInside(Node* listener);
+        void emitMouseDragInside(po::MouseEvent &event);
+        MouseEventSignal& getSignalMouseDragInside() { return signalMouseDragInside; };
+        
+        //Mouse Up Inside
+        template<typename T, typename Y>
+        connection connectMouseUpInside( T fn, Y *inst ) { return signalMouseUpInside.connect(std::bind( fn, inst, std::_1 )); };
+        void connectMouseUpInside(Node* listener);
+        void disconnectMouseUpInside(Node* listener);
+        void emitMouseUpInside(po::MouseEvent &event);
+        MouseEventSignal& getSignalMouseUpInside() { return signalMouseUpInside; };
     
         
         //Override these methods to receive events
@@ -245,33 +269,23 @@ namespace po {
         
         //NODE EVENTS
         //Mouse
-        MouseEventSignal signalMouseDownInside, signalMouseMoveInside, signalMouseDragInside, signalMouseUpInside;
-        
-        void trackMouseConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection);
-        void disconnectMouseConnection(MouseEvent::Type type, Node *listener);
-        std::map<po::MouseEvent::Type, std::map<po::Node*, std::unique_ptr<scoped_connection> > > mouseConnections;
-        
-        //------------------
-        //NODE EVENTS
-        struct EventCallback {
-            EventCallback() : markedForRemoval(false) {};
-            
-            bool markedForRemoval;
-            std::weak_ptr<Node> listener;
-        };
-        
-        bool callbackAlreadyExistsForListener(NodeRef listener, std::vector<EventCallback> &callbackList);
-        
-        //Mouse Events
         //Global events (just send route it to this)
         virtual void notifyGlobal(po::MouseEvent &event);
         
-        //Callback events
-        bool hasCallbacks(po::MouseEvent::Type type);
-        virtual void notifyCallbacks(po::MouseEvent &event);
+        //Signals
+        MouseEventSignal signalMouseDownInside, signalMouseMoveInside, signalMouseDragInside, signalMouseUpInside;
         
-        #pragma message "Is vector the best thing to use here?"
-        std::map<po::MouseEvent::Type, std::vector<EventCallback> > mouseEventSubscriptions;
-        std::map<po::MouseEvent::Type, std::vector<EventCallback> > mouseEventCallbacks;
+        void trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection);
+        void disconnect(MouseEvent::Type type, Node *listener);
+        std::map<po::MouseEvent::Type, std::map<po::Node*, std::unique_ptr<scoped_connection> > > mouseConnections;
+        
+        bool hasConnection(po::MouseEvent::Type type);
+        virtual void emitEvent(po::MouseEvent &event);
+        
+
+        
+        
+        
+        
     };
 }

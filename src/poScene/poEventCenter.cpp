@@ -89,6 +89,10 @@ namespace po {
                 event.type = MouseEvent::Type::MOVE_INSIDE;
                 break;
                 
+            case MouseEvent::Type::DRAG:
+                event.type = MouseEvent::Type::DRAG_INSIDE;
+                break;
+                
             case MouseEvent::Type::UP:
                 event.type = MouseEvent::Type::UP_INSIDE;
                 break;
@@ -97,10 +101,10 @@ namespace po {
         for(NodeRef node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
-               node->hasCallbacks(event.getType()) &&
+               node->hasConnection(event.getType()) &&
                node->pointInside(event.getWindowPos())
             ) {
-                node->notifyCallbacks(event);
+                node->emitEvent(event);
                 if(event.getShouldPropagate()) {
                     event.setShouldPropagate(false);
                 } else {

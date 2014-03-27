@@ -39,8 +39,11 @@ void TestNode::setup()
 			r->setPosition(xPos, yPos);
             r->setAlignment(Alignment::CENTER_CENTER);
             
-            subscribeToEvent(po::MouseEvent::Type::DOWN_INSIDE, r);
             r->connectMouseDownInside(this);
+            r->connectMouseMoveInside(this);
+            r->connectMouseDragInside(this);
+            r->connectMouseUpInside(this);
+            
 //            r->connectMouseDownInside(this);
             //r->connectMouseDownInside(&TestNode::mouseMoveInside, this);
             addChild(r);
@@ -54,7 +57,7 @@ void TestNode::draw() {
 }
 
 void TestNode::squareFinishedTweening(po::ShapeRef square) {
-    square->fillColor.set(255,255,255);
+    square->fillColor.set(0,255,0);
     std::cout << "Finished!" << std::endl;
 }
 
@@ -77,10 +80,6 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
-    
-    std::cout << "Down Inside!" << std::endl;
-//    return;
-    
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.source);
     
     thisRect->disconnectMouseDownInside(this);
@@ -109,11 +108,17 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
 
 void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
-    std::cout << "Mouse move biotch!" << std::endl;
+    std::cout << "Mouse move inside!" << std::endl;
+}
+
+void TestNode::mouseDragInside(po::MouseEvent& event)
+{
+    std::cout << "Mouse drag inside!" << std::endl;
 }
 
 void TestNode::mouseUpInside(po::MouseEvent& event)
 {
+    std::cout << "Mouse up inside!" << std::endl;
 }
 
 void TestNode::mouseUp(po::MouseEvent& event)

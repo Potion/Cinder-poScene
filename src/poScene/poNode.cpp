@@ -319,53 +319,98 @@ namespace po {
     #pragma mark General
     void Node::removeAllEvents() {}
     
-    //Check any list of event callbacks to see if there is already a callback for a given listener
-    bool Node::callbackAlreadyExistsForListener(NodeRef listener, std::vector<EventCallback> &callbackList)
-    {
-        for(EventCallback callback : callbackList) {
-            if(callback.listener.lock() == listener) {
-                return true;
-            }
-        }
-               
-        return false;
-    }
-    
     
     #pragma mark Mouse Events
-    void Node::trackMouseConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
+    
+    //Signals
+    void Node::trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
         mouseConnections[type][listener] = std::unique_ptr<scoped_connection>(connection);
     };
     
-    void Node::disconnectMouseConnection(MouseEvent::Type type, Node *listener) {
+    void Node::disconnect(MouseEvent::Type type, Node *listener) {
         mouseConnections[type][listener]->disconnect();
     }
     
-    MouseEventSignal& Node::getSignalMouseDownInside()
-    {
-        return signalMouseDownInside;
-    };
     
+    #pragma mark -
+    //Mouse Down Inside
     void Node::connectMouseDownInside(Node* listener)
     {
         scoped_connection *connection = new scoped_connection(signalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
-        trackMouseConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
+        trackConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
     }
     
     void Node::disconnectMouseDownInside(Node* listener)
     {
-        disconnectMouseConnection(po::MouseEvent::Type::DOWN_INSIDE, listener);
+        disconnect(po::MouseEvent::Type::DOWN_INSIDE, listener);
     };
     
     void Node::emitMouseDownInside(po::MouseEvent &event)
     {
         signalMouseDownInside(event);
     };
+    
+    
+    #pragma mark -
+    //Mouse Move Inside
+    void Node::connectMouseMoveInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseMoveInside.connect(std::bind( &Node::mouseMoveInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::MOVE_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseMoveInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::MOVE_INSIDE, listener);
+    };
+    
+    void Node::emitMouseMoveInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
+    
+    
+    #pragma mark -
+    //Mouse Drag Inside
+    void Node::connectMouseDragInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseDragInside.connect(std::bind( &Node::mouseDragInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::DRAG_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseDragInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::DRAG_INSIDE, listener);
+    };
+    
+    void Node::emitMouseDragInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
+    
+    
+    #pragma mark -
+    //Mouse Up Inside
+    void Node::connectMouseUpInside(Node* listener)
+    {
+        scoped_connection *connection = new scoped_connection(signalMouseUpInside.connect(std::bind( &Node::mouseUpInside, listener, std::_1 )));
+        trackConnection(po::MouseEvent::Type::UP_INSIDE, listener, connection);
+    }
+    
+    void Node::disconnectMouseUpInside(Node* listener)
+    {
+        disconnect(po::MouseEvent::Type::UP_INSIDE, listener);
+    };
+    
+    void Node::emitMouseUpInside(po::MouseEvent &event)
+    {
+        signalMouseMoveInside(event);
+    };
 
     
+    #pragma mark -
     //Global Events
     void Node::notifyGlobal(po::MouseEvent &event) {
-        #pragma message "If we just have one mouse event handler this gets infinitely cleaner...i.e. just node->mouseEvent(event)"
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
                 mouseDown(event);
@@ -389,94 +434,48 @@ namespace po {
         }
     }
     
-    //Callbacks
-    void Node::subscribeToEvent(po::MouseEvent::Type type, NodeRef source)
-    {
-        //If no source is provided, assume we want to subscribe to our own event
-        if(!source) source = shared_from_this();
-        
-        //Subscribe to the source
-        source->registerEventCallback(type, shared_from_this());
-        
-        #pragma message "Now we need to track our subscriptions on this end for removing events"
-        //Track this Subscription
-    }
-    
-    
-    void Node::unsubscribeFromEvent(po::MouseEvent::Type type, NodeRef source) {
-        //If no source is provided, assume we want to unsubscribe to our own event
-        if(!source) source = shared_from_this();
-        #pragma message "Now just need to implement this shit!"
-    }
-    
-    //Sets this event
-    void Node::registerEventCallback(po::MouseEvent::Type type, NodeRef listener)
-    {
-        //Check to see if we already have the callback
-        if(callbackAlreadyExistsForListener(listener, mouseEventCallbacks[type]))
-            return;
-        
-        //Otherwise Insert this callback
-        EventCallback callback;
-        callback.listener = listener;
-        mouseEventCallbacks[type].push_back(callback);
-    }
+    #pragma mark -
+    //SceneGraph Specific events
     
     //See if we care about an event
-    bool Node::hasCallbacks(po::MouseEvent::Type type)
+    bool Node::hasConnection(po::MouseEvent::Type type)
     {
-        if(type == po::MouseEvent::Type::DOWN_INSIDE) {
-            "Yea!";
+        if(!mouseConnections[type].size()) {
+           return false;
         }
-        return mouseEventCallbacks[type].size();
+        else {
+            std::map<po::Node*, std::unique_ptr<scoped_connection> >::iterator iter = mouseConnections[type].begin();
+            for(; iter!=mouseConnections[type].end(); ++iter) {
+                if(iter->second.get()->connected()) return true;
+            }
+        }
+        
+        return false;
     }
     
     //For the given event, notify everyone that we have as a subscriber
-    void Node::notifyCallbacks(po::MouseEvent &event)
+    void Node::emitEvent(po::MouseEvent &event)
     {
-        
+        //Set the source
         event.source = shared_from_this();
         
-        if(event.getType() == po::MouseEvent::DOWN_INSIDE) {
-            signalMouseDownInside(event);
-            return;
-        }
-        
-        //Iterate through all callbacks
-        for(EventCallback callback : mouseEventCallbacks[event.getType()])
-        {
-            //Notify the callback
-            NodeRef listener = callback.listener.lock();
-            
-            #pragma message "Can we do this any better, maybe using templates?"
-            if(listener && !callback.markedForRemoval) {
-                switch (event.getType()) {
-                    case po::MouseEvent::Type::DOWN_INSIDE:
-                        listener->mouseDownInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::MOVE_INSIDE:
-                        listener->mouseMoveInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::DRAG_INSIDE:
-                        listener->mouseDragInside(event);
-                        break;
-                        
-                    case po::MouseEvent::Type::UP_INSIDE:
-                        listener->mouseUpInside(event);
-                        break;
-                }
-            }
-        }
-        
-        //Cleanup our callbacks, checking for deleted node refs or callbacks that have been markedForRemoval
-        std::vector<EventCallback>::iterator iter = mouseEventCallbacks[event.getType()].begin();
-        for(; iter != mouseEventCallbacks[event.getType()].end(); ++iter)
-        {
-            if(!(*iter).listener.lock() || (*iter).markedForRemoval) {
-                iter = mouseEventCallbacks[event.getType()].erase(iter);
-            }
+        //Emit the Event
+        switch (event.getType()) {
+            case po::MouseEvent::Type::DOWN_INSIDE:
+                signalMouseDownInside(event);
+                break;
+                
+            case po::MouseEvent::Type::MOVE_INSIDE:
+                signalMouseMoveInside(event);
+                break;
+                
+            case po::MouseEvent::Type::DRAG_INSIDE:
+                signalMouseDragInside(event);
+                break;
+                
+            case po::MouseEvent::Type::UP_INSIDE:
+                signalMouseUpInside(event);
+                break;
         }
     }
 }
