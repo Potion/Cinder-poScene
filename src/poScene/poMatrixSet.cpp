@@ -28,7 +28,8 @@ namespace po {
         this->viewport      = viewport;
     }
     
-    ci::Vec2f MatrixSet::globalToLocal(ci::Vec2f point) {
+    ci::Vec2f MatrixSet::globalToLocal(ci::Vec2f point)
+    {
         ci::Vec3f p(point.x, viewport.getHeight() - point.y, 0.f);
         ci::Vec3f r = unproject(p);
         return ci::Vec2f(r.x, r.y);

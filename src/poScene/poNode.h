@@ -197,6 +197,9 @@ namespace po {
         virtual void mouseUp(po::MouseEvent &event)          {};
         virtual void mouseWheel( po::MouseEvent &event)      {};
         
+        virtual void keyDown(po::KeyEvent &event)            {};
+        virtual void keyUp(po::KeyEvent &event)              {};
+        
         //These are po::Scene events, you need to subscribe to them
         #pragma mark -
         virtual void mouseDownInside(po::MouseEvent &event)  {};
@@ -206,6 +209,8 @@ namespace po {
         virtual void mouseLeave(po::MouseEvent &event)       {};
         virtual void mouseOver(po::MouseEvent &event)        {};
         virtual void mouseUpInside(po::MouseEvent &event)    {};
+        
+        
 
     protected:
         #pragma mark -
@@ -290,6 +295,9 @@ namespace po {
         
         //Signals
         MouseEventSignal signalMouseDownInside, signalMouseMoveInside, signalMouseDragInside, signalMouseUpInside;
+        
+        //Key Events
+        virtual void notifyGlobal(po::KeyEvent &event);
         
         void trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection);
         void disconnect(MouseEvent::Type type, Node *listener);

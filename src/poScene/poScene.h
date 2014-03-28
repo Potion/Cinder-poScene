@@ -33,6 +33,8 @@ namespace po {
         static SceneRef create(NodeContainerRef rootNode);
         ~Scene();
         
+        ci::CameraOrtho& getCamera() { return mCamera; }
+        
         virtual void update();
         virtual void draw();
         

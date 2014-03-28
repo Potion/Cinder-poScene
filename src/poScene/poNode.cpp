@@ -224,8 +224,16 @@ namespace po {
         matrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
+    #pragma message "This is def not right"
     ci::Vec2f Node::sceneToLocal(ci::Vec2f scenePoint)
     {
+        po::SceneRef s = scene.lock();
+        if(s) {
+            return s->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
+                                                ci::app::getWindow()->getWidth(),
+                                                ci::app::getWindow()->getHeight());
+        }
+        
         return ci::Vec2f();
     }
     
@@ -428,8 +436,13 @@ namespace po {
 
     
     #pragma mark -
-    //Global Events
+    //Global Mouse Events
     void Node::notifyGlobal(po::MouseEvent &event) {
+        //Setup event
+        event.source    = shared_from_this();
+        event.pos       = globalToLocal(event.windowPos);
+        event.scenePos  = getScene()->getRootNode()->globalToLocal(event.windowPos);
+        
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
                 mouseDown(event);
@@ -475,8 +488,10 @@ namespace po {
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(po::MouseEvent &event)
     {
-        //Set the source
-        event.source = shared_from_this();
+        //Setup event
+        event.source    = shared_from_this();
+        event.pos       = globalToLocal(event.windowPos);
+        event.scenePos  = getScene()->getRootNode()->globalToLocal(event.windowPos);
         
         //Emit the Event
         switch (event.getType()) {
@@ -494,6 +509,19 @@ namespace po {
                 
             case po::MouseEvent::Type::UP_INSIDE:
                 signalMouseUpInside(event);
+                break;
+        }
+    }
+    
+    #pragma mark -
+    //Global Mouse Events
+    void Node::notifyGlobal(po::KeyEvent &event) {
+        switch (event.getType()) {
+            case po::KeyEvent::Type::DOWN:
+                keyDown(event);
+                break;
+            case po::KeyEvent::Type::UP:
+                keyUp(event);
                 break;
         }
     }

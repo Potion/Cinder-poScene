@@ -13,7 +13,9 @@ using namespace ci::app;
 using namespace std;
 
 class BasicTestApp : public AppNative {
-  public:
+public:
+	
+	void prepareSettings( Settings *settings );
 	void setup();
 	void update();
 	void draw();
@@ -23,8 +25,17 @@ class BasicTestApp : public AppNative {
     ci::Font mFont;
 };
 
+void BasicTestApp::prepareSettings(cinder::app::AppBasic::Settings *settings)
+{
+}
+
 void BasicTestApp::setup()
 {
+    GLint texSize;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &texSize);
+    
+    std::cout << texSize << std::endl;
+    
     //This
 //    scene = po::Scene::create();
 //    scene->setRootNode(TestNode::create());

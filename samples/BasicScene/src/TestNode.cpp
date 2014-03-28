@@ -9,8 +9,8 @@
 
 #include "TestNode.h"
 
-const int TestNode::NUM_ROWS		= 100;
-const int TestNode::NUM_COLS		= 10;
+const int TestNode::NUM_ROWS		= 3;
+const int TestNode::NUM_COLS		= 5;
 const int TestNode::SIZE			= 70;
 const int TestNode::SPACING         = 10;
 
@@ -39,7 +39,7 @@ void TestNode::setup()
             r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
-//            r->connectMouseMoveInside(this);
+            r->connectMouseMoveInside(this);
 //            r->connectMouseDragInside(this);
 //            r->connectMouseUpInside(this);
             
@@ -116,8 +116,12 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
 void TestNode::mouseMoveInside(po::MouseEvent& event)
 {
 //    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
-//    thisRect->fillColor.set(0,0,255);
-    std::cout << "Mouse move inside!" << std::endl;
+    //    thisRect->fillColor.set(0,0,255);
+//    std::cout << "Local Pos: "  << event.getPos() << std::endl;
+//    std::cout << "Scene Pos: "  << event.getScenePos() << std::endl;
+//    std::cout << "Global Pos: " << event.getWindowPos() << std::endl;
+//    
+//    std::cout << "localToGlobal: "  << sceneToLocal(event.getPos()) << std::endl;
 }
 
 void TestNode::mouseDragInside(po::MouseEvent& event)
@@ -134,4 +138,14 @@ void TestNode::mouseUp(po::MouseEvent& event)
 {
     //std::cout << "Test node Mouse Up event!" << std::endl;
     //rect->fillColor.set(255,255,255);
+}
+
+void TestNode::keyDown(po::KeyEvent &event)
+{
+    std::cout << "Key down!" << std::endl;
+}
+
+void TestNode::keyUp(po::KeyEvent &event)
+{
+    std::cout << "Key Up!" << std::endl;
 }

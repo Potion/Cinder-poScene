@@ -24,6 +24,7 @@ namespace po {
                              | (event.isAltDown()       ? ci::app::MouseEvent::ALT_DOWN     : 0)
                              | (event.isControlDown()   ? ci::app::MouseEvent::CTRL_DOWN    : 0)
                              | (event.isMetaDown()      ? ci::app::MouseEvent::META_DOWN    : 0)
+                             | (event.isAccelDown()     ? ci::app::MouseEvent::ACCEL_DOWN  : 0)
                              | (event.isLeft()          ? ci::app::MouseEvent::LEFT_DOWN    : 0)
                              | (event.isRight()         ? ci::app::MouseEvent::RIGHT_DOWN   : 0)
                              | (event.isMiddle()        ? ci::app::MouseEvent::MIDDLE_DOWN  : 0)
@@ -35,5 +36,25 @@ namespace po {
         
         this->windowPos = event.getPos();
         this->type      = type;
+    }
+    
+    
+    #pragma mark - Key Event -
+    KeyEvent::KeyEvent(ci::app::KeyEvent event, Type type)
+    : ci::app::KeyEvent(event.getWindow()
+                       , event.getCode()
+                       , event.getCharUtf32()
+                       , event.getChar()
+                       , (0
+                            | (event.isShiftDown()     ? ci::app::MouseEvent::SHIFT_DOWN   : 0)
+                            | (event.isAltDown()       ? ci::app::MouseEvent::ALT_DOWN     : 0)
+                            | (event.isControlDown()   ? ci::app::MouseEvent::CTRL_DOWN    : 0)
+                            | (event.isMetaDown()      ? ci::app::MouseEvent::META_DOWN    : 0)
+                            | (event.isAccelDown()      ? ci::app::MouseEvent::ACCEL_DOWN  : 0)
+                        )
+                       , event.getNativeKeyCode()
+                       )
+    {
+        this->type = type;
     }
 }

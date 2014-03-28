@@ -47,13 +47,13 @@ namespace po {
         
         MouseEvent(ci::app::MouseEvent event, Type type);
         
-//        float getX();
-//        float getY();
-//        ci::Vec2f getPos();
+        float getX() { return pos.x; };
+        float getY() { return pos.y; };
+        ci::Vec2f getPos() { return pos; };
         
-        float getSceneX();
-        float getSceneY();
-        ci::Vec2f getScenePos();
+        float getSceneX() { return scenePos.x; };
+        float getSceneY() { return scenePos.y; };
+        ci::Vec2f getScenePos() { return scenePos; };
         
         float getWindowX() { return windowPos.x; };
         float getWindowY() { return windowPos.y; };
@@ -82,7 +82,12 @@ namespace po {
             UP
         };
         
-        KeyEvent(Type type);
+        KeyEvent(ci::app::KeyEvent event, Type type);
+        
+        Type getType() { return type; }
+        
+    private:
+        Type type;
     };
 }
 

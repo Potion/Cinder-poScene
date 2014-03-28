@@ -25,6 +25,9 @@ namespace po {
         ci::app::getWindow()->connectMouseDrag(&EventCenter::mouseDrag,   this);
         ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp,       this);
         ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
+        
+        ci::app::getWindow()->connectKeyDown(&EventCenter::keyDown, this);
+        ci::app::getWindow()->connectKeyUp(&EventCenter::keyUp, this);
     }
     
     //Process all the event queues for this scene
@@ -40,6 +43,7 @@ namespace po {
         
         //Process them
         processMouseEvents(nodes);
+        processKeyEvents(nodes);
     }
     
     
@@ -70,8 +74,9 @@ namespace po {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(!node->hasScene() || !node->isInteractionEnabled()) continue;
             
-            //Notify the node
             event.setShouldPropagate(true);
+            
+            //Notify the node
             node->notifyGlobal(event);
         }
     }
@@ -114,7 +119,39 @@ namespace po {
         }
     }
     
-    #pragma mark - Keyboard Events -
+    #pragma mark - KeyEvents -
+    void EventCenter::processKeyEvents(std::vector<NodeRef> &nodes)
+    {
+        //Go through the queue
+        for(auto& queue : keyEventQueues) {
+            //Get the type for this item in the std::map
+            po::KeyEvent::Type type = (po::KeyEvent::Type)queue.first;
+            
+            //Go through all the ci::MouseEvents for this type
+            for(ci::app::KeyEvent &ciEvent : queue.second) {
+                //Create a po::MouseEvent
+                po::KeyEvent poEvent(ciEvent, type);
+                notifyAllNodes(nodes, poEvent);
+            }
+            
+            //Clear out the events
+            queue.second.clear();
+        }
+    }
+    
+    //Dispatch to the appropriate key event function for each node in the scene
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event) {
+        for(NodeRef &node : nodes) {
+            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            
+            event.setShouldPropagate(true);
+            
+            //Notify the node
+            node->notifyGlobal(event);
+        }
+    }
+    
     #pragma mark - Touch Events -
     
 }
