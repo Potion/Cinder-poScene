@@ -94,5 +94,7 @@ namespace po {
                 allChildren.erase(iter);
             }
         }
+        
+        trackingQueue.clear();
     }
 }

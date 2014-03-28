@@ -26,26 +26,27 @@ void TestNode::setup()
     setDrawBoundsEnabled(true);
     setPosition(50,50);
     
-    for(int i=0; i<NUM_ROWS; i++) {
-		for(int j=0; j<NUM_COLS; j++) {
-            po::ShapeRef r = po::Shape::createRect(SIZE);
-            //r->setInteractionEnabled(true);
-            
-            //Set Position in grid
-			float xPos = j * (SIZE + SPACING);
-			float yPos = i * (SIZE + SPACING);
-			r->setPosition(xPos, yPos);
-            //r->setAlignment(Alignment::CENTER_CENTER);
-            r->setDrawBoundsEnabled(true);
-            
-            r->connectMouseDownInside(this);
-            r->connectMouseMoveInside(this);
-//            r->connectMouseDragInside(this);
-//            r->connectMouseUpInside(this);
-            
-            //r->connectMouseDownInside(&TestNode::myMouseHandler, this);
-            
-            addChild(r);
+    for(int k=0; k<200; k++) {
+        for(int i=0; i<NUM_ROWS; i++) {
+            for(int j=0; j<NUM_COLS; j++) {
+                po::ShapeRef r = po::Shape::createRect(SIZE);
+                //r->setInteractionEnabled(true);
+                
+                //Set Position in grid
+                float xPos = j * (SIZE + SPACING);
+                float yPos = i * (SIZE + SPACING);
+                r->setPosition(xPos, yPos);
+                //r->setAlignment(Alignment::CENTER_CENTER);
+                r->setDrawBoundsEnabled(true);            
+                r->connectMouseDownInside(this);
+                r->connectMouseMoveInside(this);
+    //            r->connectMouseDragInside(this);
+    //            r->connectMouseUpInside(this);
+                
+                //r->connectMouseDownInside(&TestNode::myMouseHandler, this);
+                
+                addChild(r);
+            }
         }
     }
     
@@ -108,7 +109,7 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     }
     
     //thisRect->disconnectMouseDownInside(this);
-    event.setShouldPropagate(true);
+    //event.setShouldPropagate(true);
     
     //thisRect->emitMouseUpInside(event);
 }
