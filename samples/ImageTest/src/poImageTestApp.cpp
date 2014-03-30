@@ -7,3 +7,16 @@
 //
 
 #include "poImageTestApp.h"
+
+poImageTestAppRef poImageTestApp::create() {
+    poImageTestAppRef app(new poImageTestApp());
+    app->setup();
+    return app;
+}
+
+
+void poImageTestApp::setup() {
+    
+}
+
+

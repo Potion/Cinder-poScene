@@ -6,9 +6,20 @@
 //
 //
 
-#ifndef __ImageTest__poImageTestApp__
-#define __ImageTest__poImageTestApp__
+#pragma once
 
-#include <iostream>
+#include "poNodeContainer.h"
 
-#endif /* defined(__ImageTest__poImageTestApp__) */
+class poImageTestApp;
+typedef std::shared_ptr<poImageTestApp> poImageTestAppRef;
+
+class poImageTestApp
+: public po::NodeContainer
+{
+public:
+    static poImageTestAppRef create();
+    
+    void setup();
+    
+protected:
+};
