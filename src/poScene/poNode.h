@@ -114,29 +114,29 @@ namespace po {
         void setPosition(float x, float y);
         void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
         ci::Vec2f getPosition() { return mPosition; };
-        ci::Anim<ci::Vec2f> positionAnim;
+        ci::Anim<ci::Vec2f>& getPositionAnim() { return mPositionAnim; };
         
         //Scale
         void setScale(float x, float y);
         void setScale(ci::Vec2f scale) { setPosition(scale.x, scale.y); };
         ci::Vec2f getScale() { return mScale; };
-        ci::Anim<ci::Vec2f> scaleAnim;
+        ci::Anim<ci::Vec2f>& getScaleAnim() { return mScaleAnim; };
         
         //Rotation
         void setRotation(float rotation);
         float getRotation() { return mRotation; };
-        ci::Anim<float> rotationAnim;
+        ci::Anim<float>& getRotationAnim() { return mRotationAnim; };
         
         //Alpha
         void setAlpha(float alpha);
         float getAlpha() { return mAlpha; };
-        ci::Anim<float> alphaAnim;
+        ci::Anim<float>& getAlphaAnim() { return mAlphaAnim; };
         
         //Offset
         void setOffset(float x, float y);
         void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
         ci::Vec2f getOffset() { return mOffset; };
-        ci::Anim<ci::Vec2f> offsetAnim;
+        ci::Anim<ci::Vec2f>& getOffsetAnim() { return mOffsetAnim; };
         
         //Alignment
         void setAlignment(Alignment alignment);
@@ -252,9 +252,15 @@ namespace po {
         
         float mAlpha;
         
-        //Anim update bools
+        //Animation
         void initAttrAnimations();
         void updateAttributeAnimations();
+        
+        ci::Anim<ci::Vec2f> mPositionAnim;
+        ci::Anim<ci::Vec2f> mScaleAnim;
+        ci::Anim<float>     mRotationAnim;
+        ci::Anim<float>     mAlphaAnim;
+        ci::Anim<ci::Vec2f> mOffsetAnim;
         
         bool mUpdatePositionFromAnim;
         bool mUpdateScaleFromAnim;

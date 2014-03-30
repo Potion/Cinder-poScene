@@ -28,11 +28,11 @@ namespace po {
     ,   mRotation(0)
     ,   mOffset(0.f,0.f)
     ,   mAlpha(1.f)
-    ,   positionAnim(ci::Vec2f(0.f,0.f))
-    ,   scaleAnim(ci::Vec2f(1.f,1.f))
-    ,   rotationAnim(0)
-    ,   offsetAnim(ci::Vec2f(0.f,0.f))
-    ,   alphaAnim(1.f)
+    ,   mPositionAnim(ci::Vec2f(0.f,0.f))
+    ,   mScaleAnim(ci::Vec2f(1.f,1.f))
+    ,   mRotationAnim(0)
+    ,   mOffsetAnim(ci::Vec2f(0.f,0.f))
+    ,   mAlphaAnim(1.f)
     ,   mUpdatePositionFromAnim(false)
     ,   mUpdateScaleFromAnim(false)
     ,   mUpdateRotationFromAnim(false)
@@ -97,19 +97,19 @@ namespace po {
     
     void Node::setPosition(float x, float y)
     {
-        positionAnim.stop();
+        mPositionAnim.stop();
         mUpdatePositionFromAnim = false;
         mPosition.set(x, y);
-        positionAnim.ptr()->set(mPosition);
+        mPositionAnim.ptr()->set(mPosition);
         mFrameDirty = true;
     }
     
     void Node::setScale(float x, float y)
     {
-        scaleAnim.stop();
+        mScaleAnim.stop();
         mUpdateScaleFromAnim = false;
         mScale.set(x, y);
-        scaleAnim.ptr()->set(mScale);
+        mScaleAnim.ptr()->set(mScale);
         
         mFrameDirty     = true;
         mBoundsDirty    = true;
@@ -117,10 +117,10 @@ namespace po {
     
     void Node::setRotation(float rotation)
     {
-        rotationAnim.stop();
+        mRotationAnim.stop();
         mUpdateRotationFromAnim = false;
         mRotation = rotation;
-        rotationAnim = rotation;
+        mRotationAnim = rotation;
         
         mFrameDirty     = true;
         mBoundsDirty    = true;
@@ -128,17 +128,17 @@ namespace po {
     
     void Node::setAlpha(float alpha)
     {
-        alphaAnim.stop();
+        mAlphaAnim.stop();
         mUpdateAlphaFromAnim = false;
         mAlpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
-        alphaAnim = mAlpha;
+        mAlphaAnim = mAlpha;
     }
     
     void Node::setOffset(float x, float y) {
-        offsetAnim.stop();
+        mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
         mOffset.set(x, y);
-        offsetAnim.ptr()->set(mOffset);
+        mOffsetAnim.ptr()->set(mOffset);
         mFrameDirty = true;
         
         //If we are manually setting the offset, we can't have alignment
@@ -148,29 +148,29 @@ namespace po {
     void Node::initAttrAnimations()
     {
         //Initialize the isComplete() method of each tween, a bit annoying
-        positionAnim.stop();
-        scaleAnim.stop();
-        rotationAnim.stop();
-        offsetAnim.stop();
-        alphaAnim.stop();
+        mPositionAnim.stop();
+        mScaleAnim.stop();
+        mRotationAnim.stop();
+        mOffsetAnim.stop();
+        mAlphaAnim.stop();
     }
     
     void Node::updateAttributeAnimations()
     {
         //See if a tween is in progress, if so we want to use that value
         //Setting an attribute calls stop(), so that will override this
-        if(!positionAnim.isComplete())  mUpdatePositionFromAnim = true;
-        if(!scaleAnim.isComplete())     mUpdateScaleFromAnim    = true;
-        if(!rotationAnim.isComplete())  mUpdateRotationFromAnim = true;
-        if(!alphaAnim.isComplete())     mUpdateAlphaFromAnim    = true;
-        if(!offsetAnim.isComplete())    mUpdateOffsetFromAnim   = true;
+        if(!mPositionAnim.isComplete())  mUpdatePositionFromAnim = true;
+        if(!mScaleAnim.isComplete())     mUpdateScaleFromAnim    = true;
+        if(!mRotationAnim.isComplete())  mUpdateRotationFromAnim = true;
+        if(!mAlphaAnim.isComplete())     mUpdateAlphaFromAnim    = true;
+        if(!mOffsetAnim.isComplete())    mUpdateOffsetFromAnim   = true;
         
         //Update Anims if we care
-        if(mUpdatePositionFromAnim)     mPosition    = positionAnim;
-        if(mUpdateScaleFromAnim)        mScale       = scaleAnim;
-        if(mUpdateRotationFromAnim)     mRotation    = rotationAnim;
-        if(mUpdateAlphaFromAnim)        mAlpha       = alphaAnim;
-        if(mUpdateOffsetFromAnim)       mOffset      = offsetAnim;
+        if(mUpdatePositionFromAnim)     mPosition    = mPositionAnim;
+        if(mUpdateScaleFromAnim)        mScale       = mScaleAnim;
+        if(mUpdateRotationFromAnim)     mRotation    = mRotationAnim;
+        if(mUpdateAlphaFromAnim)        mAlpha       = mAlphaAnim;
+        if(mUpdateOffsetFromAnim)       mOffset      = mOffsetAnim;
     }
     
     //------------------------------------------------------

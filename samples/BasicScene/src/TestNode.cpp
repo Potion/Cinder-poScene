@@ -91,8 +91,8 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     
     thisRect->fillColor.set(255,0,0);
     
-    if(!thisRect->rotationAnim.isComplete()) {
-        thisRect->rotationAnim.stop();
+    if(!thisRect->getRotationAnim().isComplete()) {
+        thisRect->getRotationAnim().stop();
         squareFinishedTweening(thisRect);
     }
     else {
@@ -103,7 +103,7 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
         }
         
         float animationTime = 4.f - (4.0f * (thisRect->getRotation()/360.f));
-        ci::app::timeline().apply(&thisRect->rotationAnim, 360.f, animationTime)
+        ci::app::timeline().apply(&thisRect->getRotationAnim(), 360.f, animationTime)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
