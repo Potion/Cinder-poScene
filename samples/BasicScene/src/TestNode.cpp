@@ -108,7 +108,7 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     }
     
     //thisRect->disconnectMouseDownInside(this);
-    event.setShouldPropagate(true);
+    //event.setShouldPropagate(true);
     
     //thisRect->emitMouseUpInside(event);
 }
