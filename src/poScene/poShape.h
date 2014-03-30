@@ -31,17 +31,11 @@ namespace po {
         
         virtual void draw();
         
-        //Return the backing ci::Shape2d
-        ci::Shape2d getCiShape2dCopy() { return ciShape2d; };
+        //Set/Return the backing ci::Shape2d
+        //This should be used for modifying or changing the shape
+        ci::Shape2d& getCiShape2d()     { return mCiShape2d; };
+        ci::Shape2d getCiShape2dCopy() { return mCiShape2d; };
         void setCiShape2d(ci::Shape2d shape);
-        
-        //Set precision for triangulation/rendering
-        int getPrecision() { return precision; }
-        void setPrecision(int precision) { this->precision = precision; }
-        
-        //Fill & Stroke
-        void setFillEnabled(bool enabled)   { fillEnabled = enabled; };
-        void setStrokeEnabled(bool enabled) { strokeEnabled = enabled; };
         
         //Bounds
         virtual ci::Rectf getBounds();
@@ -54,35 +48,53 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
+        
+        //Fill
         Shape& fillColor(ci::Color color)               { setFillColor(color); return *this; }
         Shape& fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
         void setFillColor(ci::Color color)              { mFillColor = color; }
         void setFillColor(float r, float g, float b)    { mFillColor.set(r,g,b); }
         
+        Shape& fillEnabled(bool enabled)    { setFillEnabled(enabled); return *this; }
+        void setFillEnabled(bool enabled)   { mFillEnabled = enabled; };
         
+        bool getFillEnabled() { return mFillEnabled; }
+        ci::Color getFillColor() { return mFillColor; }
+        
+        //Stroke
         Shape& strokeColor(ci::Color color)               { setStrokeColor(color); return *this; }
         Shape& strokeColor(float r, float g, float b)     { setStrokeColor(r,g,b); return *this; }
         void setStrokeColor(ci::Color color)              { mStrokeColor = color; }
         void setStrokeColor(float r, float g, float b)    { mStrokeColor.set(r,g,b); }
         
+        Shape& strokeEnabled(bool enabled)      { setStrokeEnabled(enabled); return *this; }
+        void setStrokeEnabled(bool enabled)     { mStrokeEnabled = enabled; };
         
-        ci::Color getFillColor() { return mFillColor; }
+        bool getStrokeEnabled()     { return mStrokeEnabled; }
+        ci::Color getStrokeColor()  { return mStrokeColor; }
+        
+        
+        //Precision (for rendering)
+        Shape& precision(int precision) { setPrecision(precision); return *this; }
+        int getPrecision() { return mPrecision; }
+        void setPrecision(int precision) { mPrecision = precision; }
         
     protected:
         Shape();
         
     private:
-        virtual void addChild() {};
-        virtual void removeChild() {};
+        //Our Vbo
+        ci::gl::VboMeshRef mVboMesh;
         
-        int precision;
-        ci::gl::VboMeshRef vboMesh;
-        
-        ci::Shape2d ciShape2d;
-        bool fillEnabled, strokeEnabled;
+        //Our underlying ci::Shape2d
+        ci::Shape2d mCiShape2d;
         
         //Attributes
         ci::Color mFillColor;
         ci::Color mStrokeColor;
+        
+        bool mFillEnabled, mStrokeEnabled;
+        
+        int mPrecision;
     };
 }
