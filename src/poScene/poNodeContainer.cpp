@@ -51,7 +51,7 @@ namespace po {
         #pragma message "This is ugly...if this needs to be done a lot its gonna get messy with inheritance and shared_from_this"
         //node->setParent(enable_shared_from_this<NodeContainer>::shared_from_this());
         node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
-        node->setScene(scene.lock());
+        node->setScene(mScene.lock());
         
         //Track Node
         children.push_back(node);
@@ -97,7 +97,7 @@ namespace po {
             ci::gl::drawStrokedRect(childNode->getFrame());
         }
         
-        if(bDrawBounds)
+        if(mDrawBounds)
             drawBounds();
         
         ci::gl::popMatrices();

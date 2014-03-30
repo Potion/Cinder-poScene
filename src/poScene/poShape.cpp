@@ -121,11 +121,11 @@ namespace po {
     
     ci::Rectf Shape::getBounds()
     {
-        if(bBoundsDirty) {
-            bounds       = ciShape2d.calcPreciseBoundingBox();
-            bBoundsDirty = false;
+        if(mBoundsDirty) {
+            mBounds       = ciShape2d.calcPreciseBoundingBox();
+            mBoundsDirty = false;
         }
         
-        return bounds;
+        return mBounds;
     }
 }

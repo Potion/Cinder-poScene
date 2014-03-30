@@ -85,7 +85,7 @@ namespace po {
         float getHeight()   { return getBounds().getHeight(); };
         
         //Bounds & Frame
-        void setDrawBoundsEnabled(bool enabled) { bDrawBounds = enabled; };
+        void setDrawBoundsEnabled(bool enabled) { mDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
         
         ci::Rectf getFrame();
@@ -107,44 +107,45 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
-        std::string name;
+        void setName(std::string name) { mName = name; };
+        std::string getName() { return mName; }
         
         //Position
         void setPosition(float x, float y);
         void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
-        ci::Vec2f getPosition() { return position; };
+        ci::Vec2f getPosition() { return mPosition; };
         ci::Anim<ci::Vec2f> positionAnim;
         
         //Scale
         void setScale(float x, float y);
         void setScale(ci::Vec2f scale) { setPosition(scale.x, scale.y); };
-        ci::Vec2f getScale() { return scale; };
+        ci::Vec2f getScale() { return mScale; };
         ci::Anim<ci::Vec2f> scaleAnim;
         
         //Rotation
         void setRotation(float rotation);
-        float getRotation() { return rotation; };
+        float getRotation() { return mRotation; };
         ci::Anim<float> rotationAnim;
         
         //Alpha
         void setAlpha(float alpha);
-        float getAlpha() { return alpha; };
+        float getAlpha() { return mAlpha; };
         ci::Anim<float> alphaAnim;
         
         //Offset
         void setOffset(float x, float y);
         void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
-        ci::Vec2f getOffset() { return offset; };
+        ci::Vec2f getOffset() { return mOffset; };
         ci::Anim<ci::Vec2f> offsetAnim;
         
         //Alignment
         void setAlignment(Alignment alignment);
-        Alignment getAlignment() { return alignment; };
+        Alignment getAlignment() { return mAlignment; };
         
         
         
-        uint getDrawOrder() { return drawOrder; };
-        uint getUID() { return uid; };
+        uint getDrawOrder() { return mDrawOrder; };
+        uint getUID() { return mUid; };
         
         //------------------
         //SIGNALS
@@ -152,38 +153,38 @@ namespace po {
         
         //Mouse Down Inside
         template<typename T, typename Y>
-        connection connectMouseDownInside( T fn, Y *inst ) { return signalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
+        connection connectMouseDownInside( T fn, Y *inst ) { return mSignalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseDownInside(Node* listener);
         void disconnectMouseDownInside(Node* listener);
         void emitMouseDownInside(po::MouseEvent &event);
-        MouseEventSignal& getSignalMouseDownInside() { return signalMouseDownInside; };
+        MouseEventSignal& getSignalMouseDownInside() { return mSignalMouseDownInside; };
         
         //Mouse Move Inside
         #pragma mark -
         template<typename T, typename Y>
-        connection connectMouseMoveInside( T fn, Y *inst ) { return signalMouseMoveInside.connect(std::bind( fn, inst, std::_1 )); };
+        connection connectMouseMoveInside( T fn, Y *inst ) { return mSignalMouseMoveInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseMoveInside(Node* listener);
         void disconnectMouseMoveInside(Node* listener);
         void emitMouseMoveInside(po::MouseEvent &event);
-        MouseEventSignal& getSignalMouseMoveInside() { return signalMouseMoveInside; };
+        MouseEventSignal& getSignalMouseMoveInside() { return mSignalMouseMoveInside; };
         
         //Mouse Drag Inside
         #pragma mark -
         template<typename T, typename Y>
-        connection connectMouseDragInside( T fn, Y *inst ) { return signalMouseDragInside.connect(std::bind( fn, inst, std::_1 )); };
+        connection connectMouseDragInside( T fn, Y *inst ) { return mSignalMouseDragInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseDragInside(Node* listener);
         void disconnectMouseDragInside(Node* listener);
         void emitMouseDragInside(po::MouseEvent &event);
-        MouseEventSignal& getSignalMouseDragInside() { return signalMouseDragInside; };
+        MouseEventSignal& getSignalMouseDragInside() { return mSignalMouseDragInside; };
         
         //Mouse Up Inside
         #pragma mark -
         template<typename T, typename Y>
-        connection connectMouseUpInside( T fn, Y *inst ) { return signalMouseUpInside.connect(std::bind( fn, inst, std::_1 )); };
+        connection connectMouseUpInside( T fn, Y *inst ) { return mSignalMouseUpInside.connect(std::bind( fn, inst, std::_1 )); };
         void connectMouseUpInside(Node* listener);
         void disconnectMouseUpInside(Node* listener);
         void emitMouseUpInside(po::MouseEvent &event);
-        MouseEventSignal& getSignalMouseUpInside() { return signalMouseUpInside; };
+        MouseEventSignal& getSignalMouseUpInside() { return mSignalMouseUpInside; };
     
         //------------------
         //Events
@@ -228,9 +229,9 @@ namespace po {
         bool bVisible;
         
         //Bounds/Frame
-        ci::Rectf bounds;
-        ci::Rectf frame;
-        bool bBoundsDirty, bFrameDirty;
+        ci::Rectf mBounds;
+        ci::Rectf mFrame;
+        bool mBoundsDirty, mFrameDirty;
         
         //Interaction
         bool bInteractionEnabled;
@@ -244,46 +245,49 @@ namespace po {
         
     private:
         //Private attributes
-        ci::Vec2f position;
-        ci::Vec2f scale;
-        float     rotation;
-        ci::Vec2f offset;
+        ci::Vec2f mPosition;
+        ci::Vec2f mScale;
+        float     mRotation;
+        ci::Vec2f mOffset;
         
-        float alpha;
+        float mAlpha;
         
         //Anim update bools
         void initAttrAnimations();
         void updateAttributeAnimations();
         
-        bool bUpdatePositionFromAnim;
-        bool bUpdateScaleFromAnim;
-        bool bUpdateRotationFromAnim;
-        bool bUpdateOffsetFromAnim;
-        bool bUpdateAlphaFromAnim;
+        bool mUpdatePositionFromAnim;
+        bool mUpdateScaleFromAnim;
+        bool mUpdateRotationFromAnim;
+        bool mUpdateOffsetFromAnim;
+        bool mUpdateAlphaFromAnim;
         
         //Alignment
-        Alignment alignment;
+        Alignment mAlignment;
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
         virtual void drawTree();
         
         //Transformation Matrix
-        po::MatrixSet matrix;
+        po::MatrixSet mMatrix;
         
         //Scene this node belongs to
-        std::weak_ptr<Scene> scene;
+        std::weak_ptr<Scene> mScene;
+        
+        //Parent
+        std::weak_ptr<NodeContainer> mParent;
         
         //Bounds and frame
         void drawBounds();
-        bool bDrawBounds;
-        
-        //Parent
-        std::weak_ptr<NodeContainer> parent;
+        bool mDrawBounds;
         
         //Unique identifiers
-        uint drawOrder;
-        uint uid;
+        uint mDrawOrder;
+        uint mUid;
+        
+        //Name (optional, helps identify nodes when debugging)
+        std::string mName;
         
         
         #pragma mark - Events -
@@ -294,7 +298,7 @@ namespace po {
         virtual void notifyGlobal(po::MouseEvent &event);
         
         //Signals
-        MouseEventSignal signalMouseDownInside, signalMouseMoveInside, signalMouseDragInside, signalMouseUpInside;
+        MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;
         
         //Key Events
         virtual void notifyGlobal(po::KeyEvent &event);

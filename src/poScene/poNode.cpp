@@ -22,25 +22,25 @@ namespace po {
     }
     
     Node::Node()
-    :   uid(OBJECT_UID++)
-    ,   position(0.f,0.f)
-    ,   scale(1.f,1.f)
-    ,   rotation(0)
-    ,   offset(0.f,0.f)
-    ,   alpha(1.f)
+    :   mUid(OBJECT_UID++)
+    ,   mPosition(0.f,0.f)
+    ,   mScale(1.f,1.f)
+    ,   mRotation(0)
+    ,   mOffset(0.f,0.f)
+    ,   mAlpha(1.f)
     ,   positionAnim(ci::Vec2f(0.f,0.f))
     ,   scaleAnim(ci::Vec2f(1.f,1.f))
     ,   rotationAnim(0)
     ,   offsetAnim(ci::Vec2f(0.f,0.f))
     ,   alphaAnim(1.f)
-    ,   bUpdatePositionFromAnim(false)
-    ,   bUpdateScaleFromAnim(false)
-    ,   bUpdateRotationFromAnim(false)
-    ,   bUpdateOffsetFromAnim(false)
-    ,   bUpdateAlphaFromAnim(false)
-    ,   bDrawBounds(false)
-    ,   bBoundsDirty(true)
-    ,   bFrameDirty(true)
+    ,   mUpdatePositionFromAnim(false)
+    ,   mUpdateScaleFromAnim(false)
+    ,   mUpdateRotationFromAnim(false)
+    ,   mUpdateOffsetFromAnim(false)
+    ,   mUpdateAlphaFromAnim(false)
+    ,   mDrawBounds(false)
+    ,   mBoundsDirty(true)
+    ,   mFrameDirty(true)
     ,   bVisible(true)
     ,   bInteractionEnabled(true)
     {
@@ -72,7 +72,7 @@ namespace po {
         if(!bVisible) return;
         
         //Update our draw order
-        drawOrder = scene.lock()->getNextDrawOrder();
+        mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //Push our Matrix
         ci::gl::pushMatrices();
@@ -82,7 +82,7 @@ namespace po {
         draw();
         
         //Draw bounds if necessary
-        if(bDrawBounds)
+        if(mDrawBounds)
             drawBounds();
         
         //Pop our Matrix
@@ -98,48 +98,48 @@ namespace po {
     void Node::setPosition(float x, float y)
     {
         positionAnim.stop();
-        bUpdatePositionFromAnim = false;
-        position.set(x, y);
-        positionAnim.ptr()->set(position);
-        bFrameDirty = true;
+        mUpdatePositionFromAnim = false;
+        mPosition.set(x, y);
+        positionAnim.ptr()->set(mPosition);
+        mFrameDirty = true;
     }
     
     void Node::setScale(float x, float y)
     {
         scaleAnim.stop();
-        bUpdateScaleFromAnim = false;
-        scale.set(x, y);
-        scaleAnim.ptr()->set(scale);
+        mUpdateScaleFromAnim = false;
+        mScale.set(x, y);
+        scaleAnim.ptr()->set(mScale);
         
-        bFrameDirty     = true;
-        bBoundsDirty    = true;
+        mFrameDirty     = true;
+        mBoundsDirty    = true;
     }
     
     void Node::setRotation(float rotation)
     {
         rotationAnim.stop();
-        bUpdateRotationFromAnim = false;
-        this->rotation = rotation;
+        mUpdateRotationFromAnim = false;
+        mRotation = rotation;
         rotationAnim = rotation;
         
-        bFrameDirty     = true;
-        bBoundsDirty    = true;
+        mFrameDirty     = true;
+        mBoundsDirty    = true;
     }
     
     void Node::setAlpha(float alpha)
     {
         alphaAnim.stop();
-        bUpdateAlphaFromAnim = false;
-        this->alpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
-        alphaAnim = this->alpha;
+        mUpdateAlphaFromAnim = false;
+        mAlpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
+        alphaAnim = mAlpha;
     }
     
     void Node::setOffset(float x, float y) {
         offsetAnim.stop();
-        bUpdateOffsetFromAnim = false;
-        offset.set(x, y);
-        offsetAnim.ptr()->set(offset);
-        bFrameDirty = true;
+        mUpdateOffsetFromAnim = false;
+        mOffset.set(x, y);
+        offsetAnim.ptr()->set(mOffset);
+        mFrameDirty = true;
         
         //If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
@@ -159,18 +159,18 @@ namespace po {
     {
         //See if a tween is in progress, if so we want to use that value
         //Setting an attribute calls stop(), so that will override this
-        if(!positionAnim.isComplete())  bUpdatePositionFromAnim = true;
-        if(!scaleAnim.isComplete())     bUpdateScaleFromAnim    = true;
-        if(!rotationAnim.isComplete())  bUpdateRotationFromAnim = true;
-        if(!alphaAnim.isComplete())     bUpdateAlphaFromAnim    = true;
-        if(!offsetAnim.isComplete())    bUpdateOffsetFromAnim   = true;
+        if(!positionAnim.isComplete())  mUpdatePositionFromAnim = true;
+        if(!scaleAnim.isComplete())     mUpdateScaleFromAnim    = true;
+        if(!rotationAnim.isComplete())  mUpdateRotationFromAnim = true;
+        if(!alphaAnim.isComplete())     mUpdateAlphaFromAnim    = true;
+        if(!offsetAnim.isComplete())    mUpdateOffsetFromAnim   = true;
         
         //Update Anims if we care
-        if(bUpdatePositionFromAnim)     position    = positionAnim;
-        if(bUpdateScaleFromAnim)        scale       = scaleAnim;
-        if(bUpdateRotationFromAnim)     rotation    = rotationAnim;
-        if(bUpdateAlphaFromAnim)        alpha       = alphaAnim;
-        if(bUpdateOffsetFromAnim)       offset      = offsetAnim;
+        if(mUpdatePositionFromAnim)     mPosition    = positionAnim;
+        if(mUpdateScaleFromAnim)        mScale       = scaleAnim;
+        if(mUpdateRotationFromAnim)     mRotation    = rotationAnim;
+        if(mUpdateAlphaFromAnim)        mAlpha       = alphaAnim;
+        if(mUpdateOffsetFromAnim)       mOffset      = offsetAnim;
     }
     
     //------------------------------------------------------
@@ -178,34 +178,34 @@ namespace po {
     
     void Node::setAlignment(po::Node::Alignment alignment)
     {
-        this->alignment = alignment;
+        mAlignment = alignment;
         
         if(alignment == Alignment::NONE) return;
         
         ci::Rectf bounds = getBounds();
         
-        switch (alignment) {
+        switch (mAlignment) {
             case Alignment::TOP_LEFT:
-                offset.set(0,0); break;
+                mOffset.set(0,0); break;
             case Alignment::TOP_CENTER:
-                offset.set(-bounds.getWidth()/2.f,0); break;
+                mOffset.set(-bounds.getWidth()/2.f,0); break;
             case Alignment::TOP_RIGHT:
-                offset.set(-bounds.getWidth(),0); break;
+                mOffset.set(-bounds.getWidth(),0); break;
             case Alignment::CENTER_LEFT:
-                offset.set(0,-bounds.getHeight()/2.f); break;
+                mOffset.set(0,-bounds.getHeight()/2.f); break;
             case Alignment::CENTER_CENTER:
-                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
+                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
             case Alignment::CENTER_RIGHT:
-                offset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
             case Alignment::BOTTOM_LEFT:
-                offset.set(0,-bounds.getHeight()); break;
+                mOffset.set(0,-bounds.getHeight()); break;
             case Alignment::BOTTOM_CENTER:
-                offset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
+                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
             case Alignment::BOTTOM_RIGHT:
-                offset.set(-bounds.getWidth(),-bounds.getHeight()); break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight()); break;
         }
         
-        offset = offset-bounds.getUpperLeft();
+        mOffset = mOffset-bounds.getUpperLeft();
     }
     
     
@@ -215,21 +215,21 @@ namespace po {
     void Node::setTransformation()
     {
         #pragma message "Need to implement matrix order"
-        ci::gl::translate(position);
-        ci::gl::rotate(rotation);
-        ci::gl::scale(scale);
+        ci::gl::translate(mPosition);
+        ci::gl::rotate(mRotation);
+        ci::gl::scale(mScale);
         
-        ci::gl::translate(offset);
+        ci::gl::translate(mOffset);
     
-        matrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
+        mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
     #pragma message "This is def not right"
     ci::Vec2f Node::sceneToLocal(ci::Vec2f scenePoint)
     {
-        po::SceneRef s = scene.lock();
-        if(s) {
-            return s->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
+        po::SceneRef scene = mScene.lock();
+        if(scene) {
+            return scene->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
                                                 ci::app::getWindow()->getWidth(),
                                                 ci::app::getWindow()->getHeight());
         }
@@ -239,7 +239,7 @@ namespace po {
     
     ci::Vec2f Node::globalToLocal(ci::Vec2f globalPoint)
     {
-        return matrix.globalToLocal(globalPoint);
+        return mMatrix.globalToLocal(globalPoint);
     }
     
     bool Node::pointInside(const ci::Vec2f &point)
@@ -254,42 +254,42 @@ namespace po {
     #pragma mark - Parent & Scene -
     
     void Node::setScene(SceneRef sceneRef) {
-        scene = sceneRef;
-        if(hasScene()) scene.lock()->trackChildNode(shared_from_this());
+        mScene = sceneRef;
+        if(hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
     SceneRef Node::getScene()
     {
-        return scene.lock();
+        return mScene.lock();
     }
     
     bool Node::hasScene()
     {
-        return (scene.lock() ? true : false);
+        return (mScene.lock() ? true : false);
     }
     
     void Node::removeScene()
     {
-        if(hasScene()) scene.lock()->untrackChildNode(shared_from_this());
-        scene.reset();
+        if(hasScene()) mScene.lock()->untrackChildNode(shared_from_this());
+        mScene.reset();
     }
     
     void Node::setParent(NodeContainerRef containerNode)
     {
-        parent = containerNode;
+        mParent = containerNode;
     }
     
     NodeContainerRef Node::getParent() const {
-        return parent.lock();
+        return mParent.lock();
     }
         
     bool Node::hasParent()
     {
-        return (parent.lock() ? true : false);
+        return (mParent.lock() ? true : false);
     }
     
     void Node::removeParent() {
-        parent.reset();
+        mParent.reset();
     }
     
     
@@ -314,8 +314,8 @@ namespace po {
         
         //Draw origin
         ci::gl::pushMatrices();
-        ci::gl::translate(-offset);
-        ci::gl::scale(ci::Vec2f(1.f,1.f)/ scale);
+        ci::gl::translate(-mOffset);
+        ci::gl::scale(ci::Vec2f(1.f,1.f)/mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popMatrices();
     }
@@ -326,15 +326,15 @@ namespace po {
             ci::Rectf r = getBounds();
             
             ci::MatrixAffine2f m;
-            m.translate(position);
+            m.translate(mPosition);
             m.rotate(ci::toRadians(getRotation()));
-            m.scale(scale);
-            m.translate(offset);
+            m.scale(mScale);
+            m.translate(mOffset);
             
-            frame = r.transformCopy(m);
-            bFrameDirty = false;
+            mFrame = r.transformCopy(m);
+            mFrameDirty = false;
 //        }
-        return frame;
+        return mFrame;
     }
     
     
@@ -363,7 +363,7 @@ namespace po {
     //Mouse Down Inside
     void Node::connectMouseDownInside(Node* listener)
     {
-        scoped_connection *connection = new scoped_connection(signalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
+        scoped_connection *connection = new scoped_connection(mSignalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
         trackConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
     }
     
@@ -374,7 +374,7 @@ namespace po {
     
     void Node::emitMouseDownInside(po::MouseEvent &event)
     {
-        signalMouseDownInside(event);
+        mSignalMouseDownInside(event);
     };
     
     
@@ -382,7 +382,7 @@ namespace po {
     //Mouse Move Inside
     void Node::connectMouseMoveInside(Node* listener)
     {
-        scoped_connection *connection = new scoped_connection(signalMouseMoveInside.connect(std::bind( &Node::mouseMoveInside, listener, std::_1 )));
+        scoped_connection *connection = new scoped_connection(mSignalMouseMoveInside.connect(std::bind( &Node::mouseMoveInside, listener, std::_1 )));
         trackConnection(po::MouseEvent::Type::MOVE_INSIDE, listener, connection);
     }
     
@@ -393,7 +393,7 @@ namespace po {
     
     void Node::emitMouseMoveInside(po::MouseEvent &event)
     {
-        signalMouseMoveInside(event);
+        mSignalMouseMoveInside(event);
     };
     
     
@@ -401,7 +401,7 @@ namespace po {
     //Mouse Drag Inside
     void Node::connectMouseDragInside(Node* listener)
     {
-        scoped_connection *connection = new scoped_connection(signalMouseDragInside.connect(std::bind( &Node::mouseDragInside, listener, std::_1 )));
+        scoped_connection *connection = new scoped_connection(mSignalMouseDragInside.connect(std::bind( &Node::mouseDragInside, listener, std::_1 )));
         trackConnection(po::MouseEvent::Type::DRAG_INSIDE, listener, connection);
     }
     
@@ -412,7 +412,7 @@ namespace po {
     
     void Node::emitMouseDragInside(po::MouseEvent &event)
     {
-        signalMouseMoveInside(event);
+        mSignalMouseMoveInside(event);
     };
     
     
@@ -420,7 +420,7 @@ namespace po {
     //Mouse Up Inside
     void Node::connectMouseUpInside(Node* listener)
     {
-        scoped_connection *connection = new scoped_connection(signalMouseUpInside.connect(std::bind( &Node::mouseUpInside, listener, std::_1 )));
+        scoped_connection *connection = new scoped_connection(mSignalMouseUpInside.connect(std::bind( &Node::mouseUpInside, listener, std::_1 )));
         trackConnection(po::MouseEvent::Type::UP_INSIDE, listener, connection);
     }
     
@@ -431,7 +431,7 @@ namespace po {
     
     void Node::emitMouseUpInside(po::MouseEvent &event)
     {
-        signalMouseUpInside(event);
+        mSignalMouseUpInside(event);
     };
 
     
@@ -445,24 +445,15 @@ namespace po {
         
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
-                mouseDown(event);
-                break;
-                
+                mouseDown(event); break;
             case po::MouseEvent::Type::MOVE:
-                mouseMove(event);
-                break;
-                
+                mouseMove(event); break;
             case po::MouseEvent::Type::DRAG:
-                mouseDrag(event);
-                break;
-                
+                mouseDrag(event); break;
             case po::MouseEvent::Type::UP:
-                mouseUp(event);
-                break;
-                
+                mouseUp(event); break;
             case po::MouseEvent::Type::WHEEL:
-                mouseWheel(event);
-                break;
+                mouseWheel(event); break;
         }
     }
     
@@ -496,20 +487,13 @@ namespace po {
         //Emit the Event
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN_INSIDE:
-                signalMouseDownInside(event);
-                break;
-                
+                mSignalMouseDownInside(event); break;
             case po::MouseEvent::Type::MOVE_INSIDE:
-                signalMouseMoveInside(event);
-                break;
-                
+                mSignalMouseMoveInside(event); break;
             case po::MouseEvent::Type::DRAG_INSIDE:
-                signalMouseDragInside(event);
-                break;
-                
+                mSignalMouseDragInside(event); break;
             case po::MouseEvent::Type::UP_INSIDE:
-                signalMouseUpInside(event);
-                break;
+                mSignalMouseUpInside(event); break;
         }
     }
     
