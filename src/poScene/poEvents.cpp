@@ -34,8 +34,8 @@ namespace po {
                         
                         ) {
         
-        this->windowPos = event.getPos();
-        this->type      = type;
+        mWindowPos = event.getPos();
+        mType      = type;
     }
     
     
@@ -55,6 +55,6 @@ namespace po {
                        , event.getNativeKeyCode()
                        )
     {
-        this->type = type;
+        mType = type;
     }
 }

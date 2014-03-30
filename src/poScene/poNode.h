@@ -99,7 +99,6 @@ namespace po {
         ci::Vec2f sceneToLocal(ci::Vec2f    point);
         ci::Vec2f globalToLocal(ci::Vec2f   point);
         
-        
         //Visibility
         void setVisibilityEnabled(bool enabled) { bVisible = enabled; };
         #pragma message "This should probably step up to see if any of it's parents aren't visible"
@@ -107,45 +106,63 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
-        void setName(std::string name) { mName = name; };
+        Node& name(std::string name)    { setName(name); return *this; }
+        void setName(std::string name)  { mName = name; };
+        
         std::string getName() { return mName; }
         
         //Position
+        Node& position(float x, float y)        { setPosition(x,y); return *this; }
+        Node& position(ci::Vec2f position)      { return this->position(position.x, position.y); }
+        void setPosition(ci::Vec2f position)    { setPosition(position.x, position.y); };
         void setPosition(float x, float y);
-        void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
-        ci::Vec2f getPosition() { return mPosition; };
-        ci::Anim<ci::Vec2f>& getPositionAnim() { return mPositionAnim; };
+        
+        ci::Vec2f getPosition()                 { return mPosition; };
+        ci::Anim<ci::Vec2f>& getPositionAnim()  { return mPositionAnim; };
         
         //Scale
+        Node& scale(float x, float y)   { setScale(x,y); return *this; }
+        Node& scale(ci::Vec2f scale)    { return this->scale(scale.x, scale.y); }
+        void setScale(ci::Vec2f scale)  { setPosition(scale.x, scale.y); };
         void setScale(float x, float y);
-        void setScale(ci::Vec2f scale) { setPosition(scale.x, scale.y); };
-        ci::Vec2f getScale() { return mScale; };
+        
+        ci::Vec2f getScale()                { return mScale; };
         ci::Anim<ci::Vec2f>& getScaleAnim() { return mScaleAnim; };
         
         //Rotation
+        Node& rotation(float rotation)  { setRotation(rotation); return *this; }
         void setRotation(float rotation);
-        float getRotation() { return mRotation; };
-        ci::Anim<float>& getRotationAnim() { return mRotationAnim; };
+        
+        float getRotation()                 { return mRotation; };
+        ci::Anim<float>& getRotationAnim()  { return mRotationAnim; };
         
         //Alpha
+        Node& alpha(float alpha) { setAlpha(alpha); return *this; }
         void setAlpha(float alpha);
-        float getAlpha() { return mAlpha; };
+        
+        float getAlpha()                { return mAlpha; };
         ci::Anim<float>& getAlphaAnim() { return mAlphaAnim; };
         
         //Offset
+        Node& offset(float x, float y)      { setOffset(x,y); return *this; }
+        Node& offset(ci::Vec2f offset)      { return this->offset(offset.x, offset.y); }
+        void setOffset(ci::Vec2f offset)    { setOffset(offset.x, offset.y); };
         void setOffset(float x, float y);
-        void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
+        
         ci::Vec2f getOffset() { return mOffset; };
         ci::Anim<ci::Vec2f>& getOffsetAnim() { return mOffsetAnim; };
         
         //Alignment
+        Node& alignment(Alignment alignment) { setAlignment(alignment); return *this; }
         void setAlignment(Alignment alignment);
+        
         Alignment getAlignment() { return mAlignment; };
         
-        
-        
+        //Identifiers (Assigned from Scene)
         uint getDrawOrder() { return mDrawOrder; };
         uint getUID() { return mUid; };
+        
+        
         
         //------------------
         //SIGNALS

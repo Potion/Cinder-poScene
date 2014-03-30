@@ -54,8 +54,19 @@ namespace po {
         
         //------------------
         //ATTRIBUTES
-        ci::Color fillColor;
-        ci::Color strokeColor;
+        Shape& fillColor(ci::Color color)               { setFillColor(color); return *this; }
+        Shape& fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
+        void setFillColor(ci::Color color)              { mFillColor = color; }
+        void setFillColor(float r, float g, float b)    { mFillColor.set(r,g,b); }
+        
+        
+        Shape& strokeColor(ci::Color color)               { setStrokeColor(color); return *this; }
+        Shape& strokeColor(float r, float g, float b)     { setStrokeColor(r,g,b); return *this; }
+        void setStrokeColor(ci::Color color)              { mStrokeColor = color; }
+        void setStrokeColor(float r, float g, float b)    { mStrokeColor.set(r,g,b); }
+        
+        
+        ci::Color getFillColor() { return mFillColor; }
         
     protected:
         Shape();
@@ -69,5 +80,9 @@ namespace po {
         
         ci::Shape2d ciShape2d;
         bool fillEnabled, strokeEnabled;
+        
+        //Attributes
+        ci::Color mFillColor;
+        ci::Color mStrokeColor;
     };
 }

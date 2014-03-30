@@ -58,7 +58,7 @@ void TestNode::draw() {
 }
 
 void TestNode::squareFinishedTweening(po::ShapeRef square) {
-    square->fillColor.set(0,255,0);
+    square->setFillColor(0,255,0);
     std::cout << "Finished!" << std::endl;
 }
 
@@ -89,14 +89,14 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
     
-    thisRect->fillColor.set(255,0,0);
+    thisRect->setFillColor(255,0,0);
     
     if(!thisRect->getRotationAnim().isComplete()) {
         thisRect->getRotationAnim().stop();
         squareFinishedTweening(thisRect);
     }
     else {
-        thisRect->fillColor.set(255,0,0);
+        thisRect->setFillColor(255,0,0);
         
         if (round(thisRect->getRotation()) == 360.f) {
             thisRect->setRotation(0);

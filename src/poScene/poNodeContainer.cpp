@@ -20,14 +20,14 @@ namespace po {
 
     int NodeContainer::getNumChildren()
     {
-        return children.size();
+        return mChildren.size();
     }
     
     #pragma mark Set and Remove Scene
     void NodeContainer::setScene(SceneRef scene)
     {
         Node::setScene(scene);
-        for(NodeRef &childNode : children) {
+        for(NodeRef &childNode : mChildren) {
             childNode->setScene(scene);
         }
     }
@@ -35,7 +35,7 @@ namespace po {
     void NodeContainer::removeScene()
     {
         Node::removeScene();
-        for(NodeRef &childNode : children) {
+        for(NodeRef &childNode : mChildren) {
             childNode->removeScene();
         }
     }
@@ -54,20 +54,20 @@ namespace po {
         node->setScene(mScene.lock());
         
         //Track Node
-        children.push_back(node);
+        mChildren.push_back(node);
     }
 
     bool NodeContainer::removeChild(NodeRef node)
     {
-        std::vector<NodeRef>::iterator iter = std::find(children.begin(), children.end(), node);
+        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
         
-        if(iter != children.end()) {
+        if(iter != mChildren.end()) {
             //Remove reference to this node in child
             node->removeParent();
             node->removeScene();
             
             //Erase node
-            children.erase(iter);
+            mChildren.erase(iter);
             
             return true;
         }
@@ -78,7 +78,7 @@ namespace po {
     void NodeContainer::updateTree()
     {
         update();
-        for(NodeRef &childNode : children)
+        for(NodeRef &childNode : mChildren)
             childNode->updateTree();
     }
 
@@ -89,7 +89,7 @@ namespace po {
         setTransformation();
         
         draw();
-        for(NodeRef &childNode : children) {
+        for(NodeRef &childNode : mChildren) {
             childNode->drawTree();
             
             #pragma message "For testing, should be removed"
@@ -108,7 +108,7 @@ namespace po {
         //Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         
-        for(NodeRef &childNode : children)
+        for(NodeRef &childNode : mChildren)
             bounds.include(childNode->getFrame());
         
         return bounds;
@@ -116,7 +116,7 @@ namespace po {
     
     bool NodeContainer::pointInside(const ci::Vec2f &point)
     {
-        for (NodeRef node : children) {
+        for (NodeRef node : mChildren) {
             if (node->pointInside(point)) {
                 return true;
             }

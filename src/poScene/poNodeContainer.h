@@ -43,6 +43,6 @@ namespace po {
         virtual void updateTree();
         virtual void drawTree();
         
-        std::vector<NodeRef> children;
+        std::vector<NodeRef> mChildren;
     };
 };

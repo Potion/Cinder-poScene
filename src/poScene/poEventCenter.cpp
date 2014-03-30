@@ -51,7 +51,7 @@ namespace po {
     void EventCenter::processMouseEvents(std::vector<NodeRef> &nodes)
     {
         //Go through the queue
-        for(auto& queue : mouseEventQueues) {
+        for(auto& queue : mMouseEventQueues) {
             //Get the type for this item in the std::map
             po::MouseEvent::Type type = (po::MouseEvent::Type)queue.first;
             
@@ -85,21 +85,21 @@ namespace po {
     //Dispatch callback to top item, going up through draw tree
     void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event)
     {
-        switch (event.type) {
+        switch (event.getType()) {
             case MouseEvent::Type::DOWN:
-                event.type = MouseEvent::Type::DOWN_INSIDE;
+                event.mType = MouseEvent::Type::DOWN_INSIDE;
                 break;
                 
             case MouseEvent::Type::MOVE:
-                event.type = MouseEvent::Type::MOVE_INSIDE;
+                event.mType = MouseEvent::Type::MOVE_INSIDE;
                 break;
                 
             case MouseEvent::Type::DRAG:
-                event.type = MouseEvent::Type::DRAG_INSIDE;
+                event.mType = MouseEvent::Type::DRAG_INSIDE;
                 break;
                 
             case MouseEvent::Type::UP:
-                event.type = MouseEvent::Type::UP_INSIDE;
+                event.mType = MouseEvent::Type::UP_INSIDE;
                 break;
         }
         
@@ -123,7 +123,7 @@ namespace po {
     void EventCenter::processKeyEvents(std::vector<NodeRef> &nodes)
     {
         //Go through the queue
-        for(auto& queue : keyEventQueues) {
+        for(auto& queue : mKeyEventQueues) {
             //Get the type for this item in the std::map
             po::KeyEvent::Type type = (po::KeyEvent::Type)queue.first;
             

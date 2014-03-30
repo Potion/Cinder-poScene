@@ -47,25 +47,25 @@ namespace po {
         
         MouseEvent(ci::app::MouseEvent event, Type type);
         
-        float getX() { return pos.x; };
-        float getY() { return pos.y; };
-        ci::Vec2f getPos() { return pos; };
+        float getX() { return mPos.x; };
+        float getY() { return mPos.y; };
+        ci::Vec2f getPos() { return mPos; };
         
-        float getSceneX() { return scenePos.x; };
-        float getSceneY() { return scenePos.y; };
-        ci::Vec2f getScenePos() { return scenePos; };
+        float getSceneX() { return mScenePos.x; };
+        float getSceneY() { return mScenePos.y; };
+        ci::Vec2f getScenePos() { return mScenePos; };
         
-        float getWindowX() { return windowPos.x; };
-        float getWindowY() { return windowPos.y; };
-        ci::Vec2f getWindowPos() { return windowPos; };
+        float getWindowX() { return mWindowPos.x; };
+        float getWindowY() { return mWindowPos.y; };
+        ci::Vec2f getWindowPos() { return mWindowPos; };
         
-        Type getType() { return type; };
-        NodeRef getSource() { return source.lock(); };
+        Type getType() { return mType; };
+        NodeRef getSource() { return mSource.lock(); };
         
     private:
-        std::weak_ptr<Node> source;
-        Type type;
-        ci::Vec2f pos, scenePos, windowPos;
+        std::weak_ptr<Node> mSource;
+        Type mType;
+        ci::Vec2f mPos, mScenePos, mWindowPos;
     };
     
     
@@ -84,10 +84,10 @@ namespace po {
         
         KeyEvent(ci::app::KeyEvent event, Type type);
         
-        Type getType() { return type; }
+        Type getType() { return mType; }
         
     private:
-        Type type;
+        Type mType;
     };
 }
 

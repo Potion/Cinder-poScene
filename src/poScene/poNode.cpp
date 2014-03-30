@@ -439,9 +439,9 @@ namespace po {
     //Global Mouse Events
     void Node::notifyGlobal(po::MouseEvent &event) {
         //Setup event
-        event.source    = shared_from_this();
-        event.pos       = globalToLocal(event.windowPos);
-        event.scenePos  = getScene()->getRootNode()->globalToLocal(event.windowPos);
+        event.mSource    = shared_from_this();
+        event.mPos       = globalToLocal(event.getWindowPos());
+        event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
         
         switch (event.getType()) {
             case po::MouseEvent::Type::DOWN:
@@ -480,9 +480,9 @@ namespace po {
     void Node::emitEvent(po::MouseEvent &event)
     {
         //Setup event
-        event.source    = shared_from_this();
-        event.pos       = globalToLocal(event.windowPos);
-        event.scenePos  = getScene()->getRootNode()->globalToLocal(event.windowPos);
+        event.mSource    = shared_from_this();
+        event.mPos       = globalToLocal(event.getWindowPos());
+        event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
         
         //Emit the Event
         switch (event.getType()) {

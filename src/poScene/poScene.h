@@ -74,6 +74,6 @@ namespace po {
         };
         
         void processTrackingQueue();
-        std::vector<TrackedNode> trackingQueue;
+        std::vector<TrackedNode> mTrackingQueue;
     };
 }

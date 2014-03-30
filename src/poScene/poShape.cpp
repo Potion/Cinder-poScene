@@ -75,9 +75,9 @@ namespace po {
     }
     
     Shape::Shape()
-    :   fillColor(255,255,255)
+    :   mFillColor(255,255,255)
     ,   fillEnabled(true)
-    ,   strokeColor(255,255,255)
+    ,   mStrokeColor(255,255,255)
     ,   strokeEnabled(false)
     ,   precision(100)
     {
@@ -100,7 +100,7 @@ namespace po {
     {
         //Draw fill
         if(fillEnabled) {
-            ci::gl::color(fillColor);
+            ci::gl::color(mFillColor);
             ci::gl::draw(vboMesh);
             //ci::gl::drawSolid(ciShape2d);
         }
@@ -108,7 +108,7 @@ namespace po {
         //Draw stroke
         #pragma message "Need to implement better stroke stuff"
         if(strokeEnabled) {
-            ci::gl::color(strokeColor);
+            ci::gl::color(mStrokeColor);
             ci::gl::draw(ciShape2d, ci::app::getWindowContentScale());
         }
     }

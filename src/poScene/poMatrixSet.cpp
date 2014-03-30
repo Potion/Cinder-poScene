@@ -23,14 +23,14 @@
 namespace po {
     void MatrixSet::set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport)
     {
-        this->modelview     = modelview;
-        this->projection    = projection;
-        this->viewport      = viewport;
+        mModelview     = modelview;
+        mProjection    = projection;
+        mViewport      = viewport;
     }
     
     ci::Vec2f MatrixSet::globalToLocal(ci::Vec2f point)
     {
-        ci::Vec3f p(point.x, viewport.getHeight() - point.y, 0.f);
+        ci::Vec3f p(point.x, mViewport.getHeight() - point.y, 0.f);
         ci::Vec3f r = unproject(p);
         return ci::Vec2f(r.x, r.y);
     }
@@ -40,13 +40,13 @@ namespace po {
     ci::Vec3f MatrixSet::unproject(const ci::Vec3f &pt)
     {
         /* find the inverse modelview-projection-matrix */
-        ci::Matrix44f a = projection * modelview;
+        ci::Matrix44f a = mProjection * mModelview;
         a.invert(0.0f);
         
         /* transform to normalized coordinates in the range [-1, 1] */
         ci::Vec4f in;
-        in.x = (pt.x - viewport.getX1())/viewport.getWidth()*2.0f-1.0f;
-        in.y = (pt.y - viewport.getY1())/viewport.getHeight()*2.0f-1.0f;
+        in.x = (pt.x - mViewport.getX1())/mViewport.getWidth()*2.0f-1.0f;
+        in.y = (pt.y - mViewport.getY1())/mViewport.getHeight()*2.0f-1.0f;
         in.z = 2.0f * pt.z - 1.0f;
         in.w = 1.0f;
         
