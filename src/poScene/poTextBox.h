@@ -29,6 +29,7 @@ namespace po {
         
         //Renders to an internal TextureRef for drawing
         ci::Surface render();
+        ci::gl::TextureRef getTexure()  { return mTexture; };
         
         ci::Rectf getBounds();
         
