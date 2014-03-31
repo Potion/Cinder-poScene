@@ -25,12 +25,15 @@ namespace po {
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
-        s->ciShape2d.moveTo(0,0);
-        s->ciShape2d.lineTo(width,0);
-        s->ciShape2d.lineTo(width,height);
-        s->ciShape2d.lineTo(0,height);
-        s->ciShape2d.close();
+        ci::Shape2d shape;
         
+        shape.moveTo(0,0);
+        shape.lineTo(width,0);
+        shape.lineTo(width,height);
+        shape.lineTo(0,height);
+        shape.close();
+        
+        s->setCiShape2d(shape);
         s->render();
         
         return s;
@@ -57,13 +60,16 @@ namespace po {
         float xm = x + width / 2;       // x-middle
         float ym = y + height / 2;       // y-middle
         
-        s->ciShape2d.moveTo(x, height/2);
-        s->ciShape2d.curveTo(x, ym-oy, xm - ox, y, xm, y);
-        s->ciShape2d.curveTo(xm + ox, y, xe, ym - oy, xe, ym);
-        s->ciShape2d.curveTo(xe, ym + oy, xm + ox, ye, xm, ye);
-        s->ciShape2d.curveTo(xm - ox, ye, x, ym + oy, x, ym);
-        s->ciShape2d.close();
+        ci::Shape2d shape;
         
+        shape.moveTo(x, height/2);
+        shape.curveTo(x, ym-oy, xm - ox, y, xm, y);
+        shape.curveTo(xm + ox, y, xe, ym - oy, xe, ym);
+        shape.curveTo(xe, ym + oy, xm + ox, ye, xm, ye);
+        shape.curveTo(xm - ox, ye, x, ym + oy, x, ym);
+        shape.close();
+        
+        s->setCiShape2d(shape);
         s->render();
 
         return s;
@@ -76,10 +82,10 @@ namespace po {
     
     Shape::Shape()
     :   mFillColor(255,255,255)
-    ,   fillEnabled(true)
+    ,   mFillEnabled(true)
     ,   mStrokeColor(255,255,255)
-    ,   strokeEnabled(false)
-    ,   precision(100)
+    ,   mStrokeEnabled(false)
+    ,   mPrecision(100)
     {
     }
     
@@ -87,42 +93,42 @@ namespace po {
     
     bool Shape::pointInside(const ci::Vec2f &point)
     {
-        return ciShape2d.contains(globalToLocal(point));
+        return mCiShape2d.contains(globalToLocal(point));
     }
     
     void Shape::setCiShape2d(ci::Shape2d shape)
     {
-        ciShape2d = shape;
+        mCiShape2d = shape;
         render();
     }
     
     void Shape::draw()
     {
         //Draw fill
-        if(fillEnabled) {
+        if(mFillEnabled) {
             ci::gl::color(mFillColor);
-            ci::gl::draw(vboMesh);
+            ci::gl::draw(mVboMesh);
             //ci::gl::drawSolid(ciShape2d);
         }
         
         //Draw stroke
         #pragma message "Need to implement better stroke stuff"
-        if(strokeEnabled) {
+        if(mStrokeEnabled) {
             ci::gl::color(mStrokeColor);
-            ci::gl::draw(ciShape2d, ci::app::getWindowContentScale());
+            ci::gl::draw(mCiShape2d, ci::app::getWindowContentScale());
         }
     }
     
     void Shape::render()
     {
-        ci::TriMesh2d mesh= ci::Triangulator( ciShape2d, precision).calcMesh( ci::Triangulator::WINDING_ODD);
-        vboMesh = ci::gl::VboMesh::create( mesh );
+        ci::TriMesh2d mesh= ci::Triangulator( mCiShape2d, mPrecision).calcMesh( ci::Triangulator::WINDING_ODD);
+        mVboMesh = ci::gl::VboMesh::create( mesh );
     }
     
     ci::Rectf Shape::getBounds()
     {
         if(mBoundsDirty) {
-            mBounds       = ciShape2d.calcPreciseBoundingBox();
+            mBounds       = mCiShape2d.calcPreciseBoundingBox();
             mBoundsDirty = false;
         }
         

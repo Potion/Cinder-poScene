@@ -5,6 +5,9 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+#include "poScene.h"
+#include "poImageTestApp.h"
+
 class ImageTestApp : public AppNative {
   public:
 	void setup();
@@ -19,7 +22,7 @@ void ImageTestApp::setup()
 {
     ci::gl::enableAlphaBlending();
     
-    poTextBoxAppRef app = poTextBoxApp::create();
+    poImageTestAppRef app = poImageTest App::create();
     scene = po::Scene::create(app);
 }
 
