@@ -117,7 +117,7 @@ namespace po {
         if(mFillEnabled) {
             ci::gl::color(mFillColor);
             
-            ci::gl::draw(mTexture);
+            ci::gl::enable( GL_TEXTURE_2D );
             mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
             if(mTexture) mTexture->disable();
@@ -134,13 +134,17 @@ namespace po {
     
     void Shape::render()
     {
-        ci::gl::VboMesh::Layout layout;
-        layout.setStaticIndices();
-        layout.setDynamicPositions();
-        layout.setStaticTexCoords2d();
+        //Create Mesh
+        ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
         
-        ci::TriMesh2d mesh= ci::Triangulator( mCiShape2d, mPrecision).calcMesh( ci::Triangulator::WINDING_ODD);
-        mVboMesh = ci::gl::VboMesh::create( mesh, layout );
+        //Set Tex Coords
+        ci::Rectf bbox = mCiShape2d.calcBoundingBox();
+        for(const ci::Vec2f vertice : mesh.getVertices()) {
+            mesh.appendTexCoord(ci::Vec2f(vertice.x/bbox.getWidth(), vertice.y/bbox.getHeight()));
+        }
+        
+        //Create VBO Mesh
+        mVboMesh = ci::gl::VboMesh::create( mesh );
     }
     
     ci::Rectf Shape::getBounds()
