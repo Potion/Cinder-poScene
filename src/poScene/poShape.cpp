@@ -7,6 +7,7 @@
 //
 #include "cinder/TriMesh.h"
 #include "cinder/Triangulate.h"
+#include "cinder/gl/Texture.h"
 
 #include "poShape.h"
 
@@ -42,6 +43,14 @@ namespace po {
     ShapeRef Shape::createRect(float size)
     {
         return createRect(size, size);
+    }
+    
+    ShapeRef Shape::createRect(ci::gl::TextureRef texture)
+    {
+        std::shared_ptr<Shape> s = Shape::createRect(texture->getWidth(), texture->getHeight());
+        s->mTexture = texture;
+        
+        return s;
     }
     
     //Ellipse
@@ -107,7 +116,11 @@ namespace po {
         //Draw fill
         if(mFillEnabled) {
             ci::gl::color(mFillColor);
+            
+            ci::gl::draw(mTexture);
+            mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
+            if(mTexture) mTexture->disable();
             //ci::gl::drawSolid(ciShape2d);
         }
         
@@ -121,8 +134,13 @@ namespace po {
     
     void Shape::render()
     {
+        ci::gl::VboMesh::Layout layout;
+        layout.setStaticIndices();
+        layout.setDynamicPositions();
+        layout.setStaticTexCoords2d();
+        
         ci::TriMesh2d mesh= ci::Triangulator( mCiShape2d, mPrecision).calcMesh( ci::Triangulator::WINDING_ODD);
-        mVboMesh = ci::gl::VboMesh::create( mesh );
+        mVboMesh = ci::gl::VboMesh::create( mesh, layout );
     }
     
     ci::Rectf Shape::getBounds()

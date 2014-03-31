@@ -22,8 +22,15 @@ namespace po {
     {
     public:
         static ShapeRef create();
+        static ShapeRef create(ci::gl::TextureRef texture) { return createRect(texture); }
+        
         static ShapeRef createRect(float width, float height);
         static ShapeRef createRect(float size); //Square
+        
+        static ShapeRef createRect(std::string filePath);
+        static ShapeRef createRect(ci::Surface surface);
+        static ShapeRef createRect(ci::gl::TextureRef texture);
+        
         static ShapeRef createEllipse(float width, float height);
         static ShapeRef createEllipse(float size); //Circle
         
@@ -88,6 +95,8 @@ namespace po {
         
         //Our underlying ci::Shape2d
         ci::Shape2d mCiShape2d;
+        
+        ci::gl::TextureRef mTexture;
         
         //Attributes
         ci::Color mFillColor;
