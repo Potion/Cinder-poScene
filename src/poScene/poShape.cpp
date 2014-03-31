@@ -12,8 +12,7 @@
 #include "poShape.h"
 
 namespace po {
-    //BASE CLASS
-    #pragma mark - Shape -
+    #pragma mark - Create -
     
     ShapeRef Shape::create()
     {
@@ -47,8 +46,10 @@ namespace po {
     
     ShapeRef Shape::createRect(ci::gl::TextureRef texture)
     {
+        
         std::shared_ptr<Shape> s = Shape::createRect(texture->getWidth(), texture->getHeight());
         s->mTexture = texture;
+        s->render();
         
         return s;
     }
@@ -89,28 +90,29 @@ namespace po {
         return createEllipse(size, size);
     }
     
+    
+    #pragma mark - Shape -
     Shape::Shape()
     :   mFillColor(255,255,255)
     ,   mFillEnabled(true)
     ,   mStrokeColor(255,255,255)
     ,   mStrokeEnabled(false)
     ,   mPrecision(100)
+    ,   mTextureFit(TextureFit::NONE)
+    ,   mTextureAlignment(Alignment::TOP_LEFT)
     {
     }
     
     Shape::~Shape() {}
     
-    bool Shape::pointInside(const ci::Vec2f &point)
-    {
-        return mCiShape2d.contains(globalToLocal(point));
-    }
-    
+    #pragma mark - ci::Shape2d -
     void Shape::setCiShape2d(ci::Shape2d shape)
     {
         mCiShape2d = shape;
         render();
     }
     
+    #pragma mark - Drawing -
     void Shape::draw()
     {
         //Draw fill
@@ -132,19 +134,35 @@ namespace po {
         }
     }
     
+    #pragma mark - Texture -
+    void Shape::setTexture(ci::gl::TextureRef texture, po::TextureFit fit, po::Alignment alignment) {
+        mTexture    = texture;
+        mTextureFit = fit;
+        mTextureAlignment  = alignment;
+        
+        render();
+    }
+    
+    #pragma mark - Rendering -
     void Shape::render()
     {
         //Create Mesh
         ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
         
-        //Set Tex Coords
-        ci::Rectf bbox = mCiShape2d.calcBoundingBox();
-        for(const ci::Vec2f vertice : mesh.getVertices()) {
-            mesh.appendTexCoord(ci::Vec2f(vertice.x/bbox.getWidth(), vertice.y/bbox.getHeight()));
+        if(mTexture) {
+            std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
+            po::textureFit(getBounds(), mTexture, mTextureFit, mTextureAlignment, mesh.getVertices(), texCoords);
+            mesh.appendTexCoords(&texCoords[0], texCoords.size());
         }
         
         //Create VBO Mesh
         mVboMesh = ci::gl::VboMesh::create( mesh );
+    }
+    
+    #pragma mark - Dimensions -
+    bool Shape::pointInside(const ci::Vec2f &point)
+    {
+        return mCiShape2d.contains(globalToLocal(point));
     }
     
     ci::Rectf Shape::getBounds()

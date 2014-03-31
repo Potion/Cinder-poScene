@@ -20,6 +20,19 @@ using namespace boost;
 using namespace signals2;
 
 namespace po {
+    enum class Alignment {
+        NONE,
+        TOP_LEFT,
+        TOP_CENTER,
+        TOP_RIGHT,
+        CENTER_LEFT,
+        CENTER_CENTER,
+        CENTER_RIGHT,
+        BOTTOM_LEFT,
+        BOTTOM_CENTER,
+        BOTTOM_RIGHT
+    };
+    
     //Forward declare Scene + NodeContainer
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
@@ -42,18 +55,6 @@ namespace po {
         friend class EventCenter;
         
     public:
-        enum Alignment {
-            NONE,
-            TOP_LEFT,
-            TOP_CENTER,
-            TOP_RIGHT,
-            CENTER_LEFT,
-            CENTER_CENTER,
-            CENTER_RIGHT,
-            BOTTOM_LEFT,
-            BOTTOM_CENTER,
-            BOTTOM_RIGHT
-        };
         
         static NodeRef create();
         ~Node();

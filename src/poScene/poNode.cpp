@@ -176,7 +176,7 @@ namespace po {
     //------------------------------------------------------
     #pragma mark  - Alignment -
     
-    void Node::setAlignment(po::Node::Alignment alignment)
+    void Node::setAlignment(Alignment alignment)
     {
         mAlignment = alignment;
         

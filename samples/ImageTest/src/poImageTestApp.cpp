@@ -22,9 +22,13 @@ poImageTestAppRef poImageTestApp::create() {
 void poImageTestApp::setup() {
     ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage("../../../resources/test.jpg"));
     
-    po::ShapeRef imageShape = po::Shape::create(texture);
-    imageShape->setScale(0.25f, 0.25f);
+    po::ShapeRef imageShape = po::Shape::createRect(100, 200);
+    imageShape->setTexture(texture, po::TextureFit::HEIGHT);
+    //imageShape->setScale(0.25f, 0.25f);
     addChild(imageShape);
+    
+//    imageShape->alignment(po::Alignment::CENTER_CENTER)
+//                .rotation(45);
 }
 
 

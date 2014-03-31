@@ -11,8 +11,10 @@
 #include "cinder/gl/Vbo.h"
 
 #include "poNode.h"
+#include "poUtils.h"
 
 namespace po {
+    
     //Create ShapeRef typedef
     class Shape;
     typedef std::shared_ptr<Shape> ShapeRef;
@@ -27,8 +29,6 @@ namespace po {
         static ShapeRef createRect(float width, float height);
         static ShapeRef createRect(float size); //Square
         
-        static ShapeRef createRect(std::string filePath);
-        static ShapeRef createRect(ci::Surface surface);
         static ShapeRef createRect(ci::gl::TextureRef texture);
         
         static ShapeRef createEllipse(float width, float height);
@@ -52,6 +52,10 @@ namespace po {
         
         //Caching to VBO
         void render();
+        
+        //Texture
+        void setTexture(ci::gl::TextureRef texture, TextureFit fit = TextureFit::NONE, Alignment alignment = Alignment::TOP_LEFT);
+        ci::gl::TextureRef getTexture() { return mTexture; }
         
         //------------------
         //ATTRIBUTES
@@ -80,7 +84,6 @@ namespace po {
         bool getStrokeEnabled()     { return mStrokeEnabled; }
         ci::Color getStrokeColor()  { return mStrokeColor; }
         
-        
         //Precision (for rendering)
         Shape& precision(int precision) { setPrecision(precision); return *this; }
         int getPrecision() { return mPrecision; }
@@ -96,11 +99,15 @@ namespace po {
         //Our underlying ci::Shape2d
         ci::Shape2d mCiShape2d;
         
+        //Textures
         ci::gl::TextureRef mTexture;
         
         //Attributes
         ci::Color mFillColor;
         ci::Color mStrokeColor;
+        
+        TextureFit  mTextureFit;
+        Alignment   mTextureAlignment;
         
         bool mFillEnabled, mStrokeEnabled;
         
