@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+    <template name="poScene: Basic" parent="org.libcinder.apptemplates.basicopengl">
+		<requires install="relative">com.potiondesign.poscene</requires>
+        <header replaceContents="true" replaceName="true">src/_TBOX_PREFIX_Root.h</header>
+        <source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_Root.cpp</source>
+        <source replaceContents="true" replaceName="true">src/_TBOX_PREFIX_App.cpp</source>
+    </template>
+</cinder>
