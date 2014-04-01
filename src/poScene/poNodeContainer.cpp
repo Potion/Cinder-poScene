@@ -9,18 +9,14 @@
 #include "poNodeContainer.h"
 
 namespace po {
-    NodeContainerRef NodeContainer::create()
+    NodeContainerRef NodeContainer::create(std::string name)
     {
-        return std::shared_ptr<NodeContainer>(new NodeContainer);
+        return std::shared_ptr<NodeContainer>(new NodeContainer(name));
     }
 
-    NodeContainer::NodeContainer()
+    NodeContainer::NodeContainer(std::string name)
+    : Node(name)
     {
-    }
-
-    int NodeContainer::getNumChildren()
-    {
-        return mChildren.size();
     }
     
     #pragma mark Set and Remove Scene
@@ -42,20 +38,135 @@ namespace po {
 
     void NodeContainer::addChild(NodeRef node)
     {
-        //See if the node is already a child of another node.
-        if(node->getParent()) {
-            node->getParent()->removeChild(node);
-        }
-        
-        //Assign ourselves as the parent
-        #pragma message "This is ugly...if this needs to be done a lot its gonna get messy with inheritance and shared_from_this"
-        //node->setParent(enable_shared_from_this<NodeContainer>::shared_from_this());
-        node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
-        node->setScene(mScene.lock());
-        
-        //Track Node
+        setParentAndScene(node);
         mChildren.push_back(node);
     }
+    
+    void NodeContainer::addChildAt(int index, NodeRef node)
+    {
+        setParentAndScene(node);
+        mChildren.insert(mChildren.begin()+index, node);
+    }
+    
+    void NodeContainer::addChildBefore(NodeRef before, NodeRef node)
+    {
+        setParentAndScene(node);
+        mChildren.insert(mChildren.begin() + getChildIndex(before), node);
+    }
+    
+    void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
+    {
+        setParentAndScene(node);
+        mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
+    }
+    
+    int NodeContainer::getChildIndex(const NodeRef& child)
+    {
+        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
+        if(iter != mChildren.end())
+            return (int)std::distance(mChildren.begin(), iter);
+        return INVALID_INDEX;
+    }
+    
+    NodeRef NodeContainer::getChildByIndex(int index)
+    {
+        if(index < 0 || index >= mChildren.size())
+            return NodeRef();
+        return *(mChildren.begin() + index);
+    }
+    
+    NodeRef NodeContainer::getChildByUID(uint uid)
+    {
+        //Go through our tree to find any node with UID
+        for(NodeRef& node : mChildren) {
+            NodeContainerRef container = std::dynamic_pointer_cast<NodeContainer>(node);
+            if(container) {
+                NodeRef foundNode = container->getChildByUID(uid);
+                if(foundNode) return foundNode;
+            }
+            
+            else {
+                if(node->getUID() == uid) return node;
+            }
+        }
+        
+        //See if it is us
+        if(mUid == uid) return shared_from_this();
+            
+        //Not found
+        return NodeRef();
+    }
+    
+    NodeRef NodeContainer::getChildByName(const std::string &name)
+    {
+        for(NodeRef& node : mChildren) {
+            if(node->getName() == name) return node;
+        }
+        
+        return NodeRef();
+    }
+    
+    NodeRef NodeContainer::getFirstChild()
+    {
+        if(mChildren.empty())
+            return NodeRef();
+        
+        return mChildren.front();
+    }
+    
+    NodeRef NodeContainer::getLastChild()
+    {
+        if(mChildren.empty())
+            return NodeRef();
+        
+        return mChildren.back();
+    }
+    
+    std::vector<NodeRef> NodeContainer::getChildren()
+    {
+        return mChildren;
+    };
+    
+    std::vector<NodeRef>& NodeContainer::getChildrenByReference()
+    {
+        return mChildren;
+    }
+    
+    bool NodeContainer::removeChild(NodeRef node)
+    {
+        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
+        if(iter != mChildren.end()) {
+            (*iter)->removeParent();
+            (*iter)->removeScene();
+            
+            #pragma message "This is not safe in recursion..."
+            mChildren.erase(iter);
+            
+            return true;
+        }
+        
+        return false;
+    }
+    
+    bool NodeContainer::removeChildAt(int index)
+    {
+        if(index <= 0 || index >= mChildren.size())
+            return false;
+        
+        mChildren[index]->removeParent();
+        mChildren[index]->removeScene();
+        
+        mChildren.erase(mChildren.begin() + index);
+        
+        return true;
+    }
+    
+    void removeAllChildren();
+    
+    void moveChildToFront(NodeRef& node);
+    void moveChildForward(NodeRef& node);
+    void moveChildToBack(NodeRef& node);
+    void moveChildBackward(NodeRef& node);
 
     bool NodeContainer::removeChild(NodeRef node)
     {
@@ -73,6 +184,17 @@ namespace po {
         }
         
         return false;
+    }
+    
+    void NodeContainer::setParentAndScene(NodeRef node)
+    {
+        //See if the node is already a child of another node.
+        if(node->getParent())
+            node->getParent()->removeChild(node);
+        
+        //Assign ourselves as the parent
+        node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
+        node->setScene(mScene.lock());
     }
 
     void NodeContainer::updateTree()
