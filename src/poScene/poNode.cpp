@@ -16,13 +16,14 @@ namespace po {
     static uint OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
     
-    NodeRef Node::create()
+    NodeRef Node::create(std::string name)
     {
-        return std::shared_ptr<Node>(new Node());
+        return std::shared_ptr<Node>(new Node(name));
     }
     
-    Node::Node()
+    Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
+    ,   mName(name)
     ,   mPosition(0.f,0.f)
     ,   mScale(1.f,1.f)
     ,   mRotation(0)

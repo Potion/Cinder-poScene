@@ -56,7 +56,7 @@ namespace po {
         
     public:
         
-        static NodeRef create();
+        static NodeRef create(std::string name="");
         ~Node();
         
         //------------------
@@ -233,7 +233,7 @@ namespace po {
 
     protected:
         #pragma mark -
-        Node();
+        Node(std::string name ="");
         
         void setParent(NodeContainerRef node);
         void removeParent();
