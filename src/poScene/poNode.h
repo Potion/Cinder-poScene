@@ -254,13 +254,6 @@ namespace po {
         //Interaction
         bool bInteractionEnabled;
         
-        //Event registration
-        void subscribeToEvent(po::MouseEvent::Type type, NodeRef source = nullptr);
-        void unsubscribeFromEvent(po::MouseEvent::Type type, NodeRef source = nullptr);
-        void removeAllEvents();
-        
-        void registerEventCallback(po::MouseEvent::Type type, NodeRef listener);
-        
     private:
         //Private attributes
         ci::Vec2f mPosition;

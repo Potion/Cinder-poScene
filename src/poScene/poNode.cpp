@@ -344,7 +344,6 @@ namespace po {
     #pragma mark  - Events -
     
     #pragma mark General
-    void Node::removeAllEvents() {}
     
     
     #pragma mark Mouse Events
