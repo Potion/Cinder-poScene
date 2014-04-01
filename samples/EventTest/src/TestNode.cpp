@@ -23,6 +23,7 @@ TestNodeRef TestNode::create() {
 
 void TestNode::setup()
 {
+    ci::gl::enableAlphaBlending();
     setDrawBoundsEnabled(true);
     setPosition(50,50);
     
@@ -35,7 +36,7 @@ void TestNode::setup()
 			float xPos = j * (SIZE + SPACING);
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
-            r->setAlignment(Alignment::CENTER_CENTER);
+            r->setAlignment(po::Alignment::CENTER_CENTER);
             r->setDrawBoundsEnabled(true);
             
             r->connectMouseDownInside(this);
