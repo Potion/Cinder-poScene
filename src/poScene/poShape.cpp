@@ -118,12 +118,10 @@ namespace po {
         //Draw fill
         if(mFillEnabled) {
             ci::gl::color(mFillColor);
-            
-            ci::gl::enable( GL_TEXTURE_2D );
-            mTexture->enableAndBind();
+        
+            if(mTexture) mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
             if(mTexture) mTexture->disable();
-            //ci::gl::drawSolid(ciShape2d);
         }
         
         //Draw stroke
