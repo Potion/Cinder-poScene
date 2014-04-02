@@ -161,29 +161,41 @@ namespace po {
         return true;
     }
     
-    void removeAllChildren();
-    
-    void moveChildToFront(NodeRef& node);
-    void moveChildForward(NodeRef& node);
-    void moveChildToBack(NodeRef& node);
-    void moveChildBackward(NodeRef& node);
-
-    bool NodeContainer::removeChild(NodeRef node)
+    void NodeContainer::removeAllChildren()
     {
-        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
-        
-        if(iter != mChildren.end()) {
-            //Remove reference to this node in child
+        for(NodeRef& node : mChildren) {
             node->removeParent();
             node->removeScene();
-            
-            //Erase node
-            mChildren.erase(iter);
-            
-            return true;
         }
         
-        return false;
+        mChildren.clear();
+    }
+    
+    void NodeContainer::moveChildToFront(NodeRef& node)
+    {
+        if(removeChild(node))
+            addChild(node);
+    }
+    
+    void NodeContainer::moveChildForward(NodeRef& node)
+    {
+        int idx = getChildIndex(node);
+        if(removeChild(node))
+            #pragma message "Does this work with a vector, or would this be out of bounds?"
+            addChildAt(std::min(idx+1, getNumChildren()), node);
+    }
+    
+    void NodeContainer::moveChildToBack(NodeRef& node)
+    {
+        if(removeChild(node))
+            addChildAt(0, node);
+    }
+    
+    void NodeContainer::moveChildBackward(NodeRef& node)
+    {
+        int idx = getChildIndex(node);
+        if(removeChild(node))
+            addChildAt(std::max(idx-1, 0), node);
     }
     
     void NodeContainer::setParentAndScene(NodeRef node)
