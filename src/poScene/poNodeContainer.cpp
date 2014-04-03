@@ -19,7 +19,10 @@ namespace po {
     {
     }
     
-    #pragma mark Set and Remove Scene
+    
+    //------------------------------------------------------
+    #pragma mark - Scene -
+    
     void NodeContainer::setScene(SceneRef scene)
     {
         Node::setScene(scene);
@@ -35,6 +38,10 @@ namespace po {
             childNode->removeScene();
         }
     }
+    
+    
+    //------------------------------------------------------
+    #pragma mark - Add Children -
 
     void NodeContainer::addChild(NodeRef node)
     {
@@ -58,6 +65,20 @@ namespace po {
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
+    }
+    
+    
+    //------------------------------------------------------
+    #pragma mark - Get Children -
+    
+    std::vector<NodeRef> NodeContainer::getChildren()
+    {
+        return mChildren;
+    };
+    
+    std::vector<NodeRef>& NodeContainer::getChildrenByReference()
+    {
+        return mChildren;
     }
     
     int NodeContainer::getChildIndex(const NodeRef& child)
@@ -122,15 +143,9 @@ namespace po {
         return mChildren.back();
     }
     
-    std::vector<NodeRef> NodeContainer::getChildren()
-    {
-        return mChildren;
-    };
     
-    std::vector<NodeRef>& NodeContainer::getChildrenByReference()
-    {
-        return mChildren;
-    }
+    //------------------------------------------------------
+    #pragma mark - Remove Children -
     
     bool NodeContainer::removeChild(NodeRef node)
     {
@@ -171,6 +186,10 @@ namespace po {
         mChildren.clear();
     }
     
+    
+    //------------------------------------------------------
+    #pragma mark - Move Children -
+    
     void NodeContainer::moveChildToFront(NodeRef& node)
     {
         if(removeChild(node))
@@ -208,6 +227,10 @@ namespace po {
         node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
         node->setScene(mScene.lock());
     }
+    
+    
+    //------------------------------------------------------
+    #pragma mark - Update and Draw Trees -
 
     void NodeContainer::updateTree()
     {
@@ -236,6 +259,10 @@ namespace po {
         
         ci::gl::popMatrices();
     }
+    
+    
+    //------------------------------------------------------
+    #pragma mark - Dimensions -
 
     ci::Rectf NodeContainer::getBounds()
     {

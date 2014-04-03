@@ -44,7 +44,6 @@ void TestNode::setup()
 //            r->connectMouseDragInside(this);
 //            r->connectMouseUpInside(this);
             
-            //r->connectMouseDownInside(&TestNode::myMouseHandler, this);
             
             addChild(r);
         }
@@ -121,8 +120,10 @@ void TestNode::mouseMoveInside(po::MouseEvent& event)
 //    std::cout << "Local Pos: "  << event.getPos() << std::endl;
 //    std::cout << "Scene Pos: "  << event.getScenePos() << std::endl;
 //    std::cout << "Global Pos: " << event.getWindowPos() << std::endl;
-//    
-//    std::cout << "localToGlobal: "  << sceneToLocal(event.getPos()) << std::endl;
+//
+    std::cout << "Window position: " << event.getWindowPos() << std::endl;
+    std::cout << "Node position: " << getPosition() + event.getSource()->getPosition() << std::endl;
+    std::cout << "localToGlobal: "  << event.getSource()->localToGlobal(event.getPos()) << std::endl;
 }
 
 void TestNode::mouseDragInside(po::MouseEvent& event)

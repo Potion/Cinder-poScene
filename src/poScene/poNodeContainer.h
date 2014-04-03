@@ -31,14 +31,16 @@ namespace po {
         void addChildBefore(NodeRef before, NodeRef node);
         void addChildAfter(NodeRef after, NodeRef node);
         
+        
+        std::vector<NodeRef> getChildren();
+        std::vector<NodeRef>& getChildrenByReference();
+        
         int getChildIndex(const NodeRef& child);
         NodeRef getChildByIndex(int index);
         NodeRef getChildByUID(uint uid);
         NodeRef getChildByName(const std::string &name);
         NodeRef getFirstChild();
         NodeRef getLastChild();
-        std::vector<NodeRef> getChildren();
-        std::vector<NodeRef>& getChildrenByReference();
         
         bool removeChild(NodeRef node);
         bool removeChildAt(int index);

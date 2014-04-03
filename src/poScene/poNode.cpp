@@ -225,29 +225,35 @@ namespace po {
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
-    #pragma message "This is def not right"
-    ci::Vec2f Node::sceneToLocal(ci::Vec2f scenePoint)
+
+    ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
-        po::SceneRef scene = mScene.lock();
-        if(scene) {
-            return scene->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
-                                                ci::app::getWindow()->getWidth(),
-                                                ci::app::getWindow()->getHeight());
-        }
-        
         return ci::Vec2f();
     }
     
-    ci::Vec2f Node::globalToLocal(ci::Vec2f globalPoint)
+    ci::Vec2f Node::globalToLocal(const ci::Vec2f &globalPoint)
     {
         return mMatrix.globalToLocal(globalPoint);
+    }
+    
+    #pragma message "This is def not right"
+    ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
+    {
+        po::SceneRef scene = mScene.lock();
+        if(scene) {
+            return mMatrix.localToGlobal(scene->getCamera(), scenePoint);
+//            return scene->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
+//                                                    ci::app::getWindow()->getWidth(),
+//                                                    ci::app::getWindow()->getHeight());
+        }
+        
+        return ci::Vec2f();
     }
     
     bool Node::pointInside(const ci::Vec2f &point)
     {
         return false;
     }
-    
     
     
     
@@ -295,7 +301,6 @@ namespace po {
     
     
     
-    
     //------------------------------------------------------
     #pragma mark  - Dimensions -
     
@@ -339,15 +344,13 @@ namespace po {
     }
     
     
-    
-    
     //------------------------------------------------------
     #pragma mark  - Events -
     
     #pragma mark General
     
     
-    #pragma mark Mouse Events
+    #pragma mark - Mouse Events
     
     //Signals
     void Node::trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
@@ -497,7 +500,7 @@ namespace po {
         }
     }
     
-    #pragma mark -
+    #pragma mark - Key Events -
     //Global Mouse Events
     void Node::notifyGlobal(po::KeyEvent &event) {
         switch (event.getType()) {

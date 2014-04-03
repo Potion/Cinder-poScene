@@ -7,6 +7,7 @@
 //
 
 #include "cinder/Matrix.h"
+#include "cinder/Camera.h"
 
 namespace po {
     class MatrixSet
@@ -14,12 +15,14 @@ namespace po {
     public:
         void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
         
-        ci::Vec2f globalToLocal(ci::Vec2f point);
+        ci::Vec2f globalToLocal(const ci::Vec2f &point);
+        ci::Vec2f localToGlobal(const ci::CameraOrtho &camera, const ci::Vec2f &point);
         
     private:
         ci::Matrix44f mModelview, mProjection;
         ci::Area mViewport;
         
-        ci::Vec3f unproject(const ci::Vec3f &pt);
+        ci::Vec3f project(const ci::Vec3f &point);
+        ci::Vec3f unproject(const ci::Vec3f &point);
     };
 }

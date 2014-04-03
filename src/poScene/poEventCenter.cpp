@@ -87,20 +87,13 @@ namespace po {
     {
         switch (event.getType()) {
             case MouseEvent::Type::DOWN:
-                event.mType = MouseEvent::Type::DOWN_INSIDE;
-                break;
-                
+                event.mType = MouseEvent::Type::DOWN_INSIDE; break;
             case MouseEvent::Type::MOVE:
-                event.mType = MouseEvent::Type::MOVE_INSIDE;
-                break;
-                
+                event.mType = MouseEvent::Type::MOVE_INSIDE; break;
             case MouseEvent::Type::DRAG:
-                event.mType = MouseEvent::Type::DRAG_INSIDE;
-                break;
-                
+                event.mType = MouseEvent::Type::DRAG_INSIDE; break;
             case MouseEvent::Type::UP:
-                event.mType = MouseEvent::Type::UP_INSIDE;
-                break;
+                event.mType = MouseEvent::Type::UP_INSIDE; break;
         }
         
         for(NodeRef &node : nodes) {

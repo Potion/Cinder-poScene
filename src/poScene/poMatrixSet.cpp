@@ -28,13 +28,40 @@ namespace po {
         mViewport      = viewport;
     }
     
-    ci::Vec2f MatrixSet::globalToLocal(ci::Vec2f point)
+    ci::Vec2f MatrixSet::globalToLocal(const ci::Vec2f &point)
     {
         ci::Vec3f p(point.x, mViewport.getHeight() - point.y, 0.f);
         ci::Vec3f r = unproject(p);
         return ci::Vec2f(r.x, r.y);
     }
     
+    ci::Vec2f MatrixSet::localToGlobal(const ci::CameraOrtho &camera, const ci::Vec2f &point)
+    {
+        
+        ci::Matrix44f a = mProjection * mModelview;
+        a.invert();
+        ci::Vec3f p = project(ci::Vec3f(point.x, point.y, 0.f));
+        return ci::Vec2f(p.x, p.y);
+    }
+    
+    //Reimplementation of glm::Project
+    //Based on original function at https://github.com/g-truc/glm/blob/0.9.5/glm/gtc/matrix_transform.inl
+    ci::Vec3f MatrixSet::project(const ci::Vec3f &pt)
+    {
+        ci::Matrix44f a = mProjection * mModelview;
+        ci::Vec4f p(pt.x, pt.y, 0, 1.f);
+        p = mModelview * p;
+        p = mProjection * p;
+
+        
+        p /= p.w;
+        
+        p = p * 0.5 + ci::Vec4f(0.5, 0.5f, 0.f, 1.f);
+        p.x = p.x * mViewport.getWidth();
+        p.y = mViewport.getHeight() - (p.y * mViewport.getHeight());
+        
+        return ci::Vec3f(p.x, p.y, p.z);
+    }
     
     //Adapted from code by Paul Houx https://forum.libcinder.org/topic/glu-s-gluunproject-substitute
     ci::Vec3f MatrixSet::unproject(const ci::Vec3f &pt)
@@ -62,5 +89,4 @@ namespace po {
         
         return result;
     }
-
 }
