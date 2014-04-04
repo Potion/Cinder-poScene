@@ -12,7 +12,7 @@ namespace po {
 
     #pragma mark - Mouse Event -
     //Brutal copy-constructor replication...def not fun
-    MouseEvent::MouseEvent(ci::app::MouseEvent event, Type type)
+    MouseEvent::MouseEvent(ci::app::MouseEvent event)
     : ci::app::MouseEvent(event.getWindow()
                           , (event.isLeft() ? ci::app::MouseEvent::LEFT_DOWN
                                             : event.isRight() ? ci::app::MouseEvent::RIGHT_DOWN
@@ -35,12 +35,11 @@ namespace po {
                         ) {
         
         mWindowPos = event.getPos();
-        mType      = type;
     }
     
     
     #pragma mark - Key Event -
-    KeyEvent::KeyEvent(ci::app::KeyEvent event, Type type)
+    KeyEvent::KeyEvent(ci::app::KeyEvent event)
     : ci::app::KeyEvent(event.getWindow()
                        , event.getCode()
                        , event.getCharUtf32()
@@ -55,6 +54,5 @@ namespace po {
                        , event.getNativeKeyCode()
                        )
     {
-        mType = type;
     }
 }

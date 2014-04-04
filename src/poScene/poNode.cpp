@@ -354,13 +354,13 @@ namespace po {
     
     #pragma mark -
     //Global Mouse Events
-    void Node::notifyGlobal(po::MouseEvent &event) {
+    void Node::notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type) {
         //Setup event
         event.mSource    = shared_from_this();
         event.mPos       = globalToLocal(event.getWindowPos());
         event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
         
-        switch (event.getType()) {
+        switch (type) {
             case po::MouseEvent::Type::DOWN:
                 mouseDown(event); break;
             case po::MouseEvent::Type::MOVE:
@@ -393,7 +393,7 @@ namespace po {
     }
     
     //For the given event, notify everyone that we have as a subscriber
-    void Node::emitEvent(po::MouseEvent &event)
+    void Node::emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type)
     {
         //Setup event
         event.mSource    = shared_from_this();
@@ -401,7 +401,7 @@ namespace po {
         event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
         
         //Emit the Event
-        switch (event.getType()) {
+        switch (type) {
             case po::MouseEvent::Type::DOWN_INSIDE:
                 mSignalMouseDownInside(event); break;
             case po::MouseEvent::Type::MOVE_INSIDE:
@@ -415,8 +415,8 @@ namespace po {
     
     #pragma mark - Key Events -
     //Global Mouse Events
-    void Node::notifyGlobal(po::KeyEvent &event) {
-        switch (event.getType()) {
+    void Node::notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type) {
+        switch (type) {
             case po::KeyEvent::Type::DOWN:
                 keyDown(event);
                 break;

@@ -45,7 +45,7 @@ namespace po {
             WHEEL
         };
         
-        MouseEvent(ci::app::MouseEvent event, Type type);
+        MouseEvent(ci::app::MouseEvent event);
         
         float getX() { return mPos.x; };
         float getY() { return mPos.y; };
@@ -59,14 +59,15 @@ namespace po {
         float getWindowY() { return mWindowPos.y; };
         ci::Vec2f getWindowPos() { return mWindowPos; };
         
-        Type getType() { return mType; };
         NodeRef getSource() { return mSource.lock(); };
         
     private:
         std::weak_ptr<Node> mSource;
-        Type mType;
         ci::Vec2f mPos, mScenePos, mWindowPos;
     };
+    
+    //KEY EVENTS
+    
     
     
     
@@ -82,12 +83,9 @@ namespace po {
             UP
         };
         
-        KeyEvent(ci::app::KeyEvent event, Type type);
-        
-        Type getType() { return mType; }
+        KeyEvent(ci::app::KeyEvent event);
         
     private:
-        Type mType;
     };
 }
 

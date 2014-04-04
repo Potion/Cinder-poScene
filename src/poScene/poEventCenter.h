@@ -30,12 +30,12 @@ namespace po {
         
         //Mouse Events
         void processMouseEvents(std::vector<NodeRef> &nodes);
-        void notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event);
-        void notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event);
+        void notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type);
+        void notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type);
         
         //Key Events
         void processKeyEvents(std::vector<NodeRef> &nodes);
-        void notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event);
+        void notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event, const po::KeyEvent::Type &type);
         
         
         //----------------------------
@@ -52,6 +52,12 @@ namespace po {
         
         //Queues for mouse events that need to be fired
         std::map<po::MouseEvent::Type, std::vector<ci::app::MouseEvent> > mMouseEventQueues;
+        
+        #pragma mark -
+        //Touch Event Callbacks
+//        virtual void touchesBegan(TouchEvent event);
+//        
+//        std::map
         
         #pragma mark -
         //Key Event Callbacks

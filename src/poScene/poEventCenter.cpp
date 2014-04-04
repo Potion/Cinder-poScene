@@ -58,9 +58,9 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(ciEvent, type);
-                notifyAllNodes(nodes,   poEvent);
-                notifyCallbacks(nodes,  poEvent);
+                po::MouseEvent poEvent(ciEvent);
+                notifyAllNodes(nodes,   poEvent, type);
+                notifyCallbacks(nodes,  poEvent, type);
             }
             
             //Clear out the events
@@ -69,7 +69,7 @@ namespace po {
     }
     
     //Dispatch to the appropriate mouse event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event) {
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(!node->hasScene() || !node->isInteractionEnabled()) continue;
@@ -77,32 +77,33 @@ namespace po {
             event.setShouldPropagate(true);
             
             //Notify the node
-            node->notifyGlobal(event);
+            node->notifyGlobal(event, type);
         }
     }
     
     #pragma message "I def think this could be done in a better way, too much code"
     //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event)
+    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type)
     {
-        switch (event.getType()) {
+        po::MouseEvent::Type callbackType;
+        switch (type) {
             case MouseEvent::Type::DOWN:
-                event.mType = MouseEvent::Type::DOWN_INSIDE; break;
+                callbackType = MouseEvent::Type::DOWN_INSIDE; break;
             case MouseEvent::Type::MOVE:
-                event.mType = MouseEvent::Type::MOVE_INSIDE; break;
+                callbackType = MouseEvent::Type::MOVE_INSIDE; break;
             case MouseEvent::Type::DRAG:
-                event.mType = MouseEvent::Type::DRAG_INSIDE; break;
+                callbackType = MouseEvent::Type::DRAG_INSIDE; break;
             case MouseEvent::Type::UP:
-                event.mType = MouseEvent::Type::UP_INSIDE; break;
+                callbackType = MouseEvent::Type::UP_INSIDE; break;
         }
         
         for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
-               node->hasConnection(event.getType()) &&
+               node->hasConnection(callbackType) &&
                node->pointInside(event.getWindowPos())
             ) {
-                node->emitEvent(event);
+                node->emitEvent(event, callbackType);
                 if(event.getShouldPropagate()) {
                     event.setShouldPropagate(false);
                 } else {
@@ -123,8 +124,8 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::KeyEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::KeyEvent poEvent(ciEvent, type);
-                notifyAllNodes(nodes, poEvent);
+                po::KeyEvent poEvent(ciEvent);
+                notifyAllNodes(nodes, poEvent, type);
             }
             
             //Clear out the events
@@ -133,7 +134,7 @@ namespace po {
     }
     
     //Dispatch to the appropriate key event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event) {
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event, const po::KeyEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(!node->hasScene() || !node->isInteractionEnabled()) continue;
@@ -141,7 +142,7 @@ namespace po {
             event.setShouldPropagate(true);
             
             //Notify the node
-            node->notifyGlobal(event);
+            node->notifyGlobal(event, type);
         }
     }
     

@@ -269,10 +269,10 @@ namespace po {
         //Signals
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;
         bool hasConnection(po::MouseEvent::Type type);
-        void emitEvent(po::MouseEvent &event);
+        void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
         
         //Global events (just send route it to this)
-        virtual void notifyGlobal(po::MouseEvent &event);
-        virtual void notifyGlobal(po::KeyEvent &event);
+        virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);
+        virtual void notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type);
     };
 }
