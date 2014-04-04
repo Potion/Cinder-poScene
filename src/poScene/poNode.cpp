@@ -42,8 +42,8 @@ namespace po {
     ,   mDrawBounds(false)
     ,   mBoundsDirty(true)
     ,   mFrameDirty(true)
-    ,   bVisible(true)
-    ,   bInteractionEnabled(true)
+    ,   mVisible(true)
+    ,   mInteractionEnabled(true)
     {
         //Initialize our animations
         initAttrAnimations();
@@ -70,7 +70,7 @@ namespace po {
     void Node::drawTree()
     {
         //If we're invisible, nothing to do here
-        if(!bVisible) return;
+        if(!mVisible) return;
         
         //Update our draw order
         mDrawOrder = mScene.lock()->getNextDrawOrder();
@@ -225,7 +225,7 @@ namespace po {
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
-
+    #pragma message "Do we need this?"
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         return ci::Vec2f();
@@ -352,92 +352,6 @@ namespace po {
     
     #pragma mark - Mouse Events
     
-    //Signals
-    void Node::trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection) {
-        mouseConnections[type][listener] = std::unique_ptr<scoped_connection>(connection);
-    };
-    
-    void Node::disconnect(MouseEvent::Type type, Node *listener) {
-        mouseConnections[type][listener]->disconnect();
-    }
-    
-    
-    #pragma mark -
-    //Mouse Down Inside
-    void Node::connectMouseDownInside(Node* listener)
-    {
-        scoped_connection *connection = new scoped_connection(mSignalMouseDownInside.connect(std::bind( &Node::mouseDownInside, listener, std::_1 )));
-        trackConnection(po::MouseEvent::Type::DOWN_INSIDE, listener, connection);
-    }
-    
-    void Node::disconnectMouseDownInside(Node* listener)
-    {
-        disconnect(po::MouseEvent::Type::DOWN_INSIDE, listener);
-    };
-    
-    void Node::emitMouseDownInside(po::MouseEvent &event)
-    {
-        mSignalMouseDownInside(event);
-    };
-    
-    
-    #pragma mark -
-    //Mouse Move Inside
-    void Node::connectMouseMoveInside(Node* listener)
-    {
-        scoped_connection *connection = new scoped_connection(mSignalMouseMoveInside.connect(std::bind( &Node::mouseMoveInside, listener, std::_1 )));
-        trackConnection(po::MouseEvent::Type::MOVE_INSIDE, listener, connection);
-    }
-    
-    void Node::disconnectMouseMoveInside(Node* listener)
-    {
-        disconnect(po::MouseEvent::Type::MOVE_INSIDE, listener);
-    };
-    
-    void Node::emitMouseMoveInside(po::MouseEvent &event)
-    {
-        mSignalMouseMoveInside(event);
-    };
-    
-    
-    #pragma mark -
-    //Mouse Drag Inside
-    void Node::connectMouseDragInside(Node* listener)
-    {
-        scoped_connection *connection = new scoped_connection(mSignalMouseDragInside.connect(std::bind( &Node::mouseDragInside, listener, std::_1 )));
-        trackConnection(po::MouseEvent::Type::DRAG_INSIDE, listener, connection);
-    }
-    
-    void Node::disconnectMouseDragInside(Node* listener)
-    {
-        disconnect(po::MouseEvent::Type::DRAG_INSIDE, listener);
-    };
-    
-    void Node::emitMouseDragInside(po::MouseEvent &event)
-    {
-        mSignalMouseMoveInside(event);
-    };
-    
-    
-    #pragma mark -
-    //Mouse Up Inside
-    void Node::connectMouseUpInside(Node* listener)
-    {
-        scoped_connection *connection = new scoped_connection(mSignalMouseUpInside.connect(std::bind( &Node::mouseUpInside, listener, std::_1 )));
-        trackConnection(po::MouseEvent::Type::UP_INSIDE, listener, connection);
-    }
-    
-    void Node::disconnectMouseUpInside(Node* listener)
-    {
-        disconnect(po::MouseEvent::Type::UP_INSIDE, listener);
-    };
-    
-    void Node::emitMouseUpInside(po::MouseEvent &event)
-    {
-        mSignalMouseUpInside(event);
-    };
-
-    
     #pragma mark -
     //Global Mouse Events
     void Node::notifyGlobal(po::MouseEvent &event) {
@@ -466,17 +380,16 @@ namespace po {
     //See if we care about an event
     bool Node::hasConnection(po::MouseEvent::Type type)
     {
-        if(!mouseConnections[type].size()) {
-           return false;
+        switch (type) {
+            case po::MouseEvent::Type::DOWN_INSIDE:
+                return mSignalMouseDownInside.num_slots();
+            case po::MouseEvent::Type::MOVE_INSIDE:
+                return mSignalMouseMoveInside.num_slots();
+            case po::MouseEvent::Type::DRAG_INSIDE:
+                return mSignalMouseDragInside.num_slots();
+            case po::MouseEvent::Type::UP_INSIDE:
+                return mSignalMouseUpInside.num_slots();
         }
-        else {
-            std::map<po::Node*, std::unique_ptr<scoped_connection> >::iterator iter = mouseConnections[type].begin();
-            for(; iter!=mouseConnections[type].end(); ++iter) {
-                if(iter->second.get()->connected()) return true;
-            }
-        }
-        
-        return false;
     }
     
     //For the given event, notify everyone that we have as a subscriber

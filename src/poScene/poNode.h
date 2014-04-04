@@ -92,8 +92,8 @@ namespace po {
         ci::Rectf getFrame();
         
         //Interaction
-        void setInteractionEnabled(bool enabled) { bInteractionEnabled = enabled; };
-        bool isInteractionEnabled() { return bInteractionEnabled; };
+        void setInteractionEnabled(bool enabled) { mInteractionEnabled = enabled; };
+        bool isInteractionEnabled() { return mInteractionEnabled; };
         
         //Hit Testing & Transformation
         virtual bool pointInside(const ci::Vec2f    &point);
@@ -102,9 +102,9 @@ namespace po {
         ci::Vec2f localToGlobal(const ci::Vec2f     &point);
         
         //Visibility
-        void setVisibilityEnabled(bool enabled) { bVisible = enabled; };
+        void setVisibilityEnabled(bool enabled) { mVisible = enabled; };
         #pragma message "This should probably step up to see if any of it's parents aren't visible"
-        bool isVisible() { return bVisible; };
+        bool isVisible() { return mVisible; };
         
         //------------------
         //ATTRIBUTES
@@ -171,46 +171,17 @@ namespace po {
         #pragma mark - Signals -
         
         //Mouse Down Inside
-        template<typename T, typename Y>
-        connection connectMouseDownInside( T fn, Y *inst ) { return mSignalMouseDownInside.connect(std::bind( fn, inst, std::_1 )); };
-        void connectMouseDownInside(Node* listener);
-        void disconnectMouseDownInside(Node* listener);
-        void emitMouseDownInside(po::MouseEvent &event);
         MouseEventSignal& getSignalMouseDownInside() { return mSignalMouseDownInside; };
-        
-        //Mouse Move Inside
-        #pragma mark -
-        template<typename T, typename Y>
-        connection connectMouseMoveInside( T fn, Y *inst ) { return mSignalMouseMoveInside.connect(std::bind( fn, inst, std::_1 )); };
-        void connectMouseMoveInside(Node* listener);
-        void disconnectMouseMoveInside(Node* listener);
-        void emitMouseMoveInside(po::MouseEvent &event);
         MouseEventSignal& getSignalMouseMoveInside() { return mSignalMouseMoveInside; };
-        
-        //Mouse Drag Inside
-        #pragma mark -
-        template<typename T, typename Y>
-        connection connectMouseDragInside( T fn, Y *inst ) { return mSignalMouseDragInside.connect(std::bind( fn, inst, std::_1 )); };
-        void connectMouseDragInside(Node* listener);
-        void disconnectMouseDragInside(Node* listener);
-        void emitMouseDragInside(po::MouseEvent &event);
         MouseEventSignal& getSignalMouseDragInside() { return mSignalMouseDragInside; };
-        
-        //Mouse Up Inside
-        #pragma mark -
-        template<typename T, typename Y>
-        connection connectMouseUpInside( T fn, Y *inst ) { return mSignalMouseUpInside.connect(std::bind( fn, inst, std::_1 )); };
-        void connectMouseUpInside(Node* listener);
-        void disconnectMouseUpInside(Node* listener);
-        void emitMouseUpInside(po::MouseEvent &event);
-        MouseEventSignal& getSignalMouseUpInside() { return mSignalMouseUpInside; };
+        MouseEventSignal& getSignalMouseUpInside()   { return mSignalMouseUpInside; };
     
+        
         //------------------
-        //Events
+        //EVENT HANDLERS
         #pragma mark - Events -
         
-        //Override these methods to receive events
-        //Global events, these fire for all Nodes
+        //Override these methods to receive Global events
         virtual void mouseDown(po::MouseEvent &event)        {};
         virtual void mouseMove(po::MouseEvent &event)        {};
         virtual void mouseDrag(po::MouseEvent &event)        {};
@@ -219,18 +190,6 @@ namespace po {
         
         virtual void keyDown(po::KeyEvent &event)            {};
         virtual void keyUp(po::KeyEvent &event)              {};
-        
-        //These are po::Scene events, you need to subscribe to them
-        #pragma mark -
-        virtual void mouseDownInside(po::MouseEvent &event)  {};
-        virtual void mouseMoveInside(po::MouseEvent &event)  {};
-        virtual void mouseDragInside(po::MouseEvent &event)  {};
-        virtual void mouseEnter(po::MouseEvent &event)       {};
-        virtual void mouseLeave(po::MouseEvent &event)       {};
-        virtual void mouseOver(po::MouseEvent &event)        {};
-        virtual void mouseUpInside(po::MouseEvent &event)    {};
-        
-        
 
     protected:
         #pragma mark -
@@ -245,7 +204,7 @@ namespace po {
         void setTransformation();
         
         //Visibility
-        bool bVisible;
+        bool mVisible;
         
         //Bounds/Frame
         ci::Rectf mBounds;
@@ -253,7 +212,7 @@ namespace po {
         bool mBoundsDirty, mFrameDirty;
         
         //Interaction
-        bool bInteractionEnabled;
+        bool mInteractionEnabled;
         
     private:
         //Private attributes
@@ -307,26 +266,13 @@ namespace po {
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
         
-        
-        #pragma mark - Events -
-        //EVENTS
-        
-        //Mouse Events
-        //Global events (just send route it to this)
-        virtual void notifyGlobal(po::MouseEvent &event);
-        
         //Signals
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;
-        
-        //Key Events
-        virtual void notifyGlobal(po::KeyEvent &event);
-        
-        void trackConnection(MouseEvent::Type type, Node *listener, scoped_connection *connection);
-        void disconnect(MouseEvent::Type type, Node *listener);
-        std::map<po::MouseEvent::Type, std::map<po::Node*, std::unique_ptr<scoped_connection> > > mouseConnections;
-        
         bool hasConnection(po::MouseEvent::Type type);
-        virtual void emitEvent(po::MouseEvent &event);
+        void emitEvent(po::MouseEvent &event);
         
+        //Global events (just send route it to this)
+        virtual void notifyGlobal(po::MouseEvent &event);
+        virtual void notifyGlobal(po::KeyEvent &event);
     };
 }

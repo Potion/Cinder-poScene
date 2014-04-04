@@ -39,10 +39,8 @@ void TestNode::setup()
             r->setAlignment(po::Alignment::CENTER_CENTER);
             r->setDrawBoundsEnabled(true);
             
-            r->connectMouseDownInside(this);
-            r->connectMouseMoveInside(this);
-//            r->connectMouseDragInside(this);
-//            r->connectMouseUpInside(this);
+            r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
+            r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
             
             
             addChild(r);
@@ -122,7 +120,7 @@ void TestNode::mouseMoveInside(po::MouseEvent& event)
 //    std::cout << "Global Pos: " << event.getWindowPos() << std::endl;
 //
     std::cout << "Window position: " << event.getWindowPos() << std::endl;
-    std::cout << "Node position: " << getPosition() + event.getSource()->getPosition() << std::endl;
+    std::cout << "Node position: " << (event.getPos())  << std::endl;
     std::cout << "localToGlobal: "  << event.getSource()->localToGlobal(event.getPos()) << std::endl;
 }
 
