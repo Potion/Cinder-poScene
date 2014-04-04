@@ -24,7 +24,7 @@ namespace po {
                              | (event.isAltDown()       ? ci::app::MouseEvent::ALT_DOWN     : 0)
                              | (event.isControlDown()   ? ci::app::MouseEvent::CTRL_DOWN    : 0)
                              | (event.isMetaDown()      ? ci::app::MouseEvent::META_DOWN    : 0)
-                             | (event.isAccelDown()     ? ci::app::MouseEvent::ACCEL_DOWN  : 0)
+                             | (event.isAccelDown()     ? ci::app::MouseEvent::ACCEL_DOWN   : 0)
                              | (event.isLeft()          ? ci::app::MouseEvent::LEFT_DOWN    : 0)
                              | (event.isRight()         ? ci::app::MouseEvent::RIGHT_DOWN   : 0)
                              | (event.isMiddle()        ? ci::app::MouseEvent::MIDDLE_DOWN  : 0)
@@ -35,6 +35,21 @@ namespace po {
                         ) {
         
         mWindowPos = event.getPos();
+    }
+    
+    TouchEvent::TouchEvent(ci::app::TouchEvent event)
+    {
+        for(const ci::app::TouchEvent::Touch touch : event.getTouches()) {
+            mTouches.push_back(ci::app::TouchEvent::Touch(touch));
+        }
+    }
+    
+    TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch)
+    : mPos(touch.getPos())
+    , mId(touch.getId())
+    , mTime(touch.getTime())
+    , mNative(touch.getNative())
+    {
     }
     
     

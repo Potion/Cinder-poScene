@@ -26,8 +26,12 @@ namespace po {
         ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp,       this);
         ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
         
+        ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
+        ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
+        ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
+        
         ci::app::getWindow()->connectKeyDown(&EventCenter::keyDown, this);
-        ci::app::getWindow()->connectKeyUp(&EventCenter::keyUp, this);
+        ci::app::getWindow()->connectKeyUp(&EventCenter::keyUp,     this);
     }
     
     //Process all the event queues for this scene
@@ -43,6 +47,7 @@ namespace po {
         
         //Process them
         processMouseEvents(nodes);
+        processTouchEvents(nodes);
         processKeyEvents(nodes);
     }
     
@@ -81,7 +86,6 @@ namespace po {
         }
     }
     
-    #pragma message "I def think this could be done in a better way, too much code"
     //Dispatch callback to top item, going up through draw tree
     void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type)
     {
@@ -112,6 +116,41 @@ namespace po {
             }
         }
     }
+    
+    //Dispatch to the appropriate mouse event function for each node in the scene
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::TouchEvent event, const po::TouchEvent::Type &type) {
+        for(NodeRef &node : nodes) {
+            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            
+            event.setShouldPropagate(true);
+            
+            //Notify the node
+            node->notifyGlobal(event, type);
+        }
+    }
+    
+    #pragma mark - Touch Events -
+    void EventCenter::processTouchEvents(std::vector<NodeRef> &nodes)
+    {
+        //Go through the queue
+        for(auto& queue : mTouchEventQueues) {
+            //Get the type for this item in the std::map
+            po::TouchEvent::Type type = (po::TouchEvent::Type)queue.first;
+            
+            //Go through all the ci::MouseEvents for this type
+            for(ci::app::TouchEvent &ciEvent : queue.second) {
+                //Create a po::MouseEvent
+                po::TouchEvent poEvent(ciEvent);
+                notifyAllNodes(nodes, poEvent, type);
+                //notifyCallbacks(nodes, poEvent, type);
+            }
+            
+            //Clear out the events
+            queue.second.clear();
+        }
+    }
+    
     
     #pragma mark - KeyEvents -
     void EventCenter::processKeyEvents(std::vector<NodeRef> &nodes)

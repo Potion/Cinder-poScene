@@ -28,10 +28,18 @@ namespace po {
     private:
         EventCenter();
         
+//        //Checks various params on Node to see if it is eligible for events
+//        bool checkForEligibility(NodeRef node);
+        
         //Mouse Events
         void processMouseEvents(std::vector<NodeRef> &nodes);
         void notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type);
         void notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type);
+        
+        //Touch Events
+        void processTouchEvents(std::vector<NodeRef> &nodes);
+        void notifyAllNodes(std::vector<NodeRef> &nodes,     po::TouchEvent event, const po::TouchEvent::Type &type);
+        void notifyCallbacks(std::vector<NodeRef> &nodes,   po::TouchEvent event, const po::TouchEvent::Type &type);
         
         //Key Events
         void processKeyEvents(std::vector<NodeRef> &nodes);
@@ -55,9 +63,11 @@ namespace po {
         
         #pragma mark -
         //Touch Event Callbacks
-//        virtual void touchesBegan(TouchEvent event);
-//        
-//        std::map
+        void touchesBegan(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::BEGAN].push_back(event); };
+        void touchesMoved(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::MOVED].push_back(event); };;
+        void touchesEnded(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::ENDED].push_back(event); };;
+        
+        std::map<po::TouchEvent::Type, std::vector<ci::app::TouchEvent> > mTouchEventQueues;
         
         #pragma mark -
         //Key Event Callbacks

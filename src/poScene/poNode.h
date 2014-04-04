@@ -182,14 +182,18 @@ namespace po {
         #pragma mark - Events -
         
         //Override these methods to receive Global events
-        virtual void mouseDown(po::MouseEvent &event)        {};
-        virtual void mouseMove(po::MouseEvent &event)        {};
-        virtual void mouseDrag(po::MouseEvent &event)        {};
-        virtual void mouseUp(po::MouseEvent &event)          {};
-        virtual void mouseWheel( po::MouseEvent &event)      {};
+        virtual void mouseDown(po::MouseEvent &event)       {};
+        virtual void mouseMove(po::MouseEvent &event)       {};
+        virtual void mouseDrag(po::MouseEvent &event)       {};
+        virtual void mouseUp(po::MouseEvent &event)         {};
+        virtual void mouseWheel( po::MouseEvent &event)     {};
         
-        virtual void keyDown(po::KeyEvent &event)            {};
-        virtual void keyUp(po::KeyEvent &event)              {};
+        virtual void touchesBegan(po::TouchEvent &event)    {};
+        virtual void touchesMoved(po::TouchEvent &event)    {};
+        virtual void touchesEnded(po::TouchEvent &event)    {};
+        
+        virtual void keyDown(po::KeyEvent &event)           {};
+        virtual void keyUp(po::KeyEvent &event)             {};
 
     protected:
         #pragma mark -
@@ -273,6 +277,7 @@ namespace po {
         
         //Global events (just send route it to this)
         virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);
+        virtual void notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type);
         virtual void notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type);
     };
 }

@@ -413,6 +413,26 @@ namespace po {
         }
     }
     
+    #pragma mark - Touch Events -
+    //Global Mouse Events
+    void Node::notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type) {
+        for(po::TouchEvent::Touch &touch : event.getTouches()) {
+            //Setup event
+            touch.mSource    = shared_from_this();
+            touch.mPos       = globalToLocal(touch.getWindowPos());
+            touch.mScenePos  = getScene()->getRootNode()->globalToLocal(touch.getWindowPos());
+        }
+        
+        switch (type) {
+            case po::TouchEvent::Type::BEGAN:
+                touchesBegan(event); break;
+            case po::TouchEvent::Type::MOVED:
+                touchesMoved(event); break;
+            case po::TouchEvent::Type::ENDED:
+                touchesEnded(event); break;
+        }
+    }
+    
     #pragma mark - Key Events -
     //Global Mouse Events
     void Node::notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type) {

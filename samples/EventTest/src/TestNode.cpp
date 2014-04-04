@@ -41,7 +41,9 @@ void TestNode::setup()
             
             r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
             r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
-            
+//            boost::shared_ptr<po::Node> a(this);
+//            boost::weak_ptr<po::Node> n(a);
+//            r->getSignalMouseMoveInside().connect(po::MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
             
             addChild(r);
         }
@@ -71,6 +73,9 @@ void TestNode::mouseDown(po::MouseEvent& event)
 //    std::cout << "Left down: " << event.isLeftDown() << std::endl;
 //    std::cout << "Right down: " << event.isRightDown() << std::endl;
 //    std::cout << "Center down: " << event.isMiddleDown() << std::endl;
+    
+
+    
 }
 
 void TestNode::mouseDrag(po::MouseEvent& event)
@@ -138,6 +143,11 @@ void TestNode::mouseUp(po::MouseEvent& event)
 {
     //std::cout << "Test node Mouse Up event!" << std::endl;
     //rect->fillColor.set(255,255,255);
+}
+
+void TestNode::touchesBegan(po::TouchEvent &event)
+{
+    std::cout << "Touch!" << std::endl;
 }
 
 void TestNode::keyDown(po::KeyEvent &event)

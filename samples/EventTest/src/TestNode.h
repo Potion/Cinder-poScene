@@ -32,10 +32,13 @@ public:
     void mouseDragInside(po::MouseEvent &event);
     void mouseUpInside(po::MouseEvent &event);
     
+    void touchesBegan(po::TouchEvent &event);
+    
     void keyDown(po::KeyEvent &event);
     void keyUp(po::KeyEvent &event);
     
     void myMouseHandler(po::MouseEvent &event);
+    
 protected:
     
 private:

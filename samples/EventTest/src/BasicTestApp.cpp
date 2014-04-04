@@ -20,6 +20,8 @@ public:
 	void update();
 	void draw();
     
+    void mouseDown(MouseEvent event);
+    
     po::SceneRef scene;
     
     ci::Font mFont;
@@ -61,6 +63,16 @@ void BasicTestApp::draw()
     scene->draw();
     
     gl::drawString( "Framerate: " + ci::toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
+}
+
+void BasicTestApp::mouseDown(MouseEvent event)
+{
+    std::cout << "Hello" << std::endl;
+    std::vector<ci::app::TouchEvent::Touch> touches;
+    touches.push_back(ci::app::TouchEvent::Touch(event.getPos(), event.getPos(), 0, 0, NULL));
+    
+    ci::app::TouchEvent e(ci::app::getWindow(), touches);
+    ci::app::getWindow()->emitTouchesBegan(&e);
 }
 
 CINDER_APP_NATIVE( BasicTestApp, RendererGl )
