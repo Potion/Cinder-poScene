@@ -3,7 +3,7 @@
 	<block
 		name="po::Scene" 
 		id="com.potiondesign.poscene"
-		git="https://github.com/Potion/Cinder-poScene.git"
+		git="git://github.com/Potion/Cinder-poScene.git"
 		author="Potion Design"
 		summary="Potion's Scene Graph for Cinder"
 		license="modbsd"
