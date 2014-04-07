@@ -390,6 +390,8 @@ namespace po {
             case po::MouseEvent::Type::UP_INSIDE:
                 return mSignalMouseUpInside.num_slots();
         }
+        
+        return false;
     }
     
     //For the given event, notify everyone that we have as a subscriber
@@ -431,6 +433,44 @@ namespace po {
             case po::TouchEvent::Type::ENDED:
                 touchesEnded(event); break;
         }
+    }
+    
+    //For the given event, notify everyone that we have as a subscriber
+    void Node::emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type)
+    {
+        //Setup event
+        event.mSource    = shared_from_this();
+        for(po::TouchEvent::Touch &touch :event.getTouches()) {
+            touch.mPos       = globalToLocal(touch.getWindowPos());
+            touch.mScenePos  = getScene()->getRootNode()->globalToLocal(touch.getWindowPos());
+        }
+        
+        //Emit the Event
+        switch (type) {
+            case po::TouchEvent::Type::BEGAN_INSIDE:
+                mSignalTouchesBeganInside(event); break;
+            case po::TouchEvent::Type::MOVED_INSIDE:
+                mSignalTouchesMovedInside(event); break;
+            case po::TouchEvent::Type::ENDED_INSIDE:
+                mSignalTouchesEndedInside(event); break;
+            default:
+                std::cout << "Touch event type " << type << " not found." << std::endl;
+        }
+    }
+    
+    //See if we care about an event
+    bool Node::hasConnection(po::TouchEvent::Type type)
+    {
+        switch (type) {
+            case po::TouchEvent::Type::BEGAN_INSIDE:
+                return mSignalTouchesBeganInside.num_slots();
+            case po::TouchEvent::Type::MOVED_INSIDE:
+                return mSignalTouchesMovedInside.num_slots();
+            case po::TouchEvent::Type::ENDED_INSIDE:
+                return mSignalTouchesEndedInside.num_slots();
+        }
+        
+        return false;
     }
     
     #pragma mark - Key Events -

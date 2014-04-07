@@ -46,6 +46,7 @@ namespace po {
     
     //Signals
     typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
+    typedef boost::signals2::signal<void(po::TouchEvent&)> TouchEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -170,11 +171,16 @@ namespace po {
         //SIGNALS
         #pragma mark - Signals -
         
-        //Mouse Down Inside
+        //Mouse
         MouseEventSignal& getSignalMouseDownInside() { return mSignalMouseDownInside; };
         MouseEventSignal& getSignalMouseMoveInside() { return mSignalMouseMoveInside; };
         MouseEventSignal& getSignalMouseDragInside() { return mSignalMouseDragInside; };
         MouseEventSignal& getSignalMouseUpInside()   { return mSignalMouseUpInside; };
+        
+        //Touch
+        TouchEventSignal& getSignalTouchesBeganInside()   { return mSignalTouchesBeganInside; };
+        TouchEventSignal& getSignalTouchesMovedInside()   { return mSignalTouchesMovedInside; };
+        TouchEventSignal& getSignalTouchesEndedInside()   { return mSignalTouchesEndedInside; };
     
         
         //------------------
@@ -274,6 +280,10 @@ namespace po {
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;
         bool hasConnection(po::MouseEvent::Type type);
         void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
+        
+        TouchEventSignal mSignalTouchesBeganInside, mSignalTouchesMovedInside, mSignalTouchesEndedInside;
+        bool hasConnection(po::TouchEvent::Type type);
+        void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
         
         //Global events (just send route it to this)
         virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);

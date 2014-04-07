@@ -39,7 +39,7 @@ namespace po {
         //Touch Events
         void processTouchEvents(std::vector<NodeRef> &nodes);
         void notifyAllNodes(std::vector<NodeRef> &nodes,     po::TouchEvent event, const po::TouchEvent::Type &type);
-        void notifyCallbacks(std::vector<NodeRef> &nodes,   po::TouchEvent event, const po::TouchEvent::Type &type);
+        void notifyCallbacks(std::vector<NodeRef> &nodes,   po::TouchEvent event, po::TouchEvent::Type &type);
         
         //Key Events
         void processKeyEvents(std::vector<NodeRef> &nodes);

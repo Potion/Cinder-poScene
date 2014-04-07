@@ -21,6 +21,8 @@ public:
 	void draw();
     
     void mouseDown(MouseEvent event);
+    void mouseDrag(MouseEvent event);
+    void mouseUp(MouseEvent event);
     
     po::SceneRef scene;
     
@@ -29,6 +31,7 @@ public:
 
 void BasicTestApp::prepareSettings(cinder::app::AppBasic::Settings *settings)
 {
+    //settings->enableMultiTouch();
 }
 
 void BasicTestApp::setup()
@@ -65,14 +68,32 @@ void BasicTestApp::draw()
     gl::drawString( "Framerate: " + ci::toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color::white(), mFont );
 }
 
-void BasicTestApp::mouseDown(MouseEvent event)
+void BasicTestApp::mouseDown(ci::app::MouseEvent event)
 {
-    std::cout << "Hello" << std::endl;
+    std::cout << "Touch Down!" << std::endl;
     std::vector<ci::app::TouchEvent::Touch> touches;
     touches.push_back(ci::app::TouchEvent::Touch(event.getPos(), event.getPos(), 0, 0, NULL));
     
     ci::app::TouchEvent e(ci::app::getWindow(), touches);
     ci::app::getWindow()->emitTouchesBegan(&e);
+}
+
+void BasicTestApp::mouseDrag(MouseEvent event)
+{
+    std::vector<ci::app::TouchEvent::Touch> touches;
+    touches.push_back(ci::app::TouchEvent::Touch(event.getPos(), event.getPos(), 0, 0, NULL));
+    
+    ci::app::TouchEvent e(ci::app::getWindow(), touches);
+    ci::app::getWindow()->emitTouchesMoved(&e);
+}
+
+void BasicTestApp::mouseUp(MouseEvent event)
+{
+    std::vector<ci::app::TouchEvent::Touch> touches;
+    touches.push_back(ci::app::TouchEvent::Touch(event.getPos(), event.getPos(), 0, 0, NULL));
+    
+    ci::app::TouchEvent e(ci::app::getWindow(), touches);
+    ci::app::getWindow()->emitTouchesEnded(&e);
 }
 
 CINDER_APP_NATIVE( BasicTestApp, RendererGl )

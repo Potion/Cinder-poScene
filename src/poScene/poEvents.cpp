@@ -37,6 +37,8 @@ namespace po {
         mWindowPos = event.getPos();
     }
     
+    
+    #pragma mark - Touch Event -
     TouchEvent::TouchEvent(ci::app::TouchEvent event)
     {
         for(const ci::app::TouchEvent::Touch touch : event.getTouches()) {
@@ -49,6 +51,7 @@ namespace po {
     , mId(touch.getId())
     , mTime(touch.getTime())
     , mNative(touch.getNative())
+    , mWindowPos(touch.getPos())
     {
     }
     

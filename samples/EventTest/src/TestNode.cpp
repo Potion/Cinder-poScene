@@ -39,11 +39,15 @@ void TestNode::setup()
             r->setAlignment(po::Alignment::CENTER_CENTER);
             r->setDrawBoundsEnabled(true);
             
-            r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
-            r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
+//            r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
+//            r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
 //            boost::shared_ptr<po::Node> a(this);
 //            boost::weak_ptr<po::Node> n(a);
 //            r->getSignalMouseMoveInside().connect(po::MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
+            
+            r->getSignalTouchesBeganInside().connect(std::bind(&TestNode::touchesBeganInside, this, std::_1));
+            r->getSignalTouchesMovedInside().connect(std::bind(&TestNode::touchesMovedInside, this, std::_1));
+            r->getSignalTouchesEndedInside().connect(std::bind(&TestNode::touchesEndedInside, this, std::_1));
             
             addChild(r);
         }
@@ -145,9 +149,19 @@ void TestNode::mouseUp(po::MouseEvent& event)
     //rect->fillColor.set(255,255,255);
 }
 
-void TestNode::touchesBegan(po::TouchEvent &event)
+void TestNode::touchesBeganInside(po::TouchEvent &event)
 {
-    std::cout << "Touch!" << std::endl;
+    std::cout << "Touches Began Inside!" << std::endl;
+}
+
+void TestNode::touchesMovedInside(po::TouchEvent &event)
+{
+    std::cout << "Touches Moved Inside!" << std::endl;
+}
+
+void TestNode::touchesEndedInside(po::TouchEvent &event)
+{
+    std::cout << "Touches ended inside!" << std::endl;
 }
 
 void TestNode::keyDown(po::KeyEvent &event)

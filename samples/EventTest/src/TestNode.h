@@ -32,7 +32,9 @@ public:
     void mouseDragInside(po::MouseEvent &event);
     void mouseUpInside(po::MouseEvent &event);
     
-    void touchesBegan(po::TouchEvent &event);
+    void touchesBeganInside(po::TouchEvent &event);
+    void touchesMovedInside(po::TouchEvent &event);
+    void touchesEndedInside(po::TouchEvent &event);
     
     void keyDown(po::KeyEvent &event);
     void keyUp(po::KeyEvent &event);
