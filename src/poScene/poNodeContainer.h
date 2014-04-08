@@ -16,7 +16,6 @@ namespace po {
     
     class NodeContainer
     : public Node
-    //, public std::enable_shared_from_this<NodeContainer>
     {
         friend class Scene;
     public:
@@ -25,7 +24,7 @@ namespace po {
         //Children
         static const int    INVALID_INDEX = -1;
         
-        int getNumChildren();
+		int getNumChildren() { return mChildren.size(); };
         void addChild(NodeRef node);
         void addChildAt(int index, NodeRef node);
         void addChildBefore(NodeRef before, NodeRef node);
@@ -37,7 +36,7 @@ namespace po {
         
         int getChildIndex(const NodeRef& child);
         NodeRef getChildByIndex(int index);
-        NodeRef getChildByUID(uint uid);
+        NodeRef getChildByUID(uint32_t uid);
         NodeRef getChildByName(const std::string &name);
         NodeRef getFirstChild();
         NodeRef getLastChild();

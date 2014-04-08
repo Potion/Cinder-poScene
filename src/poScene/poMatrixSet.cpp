@@ -5,6 +5,7 @@
 //  Created by Stephen Varga on 3/23/14.
 //
 //
+#include "cinder/Area.h"
 
 #include "poMatrixSet.h"
 

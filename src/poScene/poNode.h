@@ -104,7 +104,9 @@ namespace po {
         
         //Visibility
         void setVisibilityEnabled(bool enabled) { mVisible = enabled; };
-        #pragma message "This should probably step up to see if any of it's parents aren't visible"
+		#ifndef WIN_32 
+			#pragma message "This should probably step up to see if any of it's parents aren't visible"
+		#endif
         bool isVisible() { return mVisible; };
         
         //------------------
@@ -162,8 +164,8 @@ namespace po {
         Alignment getAlignment() { return mAlignment; };
         
         //Identifiers (Assigned from Scene)
-        uint getDrawOrder() { return mDrawOrder; };
-        uint getUID() { return mUid; };
+        uint32_t getDrawOrder() { return mDrawOrder; };
+        uint32_t getUID() { return mUid; };
         
         
         
@@ -270,8 +272,8 @@ namespace po {
         bool mDrawBounds;
         
         //Unique identifiers
-        uint mDrawOrder;
-        uint mUid;
+        uint32_t mDrawOrder;
+        uint32_t mUid;
         
         //Name (optional, helps identify nodes when debugging)
         std::string mName;

@@ -6,6 +6,7 @@
 //
 //
 
+#include "cinder/Area.h"
 #include "cinder/Matrix.h"
 #include "cinder/Camera.h"
 

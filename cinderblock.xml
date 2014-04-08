@@ -10,6 +10,10 @@
 		version="0.1"
 		url="http://www.potiondesign.com"
 		>
+
+		<supports os="macosx" />
+		<supports os="msw" />
+
 		<header>src/poScene/poEventCenter.h</header>
 		<source>src/poScene/poEventCenter.cpp</source>
 
@@ -33,6 +37,14 @@
 		<source>src/poScene/poTextBox.cpp</source>
 
 		<header>src/poScene/poUtils.h</header>
+
+		<platform os="macosx">
+			<includePath>src/poScene</includePath>
+		</platform>
+
+		<platform os="msw">
+			<includePath>src/poScene</includePath>
+		</platform>
 	</block>
 
 	<template>templates/Basic poScene/template.xml</template>

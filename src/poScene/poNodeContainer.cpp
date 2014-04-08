@@ -96,7 +96,7 @@ namespace po {
         return *(mChildren.begin() + index);
     }
     
-    NodeRef NodeContainer::getChildByUID(uint uid)
+    NodeRef NodeContainer::getChildByUID(uint32_t uid)
     {
         //Go through our tree to find any node with UID
         for(NodeRef& node : mChildren) {

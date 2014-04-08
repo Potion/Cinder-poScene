@@ -63,9 +63,9 @@ namespace po {
         
         #pragma mark -
         //Touch Event Callbacks
-        void touchesBegan(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::BEGAN].push_back(event); };
-        void touchesMoved(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::MOVED].push_back(event); };;
-        void touchesEnded(ci::app::TouchEvent event)    { mTouchEventQueues[TouchEvent::Type::ENDED].push_back(event); };;
+        void touchesBegan(ci::app::TouchEvent event)    { mTouchEventQueues[po::TouchEvent::Type::BEGAN].push_back(event); };
+        void touchesMoved(ci::app::TouchEvent event)    { mTouchEventQueues[po::TouchEvent::Type::MOVED].push_back(event); };;
+        void touchesEnded(ci::app::TouchEvent event)    { mTouchEventQueues[po::TouchEvent::Type::ENDED].push_back(event); };;
         
         std::map<po::TouchEvent::Type, std::vector<ci::app::TouchEvent> > mTouchEventQueues;
         

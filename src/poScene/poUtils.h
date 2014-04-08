@@ -62,7 +62,7 @@ namespace po {
     
     //------------------------------------------------------------------------
     static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords) {
-        for(uint i=0; i<points.size(); i++) {
+        for(uint32_t i=0; i<points.size(); i++) {
             float s = (points[i].x-rect.getX1()) / rect.getWidth();
             float t = (points[i].y-rect.getY1()) / rect.getHeight();
             coords[i].set(s,1.f-t);
@@ -74,7 +74,7 @@ namespace po {
     static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords) {
         ci::Vec2f max(FLT_MIN, FLT_MIN);
         
-        for(uint i=0; i<points.size(); i++) {
+        for(uint32_t i=0; i<points.size(); i++) {
             float s = (points[i].x-rect.getX1()) / tex->getWidth();
             float t = (points[i].y-rect.getY1()) / tex->getHeight();
             
@@ -86,7 +86,7 @@ namespace po {
         
         ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
         
-        for(uint i=0; i<coords.size(); i++) {
+        for(uint32_t i=0; i<coords.size(); i++) {
             coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }
@@ -100,7 +100,7 @@ namespace po {
         
         ci::Vec2f max(FLT_MIN, FLT_MIN);
         
-        for(uint i=0; i<points.size(); i++) {
+        for(uint32_t i=0; i<points.size(); i++) {
             float s = (points[i].x-rect.getX1()) / rect.getWidth();
             float t = (points[i].y-rect.getY1()) / new_h;
             
@@ -112,7 +112,7 @@ namespace po {
         
         ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
         
-        for(uint i=0; i<coords.size(); i++) {
+        for(uint32_t i=0; i<coords.size(); i++) {
             coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }
@@ -126,7 +126,7 @@ namespace po {
         
         ci::Vec2f max(FLT_MIN, FLT_MIN);
         
-        for(uint i=0; i<points.size(); i++) {
+        for(uint32_t i=0; i<points.size(); i++) {
             float s = (points[i].x-rect.getX1()) / new_w;
             float t = (points[i].y-rect.getY1()) / rect.getHeight();
             
@@ -138,7 +138,7 @@ namespace po {
         
         ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
         
-        for(uint i=0; i<coords.size(); i++) {
+        for(uint32_t i=0; i<coords.size(); i++) {
             coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }

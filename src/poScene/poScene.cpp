@@ -32,8 +32,6 @@ namespace po {
         mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
-    Scene::
-    
     Scene::~Scene()
     {
     }
@@ -57,7 +55,7 @@ namespace po {
     
     #pragma mark -
     
-    uint Scene::getNextDrawOrder()
+    uint32_t Scene::getNextDrawOrder()
     {
         return drawOrderCounter++;
     }

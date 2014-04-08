@@ -13,7 +13,7 @@
 #include "poScene.h"
 
 namespace po {
-    static uint OBJECT_UID  = 0;
+    static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
     
     NodeRef Node::create(std::string name)

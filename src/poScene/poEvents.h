@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "cinder/app/App.h"
+
 #include "poEvents.h"
 
 namespace po {

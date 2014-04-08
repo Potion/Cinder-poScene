@@ -59,8 +59,8 @@ namespace po {
     private:
         //Each object get's its own draw order every frame.
         //This lets us sort objects for hit testing
-        uint getNextDrawOrder();
-        uint drawOrderCounter;
+        uint32_t getNextDrawOrder();
+        uint32_t drawOrderCounter;
         
         ci::CameraOrtho mCamera;
         
