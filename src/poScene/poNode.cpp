@@ -443,6 +443,7 @@ namespace po {
         for(po::TouchEvent::Touch &touch :event.getTouches()) {
             touch.mPos       = globalToLocal(touch.getWindowPos());
             touch.mScenePos  = getScene()->getRootNode()->globalToLocal(touch.getWindowPos());
+			touch.mSource	 = shared_from_this();
         }
         
         //Emit the Event
