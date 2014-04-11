@@ -168,6 +168,21 @@ namespace po {
         setAlignment(Alignment::NONE);
     }
     
+    bool Node::isVisible()
+    {
+        if(!mVisible) return false;
+        
+        NodeRef parent = getParent();
+        while(parent) {
+            if(!parent->mVisible)
+                return false;
+        
+            parent = parent->getParent();
+        }
+        
+        return true;
+    }
+    
     void Node::initAttrAnimations()
     {
         //Initialize the isComplete() method of each tween, a bit annoying

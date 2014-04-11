@@ -104,10 +104,7 @@ namespace po {
         
         //Visibility
         void setVisibilityEnabled(bool enabled) { mVisible = enabled; };
-		#ifndef WIN_32 
-			#pragma message "This should probably step up to see if any of it's parents aren't visible"
-		#endif
-        bool isVisible() { return mVisible; };
+        bool isVisible();
         
         //------------------
         //ATTRIBUTES

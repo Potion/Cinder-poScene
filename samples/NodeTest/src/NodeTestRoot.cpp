@@ -25,5 +25,5 @@ void NodeTestRoot::setup() {
 }
 
 void NodeTestRoot::update() {
-    ci::app::console() << getChildren()[0]->getAppliedAlpha() << std::endl;
+    ci::app::console() << getChildren()[0]->isVisible() << std::endl;
 }
