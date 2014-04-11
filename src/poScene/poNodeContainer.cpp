@@ -48,24 +48,28 @@ namespace po {
     {
         setParentAndScene(node);
         mChildren.push_back(node);
+        setAlignment(getAlignment());
     }
     
     void NodeContainer::addChildAt(int index, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin()+index, node);
+        setAlignment(getAlignment());
     }
     
     void NodeContainer::addChildBefore(NodeRef before, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(before), node);
+        setAlignment(getAlignment());
     }
     
     void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
+        setAlignment(getAlignment());
     }
     
     
@@ -158,6 +162,8 @@ namespace po {
             #pragma message "This is not safe in recursion..."
             mChildren.erase(iter);
             
+            setAlignment(getAlignment());
+            
             return true;
         }
         
@@ -174,6 +180,8 @@ namespace po {
         
         mChildren.erase(mChildren.begin() + index);
         
+        setAlignment(getAlignment());
+        
         return true;
     }
     
@@ -183,6 +191,8 @@ namespace po {
             node->removeParent();
             node->removeScene();
         }
+        
+        setAlignment(getAlignment());
         
         mChildren.clear();
     }
@@ -235,7 +245,8 @@ namespace po {
 
     void NodeContainer::updateTree()
     {
-        update();
+        Node::updateTree();
+        
         for(NodeRef &childNode : mChildren)
             childNode->updateTree();
     }

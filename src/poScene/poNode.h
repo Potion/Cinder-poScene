@@ -33,6 +33,13 @@ namespace po {
         BOTTOM_RIGHT
     };
     
+    enum class MatrixOrder {
+        // standard order
+        TRS,
+        // orbit order
+        RST
+    };
+    
     //Forward declare Scene + NodeContainer
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
@@ -163,6 +170,12 @@ namespace po {
         
         Alignment getAlignment() { return mAlignment; };
         
+        //Matrix Order
+        Node& matrixOrder(MatrixOrder order) { setMatrixOrder(order); return *this; };
+        void setMatrixOrder(MatrixOrder order) { mMatrixOrder=order; }
+        
+        MatrixOrder getMatrixOrder() { return mMatrixOrder; }
+        
         //Fill
         virtual Node& fillColor(ci::Color color)               { setFillColor(color); return *this; }
         virtual Node& fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
@@ -262,6 +275,8 @@ namespace po {
         bool mFillEnabled, mStrokeEnabled;
         
         float mAlpha, mAppliedAlpha;
+        
+        po::MatrixOrder mMatrixOrder;
         
         //Animation
         void initAttrAnimations();

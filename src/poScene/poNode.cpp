@@ -35,6 +35,8 @@ namespace po {
     ,   mRotationAnim(0)
     ,   mOffsetAnim(ci::Vec2f(0.f,0.f))
     ,   mAlphaAnim(1.f)
+    ,   mAlignment(Alignment::TOP_LEFT)
+    ,   mMatrixOrder(MatrixOrder::TRS)
     ,   mFillColor(255,255,255)
     ,   mFillEnabled(true)
     ,   mStrokeColor(255,255,255)
@@ -252,10 +254,19 @@ namespace po {
     
     void Node::setTransformation()
     {
-        #pragma message "Need to implement matrix order"
-        ci::gl::translate(mPosition);
-        ci::gl::rotate(mRotation);
-        ci::gl::scale(mScale);
+        switch(mMatrixOrder) {
+            case MatrixOrder::TRS:
+                ci::gl::translate(mPosition);
+                ci::gl::rotate(mRotation);
+                ci::gl::scale(mScale);
+                break;
+                
+            case MatrixOrder::RST:
+                ci::gl::rotate(mRotation);
+                ci::gl::scale(mScale);
+                ci::gl::translate(mPosition);
+                break;
+        }
         
         ci::gl::translate(mOffset);
     
@@ -273,15 +284,11 @@ namespace po {
         return mMatrix.globalToLocal(globalPoint);
     }
     
-    #pragma message "This is def not right"
     ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
     {
         po::SceneRef scene = mScene.lock();
         if(scene) {
             return mMatrix.localToGlobal(scene->getCamera(), scenePoint);
-//            return scene->getCamera().worldToScreen(ci::Vec3f(scenePoint, 0.f),
-//                                                    ci::app::getWindow()->getWidth(),
-//                                                    ci::app::getWindow()->getHeight());
         }
         
         return ci::Vec2f();
