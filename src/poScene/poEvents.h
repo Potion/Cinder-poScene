@@ -72,6 +72,9 @@ namespace po {
         ci::Vec2f getWindowPos() { return mWindowPos; };
         
     private:
+		//Native events currently can't be passed through the po::Scene event system :/
+        const void*	getNative() const { return mNative; }
+
         ci::Vec2f mPos, mScenePos, mWindowPos;
     };
     
@@ -104,6 +107,10 @@ namespace po {
             float getX() { return mPos.x; };
             float getY() { return mPos.y; };
             ci::Vec2f getPos() { return mPos; };
+
+			float getPrevX() { return mPrevPos.x; };
+			float getPrevY() { return mPrevPos.y; };
+			ci::Vec2f getPrevPos() { return mPrevPos; };
             
             float getSceneX() { return mScenePos.x; };
             float getSceneY() { return mScenePos.y; };
@@ -115,15 +122,18 @@ namespace po {
             
             uint32_t	getId() const { return mId; }
             double		getTime() const { return mTime; }
-            const void*	getNative() const { return mNative; }
+			NodeRef getSource() { return mSource.lock(); };
             
-            NodeRef getSource() { return mSource.lock(); };
             
         private:
             ci::Vec2f       mPos, mScenePos, mWindowPos;
+			ci::Vec2f		mPrevPos;
             uint32_t        mId;
             double          mTime;
-            const void		*mNative;
+
+			//Native events currently can't be passed through the po::Scene event system :/
+            const void*	getNative() const { return mNative; }
+            void			*mNative;
             
             std::weak_ptr<Node> mSource;
         };

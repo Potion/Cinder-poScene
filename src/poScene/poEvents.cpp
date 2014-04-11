@@ -48,10 +48,11 @@ namespace po {
     
     TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch)
     : mPos(touch.getPos())
+	, mPrevPos(touch.getPrevPos())
+    , mWindowPos(touch.getPos())
     , mId(touch.getId())
     , mTime(touch.getTime())
-    , mNative(touch.getNative())
-    , mWindowPos(touch.getPos())
+    , mNative((void *)touch.getNative())
     {
     }
     
