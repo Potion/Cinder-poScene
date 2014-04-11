@@ -38,6 +38,9 @@ namespace po {
         virtual void update();
         virtual void draw();
         
+        //Probably should not call this if you're not doing a custom draw tree!
+        uint32_t getNextDrawOrder();
+        
         //Root Node
         NodeContainerRef getRootNode() { return rootNode; };
         void setRootNode(NodeContainerRef node);
@@ -59,7 +62,6 @@ namespace po {
     private:
         //Each object get's its own draw order every frame.
         //This lets us sort objects for hit testing
-        uint32_t getNextDrawOrder();
         uint32_t drawOrderCounter;
         
         ci::CameraOrtho mCamera;

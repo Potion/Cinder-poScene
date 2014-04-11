@@ -20,6 +20,7 @@ class NodeTestApp : public AppNative {
 void NodeTestApp::setup()
 {
     scene = po::Scene::create(NodeTestRoot::create());
+    ci::gl::enableAlphaBlending();
 }
 
 void NodeTestApp::update()

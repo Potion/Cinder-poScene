@@ -7,6 +7,7 @@
 //
 
 #include "poNodeContainer.h"
+#include "poScene.h"
 
 namespace po {
     NodeContainerRef NodeContainer::create(std::string name)
@@ -241,9 +242,10 @@ namespace po {
 
     void NodeContainer::drawTree()
     {
-        #pragma message "Need to implement matrix order"
-        ci::gl::pushMatrices();
-        setTransformation();
+        //If we're invisible, nothing to do here
+        if(!mVisible) return;
+        
+        beginDrawTree();
         
         draw();
         for(NodeRef &childNode : mChildren) {
@@ -254,10 +256,7 @@ namespace po {
             //ci::gl::drawStrokedRect(childNode->getFrame());
         }
         
-        if(mDrawBounds)
-            drawBounds();
-        
-        ci::gl::popMatrices();
+        finishDrawTree();
     }
     
     

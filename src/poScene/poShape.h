@@ -57,33 +57,6 @@ namespace po {
         void setTexture(ci::gl::TextureRef texture, TextureFit fit = TextureFit::NONE, Alignment alignment = Alignment::TOP_LEFT);
         ci::gl::TextureRef getTexture() { return mTexture; }
         
-        //------------------
-        //ATTRIBUTES
-        
-        //Fill
-        Shape& fillColor(ci::Color color)               { setFillColor(color); return *this; }
-        Shape& fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
-        void setFillColor(ci::Color color)              { mFillColor = color; }
-        void setFillColor(float r, float g, float b)    { mFillColor.set(r,g,b); }
-        
-        Shape& fillEnabled(bool enabled)    { setFillEnabled(enabled); return *this; }
-        void setFillEnabled(bool enabled)   { mFillEnabled = enabled; };
-        
-        bool getFillEnabled() { return mFillEnabled; }
-        ci::Color getFillColor() { return mFillColor; }
-        
-        //Stroke
-        Shape& strokeColor(ci::Color color)               { setStrokeColor(color); return *this; }
-        Shape& strokeColor(float r, float g, float b)     { setStrokeColor(r,g,b); return *this; }
-        void setStrokeColor(ci::Color color)              { mStrokeColor = color; }
-        void setStrokeColor(float r, float g, float b)    { mStrokeColor.set(r,g,b); }
-        
-        Shape& strokeEnabled(bool enabled)      { setStrokeEnabled(enabled); return *this; }
-        void setStrokeEnabled(bool enabled)     { mStrokeEnabled = enabled; };
-        
-        bool getStrokeEnabled()     { return mStrokeEnabled; }
-        ci::Color getStrokeColor()  { return mStrokeColor; }
-        
         //Precision (for rendering)
         Shape& precision(int precision) { setPrecision(precision); return *this; }
         int getPrecision() { return mPrecision; }
@@ -102,14 +75,8 @@ namespace po {
         //Textures
         ci::gl::TextureRef mTexture;
         
-        //Attributes
-        ci::Color mFillColor;
-        ci::Color mStrokeColor;
-        
         TextureFit  mTextureFit;
         Alignment   mTextureAlignment;
-        
-        bool mFillEnabled, mStrokeEnabled;
         
         int mPrecision;
     };

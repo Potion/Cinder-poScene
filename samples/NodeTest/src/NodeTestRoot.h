@@ -12,6 +12,7 @@ public:
     static NodeTestRootRef create();
     
     void setup();
+    void update();
     
     #pragma message "Should we declare all events for this template?"
 protected:

@@ -117,8 +117,8 @@ namespace po {
         std::string getName() { return mName; }
         
         //Position
-        Node& position(float x, float y)        { setPosition(x,y); return *this; }
-        Node& position(ci::Vec2f position)      { return this->position(position.x, position.y); }
+        virtual Node& position(float x, float y)        { setPosition(x,y); return *this; }
+        virtual Node& position(ci::Vec2f position)      { return this->position(position.x, position.y); }
         void setPosition(ci::Vec2f position)    { setPosition(position.x, position.y); };
         void setPosition(float x, float y);
         
@@ -148,6 +148,9 @@ namespace po {
         float getAlpha()                { return mAlpha; };
         ci::Anim<float>& getAlphaAnim() { return mAlphaAnim; };
         
+        //Applied Alpha
+        float getAppliedAlpha() { return mAppliedAlpha; }
+        
         //Offset
         Node& offset(float x, float y)      { setOffset(x,y); return *this; }
         Node& offset(ci::Vec2f offset)      { return this->offset(offset.x, offset.y); }
@@ -162,6 +165,30 @@ namespace po {
         void setAlignment(Alignment alignment);
         
         Alignment getAlignment() { return mAlignment; };
+        
+        //Fill
+        virtual Node& fillColor(ci::Color color)               { setFillColor(color); return *this; }
+        virtual Node& fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
+        void setFillColor(ci::Color color)              { mFillColor = color; }
+        void setFillColor(float r, float g, float b)    { mFillColor.set(r,g,b); }
+        
+        Node& fillEnabled(bool enabled)    { setFillEnabled(enabled); return *this; }
+        void setFillEnabled(bool enabled)   { mFillEnabled = enabled; };
+        
+        bool getFillEnabled() { return mFillEnabled; }
+        ci::Color getFillColor() { return mFillColor; }
+        
+        //Stroke
+        Node& strokeColor(ci::Color color)               { setStrokeColor(color); return *this; }
+        Node& strokeColor(float r, float g, float b)     { setStrokeColor(r,g,b); return *this; }
+        void setStrokeColor(ci::Color color)              { mStrokeColor = color; }
+        void setStrokeColor(float r, float g, float b)    { mStrokeColor.set(r,g,b); }
+        
+        Node& strokeEnabled(bool enabled)      { setStrokeEnabled(enabled); return *this; }
+        void setStrokeEnabled(bool enabled)     { mStrokeEnabled = enabled; };
+        
+        bool getStrokeEnabled()     { return mStrokeEnabled; }
+        ci::Color getStrokeColor()  { return mStrokeColor; }
         
         //Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
@@ -233,7 +260,11 @@ namespace po {
         float     mRotation;
         ci::Vec2f mOffset;
         
-        float mAlpha;
+        ci::Color mFillColor;
+        ci::Color mStrokeColor;
+        bool mFillEnabled, mStrokeEnabled;
+        
+        float mAlpha, mAppliedAlpha;
         
         //Animation
         void initAttrAnimations();
@@ -256,7 +287,9 @@ namespace po {
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
+        virtual void beginDrawTree();
         virtual void drawTree();
+        virtual void finishDrawTree();
         
         //Transformation Matrix
         po::MatrixSet mMatrix;

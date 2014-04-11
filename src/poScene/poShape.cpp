@@ -93,11 +93,7 @@ namespace po {
     
     #pragma mark - Shape -
     Shape::Shape()
-    :   mFillColor(255,255,255)
-    ,   mFillEnabled(true)
-    ,   mStrokeColor(255,255,255)
-    ,   mStrokeEnabled(false)
-    ,   mPrecision(100)
+    :   mPrecision(100)
     ,   mTextureFit(TextureFit::NONE)
     ,   mTextureAlignment(Alignment::TOP_LEFT)
     {
@@ -116,9 +112,8 @@ namespace po {
     void Shape::draw()
     {
         //Draw fill
-        if(mFillEnabled) {
-            ci::gl::color(mFillColor);
-        
+        if(getFillEnabled()) {
+            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             if(mTexture) mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
             if(mTexture) mTexture->disable();
@@ -126,8 +121,8 @@ namespace po {
         
         //Draw stroke
         #pragma message "Need to implement better stroke stuff"
-        if(mStrokeEnabled) {
-            ci::gl::color(mStrokeColor);
+        if(getStrokeEnabled()) {
+            ci::gl::color(getStrokeColor());
             ci::gl::draw(mCiShape2d, ci::app::getWindowContentScale());
         }
     }

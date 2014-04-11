@@ -29,11 +29,16 @@ namespace po {
     ,   mRotation(0)
     ,   mOffset(0.f,0.f)
     ,   mAlpha(1.f)
+    ,   mAppliedAlpha(1.f)
     ,   mPositionAnim(ci::Vec2f(0.f,0.f))
     ,   mScaleAnim(ci::Vec2f(1.f,1.f))
     ,   mRotationAnim(0)
     ,   mOffsetAnim(ci::Vec2f(0.f,0.f))
     ,   mAlphaAnim(1.f)
+    ,   mFillColor(255,255,255)
+    ,   mFillEnabled(true)
+    ,   mStrokeColor(255,255,255)
+    ,   mStrokeEnabled(false)
     ,   mUpdatePositionFromAnim(false)
     ,   mUpdateScaleFromAnim(false)
     ,   mUpdateRotationFromAnim(false)
@@ -67,21 +72,38 @@ namespace po {
         update();
     }
     
+    void Node::beginDrawTree()
+    {
+        //Update our draw order
+        mDrawOrder = mScene.lock()->getNextDrawOrder();
+        
+        //Set applied alpha
+        if(hasParent())
+            mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
+        else
+            mAppliedAlpha = mAlpha;
+        
+        //Push our Matrix
+        ci::gl::pushMatrices();
+        setTransformation();
+
+    }
+    
     void Node::drawTree()
     {
         //If we're invisible, nothing to do here
         if(!mVisible) return;
         
-        //Update our draw order
-        mDrawOrder = mScene.lock()->getNextDrawOrder();
-        
-        //Push our Matrix
-        ci::gl::pushMatrices();
-        setTransformation();
+        beginDrawTree();
         
         //Draw this item
         draw();
         
+        finishDrawTree();
+    }
+    
+    void Node::finishDrawTree()
+    {
         //Draw bounds if necessary
         if(mDrawBounds)
             drawBounds();
