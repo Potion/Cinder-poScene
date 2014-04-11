@@ -72,9 +72,6 @@ namespace po {
         ci::Vec2f getWindowPos() { return mWindowPos; };
         
     private:
-		//Native events currently can't be passed through the po::Scene event system :/
-        const void*	getNative() const { return mNative; }
-
         ci::Vec2f mPos, mScenePos, mWindowPos;
     };
     
