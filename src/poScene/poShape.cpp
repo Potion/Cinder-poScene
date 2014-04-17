@@ -19,6 +19,17 @@ namespace po {
         return std::shared_ptr<Shape>(new Shape());
     }
     
+    //Texture/Image
+    ShapeRef Shape::create(ci::gl::TextureRef texture)
+    {
+        
+        std::shared_ptr<Shape> s = Shape::createRect(texture->getWidth(), texture->getHeight());
+        s->mTexture = texture;
+        s->render();
+        
+        return s;
+    }
+    
     
     //Rect
     ShapeRef Shape::createRect(float width, float height)
@@ -39,19 +50,9 @@ namespace po {
         return s;
     }
     
-    ShapeRef Shape::createRect(float size)
+    ShapeRef Shape::createSquare(float size)
     {
         return createRect(size, size);
-    }
-    
-    ShapeRef Shape::createRect(ci::gl::TextureRef texture)
-    {
-        
-        std::shared_ptr<Shape> s = Shape::createRect(texture->getWidth(), texture->getHeight());
-        s->mTexture = texture;
-        s->render();
-        
-        return s;
     }
     
     //Ellipse
@@ -85,7 +86,7 @@ namespace po {
         return s;
     }
     
-    ShapeRef Shape::createEllipse(float size)
+    ShapeRef Shape::createCircle(float size)
     {
         return createEllipse(size, size);
     }

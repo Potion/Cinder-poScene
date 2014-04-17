@@ -24,15 +24,13 @@ namespace po {
     {
     public:
         static ShapeRef create();
-        static ShapeRef create(ci::gl::TextureRef texture) { return createRect(texture); }
+        static ShapeRef create(ci::gl::TextureRef texture);
         
         static ShapeRef createRect(float width, float height);
-        static ShapeRef createRect(float size); //Square
-        
-        static ShapeRef createRect(ci::gl::TextureRef texture);
+        static ShapeRef createSquare(float size);
         
         static ShapeRef createEllipse(float width, float height);
-        static ShapeRef createEllipse(float size); //Circle
+        static ShapeRef createCircle(float size);
         
         ~Shape();
         
