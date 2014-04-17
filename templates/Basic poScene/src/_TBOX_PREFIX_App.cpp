@@ -2,7 +2,7 @@
 #include "cinder/gl/gl.h"
 
 #include "poScene.h"
-#include "_TBOX_PREFIX_Root.h"
+#include "_TBOX_PREFIX_.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,7 +19,7 @@ class _TBOX_PREFIX_App : public AppNative {
 
 void _TBOX_PREFIX_App::setup()
 {
-    scene = po::Scene::create(_TBOX_PREFIX_Root::create());
+    scene = po::Scene::create(_TBOX_PREFIX_::create());
 }
 
 void _TBOX_PREFIX_App::update()
