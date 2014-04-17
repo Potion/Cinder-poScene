@@ -12,7 +12,7 @@ void NodeTestRoot::setup() {
     setAlpha(0.5f);
     setAlignment(po::Alignment::CENTER_CENTER);
     setPosition(ci::app::getWindowWidth()/2, ci::app::getWindowHeight()/2);
-    //setDrawBoundsEnabled(true);
+    setDrawBoundsEnabled(true);
     
     float nSquares = 10;
     for(int i=0; i<nSquares; i++) {
@@ -23,36 +23,33 @@ void NodeTestRoot::setup() {
             square->alignment(po::Alignment::CENTER_CENTER)
             .fillColor(255,255,255)
             .rotation((360.f/nSquares) * j)
-            .position(100,100)
-            .alpha(0.5f)
-            .setDrawBoundsEnabled(true);
+            .alpha(0.15f);
             
             ci::app::timeline().apply(&square->getRotationAnim(), square->getRotation() - 360.f, 1.f * j).loop();
+            ci::app::timeline().apply(&square->getPositionAnim(), ci::Vec2f(2.f * j, 0.f), 1.f * j).pingPong();
             
+            square->getSignalMouseMoveInside().connect(std::bind(&NodeTestRoot::mouseMoveInside, this, std::_1));
             
-            ci::app::console() << square->isVisible() << std::endl;
             thisGroup->addChild(square);
-            thisGroup->setVisibilityEnabled(false);
-            ci::app::console() << square->isVisible() << std::endl;
-            thisGroup->setVisibilityEnabled(true);
-            
         }
         
         ci::app::timeline().apply(&thisGroup->getRotationAnim(), 360.f, 1.f * i).loop();
         
-        thisGroup->position(i * 50, i * 50)
-        //.alignment(po::Alignment::CENTER_CENTER)
-        .setDrawBoundsEnabled(true);
+        thisGroup->alignment(po::Alignment::CENTER_CENTER)
+        .scale(0.5f + 0.25f * i, 0.5f + 0.25f * i);
         
         addChild(thisGroup);
     }
     
-    
-    
     ci::app::timeline().apply(&getRotationAnim(), 360.f, 5.f).loop();
-    
 }
 
 void NodeTestRoot::update() {
     //ci::app::console() << getChildren()[0]->isVisible() << std::endl;
+}
+
+void NodeTestRoot::mouseMoveInside(po::MouseEvent &event)
+{
+    event.getSource()->fillColor(ci::Color(255,0,0));
+    event.setShouldPropagate(true);
 }

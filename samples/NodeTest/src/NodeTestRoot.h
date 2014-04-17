@@ -14,6 +14,8 @@ public:
     void setup();
     void update();
     
+    void mouseMoveInside(po::MouseEvent &event);
+    
     #pragma message "Should we declare all events for this template?"
 protected:
 };
