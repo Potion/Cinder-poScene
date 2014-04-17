@@ -29,7 +29,6 @@ namespace po {
     : rootNode(rootNode)
     , eventCenter(EventCenter::create())
     {
-        mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
     Scene::~Scene()
@@ -49,7 +48,6 @@ namespace po {
     void Scene::draw()
     {
         drawOrderCounter = 0;
-        ci::gl::setMatrices( mCamera );
         getRootNode()->drawTree();
     }
     

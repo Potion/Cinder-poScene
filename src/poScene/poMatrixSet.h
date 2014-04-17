@@ -17,7 +17,7 @@ namespace po {
         void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
         
         ci::Vec2f globalToLocal(const ci::Vec2f &point);
-        ci::Vec2f localToGlobal(const ci::CameraOrtho &camera, const ci::Vec2f &point);
+        ci::Vec2f localToGlobal(const ci::Vec2f &point);
         
     private:
         ci::Matrix44f mModelview, mProjection;

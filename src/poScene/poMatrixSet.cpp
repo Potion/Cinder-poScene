@@ -36,7 +36,7 @@ namespace po {
         return ci::Vec2f(r.x, r.y);
     }
     
-    ci::Vec2f MatrixSet::localToGlobal(const ci::CameraOrtho &camera, const ci::Vec2f &point)
+    ci::Vec2f MatrixSet::localToGlobal(const ci::Vec2f &point)
     {
         
         ci::Matrix44f a = mProjection * mModelview;

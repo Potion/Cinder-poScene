@@ -88,7 +88,6 @@ namespace po {
         //Push our Matrix
         ci::gl::pushMatrices();
         setTransformation();
-
     }
     
     void Node::drawTree()
@@ -288,7 +287,7 @@ namespace po {
     {
         po::SceneRef scene = mScene.lock();
         if(scene) {
-            return mMatrix.localToGlobal(scene->getCamera(), scenePoint);
+            return mMatrix.localToGlobal(scenePoint);
         }
         
         return ci::Vec2f();
