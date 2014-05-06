@@ -65,7 +65,7 @@ namespace po {
         for(uint32_t i=0; i<points.size(); i++) {
             float s = (points[i].x-rect.getX1()) / rect.getWidth();
             float t = (points[i].y-rect.getY1()) / rect.getHeight();
-            coords[i].set(s,1.f-t);
+            coords[i].set(s,t);
         }
     }
     
