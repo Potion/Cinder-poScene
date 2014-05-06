@@ -84,10 +84,9 @@ namespace po {
             coords[i].set(s,t);
         }
         
-        ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
+        ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
         
         for(uint32_t i=0; i<coords.size(); i++) {
-            coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }
     }
@@ -113,7 +112,6 @@ namespace po {
         ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
         
         for(uint32_t i=0; i<coords.size(); i++) {
-            coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }
     }
@@ -139,7 +137,6 @@ namespace po {
         ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
         
         for(uint32_t i=0; i<coords.size(); i++) {
-            coords[i].y = max.y - coords[i].y;
             coords[i] -= offset;
         }
     }
@@ -172,6 +169,15 @@ namespace po {
             default:
                 ;
         }
+    }
+    
+    
+    //------------------------------------------------------------------------
+    std::vector<ci::Vec2f> textureFit(ci::Rectf rect, ci::gl::TextureRef tex, TextureFit fit, Alignment align) {
+        std::vector<ci::Vec2f> coords(4);
+        std::vector<ci::Vec2f> points = {rect.getUpperLeft(), rect.getUpperRight(), rect.getLowerRight(), rect.getLowerLeft()};
+        textureFit(rect, tex, fit, align, coords, points);
+        return coords;
     }
 
 }
