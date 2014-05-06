@@ -20,10 +20,10 @@ poImageTestAppRef poImageTestApp::create() {
 
 
 void poImageTestApp::setup() {
-    ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage("../../../resources/test.jpg"));
+    ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage("../../../resources/bubbles.jpg"));
     
-    po::ShapeRef imageShape = po::Shape::createRect(100, 200);
-    imageShape->setTexture(texture, po::TextureFit::HEIGHT);
+    po::ShapeRef imageShape = po::Shape::create(texture);
+    //imageShape->setTexture(texture, po::TextureFit::HEIGHT);
     //imageShape->setScale(0.25f, 0.25f);
     addChild(imageShape);
     
