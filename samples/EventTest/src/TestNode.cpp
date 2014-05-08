@@ -29,7 +29,7 @@ void TestNode::setup()
     
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
-            po::ShapeRef r = po::Shape::createRect(SIZE);
+            po::ShapeRef r = po::Shape::createRect(SIZE, SIZE);
             //r->setInteractionEnabled(true);
             
             //Set Position in grid
@@ -39,8 +39,8 @@ void TestNode::setup()
             r->setAlignment(po::Alignment::CENTER_CENTER);
             r->setDrawBoundsEnabled(true);
             
-//            r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
-//            r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
+            r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
+            r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
 //            boost::shared_ptr<po::Node> a(this);
 //            boost::weak_ptr<po::Node> n(a);
 //            r->getSignalMouseMoveInside().connect(po::MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
