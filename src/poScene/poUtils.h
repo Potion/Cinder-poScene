@@ -6,9 +6,11 @@
 //
 //
 
+#pragma once 
+
 #include "cinder/gl/Texture.h"
 
-#pragma once 
+
 
 namespace po {
     
@@ -173,9 +175,14 @@ namespace po {
     
     
     //------------------------------------------------------------------------
-    std::vector<ci::Vec2f> textureFit(ci::Rectf rect, ci::gl::TextureRef tex, TextureFit fit, Alignment align) {
+    static std::vector<ci::Vec2f> textureFit(ci::Rectf rect, ci::gl::TextureRef tex, TextureFit fit, Alignment align) {
         std::vector<ci::Vec2f> coords(4);
-        std::vector<ci::Vec2f> points = {rect.getUpperLeft(), rect.getUpperRight(), rect.getLowerRight(), rect.getLowerLeft()};
+        std::vector<ci::Vec2f> points;
+		points.push_back(rect.getUpperLeft());
+		points.push_back(rect.getUpperRight());
+		points.push_back(rect.getLowerRight());
+		points.push_back(rect.getLowerLeft());
+
         textureFit(rect, tex, fit, align, coords, points);
         return coords;
     }
