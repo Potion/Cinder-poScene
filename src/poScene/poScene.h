@@ -34,6 +34,8 @@ namespace po {
         ~Scene();
         
         ci::CameraOrtho& getCamera() { return mCamera; }
+        void setAutoCam(bool autoCam) { mAutoCam = autoCam; }
+        bool getAutoCam() { return mAutoCam; };
         
         virtual void update();
         virtual void draw();
@@ -65,6 +67,7 @@ namespace po {
         uint32_t drawOrderCounter;
         
         ci::CameraOrtho mCamera;
+        bool mAutoCam;
         
         //Queue to track/untrack children on the next frame
         //This lets us pass our children to the event center by reference but not risk
