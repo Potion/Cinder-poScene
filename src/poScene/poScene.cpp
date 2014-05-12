@@ -27,9 +27,9 @@ namespace po {
     
     Scene::Scene(NodeContainerRef rootNode)
     : rootNode(rootNode)
+    , mAutoCam(true)
     , eventCenter(EventCenter::create())
     {
-        mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
     Scene::~Scene()
@@ -44,12 +44,18 @@ namespace po {
         processTrackingQueue();
         eventCenter->processEvents(allChildren);
         getRootNode()->updateTree();
+        
+        if(mAutoCam)
+            mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
     void Scene::draw()
     {
         drawOrderCounter = 0;
-        ci::gl::setMatrices( mCamera );
+        
+        if(mAutoCam)
+            ci::gl::setMatrices( mCamera );
+        
         getRootNode()->drawTree();
     }
     
