@@ -21,9 +21,11 @@ namespace po {
     
     void TextBox::draw()
     {
-        ci::gl::enableAlphaBlending();
-        ci::gl::color(1,1,1);
-        ci::gl::draw(mTexture);
+        if(mTexture) {
+            ci::gl::enableAlphaBlending();
+            ci::gl::color(1,1,1);
+            ci::gl::draw(mTexture);
+        }
     }
     
     ci::Surface TextBox::render()
