@@ -23,6 +23,7 @@ TestNodeRef TestNode::create() {
 
 void TestNode::setup()
 {
+    
     ci::gl::enableAlphaBlending();
     setDrawBoundsEnabled(true);
     setPosition(50,50);

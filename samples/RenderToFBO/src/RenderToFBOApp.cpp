@@ -24,47 +24,57 @@ void RenderToFBOApp::setup()
 {
     gl::enableAlphaBlending();
     //app::setWindowSize(2000, 2000);
-    gl::SaveFramebufferBinding bindingSaver;
+    //gl::SaveFramebufferBinding bindingSaver;
     
     scene = po::Scene::create(RenderToFBO::create());
+
+    //Create FBO
     ci::gl::Fbo::Format format;
-    format.setSamples(4);
-    format.setColorInternalFormat(GL_RGBA);
-    mFbo = gl::Fbo( scene->getRootNode()->getWidth(), scene->getRootNode()->getHeight(), format);
+//    format.setSamples(4);
+//    format.setColorInternalFormat(GL_RGBA);
     
+    mFbo = gl::Fbo( scene->getRootNode()->getWidth(), scene->getRootNode()->getHeight());
+    //mFbo = gl::Fbo( getWindowWidth(), getWindowHeight());
 }
 
 void RenderToFBOApp::update()
 {
-    
+    //Save our buffer
     gl::SaveFramebufferBinding bindingSaver;
     
-    //scene->update();
+    //Update the scene
     scene->update();
     
-    gl::setViewport(mFbo.getBounds());
-    // in the app class:
-    ci::CameraOrtho mCamera;
+    gl::setViewport( mFbo.getBounds() );
+    CameraOrtho cam;
+    cam.setOrtho( 0, mFbo.getWidth(), mFbo.getHeight(), 0, -1, 1 );
+    gl::setMatrices(cam);
     
-    // in setup() and/or resize():
-    mCamera.setOrtho( 0, mFbo.getWidth(), mFbo.getHeight(), 0, -1, 1 );
-    
-    // in draw():
-    gl::setMatrices( mCamera );
+    // Draw our scene; it takes care of it's own Ortho camera settings
     mFbo.bindFramebuffer();
     gl::clear(Color(255,0,0));
     scene->draw();
+    
+    gl::setViewport( getWindowBounds() );
 }
 
 void RenderToFBOApp::draw()
 {
+    //Draw our Scene
 	gl::clear( Color( 0, 0, 0 ) );
-   scene->draw();
+    
+    gl::setMatrices(scene->getCamera());
+    scene->draw();
+    
+    //Draw the FBO
     mFbo.bindTexture();
-    gl::color(255,0,255);
-//    gl::scale(.5f,.5f,1.f);
+    gl::color(255,255,255);
+
     float ratio = (float)mFbo.getHeight()/(float)mFbo.getWidth();
-    gl::draw(mFbo.getTexture(), Rectf(0,0,app::getWindowWidth(), app::getWindowWidth() * ratio));
+    gl::Texture tex = mFbo.getTexture();
+    tex.setFlipped(true);
+    gl::draw(tex, Rectf(0,0,app::getWindowWidth(), (app::getWindowWidth() * ratio)));
+    //gl::draw(mFbo.getTexture(), Rectf(0,0,mFbo.getWidth(), mFbo.getHeight()));
     mFbo.unbindTexture();
     
 }
