@@ -47,6 +47,8 @@ namespace po {
         NodeContainerRef getRootNode() { return rootNode; };
         void setRootNode(NodeContainerRef node);
         
+        void setDrawOffset(ci::Vec2f offfset);
+        
     protected:
         Scene(NodeContainerRef rootNode);
         

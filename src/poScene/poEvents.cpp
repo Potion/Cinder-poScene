@@ -12,7 +12,7 @@ namespace po {
 
     #pragma mark - Mouse Event -
     //Brutal copy-constructor replication...def not fun
-    MouseEvent::MouseEvent(ci::app::MouseEvent event)
+    MouseEvent::MouseEvent(ci::app::MouseEvent event, ci::Vec2f offset)
     : ci::app::MouseEvent(event.getWindow()
                           , (event.isLeft() ? ci::app::MouseEvent::LEFT_DOWN
                                             : event.isRight() ? ci::app::MouseEvent::RIGHT_DOWN
@@ -34,7 +34,7 @@ namespace po {
                         
                         ) {
         
-        mWindowPos = event.getPos();
+        mWindowPos = event.getPos() + offset;
     }
     
     

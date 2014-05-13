@@ -57,7 +57,7 @@ namespace po {
             WHEEL
         };
         
-        MouseEvent(ci::app::MouseEvent event);
+        MouseEvent(ci::app::MouseEvent event, ci::Vec2f offset);
         
         float getX() { return mPos.x; };
         float getY() { return mPos.y; };
@@ -86,6 +86,15 @@ namespace po {
     , public po::Event
     {
         friend class EventCenter;
+    public:
+        class Touch;
+        
+        TouchEvent(ci::app::TouchEvent event);
+        std::vector<po::TouchEvent::Touch>& getTouches() { return mTouches; }
+    
+    private:
+        std::vector<Touch> mTouches;
+        
     public:
         enum Type {
             BEGAN,
@@ -134,13 +143,6 @@ namespace po {
             
             std::weak_ptr<Node> mSource;
         };
-        
-        TouchEvent(ci::app::TouchEvent event);
-        
-        std::vector<po::TouchEvent::Touch>& getTouches() { return mTouches; }
-        
-    private:
-        std::vector<Touch> mTouches;
     };
     
     
