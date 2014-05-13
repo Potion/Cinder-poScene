@@ -16,7 +16,9 @@ namespace po {
     
     ShapeRef Shape::create()
     {
-        return std::shared_ptr<Shape>(new Shape());
+        std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
+        s->render();
+        return s;
     }
     
     //Texture/Image
