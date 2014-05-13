@@ -61,13 +61,15 @@ namespace po {
         void setScene(SceneRef scene);
         void removeScene();
         
+#pragma message "This should be private, testing something"
+        virtual void drawTree();
+        
     private:
         //Set the parent to this container and the scene to this container's scene
         void setParentAndScene(NodeRef node);
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
-        virtual void drawTree();
         
         std::vector<NodeRef> mChildren;
     };

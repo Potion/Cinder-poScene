@@ -258,7 +258,8 @@ namespace po {
         
         beginDrawTree();
         
-        draw();
+        #pragma message "I dont' think we need to call draw on node container in here"
+        //draw();
         for(NodeRef &childNode : mChildren) {
             childNode->drawTree();
             
