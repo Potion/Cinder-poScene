@@ -38,7 +38,6 @@ namespace po {
         
         //Set/Return the backing ci::Shape2d
         //This should be used for modifying or changing the shape
-        ci::Shape2d& getCiShape2d()     { return mCiShape2d; };
         ci::Shape2d getCiShape2dCopy() { return mCiShape2d; };
         void setCiShape2d(ci::Shape2d shape);
         
