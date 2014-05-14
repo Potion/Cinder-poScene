@@ -15,7 +15,7 @@ uniform vec2 maskPosition;
 void main(void)
 {
     vec2 c0 = gl_TexCoord[0].st;
-    vec2 c1 = gl_TexCoord[0].st * contentScale;
+    vec2 c1 = gl_TexCoord[0].st * contentScale - ( maskPosition - vec2(0,1));
     
     vec4 rgbValue = texture2D( tex, c0);
     vec4 alphaValue = texture2D( mask, c1 );

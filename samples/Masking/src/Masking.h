@@ -22,9 +22,13 @@ public:
     void setMask(ci::gl::TextureRef mask) { mMaskTex = mask; };
     void keyDown(po::KeyEvent &event);
     
+    void mouseMove(po::MouseEvent &event);
+    
 protected:
     //Masking
     ci::gl::TextureRef  mMaskTex;
     ci::gl::GlslProg    mShader;
     ci::gl::Fbo         mFbo;
+    
+    ci::Vec2f maskPos;
 };

@@ -46,6 +46,8 @@ void Masking::setup() {
     
     mFbo = gl::Fbo(getWidth(), getHeight());
     
+    ci::app::timeline().apply(&image->getRotationAnim(), 360.f, 3.f).loop();
+    
     //setCacheToFboEnabled(true);
 }
 
@@ -100,7 +102,8 @@ void Masking::drawFbo() {
         mShader.uniform("tex", 0);
         mShader.uniform("mask", 1);
         mShader.uniform ( "contentScale", Vec2f((float)tex.getWidth() / (float)mMaskTex->getWidth(), (float)tex.getHeight() / (float)mMaskTex->getHeight() ) );
-        mShader.uniform ( "maskPosition", Vec2f(0.5f,0.5f) );
+            
+        mShader.uniform ( "maskPosition", maskPos/ci::Vec2f(getWindowWidth(), getWindowHeight()));
     }
 
     
@@ -122,6 +125,14 @@ void Masking::drawFbo() {
         mMaskTex->unbind();
         mShader.unbind();
     }
+}
+
+void Masking::mouseMove(po::MouseEvent &event)
+{
+    maskPos = event.getPos();
+    //std::cout << event.getPos() << std::endl;
+    //maskPos = event.getPos() - ci::Vec2f(mMaskTex->getWidth(), mMaskTex->getHeight())/2;
+    //std::cout << maskPos << std::endl;
 }
 
 
