@@ -23,8 +23,14 @@ namespace po {
     void TextBox::draw()
     {
         if(mTexture) {
-            ci::gl::enableAlphaBlending(true);
-            ci::gl::color(1,1,1);
+            #pragma message "This needs to be looked at, might affect other stuff"
+            if(getAppliedAlpha() == 1) {
+                ci::gl::enableAlphaBlending(true);
+            } else {
+                ci::gl::enableAdditiveBlending();
+            }
+            
+            ci::gl::color(1,1,1, getAppliedAlpha());
             ci::gl::draw(mTexture);
         }
     }
@@ -33,7 +39,8 @@ namespace po {
     {
         ci::TextBox::setPremultiplied(true);
         ci::Surface surface = ci::TextBox::render();
-        mTexture = ci::gl::Texture::create(surface);
+        mTexture            = ci::gl::Texture::create(surface);
+        
         return surface;
     }
     
