@@ -94,8 +94,13 @@ namespace po {
         float getHeight()   { return getBounds().getHeight(); };
         
         //Bounds & Frame
-        void setDrawBoundsEnabled(bool enabled) { mDrawBounds = enabled; };
+        Node& drawBounds(bool enabled)  { setDrawBounds(enabled); return *this; };
+        void setDrawBounds(bool enabled) { mDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
+        
+        Node& boundsColor(ci::Color color) { setBoundsColor(color); return *this; };
+        void setBoundsColor(ci::Color color) { mBoundsColor = color; };
+        ci::Color getBoundsColor() { return mBoundsColor; };
         
         ci::Rectf getFrame();
         
@@ -315,6 +320,7 @@ namespace po {
         //Bounds and frame
         void drawBounds();
         bool mDrawBounds;
+        ci::Color mBoundsColor;
         
         //Unique identifiers
         uint32_t mDrawOrder;

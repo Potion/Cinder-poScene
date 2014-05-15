@@ -47,6 +47,7 @@ namespace po {
     ,   mUpdateOffsetFromAnim(false)
     ,   mUpdateAlphaFromAnim(false)
     ,   mDrawBounds(false)
+    ,   mBoundsColor(255,0,0)
     ,   mBoundsDirty(true)
     ,   mFrameDirty(true)
     ,   mVisible(true)
@@ -356,7 +357,7 @@ namespace po {
     
     void Node::drawBounds()
     {
-        ci::gl::color(255,0,0);
+        ci::gl::color(mBoundsColor);
         
         //Draw bounding box
         ci::gl::drawStrokedRect(getBounds());
