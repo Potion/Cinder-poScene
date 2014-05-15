@@ -244,7 +244,7 @@ namespace po {
                 mOffset.set(-bounds.getWidth(),-bounds.getHeight()); break;
         }
         
-        mOffset = mOffset-bounds.getUpperLeft();
+        //mOffset = mOffset-bounds.getUpperLeft();
     }
     
     
