@@ -15,6 +15,7 @@ namespace po {
     }
     
     TextBox::TextBox()
+    : mUseTextBounds(false)
     {
         
     }
@@ -38,6 +39,20 @@ namespace po {
     
     ci::Rectf TextBox::getBounds()
     {
-        return ci::Rectf(0,0,mCalculatedSize.x, mCalculatedSize.y);
+        if(mUseTextBounds) {
+            float xPos;
+            switch (mAlign) {
+                case ci::TextBox::Alignment::LEFT:
+                    xPos = 0; break;
+                case ci::TextBox::Alignment::CENTER:
+                    xPos = getSize().x/2 - measure().x/2; break;
+                case ci::TextBox::Alignment::RIGHT:
+                    xPos = getSize().x - measure().x; break;
+            }
+            
+            return ci::Rectf(0,0, measure().x + xPos, measure().y);
+        }
+        else
+            return ci::Rectf(0,0,getSize().x, getSize().y);
     }
 }

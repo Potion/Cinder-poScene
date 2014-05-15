@@ -43,10 +43,13 @@ namespace po {
         po::TextBox& color(ci::Color color) { setColor(color);                                             return *this; };
         po::TextBox& color(float r, float g, float b) { setColor(ci::Color(r,g,b));                        return *this; };
         
+        po::TextBox& useTextBounds(bool useTextBounds) { setUseTextBounds(useTextBounds); return *this; };
+        void setUseTextBounds(bool useTextBounds) { mUseTextBounds = useTextBounds; };
     protected:
         TextBox();
         
     private:
         ci::gl::TextureRef mTexture;
+        bool mUseTextBounds;
     };
 };
