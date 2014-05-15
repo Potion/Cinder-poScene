@@ -22,7 +22,7 @@ namespace po {
     void TextBox::draw()
     {
         if(mTexture) {
-            ci::gl::enableAlphaBlending();
+            ci::gl::enableAlphaBlending(true);
             ci::gl::color(1,1,1);
             ci::gl::draw(mTexture);
         }
@@ -30,6 +30,7 @@ namespace po {
     
     ci::Surface TextBox::render()
     {
+        ci::TextBox::setPremultiplied(true);
         ci::Surface surface = ci::TextBox::render();
         mTexture = ci::gl::Texture::create(surface);
         return surface;
@@ -37,6 +38,6 @@ namespace po {
     
     ci::Rectf TextBox::getBounds()
     {
-        return ci::Rectf(0,0,getSize().x, getSize().y);
+        return ci::Rectf(0,0,mCalculatedSize.x, mCalculatedSize.y);
     }
 }
