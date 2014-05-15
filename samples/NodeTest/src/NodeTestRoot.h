@@ -1,6 +1,7 @@
 #pragma once
 
 #include "poNodeContainer.h"
+#include "poShape.h"
 
 class NodeTestRoot;
 typedef std::shared_ptr<NodeTestRoot> NodeTestRootRef;
@@ -18,4 +19,5 @@ public:
     
     #pragma message "Should we declare all events for this template?"
 protected:
+    po::ShapeRef a,b;
 };
