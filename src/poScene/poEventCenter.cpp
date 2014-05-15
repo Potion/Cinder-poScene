@@ -34,6 +34,11 @@ namespace po {
         ci::app::getWindow()->connectKeyUp(&EventCenter::keyUp,     this);
     }
     
+    void EventCenter::setInteractionOffset(ci::Vec2f offset)
+    {
+        mMouseOffset = offset;
+    }
+    
     //Process all the event queues for this scene
     void EventCenter::processEvents(std::vector<NodeRef> &nodes)
     {
@@ -63,7 +68,7 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(ciEvent);
+                po::MouseEvent poEvent(ciEvent, mMouseOffset);
                 notifyAllNodes(nodes,   poEvent, type);
                 notifyCallbacks(nodes,  poEvent, type);
             }
