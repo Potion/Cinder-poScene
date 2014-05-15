@@ -375,7 +375,7 @@ namespace po {
             ci::Rectf r = getBounds();
             
             ci::MatrixAffine2f m;
-            m.translate(mPosition);
+            //m.translate(mPosition);
             m.rotate(ci::toRadians(getRotation()));
             m.scale(mScale);
             m.translate(mOffset);
