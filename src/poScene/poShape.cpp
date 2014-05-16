@@ -116,6 +116,7 @@ namespace po {
     {
         //Draw fill
         if(getFillEnabled()) {
+            ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             if(mTexture) mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
