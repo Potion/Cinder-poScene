@@ -115,7 +115,7 @@ namespace po {
         ci::Vec2f localToGlobal(const ci::Vec2f     &point);
         
         //Visibility
-        void setVisibilityEnabled(bool enabled) { mVisible = enabled; };
+        void setVisibility(bool enabled) { mVisible = enabled; };
         bool isVisible();
         
         //------------------
