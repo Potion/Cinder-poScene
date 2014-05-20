@@ -10,6 +10,7 @@
 #include "boost/signals2.hpp"
 
 #include "cinder/Cinder.h"
+#include "cinder/gl/Fbo.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 
@@ -200,6 +201,11 @@ namespace po {
         bool getStrokeEnabled()     { return mStrokeEnabled; }
         ci::Color getStrokeColor()  { return mStrokeColor; }
         
+        //Caching and FBO
+        Node& cacheToFboEnabled(bool cache)         { setCacheToFboEnabled(cache); };
+        void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled; };
+        bool getCachToFboEnabled()                  { return mCacheToFbo; };
+        
         //Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
         uint32_t getUID() { return mUid; };
@@ -299,10 +305,12 @@ namespace po {
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
+        
+    public:
         virtual void beginDrawTree();
         virtual void drawTree();
         virtual void finishDrawTree();
-        
+    private:
         //Transformation Matrix
         po::MatrixSet mMatrix;
         
@@ -322,6 +330,14 @@ namespace po {
         
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
+        
+        //Caching/FBO
+        void cacheToFbo();
+        void drawFbo();
+        bool mIsDrawingIntoFbo;
+        
+        bool mCacheToFbo;
+        ci::gl::Fbo mFbo;
         
         //Signals
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;

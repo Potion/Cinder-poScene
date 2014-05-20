@@ -51,6 +51,8 @@ namespace po {
     ,   mFrameDirty(true)
     ,   mVisible(true)
     ,   mInteractionEnabled(true)
+    ,   mCacheToFbo(false)
+    ,   mIsDrawingIntoFbo(false)
     {
         //Initialize our animations
         initAttrAnimations();
@@ -95,12 +97,21 @@ namespace po {
         //If we're invisible, nothing to do here
         if(!mVisible) return;
         
+        if (mCacheToFbo && !mIsDrawingIntoFbo) {
+            cacheToFbo();
+        }
+        
         beginDrawTree();
         
         //Draw this item
-        draw();
+        if(!mCacheToFbo || mIsDrawingIntoFbo) {
+            draw();
+        } else {
+            drawFbo();
+        }
         
         finishDrawTree();
+
     }
     
     void Node::finishDrawTree()
@@ -111,6 +122,52 @@ namespace po {
         
         //Pop our Matrix
         ci::gl::popMatrices();
+    }
+    
+    
+    
+    
+    //------------------------------------------------------
+    #pragma mark  - Caching -
+    void Node::cacheToFbo()
+    {
+        //Save the window buffer
+        ci::gl::SaveFramebufferBinding binding;
+        
+        //Create the FBO, set viewport and bind
+        mFbo = ci::gl::Fbo(getWidth(), getHeight());
+        ci::gl::setViewport(mFbo.getBounds());
+        mFbo.bindFramebuffer();
+        
+        //Set Ortho camera to fbo bounds
+        ci::CameraOrtho cam;
+        cam.setOrtho( 0,getBounds().getWidth(), getBounds().getHeight(), 0, -1, 1 );
+        ci::gl::setMatrices(cam);
+        
+        //Draw into the FBO
+        ci::gl::pushMatrices();
+        ci::gl::translate(-getFrame().getUpperLeft());
+        mIsDrawingIntoFbo = true;
+        drawTree();
+        mIsDrawingIntoFbo = false;
+        ci::gl::popMatrices();
+        
+        //Set the camera up for the window
+        cam.setOrtho(0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1);
+        ci::gl::setMatrices(cam);
+        
+        //Return the viewport
+        ci::gl::setViewport(ci::app::getWindowBounds());
+    }
+    
+    void Node::drawFbo()
+    {
+        ci::gl::color(255,255,255);
+        
+        ci::gl::Texture tex = mFbo.getTexture();
+        tex.setFlipped(true);
+    
+        ci::gl::draw(tex);
     }
     
     
