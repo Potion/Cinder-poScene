@@ -137,7 +137,7 @@ namespace po {
         //Scale
         Node& scale(float x, float y)   { setScale(x,y); return *this; }
         Node& scale(ci::Vec2f scale)    { return this->scale(scale.x, scale.y); }
-        void setScale(ci::Vec2f scale)  { setPosition(scale.x, scale.y); };
+        void setScale(ci::Vec2f scale)  { setScale(scale.x, scale.y); };
         void setScale(float x, float y);
         
         ci::Vec2f getScale()                { return mScale; };
