@@ -1,0 +1,106 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Blocks">
+      <UniqueIdentifier>{3C8A57CF-035A-4307-94D8-7C2BB8D65080}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\poScene">
+      <UniqueIdentifier>{11795CCD-7C35-4DD5-B9DF-984781DA8168}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\poScene\src">
+      <UniqueIdentifier>{904A61DD-182E-452C-8D2B-FA697D4F30DE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blocks\poScene\src\poScene">
+      <UniqueIdentifier>{8EF4A863-64D3-4860-870D-C9DE9FB7B7D8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\MaskingApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\src\MaskingApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\src\Masking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClCompile Include="..\src\Masking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poEventCenter.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poEvents.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poEvents.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poMatrixSet.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poMatrixSet.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poNode.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poNode.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poNodeContainer.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poNodeContainer.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poScene.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poScene.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poShape.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poShape.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poTextBox.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\..\src\poScene\poTextBox.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\..\src\poScene\poUtils.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resources.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

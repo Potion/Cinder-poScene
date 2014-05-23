@@ -241,7 +241,7 @@ namespace po {
     
     
     //------------------------------------------------------
-    #pragma mark - Update and Draw Trees -
+    #pragma mark - Update and Draw -
 
     void NodeContainer::updateTree()
     {
@@ -251,23 +251,16 @@ namespace po {
             childNode->updateTree();
     }
 
-    void NodeContainer::drawTree()
+    
+    void NodeContainer::draw()
     {
-        //If we're invisible, nothing to do here
-        if(!mVisible) return;
-        
-        beginDrawTree();
-        
-        draw();
         for(NodeRef &childNode : mChildren) {
             childNode->drawTree();
             
-            #pragma message "For testing, should be removed"
+#pragma message "For testing, should be removed"
             //ci::gl::color(0,255,0);
             //ci::gl::drawStrokedRect(childNode->getFrame());
         }
-        
-        finishDrawTree();
     }
     
     
