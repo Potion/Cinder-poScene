@@ -59,7 +59,9 @@ namespace po {
     protected:
         virtual void draw();
         
-        NodeContainer(std::string name="");
+        NodeContainer();
+        NodeContainer(std::string name);
+        
         void setScene(SceneRef scene);
         void removeScene();
         
