@@ -57,7 +57,7 @@ namespace po {
         virtual bool pointInside(const ci::Vec2f &point);
         
     protected:
-        void draw();
+        virtual void draw();
         
         NodeContainer(std::string name="");
         void setScene(SceneRef scene);
