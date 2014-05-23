@@ -6,6 +6,18 @@
 //
 //
 
+#if defined( CINDER_MSW )
+#include <windows.h>
+#undef min
+#undef max
+#include <gl/gl.h>
+#elif defined( CINDER_COCOA_TOUCH )
+#include <OpenGLES/ES1/gl.h>
+#include <OpenGLES/ES1/glext.h>
+#elif defined( CINDER_MAC )
+#include <OpenGL/gl.h>
+#endif
+
 #include "cinder/CinderMath.h"
 
 #include "poNode.h"
@@ -15,6 +27,7 @@
 namespace po {
     static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
+    
     
     NodeRef Node::create(std::string name)
     {
@@ -136,7 +149,12 @@ namespace po {
         ci::gl::SaveFramebufferBinding binding;
         
         //Create the FBO, set viewport and bind
-        mFbo = ci::gl::Fbo(getWidth(), getHeight());
+        if(!mFbo) {
+            GLint maxTextureSize;
+            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
+        }
+        
         ci::gl::setViewport(mFbo.getBounds());
         mFbo.bindFramebuffer();
         
@@ -168,7 +186,7 @@ namespace po {
         ci::gl::Texture tex = mFbo.getTexture();
         tex.setFlipped(true);
     
-        ci::gl::draw(tex);
+        ci::gl::draw(tex, getBounds());
     }
     
     

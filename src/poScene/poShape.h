@@ -11,7 +11,7 @@
 #include "cinder/gl/Vbo.h"
 
 #include "poNode.h"
-#include "poUtils.h"
+#include "poTextureFit.h"
 
 namespace po {
     
@@ -51,7 +51,7 @@ namespace po {
         void render();
         
         //Texture
-        void setTexture(ci::gl::TextureRef texture, TextureFit fit = TextureFit::NONE, Alignment alignment = Alignment::TOP_LEFT);
+        void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
         ci::gl::TextureRef getTexture() { return mTexture; }
         
         //Precision (for rendering)
@@ -72,7 +72,7 @@ namespace po {
         //Textures
         ci::gl::TextureRef mTexture;
         
-        TextureFit  mTextureFit;
+        TextureFit::Type  mTextureFitType;
         Alignment   mTextureAlignment;
         
         int mPrecision;

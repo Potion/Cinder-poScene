@@ -97,7 +97,7 @@ namespace po {
     #pragma mark - Shape -
     Shape::Shape()
     :   mPrecision(100)
-    ,   mTextureFit(TextureFit::NONE)
+    ,   mTextureFitType(TextureFit::Type::NONE)
     ,   mTextureAlignment(Alignment::TOP_LEFT)
     {
     }
@@ -132,10 +132,10 @@ namespace po {
     }
     
     #pragma mark - Texture -
-    void Shape::setTexture(ci::gl::TextureRef texture, po::TextureFit fit, po::Alignment alignment) {
-        mTexture    = texture;
-        mTextureFit = fit;
-        mTextureAlignment  = alignment;
+    void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, po::Alignment alignment) {
+        mTexture            = texture;
+        mTextureFitType     = fit;
+        mTextureAlignment   = alignment;
         
         render();
     }
@@ -148,7 +148,7 @@ namespace po {
         
         if(mTexture) {
             std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
-            po::textureFit(getBounds(), mTexture, mTextureFit, mTextureAlignment, mesh.getVertices(), texCoords);
+            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             mesh.appendTexCoords(&texCoords[0], texCoords.size());
         }
         
