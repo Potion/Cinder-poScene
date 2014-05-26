@@ -110,6 +110,7 @@ namespace po {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
                node->hasConnection(callbackType) &&
+               node->isVisible() &&
                node->pointInside(event.getWindowPos())
             ) {
                 node->emitEvent(event, callbackType);
