@@ -96,7 +96,7 @@ namespace po {
     void Node::beginDrawTree()
     {
         //Update our draw order
-        mDrawOrder = mScene.lock()->getNextDrawOrder();
+        if(hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //Set applied alpha
         if(hasParent())
@@ -114,9 +114,9 @@ namespace po {
         //If we're invisible, nothing to do here
         if(!mVisible) return;
         
-        if (mCacheToFbo && !mIsDrawingIntoFbo) {
-            cacheToFbo();
-        }
+//        if (mCacheToFbo && !mIsDrawingIntoFbo) {
+//            cacheToFbo();
+//        }
         
         beginDrawTree();
         
@@ -146,17 +146,24 @@ namespace po {
     //------------------------------------------------------
     #pragma mark  - Caching -
     
-    void Node::cacheToFbo()
+    bool Node::cacheToFbo()
     {
         //Save the window buffer
         ci::gl::SaveFramebufferBinding binding;
         
         //Create the FBO, set viewport and bind
         if(!mFbo) {
-            GLint maxTextureSize;
-            glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-//            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
-            mFbo = ci::gl::Fbo(getBounds().getLowerRight().x, getBounds().getLowerRight().y);
+            try {
+                GLint maxTextureSize;
+                glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+                //            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
+                
+                mFbo = ci::gl::Fbo(getWidth(), getHeight());
+            } catch (ci::gl::FboException) {
+                ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
+                return false;
+            }
+            
         }
         
         ci::gl::setViewport(mFbo.getBounds());
@@ -181,10 +188,13 @@ namespace po {
         
         //Return the viewport
         ci::gl::setViewport(ci::app::getWindowBounds());
+        
+        return true;
     }
     
     void Node::drawFbo()
     {
+        ci::gl::enableAlphaBlending();
         ci::gl::color(255,255,255);
         
         ci::gl::Texture tex = mFbo.getTexture();
@@ -199,7 +209,6 @@ namespace po {
             mMaskShader.uniform("mask", 1);
             mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
-            std::cout << mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) << std::endl;
 
             ci::gl::drawSolidRect(mFbo.getBounds());
             
@@ -219,18 +228,23 @@ namespace po {
     
     void Node::setMask(po::ShapeRef mask)
     {
-        mMask       = mask;
-        mIsMasked   = true;
-        mCacheToFbo = true;
-        
-        if(!mMaskShader)
-        {
-            try {
-                mMaskShader = ci::gl::GlslProg ( ci::app::loadResource(RES_GLSL_PO_MASK_VERT), ci::app::loadResource( RES_GLSL_PO_MASK_FRAG));
-            } catch (ci::gl::GlslProgCompileExc e) {
-                ci::app::console() << "Could not load shader: " << e.what() << std::endl;
-                exit(1);
+        //Try to cache to FBO
+        if(cacheToFbo()) {
+            //If successful, try to build the shader
+            if(!mMaskShader)
+            {
+                try {
+                    mMaskShader = ci::gl::GlslProg ( ci::app::loadResource(RES_GLSL_PO_MASK_VERT), ci::app::loadResource( RES_GLSL_PO_MASK_FRAG));
+                } catch (ci::gl::GlslProgCompileExc e) {
+                    ci::app::console() << "Could not load shader: " << e.what() << std::endl;
+                    return;
+                }
             }
+            
+            //Set our vars
+            mMask       = mask;
+            mIsMasked   = true;
+            mCacheToFbo = true;
         }
     }
     

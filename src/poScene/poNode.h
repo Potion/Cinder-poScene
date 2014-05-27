@@ -211,8 +211,8 @@ namespace po {
         ci::Color getStrokeColor()  { return mStrokeColor; }
         
         //Caching and FBO
-        Node& cacheToFboEnabled(bool cache)         { setCacheToFboEnabled(cache); };
-        void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled; };
+        Node& cacheToFboEnabled(bool cache)         { setCacheToFboEnabled(cache); return *this; };
+        void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled;};
         bool getCachToFboEnabled()                  { return mCacheToFbo; };
         
         //Masking
@@ -348,7 +348,7 @@ namespace po {
         std::string mName;
         
         //Caching/FBO
-        void cacheToFbo();
+        bool cacheToFbo();
         void drawFbo();
         bool mIsDrawingIntoFbo;
         

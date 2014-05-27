@@ -20,7 +20,11 @@ void main(void)
     vec4 rgbValue       = texture2D(tex, c0);
     vec4 alphaValue     = texture2D(mask, c1);
     gl_FragColor.rgb    = rgbValue.rgb;
-    gl_FragColor.a      = alphaValue.r;
+    if(c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0) {
+        gl_FragColor.a      = alphaValue.r;
+    } else {
+        gl_FragColor.a = 0.0;
+    }
     //gl_FragColor.a = 1.0;
 }
 
