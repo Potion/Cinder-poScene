@@ -95,8 +95,13 @@ namespace po {
         float getHeight()   { return getBounds().getHeight(); };
         
         //Bounds & Frame
-        void setDrawBoundsEnabled(bool enabled) { mDrawBounds = enabled; };
+        Node& drawBounds(bool enabled)  { setDrawBounds(enabled); return *this; };
+        void setDrawBounds(bool enabled) { mDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
+        
+        Node& boundsColor(ci::Color color) { setBoundsColor(color); return *this; };
+        void setBoundsColor(ci::Color color) { mBoundsColor = color; };
+        ci::Color getBoundsColor() { return mBoundsColor; };
         
         ci::Rectf getFrame();
         
@@ -111,7 +116,7 @@ namespace po {
         ci::Vec2f localToGlobal(const ci::Vec2f     &point);
         
         //Visibility
-        void setVisibilityEnabled(bool enabled) { mVisible = enabled; };
+        void setVisible(bool enabled) { mVisible = enabled; };
         bool isVisible();
         
         //------------------
@@ -133,7 +138,7 @@ namespace po {
         //Scale
         Node& scale(float x, float y)   { setScale(x,y); return *this; }
         Node& scale(ci::Vec2f scale)    { return this->scale(scale.x, scale.y); }
-        void setScale(ci::Vec2f scale)  { setPosition(scale.x, scale.y); };
+        void setScale(ci::Vec2f scale)  { setScale(scale.x, scale.y); };
         void setScale(float x, float y);
         
         ci::Vec2f getScale()                { return mScale; };
@@ -323,6 +328,7 @@ namespace po {
         //Bounds and frame
         void drawBounds();
         bool mDrawBounds;
+        ci::Color mBoundsColor;
         
         //Unique identifiers
         uint32_t mDrawOrder;

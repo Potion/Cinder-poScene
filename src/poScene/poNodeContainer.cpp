@@ -20,6 +20,11 @@ namespace po {
     {
     }
     
+    NodeContainer::NodeContainer()
+    : Node("")
+    {
+    }
+    
     
     //------------------------------------------------------
     #pragma mark - Scene -
