@@ -16,19 +16,21 @@ public:
     static MaskingRef create();
     
     void setup();
-    void drawTree();
-    void drawFbo();
+    void _drawTree();
+    void _drawFbo();
     
-    void setMask(ci::gl::TextureRef mask) { mMaskTex = mask; };
+    void setMask(po::ShapeRef mask) { mMask = mask; };
     void keyDown(po::KeyEvent &event);
     
     void mouseMove(po::MouseEvent &event);
     
 protected:
     //Masking
-    ci::gl::TextureRef  mMaskTex;
+    po::ShapeRef mMask;
     ci::gl::GlslProg    mShader;
     ci::gl::Fbo         mFbo;
     
     ci::Vec2f maskPos;
+    
+    po::ShapeRef mZach;
 };

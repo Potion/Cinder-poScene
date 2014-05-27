@@ -2,6 +2,7 @@
 
 #include "Masking.h"
 #include "poScene.h"
+#include "Resources.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -18,74 +19,84 @@ MaskingRef Masking::create() {
 
 void Masking::setup() {
     //setPosition(200,50);
-    po::ShapeRef s = po::Shape::create();
-    addChild(s);
     
-    ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset(("beer.jpg"))));
-    po::ShapeRef image = po::Shape::createRect(texture->getWidth()/10, texture->getHeight()/10);
-    image->setTexture(texture, po::TextureFit::EXACT);
-    image->setAlignment(po::Alignment::CENTER_CENTER);
-    image->setPosition(ci::app::getWindowWidth()/2,
+    ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset(("zach.jpg"))));
+    mZach = po::Shape::create(texture);
+    //mZach->setTexture(texture, po::TextureFit::Type::EXACT);
+//    mZach->setAlignment(po::Alignment::CENTER_CENTER);
+    mZach->setPosition(ci::app::getWindowWidth()/2,
                        ci::app::getWindowHeight()/2);
-    image->setRotation(45);
-    addChild(image);
+    //image->setRotation(45);
+    addChild(mZach);
     
-    po::ShapeRef mask = po::Shape::createRect(200,200);
-    mask->setFillColor(255,0,255);
-    mask->setAlignment(po::Alignment::CENTER_CENTER);
-    mask->setPosition(image->getPosition().x, image->getPosition().y);
-    addChild(mask);
+    //Create mask
+    ci::gl::TextureRef maskTex = gl::Texture::create(loadImage(loadAsset("mask.png")));
+    mMask = po::Shape::create(maskTex);
+    mZach->setMask(mMask);
+    
+    mMask->fillColor(ci::Color(1,0,1));
+    mMask->setPosition(0,0);
+    addChild(mMask);
     
     //Load the shader
-    try {
-        mShader = gl::GlslProg ( loadAsset("poMask_vert.glsl"), loadAsset( "poMask_frag.glsl"));
-    } catch (gl::GlslProgCompileExc e) {
-        console() << "Could not load shader: " << e.what() << std::endl;
-        exit(1);
-    }
+//    try {
+////        mShader = gl::GlslProg ( loadAsset("poMask_vert.glsl"), loadAsset( "poMask_frag.glsl"));
+//        mShader = gl::GlslProg ( loadResource(RES_GLSL_PO_MASK_VERT), loadResource( RES_GLSL_PO_MASK_FRAG));
+//    } catch (gl::GlslProgCompileExc e) {
+//        console() << "Could not load shader: " << e.what() << std::endl;
+//        exit(1);
+//    }
     
-    mFbo = gl::Fbo(getWidth(), getHeight());
-    
-    ci::app::timeline().apply(&image->getRotationAnim(), 360.f, 3.f).loop();
+    //ci::app::timeline().apply(&image->getRotationAnim(), 360.f, 3.f).loop();
     
     //setCacheToFboEnabled(true);
+    
+    //    po::ShapeRef mask = po::Shape::createRect(200,200);
+    //    mask->setFillColor(255,0,255);
+    //    mask->setAlignment(po::Alignment::CENTER_CENTER);
+    //    mask->setPosition(image->getPosition().x, image->getPosition().y);
+    ////    addChild(mask);
+
 }
 
-void Masking::drawTree() {
+void Masking::_drawTree() {
     if(!bUseFbo) {
         po::Node::drawTree();
         return;
     }
-    
-    //Save the window buffer
-    gl::SaveFramebufferBinding *binding = new gl::SaveFramebufferBinding();
-    
-    //Setup the FBO
-    gl::setViewport(mFbo.getBounds());
-    mFbo.bindFramebuffer();
-    
-    ci::CameraOrtho cam;
-    cam.setOrtho( 0,getBounds().getWidth(), getBounds().getHeight(), 0, -1, 1 );
-    gl::setMatrices(cam);
-    
-    //Draw into the FBO
-    gl::pushMatrices();
-    gl::translate(-getFrame().getUpperLeft());
-    
-    po::Node::drawTree();
-    
-    gl::popMatrices();
-    
-    delete binding;
-    
+
+    {
+        //Save the window buffer
+        gl::SaveFramebufferBinding binding;
+        
+        //Setup the FBO
+        mFbo = gl::Fbo(getWidth(), getHeight());
+        gl::setViewport(mFbo.getBounds());
+        mFbo.bindFramebuffer();
+        
+        ci::CameraOrtho cam;
+//        cam.setOrtho( 0,getBounds().getWidth(), getBounds().getHeight(), 0, -1, 1 );
+        cam.setOrtho( 0, getBounds().getWidth(), 0, getBounds().getHeight(), -1, 1 );
+        gl::setMatrices(cam);
+        
+        //Draw into the FBO
+        gl::pushMatrices();
+        gl::translate(-getFrame().getUpperLeft());
+        
+        ci::gl::clear(ci::Color(0,0,0));
+        po::Node::drawTree();
+        
+        gl::popMatrices();
+    }
+
     gl::setViewport(app::getWindowBounds());
     gl::setMatrices(getScene()->getCamera());
     
-    drawFbo();
+    _drawFbo();
     
 }
 
-void Masking::drawFbo() {
+void Masking::_drawFbo() {
     if(!bUseFbo) {
         po::NodeContainer::draw();
         return;
@@ -96,14 +107,14 @@ void Masking::drawFbo() {
     
     if(bShowMask) {
         tex.bind(0);
-        mMaskTex->bind(1);
+        mMask->getTexture()->bind(1);
         
         mShader.bind();
         mShader.uniform("tex", 0);
         mShader.uniform("mask", 1);
-        mShader.uniform ( "contentScale", Vec2f((float)tex.getWidth() / (float)mMaskTex->getWidth(), (float)tex.getHeight() / (float)mMaskTex->getHeight() ) );
+        mShader.uniform ( "contentScale", Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             
-        mShader.uniform ( "maskPosition", maskPos/ci::Vec2f(getWindowWidth(), getWindowHeight()));
+        mShader.uniform ( "maskPosition", maskPos/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
     }
 
     
@@ -122,14 +133,14 @@ void Masking::drawFbo() {
 
     if(bShowMask) {
         tex.unbind();
-        mMaskTex->unbind();
+        mMask->getTexture()->unbind();
         mShader.unbind();
     }
 }
 
 void Masking::mouseMove(po::MouseEvent &event)
 {
-    maskPos = event.getPos();
+    maskPos = event.getPos() - mMask->getTexture()->getSize()/2;
     //std::cout << event.getPos() << std::endl;
     //maskPos = event.getPos() - ci::Vec2f(mMaskTex->getWidth(), mMaskTex->getHeight())/2;
     //std::cout << maskPos << std::endl;
@@ -139,7 +150,11 @@ void Masking::mouseMove(po::MouseEvent &event)
 void Masking::keyDown(po::KeyEvent &event)
 {
     if(event.getChar() == 'm') {
-        bShowMask = !bShowMask;
+        if(mZach->hasMask()) {
+            mZach->removeMask();
+        } else {
+            mZach->setMask(mMask);
+        }
     }
     
     else if(event.getChar() == 'f') {

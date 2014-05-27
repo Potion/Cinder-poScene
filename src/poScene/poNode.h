@@ -11,6 +11,7 @@
 
 #include "cinder/Cinder.h"
 #include "cinder/gl/Fbo.h"
+#include "cinder/gl/GlslProg.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 
@@ -51,6 +52,9 @@ namespace po {
     //Create NodeRef typedef
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
+    
+    class Shape;
+    typedef std::shared_ptr<Shape> ShapeRef;
     
     //Signals
     typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
@@ -211,6 +215,12 @@ namespace po {
         void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled; };
         bool getCachToFboEnabled()                  { return mCacheToFbo; };
         
+        //Masking
+        void setMask(po::ShapeRef mask);
+        po::ShapeRef removeMask(bool andStopCaching = true);
+        bool hasMask() { if(!mMask) return false; return true; };
+        po::ShapeRef getMask() { return mMask; };
+        
         //Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
         uint32_t getUID() { return mUid; };
@@ -344,6 +354,12 @@ namespace po {
         
         bool mCacheToFbo;
         ci::gl::Fbo mFbo;
+        ci::gl::GlslProg mMaskShader;
+        
+        //Masking
+        void drawMasked();
+        po::ShapeRef mMask;
+        bool mIsMasked;
         
         //Signals
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;

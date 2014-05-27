@@ -19,9 +19,11 @@
 #endif
 
 #include "cinder/CinderMath.h"
+#include "Resources.h"
 
 #include "poNode.h"
 #include "poNodeContainer.h"
+#include "poShape.h"
 #include "poScene.h"
 
 namespace po {
@@ -67,6 +69,7 @@ namespace po {
     ,   mInteractionEnabled(true)
     ,   mCacheToFbo(false)
     ,   mIsDrawingIntoFbo(false)
+    ,   mIsMasked(false)
     {
         //Initialize our animations
         initAttrAnimations();
@@ -125,7 +128,6 @@ namespace po {
         }
         
         finishDrawTree();
-
     }
     
     void Node::finishDrawTree()
@@ -143,6 +145,7 @@ namespace po {
     
     //------------------------------------------------------
     #pragma mark  - Caching -
+    
     void Node::cacheToFbo()
     {
         //Save the window buffer
@@ -152,7 +155,8 @@ namespace po {
         if(!mFbo) {
             GLint maxTextureSize;
             glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
+//            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
+            mFbo = ci::gl::Fbo(getBounds().getLowerRight().x, getBounds().getLowerRight().y);
         }
         
         ci::gl::setViewport(mFbo.getBounds());
@@ -185,8 +189,58 @@ namespace po {
         
         ci::gl::Texture tex = mFbo.getTexture();
         tex.setFlipped(true);
+        
+        if(mIsMasked) {
+            tex.bind(0);
+            mMask->getTexture()->bind(1);
+            
+            mMaskShader.bind();
+            mMaskShader.uniform("tex", 0);
+            mMaskShader.uniform("mask", 1);
+            mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
+            mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
+            std::cout << mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) << std::endl;
+
+            ci::gl::drawSolidRect(mFbo.getBounds());
+            
+            tex.unbind();
+            mMask->getTexture()->unbind();
+            mMaskShader.unbind();
+        }
+        
+        else {
+            ci::gl::draw(tex, getBounds());
+        }
+    }
     
-        ci::gl::draw(tex, getBounds());
+    
+    //------------------------------------------------------
+    #pragma mark  - Masking -
+    
+    void Node::setMask(po::ShapeRef mask)
+    {
+        mMask       = mask;
+        mIsMasked   = true;
+        mCacheToFbo = true;
+        
+        if(!mMaskShader)
+        {
+            try {
+                mMaskShader = ci::gl::GlslProg ( ci::app::loadResource(RES_GLSL_PO_MASK_VERT), ci::app::loadResource( RES_GLSL_PO_MASK_FRAG));
+            } catch (ci::gl::GlslProgCompileExc e) {
+                ci::app::console() << "Could not load shader: " << e.what() << std::endl;
+                exit(1);
+            }
+        }
+    }
+    
+    po::ShapeRef Node::removeMask(bool andStopCaching)
+    {
+        mIsMasked = false;
+        mCacheToFbo = !andStopCaching;
+        po::ShapeRef mask = mMask;
+        mMask.reset();
+        return mask;
     }
     
     
