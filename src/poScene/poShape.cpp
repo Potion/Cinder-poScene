@@ -32,6 +32,15 @@ namespace po {
         return s;
     }
     
+    ShapeRef Shape::create(ci::gl::Texture &texture)
+    {
+        std::shared_ptr<Shape> s = Shape::createRect(texture.getWidth(), texture.getHeight());
+        s->mTexture = std::shared_ptr<ci::gl::Texture>(&texture);
+        s->render();
+        
+        return s;
+    }
+    
     
     //Rect
     ShapeRef Shape::createRect(float width, float height)
@@ -132,6 +141,10 @@ namespace po {
     }
     
     #pragma mark - Texture -
+    void Shape::setTexture(ci::gl::Texture texture, TextureFit::Type fit, po::Alignment alignment) {
+        setTexture(std::shared_ptr<ci::gl::Texture>(&texture), fit, alignment);
+    }
+    
     void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, po::Alignment alignment) {
         mTexture            = texture;
         mTextureFitType     = fit;
