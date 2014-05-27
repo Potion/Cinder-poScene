@@ -24,7 +24,6 @@ namespace po {
     {
     public:
         static ShapeRef create();
-        static ShapeRef create(ci::gl::Texture &texture);
         static ShapeRef create(ci::gl::TextureRef texture);
         
         static ShapeRef createRect(float width, float height);
@@ -52,7 +51,6 @@ namespace po {
         void render();
         
         //Texture
-        void setTexture(ci::gl::Texture texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
         void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
         ci::gl::TextureRef getTexture() { return mTexture; }
         
