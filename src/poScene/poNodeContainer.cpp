@@ -261,11 +261,17 @@ namespace po {
     {
         for(NodeRef &childNode : mChildren) {
             childNode->drawTree();
-            
-#pragma message "For testing, should be removed"
-            //ci::gl::color(0,255,0);
-            //ci::gl::drawStrokedRect(childNode->getFrame());
         }
+    }
+    
+    void NodeContainer::drawFbo()
+    {
+        for(NodeRef &childNode : mChildren) {
+            childNode->beginDrawTree();
+            childNode->finishDrawTree();
+        }
+        
+        Node::drawFbo();
     }
     
     
@@ -282,12 +288,12 @@ namespace po {
 				bounds.include(childNode->getFrame());
 		}
             
-        
         return bounds;
     }
     
     bool NodeContainer::pointInside(const ci::Vec2f &point)
     {
+        
         for (NodeRef node : mChildren) {
             if (node->pointInside(point)) {
                 return true;

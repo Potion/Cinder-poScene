@@ -62,6 +62,8 @@ namespace po {
         NodeContainer();
         NodeContainer(std::string name);
         
+        void drawFbo();
+        
         void setScene(SceneRef scene);
         void removeScene();
         

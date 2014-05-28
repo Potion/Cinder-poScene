@@ -215,6 +215,8 @@ namespace po {
         void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled;};
         bool getCachToFboEnabled()                  { return mCacheToFbo; };
         
+        bool cacheToFbo();
+        
         //Masking
         void setMask(po::ShapeRef mask);
         po::ShapeRef removeMask(bool andStopCaching = true);
@@ -284,6 +286,19 @@ namespace po {
         //Interaction
         bool mInteractionEnabled;
         
+        //Caching/FBO
+        virtual void drawFbo();
+        bool mIsDrawingIntoFbo;
+        
+        bool mCacheToFbo;
+        ci::gl::Fbo mFbo;
+        ci::gl::GlslProg mMaskShader;
+        
+        //Masking
+        void drawMasked();
+        po::ShapeRef mMask;
+        bool mIsMasked;
+        
     private:
         //Private attributes
         ci::Vec2f mPosition;
@@ -325,6 +340,7 @@ namespace po {
         virtual void beginDrawTree();
         virtual void drawTree();
         virtual void finishDrawTree();
+        
     private:
         //Transformation Matrix
         po::MatrixSet mMatrix;
@@ -347,19 +363,7 @@ namespace po {
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
         
-        //Caching/FBO
-        bool cacheToFbo();
-        void drawFbo();
-        bool mIsDrawingIntoFbo;
-        
-        bool mCacheToFbo;
-        ci::gl::Fbo mFbo;
-        ci::gl::GlslProg mMaskShader;
-        
-        //Masking
-        void drawMasked();
-        po::ShapeRef mMask;
-        bool mIsMasked;
+       
         
         //Signals
         MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;

@@ -39,6 +39,7 @@ namespace po {
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
+    ,   mDrawOrder(0)
     ,   mPosition(0.f,0.f)
     ,   mScale(1.f,1.f)
     ,   mRotation(0)
@@ -163,7 +164,6 @@ namespace po {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
                 return false;
             }
-            
         }
         
         ci::gl::setViewport(mFbo.getBounds());
@@ -188,6 +188,8 @@ namespace po {
         
         //Return the viewport
         ci::gl::setViewport(ci::app::getWindowBounds());
+        
+        mCacheToFbo = true;
         
         return true;
     }
