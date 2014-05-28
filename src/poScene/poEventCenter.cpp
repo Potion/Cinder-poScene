@@ -18,6 +18,7 @@ namespace po {
     }
     
     EventCenter::EventCenter()
+    : mOffset(0,0)
     {
         //Connect mouse events
         ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown,   this);
