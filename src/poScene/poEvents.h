@@ -89,7 +89,7 @@ namespace po {
     public:
         class Touch;
         
-        TouchEvent(ci::app::TouchEvent event);
+        TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset);
         std::vector<po::TouchEvent::Touch>& getTouches() { return mTouches; }
     
     private:
@@ -108,7 +108,7 @@ namespace po {
         class Touch {
             friend class Node;
         public:
-            Touch(ci::app::TouchEvent::Touch event);
+            Touch(ci::app::TouchEvent::Touch event, ci::Vec2f offset);
             
             float getX() { return mPos.x; };
             float getY() { return mPos.y; };

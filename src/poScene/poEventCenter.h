@@ -30,11 +30,11 @@ namespace po {
     private:
         EventCenter();
         
+        ci::Vec2f mOffset;
+        
         //------------------------------------
         //Mouse Events
         #pragma mark - Mouse Events -
-        
-        ci::Vec2f mMouseOffset;
         
         void processMouseEvents(std::vector<NodeRef> &nodes);
         void notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type);

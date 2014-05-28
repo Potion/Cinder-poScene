@@ -39,14 +39,14 @@ namespace po {
     
     
     #pragma mark - Touch Event -
-    TouchEvent::TouchEvent(ci::app::TouchEvent event)
+    TouchEvent::TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset)
     {
         for(const ci::app::TouchEvent::Touch touch : event.getTouches()) {
-            mTouches.push_back(ci::app::TouchEvent::Touch(touch));
+            mTouches.push_back(po::TouchEvent::Touch(touch, offset));
         }
     }
     
-    TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch)
+    TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch, ci::Vec2f offset)
     : mPos(touch.getPos())
 	, mPrevPos(touch.getPrevPos())
     , mWindowPos(touch.getPos())
@@ -54,6 +54,7 @@ namespace po {
     , mTime(touch.getTime())
     , mNative((void *)touch.getNative())
     {
+        mWindowPos += offset;
     }
     
     

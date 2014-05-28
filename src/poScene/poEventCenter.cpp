@@ -36,7 +36,7 @@ namespace po {
     
     void EventCenter::setInteractionOffset(ci::Vec2f offset)
     {
-        mMouseOffset = offset;
+        mOffset = offset;
     }
     
     //Process all the event queues for this scene
@@ -68,7 +68,7 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(ciEvent, mMouseOffset);
+                po::MouseEvent poEvent(ciEvent, mOffset);
                 notifyAllNodes(nodes,   poEvent, type);
                 notifyCallbacks(nodes,  poEvent, type);
             }
@@ -134,7 +134,7 @@ namespace po {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::TouchEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::TouchEvent poEvent(ciEvent);
+                po::TouchEvent poEvent(ciEvent, mOffset);
                 notifyAllNodes(nodes, poEvent, type);
                 notifyCallbacks(nodes, poEvent, type);
             }
