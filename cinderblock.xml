@@ -34,10 +34,11 @@
 
 		<header>src/poScene/poShape.h</header>
 		<source>src/poScene/poShape.cpp</source>
+
 		<header>src/poScene/poTextBox.h</header>
 		<source>src/poScene/poTextBox.cpp</source>
 
-		<header>src/poScene/poUtils.h</header>
+		<header>src/poScene/poTextureFit.h</header>
 
 		<platform os="macosx">
 			<includePath>src/poScene</includePath>
@@ -46,6 +47,19 @@
 		<platform os="msw">
 			<includePath>src/poScene</includePath>
 		</platform>
+
+		<resource
+            name="RES_GLSL_PO_MASK_VERT"
+            type="IMAGE"
+            id="128"
+            >resources/poSceneResources/shaders/poMask_vert.glsl</resource>
+
+		<resource
+            name="RES_GLSL_PO_MASK_FRAG"
+            type="IMAGE"
+            id="129"
+            >resources/poSceneResources/shaders/poMask_frag.glsl</resource>
+
 	</block>
 
 	<template>templates/Basic poScene/template.xml</template>
