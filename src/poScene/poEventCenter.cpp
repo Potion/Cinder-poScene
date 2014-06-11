@@ -176,6 +176,7 @@ namespace po {
         for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
+               node->isVisible() &&
                node->hasConnection(callbackType)
                )
             {
