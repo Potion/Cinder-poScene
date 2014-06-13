@@ -49,6 +49,8 @@ namespace po {
         
         //Caching to VBO
         void render();
+        void setUseVBO(bool useVBO);
+        bool getUseVBO() { return mUseVBO; };
         
         //Texture
         void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
@@ -65,13 +67,13 @@ namespace po {
     private:
         //Our Vbo
         ci::gl::VboMeshRef mVboMesh;
+        bool mUseVBO;
         
         //Our underlying ci::Shape2d
         ci::Shape2d mCiShape2d;
         
         //Textures
         ci::gl::TextureRef mTexture;
-        
         TextureFit::Type  mTextureFitType;
         Alignment   mTextureAlignment;
         

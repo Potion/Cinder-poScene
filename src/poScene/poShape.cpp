@@ -17,18 +17,15 @@ namespace po {
     ShapeRef Shape::create()
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
-        s->render();
+        //s->render();
         return s;
     }
     
     //Texture/Image
     ShapeRef Shape::create(ci::gl::TextureRef texture)
     {
-        
-        std::shared_ptr<Shape> s = Shape::createRect(texture->getWidth(), texture->getHeight());
-        s->mTexture = texture;
-        s->render();
-        
+        ShapeRef s = Shape::create();
+        s->setTexture(texture);
         return s;
     }
     
@@ -39,7 +36,6 @@ namespace po {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
         ci::Shape2d shape;
-        
         shape.moveTo(0,0);
         shape.lineTo(width,0);
         shape.lineTo(width,height);
@@ -137,10 +133,31 @@ namespace po {
         mTextureFitType     = fit;
         mTextureAlignment   = alignment;
         
+        //If we don't have an underlying shape, set it from the texture
+        if(!mCiShape2d.getNumContours()) {
+            mCiShape2d.moveTo(0,0);
+            mCiShape2d.lineTo(texture->getWidth(), 0);
+            mCiShape2d.lineTo(texture->getWidth(), texture->getHeight());
+            mCiShape2d.lineTo(0,texture->getHeight());
+            mCiShape2d.close();
+        }
+        
         render();
     }
     
-    #pragma mark - Rendering -
+    
+    #pragma mark - Rendering/VBO Caching -
+    void Shape::setUseVBO(bool useVBO)
+    {
+        mUseVBO = useVBO;
+        
+        if(mUseVBO) {
+            render();
+        } else {
+            mVboMesh.reset();
+        }
+    }
+    
     void Shape::render()
     {
         //Create Mesh
@@ -164,10 +181,10 @@ namespace po {
     
     ci::Rectf Shape::getBounds()
     {
-        if(mBoundsDirty) {
+        //if(mBoundsDirty) {
             mBounds       = mCiShape2d.calcPreciseBoundingBox();
-            mBoundsDirty = false;
-        }
+            //mBoundsDirty = false;
+        //}
         
         return mBounds;
     }
