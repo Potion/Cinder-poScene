@@ -170,12 +170,13 @@ namespace po {
         }
         
         //Create VBO Mesh
-        mVboMesh = ci::gl::VboMesh::create( mesh );
+        mVboMesh = ci::gl::VboMesh::create(mesh);
     }
     
     #pragma mark - Dimensions -
     bool Shape::pointInside(const ci::Vec2f &point)
     {
+        if(!isVisible()) return false;
         return mCiShape2d.contains(globalToLocal(point));
     }
     
