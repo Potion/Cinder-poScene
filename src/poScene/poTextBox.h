@@ -32,6 +32,7 @@ namespace po {
         ci::gl::TextureRef getTexure()  { return mTexture; };
         
         ci::Rectf getBounds();
+        void        setSize(ci::Vec2i size);
         
         //Override ci::TextBox Functions so we can return the po::Textbox instead of base class
         po::TextBox& size(ci::Vec2i sz) { ci::TextBox::setSize(sz);                                        return *this; }

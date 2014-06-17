@@ -15,9 +15,9 @@ namespace po {
     }
     
     TextBox::TextBox()
-    : mUseTextBounds(false)
+    : mUseTextBounds(true)
     {
-        
+        setSize(ci::Vec2f(ci::TextBox::GROW, ci::TextBox::GROW));
     }
     
     void TextBox::draw()
@@ -42,6 +42,11 @@ namespace po {
         mTexture            = ci::gl::Texture::create(surface);
         
         return surface;
+    }
+    
+    void TextBox::setSize(ci::Vec2i sz) {
+        setUseTextBounds(false);
+        ci::TextBox::size(sz);
     }
     
     ci::Rectf TextBox::getBounds()

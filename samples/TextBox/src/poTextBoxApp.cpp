@@ -26,8 +26,10 @@ void poTextBoxApp::setup() {
         .size(ci::Vec2f(200,200))
         .render();
     
-    t->setDrawBoundsEnabled(true);
+    t->setDrawBounds(true);
     t->setRotation(45);
+    
+    std::cout << t->getWidth() << std::endl;
     
     addChild(t);
 }
