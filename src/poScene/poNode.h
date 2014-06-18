@@ -18,9 +18,6 @@
 #include "poMatrixSet.h"
 #include "poEventCenter.h"
 
-using namespace boost;
-using namespace signals2;
-
 namespace po {
     enum class Alignment {
         NONE,

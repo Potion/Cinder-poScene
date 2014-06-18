@@ -10,8 +10,6 @@
 
 #include "cinder/gl/Texture.h"
 
-
-
 namespace po {
     namespace TextureFit {
         #pragma message "Should we put this in a Texture or Utils Namespace"
