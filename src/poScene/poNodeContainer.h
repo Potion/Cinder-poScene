@@ -54,7 +54,7 @@ namespace po {
         virtual ci::Rectf getBounds();
 
         //Interaction
-        virtual bool pointInside(const ci::Vec2f &point);
+        virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
         
     protected:
         virtual void draw();

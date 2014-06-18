@@ -111,7 +111,7 @@ namespace po {
         bool isInteractionEnabled() { return mInteractionEnabled; };
         
         //Hit Testing & Transformation
-        virtual bool pointInside(const ci::Vec2f    &point);
+        virtual bool pointInside(const ci::Vec2f    &point, bool localize=true);
         ci::Vec2f sceneToLocal(const ci::Vec2f      &point);
         ci::Vec2f globalToLocal(const ci::Vec2f     &point);
         ci::Vec2f localToGlobal(const ci::Vec2f     &point);

@@ -439,7 +439,7 @@ namespace po {
         return ci::Vec2f();
     }
     
-    bool Node::pointInside(const ci::Vec2f &point)
+    bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
         return false;
     }

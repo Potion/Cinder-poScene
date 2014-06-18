@@ -45,7 +45,7 @@ namespace po {
         virtual ci::Rectf getBounds();
         
         //Hit testing
-        bool pointInside(const ci::Vec2f &point);
+        bool pointInside(const ci::Vec2f &point, bool localize = true);
         
         //Caching to VBO
         void render();

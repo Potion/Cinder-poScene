@@ -174,10 +174,12 @@ namespace po {
     }
     
     #pragma mark - Dimensions -
-    bool Shape::pointInside(const ci::Vec2f &point)
+    bool Shape::pointInside(const ci::Vec2f &point, bool localize)
     {
         if(!isVisible()) return false;
         return mCiShape2d.contains(globalToLocal(point));
+        ci::Vec2f pos = localize ? globalToLocal(point) : point;
+        return mCiShape2d.contains(pos);
     }
     
     ci::Rectf Shape::getBounds()

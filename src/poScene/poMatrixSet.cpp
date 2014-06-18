@@ -38,7 +38,6 @@ namespace po {
     
     ci::Vec2f MatrixSet::localToGlobal(const ci::Vec2f &point)
     {
-        
         ci::Matrix44f a = mProjection * mModelview;
         a.invert();
         ci::Vec3f p = project(ci::Vec3f(point.x, point.y, 0.f));

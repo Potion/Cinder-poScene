@@ -291,11 +291,10 @@ namespace po {
         return bounds;
     }
     
-    bool NodeContainer::pointInside(const ci::Vec2f &point)
+    bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
-        
         for (NodeRef node : mChildren) {
-            if (node->pointInside(point)) {
+            if (node->pointInside(point, localize)) {
                 return true;
             }
         }
