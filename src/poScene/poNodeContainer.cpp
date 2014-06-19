@@ -293,7 +293,9 @@ namespace po {
     
     bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
-        for (NodeRef node : mChildren) {
+        for (const NodeRef &node : mChildren) {
+            if(!node->isVisible()) continue;
+            
             if (node->pointInside(point, localize)) {
                 return true;
             }

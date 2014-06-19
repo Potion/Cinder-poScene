@@ -441,7 +441,8 @@ namespace po {
     
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
-        return false;
+        ci::Vec2f pos = localize ? globalToLocal(point) : point;
+        return getBounds().contains(pos);
     }
     
     
