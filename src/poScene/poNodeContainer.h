@@ -45,10 +45,10 @@ namespace po {
         bool removeChildAt(int index);
         void removeAllChildren();
         
-        void moveChildToFront(NodeRef& node);
-        void moveChildForward(NodeRef& node);
-        void moveChildToBack(NodeRef& node);
-        void moveChildBackward(NodeRef& node);
+        void moveChildToFront(NodeRef node);
+        void moveChildForward( NodeRef node);
+        void moveChildToBack(NodeRef node);
+        void moveChildBackward(NodeRef node);
         
         //Bounds
         virtual ci::Rectf getBounds();

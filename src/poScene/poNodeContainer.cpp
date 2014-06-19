@@ -206,13 +206,13 @@ namespace po {
     //------------------------------------------------------
     #pragma mark - Move Children -
     
-    void NodeContainer::moveChildToFront(NodeRef& node)
+    void NodeContainer::moveChildToFront(NodeRef node)
     {
         if(removeChild(node))
             addChild(node);
     }
     
-    void NodeContainer::moveChildForward(NodeRef& node)
+    void NodeContainer::moveChildForward(NodeRef node)
     {
         int idx = getChildIndex(node);
         if(removeChild(node))
@@ -220,13 +220,13 @@ namespace po {
             addChildAt(std::min(idx+1, getNumChildren()), node);
     }
     
-    void NodeContainer::moveChildToBack(NodeRef& node)
+    void NodeContainer::moveChildToBack(NodeRef node)
     {
         if(removeChild(node))
             addChildAt(0, node);
     }
     
-    void NodeContainer::moveChildBackward(NodeRef& node)
+    void NodeContainer::moveChildBackward(NodeRef node)
     {
         int idx = getChildIndex(node);
         if(removeChild(node))
