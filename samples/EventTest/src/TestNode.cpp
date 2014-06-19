@@ -25,12 +25,15 @@ void TestNode::setup()
 {
     
     ci::gl::enableAlphaBlending();
-    setDrawBoundsEnabled(true);
+    setDrawBounds(true);
     setPosition(50,50);
+    setRotation(45);
     
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
             po::ShapeRef r = po::Shape::createRect(SIZE, SIZE);
+            r->setFillColor(ci::Color(1,0,1));
+            r->setAlpha(1.f);
             //r->setInteractionEnabled(true);
             
             //Set Position in grid
@@ -38,7 +41,7 @@ void TestNode::setup()
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
             r->setAlignment(po::Alignment::CENTER_CENTER);
-            r->setDrawBoundsEnabled(true);
+            r->setDrawBounds(true);
             
             r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::_1));
             r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::_1));
@@ -55,11 +58,6 @@ void TestNode::setup()
     }
     
     setPosition((ci::app::getWindowWidth()/2)-(getWidth()/2) - getBounds().x1, ci::app::getWindowHeight()/2-getHeight()/2 - getBounds().y1);
-}
-
-void TestNode::draw() {
-//    ci::gl::color(ci::Color(255,0,0));
-//    ci::gl::drawSolidRect(ci::Rectf(0,0, 50,50));
 }
 
 void TestNode::squareFinishedTweening(po::ShapeRef square) {
@@ -94,7 +92,6 @@ void TestNode::mouseMove(po::MouseEvent& event)
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
-    
     po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
     
     thisRect->setFillColor(255,0,0);
@@ -115,6 +112,12 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
+    ci::Vec2f globalPos(thisRect->localToGlobal(event.getPos()));
+    
+    std::cout << "Local Pos: "      << event.getPos()                       << std::endl;
+    std::cout << "Global Pos"       << globalPos                            << std::endl;
+    std::cout << "Converted Pos"    << thisRect->globalToLocal(globalPos)   << std::endl;
+    
     //thisRect->disconnectMouseDownInside(this);
     //event.setShouldPropagate(true);
     
@@ -129,9 +132,9 @@ void TestNode::mouseMoveInside(po::MouseEvent& event)
 //    std::cout << "Scene Pos: "  << event.getScenePos() << std::endl;
 //    std::cout << "Global Pos: " << event.getWindowPos() << std::endl;
 //
-    std::cout << "Window position: " << event.getWindowPos() << std::endl;
-    std::cout << "Node position: " << (event.getPos())  << std::endl;
-    std::cout << "localToGlobal: "  << event.getSource()->localToGlobal(event.getPos()) << std::endl;
+//    std::cout << "Window position: " << event.getWindowPos() << std::endl;
+//    std::cout << "Node position: " << (event.getPos())  << std::endl;
+//    std::cout << "localToGlobal: "  << event.getSource()->localToGlobal(event.getPos()) << std::endl;
 }
 
 void TestNode::mouseDragInside(po::MouseEvent& event)

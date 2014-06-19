@@ -21,7 +21,6 @@ public:
     static TestNodeRef create();
     
     void setup();
-    void draw();
     
     void mouseDown(po::MouseEvent &event);
     void mouseMove(po::MouseEvent &event);
