@@ -71,6 +71,7 @@ namespace po {
     ,   mCacheToFbo(false)
     ,   mIsDrawingIntoFbo(false)
     ,   mIsMasked(false)
+    ,   mHasScene(false)
     {
         //Initialize our animations
         initAttrAnimations();
@@ -452,6 +453,8 @@ namespace po {
     
     void Node::setScene(SceneRef sceneRef) {
         mScene = sceneRef;
+        mHasScene = mScene.lock() ? true : false;
+        
         if(hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
@@ -462,13 +465,14 @@ namespace po {
     
     bool Node::hasScene()
     {
-        return (mScene.lock() ? true : false);
+        return mHasScene;
     }
     
     void Node::removeScene()
     {
         if(hasScene()) mScene.lock()->untrackChildNode(shared_from_this());
         mScene.reset();
+        mHasScene = false;
     }
     
     void Node::setParent(NodeContainerRef containerNode)

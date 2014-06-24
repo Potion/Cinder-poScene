@@ -344,6 +344,7 @@ namespace po {
         
         //Scene this node belongs to
         std::weak_ptr<Scene> mScene;
+        bool mHasScene;
         
         //Parent
         std::weak_ptr<NodeContainer> mParent;
