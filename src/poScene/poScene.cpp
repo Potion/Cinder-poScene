@@ -82,24 +82,24 @@ namespace po {
     
     #pragma mark -
     void Scene::trackChildNode(NodeRef node) {
-        mTrackingQueue.push_back(TrackedNode(node, true));
+        mTrackingQueue[node] = true;
     }
     
     void Scene::untrackChildNode(NodeRef node) {
-        mTrackingQueue.push_back(TrackedNode(node, false));
+        mTrackingQueue[node] = false;
     }
     
     void Scene::processTrackingQueue()
     {
-        for (const TrackedNode &node : mTrackingQueue) {
-            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node.node);
-            
-            if(node.bTrack && iter == allChildren.end()) {
-                allChildren.push_back(node.node);
+        for (auto &kv : mTrackingQueue) {
+            if(kv.second) {
+                allChildren.push_back(kv.first);
             }
             
-            else if(!node.bTrack && iter != allChildren.end()) {
-                allChildren.erase(iter);
+            else {
+                std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
+                if(iter != allChildren.end())
+                    allChildren.erase(iter);
             }
         }
         

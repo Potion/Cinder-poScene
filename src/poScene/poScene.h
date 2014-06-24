@@ -72,15 +72,10 @@ namespace po {
         bool mAutoCam;
         
         //Queue to track/untrack children on the next frame
-        //This lets us pass our children to the event center by reference but not risk
-        //Modifying the vector during iteration (i.e. add/remove child during event callback)
-        struct TrackedNode {
-            TrackedNode(NodeRef &node, bool bTrack) : node(node), bTrack(bTrack) {};
-            NodeRef node;
-            bool bTrack;
-        };
+        //This lets us pass our children to the event center by reference (copying super slow)
+        //but not risk Modifying the vector during iteration (i.e. add/remove child during event callback)
         
         void processTrackingQueue();
-        std::vector<TrackedNode> mTrackingQueue;
+        std::map<NodeRef, bool> mTrackingQueue;
     };
 }
