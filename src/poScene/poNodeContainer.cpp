@@ -284,7 +284,7 @@ namespace po {
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         
         for(NodeRef &childNode : mChildren) {
-			if(childNode->isVisible())
+			if(childNode->mVisible)
 				bounds.include(childNode->getFrame());
 		}
             
@@ -294,9 +294,9 @@ namespace po {
     bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
         for (const NodeRef &node : mChildren) {
-            if(!node->isVisible()) continue;
+            if(!node->mVisible) continue;
             
-            if (node->pointInside(point, localize)) {
+            if(node->pointInside(point, localize)) {
                 return true;
             }
         }
