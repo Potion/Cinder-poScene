@@ -110,17 +110,17 @@ namespace po {
         public:
             Touch(ci::app::TouchEvent::Touch event, ci::Vec2f offset);
             
-            float getX() { return mPos.x; };
-            float getY() { return mPos.y; };
-            ci::Vec2f getPos() { return mPos; };
+            float getX() { return getPos().x; };
+            float getY() { return getPos().y; };
+            ci::Vec2f getPos();
 
 			float getPrevX() { return mPrevPos.x; };
 			float getPrevY() { return mPrevPos.y; };
 			ci::Vec2f getPrevPos() { return mPrevPos; };
             
-            float getSceneX() { return mScenePos.x; };
-            float getSceneY() { return mScenePos.y; };
-            ci::Vec2f getScenePos() { return mScenePos; };
+            float getSceneX() { return getScenePos().x; };
+            float getSceneY() { return getScenePos().y; };
+            ci::Vec2f getScenePos();
             
             float getWindowX() { return mWindowPos.x; };
             float getWindowY() { return mWindowPos.y; };
@@ -132,7 +132,7 @@ namespace po {
             
             
         private:
-            ci::Vec2f       mPos, mScenePos, mWindowPos;
+            ci::Vec2f       mWindowPos;
 			ci::Vec2f		mPrevPos;
             uint32_t        mId;
             double          mTime;

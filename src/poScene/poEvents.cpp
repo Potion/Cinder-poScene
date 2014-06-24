@@ -7,6 +7,8 @@
 //
 
 #include "poEvents.h"
+#include "poNode.h"
+#include "poScene.h"
 
 namespace po {
 
@@ -47,8 +49,7 @@ namespace po {
     }
     
     TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch, ci::Vec2f offset)
-    : mPos(touch.getPos())
-	, mPrevPos(touch.getPrevPos())
+    : mPrevPos(touch.getPrevPos())
     , mWindowPos(touch.getPos())
     , mId(touch.getId())
     , mTime(touch.getTime())
@@ -56,6 +57,25 @@ namespace po {
     {
         mWindowPos += offset;
     }
+    
+    ci::Vec2f TouchEvent::Touch::getPos()
+    {
+        NodeRef source = mSource.lock();
+        if(source)
+            return source->globalToLocal(getWindowPos());
+        else
+            return getWindowPos();
+    };
+    
+    ci::Vec2f TouchEvent::Touch::getScenePos()
+    {
+        NodeRef source = mSource.lock();
+        if(source && source->hasScene())
+            return source->getScene()->getRootNode()->globalToLocal(getWindowPos());
+        else
+            return getWindowPos();
+    }
+                                                                    
     
     
     #pragma mark - Key Event -
