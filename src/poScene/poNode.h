@@ -348,6 +348,7 @@ namespace po {
         
         //Parent
         std::weak_ptr<NodeContainer> mParent;
+        bool mHasParent;
         
         //Bounds and frame
         void drawBounds();

@@ -72,6 +72,7 @@ namespace po {
     ,   mIsDrawingIntoFbo(false)
     ,   mIsMasked(false)
     ,   mHasScene(false)
+    ,   mHasParent(false)
     {
         //Initialize our animations
         initAttrAnimations();
@@ -478,6 +479,7 @@ namespace po {
     void Node::setParent(NodeContainerRef containerNode)
     {
         mParent = containerNode;
+        mHasParent = mParent.lock() ? true : false;
     }
     
     NodeContainerRef Node::getParent() const {
@@ -486,11 +488,12 @@ namespace po {
         
     bool Node::hasParent()
     {
-        return (mParent.lock() ? true : false);
+        return mHasParent;
     }
     
     void Node::removeParent() {
         mParent.reset();
+        mHasParent = false;
     }
     
     
@@ -551,8 +554,6 @@ namespace po {
     void Node::notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type) {
         //Setup event
         event.mSource    = shared_from_this();
-        event.mPos       = globalToLocal(event.getWindowPos());
-        event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
         
         switch (type) {
             case po::MouseEvent::Type::DOWN:
@@ -615,8 +616,6 @@ namespace po {
         for(po::TouchEvent::Touch &touch : event.getTouches()) {
             //Setup event
             touch.mSource    = shared_from_this();
-            touch.mPos       = globalToLocal(touch.getWindowPos());
-            touch.mScenePos  = getScene()->getRootNode()->globalToLocal(touch.getWindowPos());
         }
         
         switch (type) {
@@ -635,8 +634,6 @@ namespace po {
         //Setup event
         event.mSource    = shared_from_this();
         for(po::TouchEvent::Touch &touch :event.getTouches()) {
-            touch.mPos       = globalToLocal(touch.getWindowPos());
-            touch.mScenePos  = getScene()->getRootNode()->globalToLocal(touch.getWindowPos());
 			touch.mSource	 = shared_from_this();
         }
         
