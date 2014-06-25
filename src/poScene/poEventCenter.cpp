@@ -21,11 +21,11 @@ namespace po {
     : mOffset(0,0)
     {
         //Connect mouse events
-//        ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown,   this);
-//        ci::app::getWindow()->connectMouseMove(&EventCenter::mouseMove,   this);
-//        ci::app::getWindow()->connectMouseDrag(&EventCenter::mouseDrag,   this);
-//        ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp,       this);
-//        ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
+        ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown,   this);
+        ci::app::getWindow()->connectMouseMove(&EventCenter::mouseMove,   this);
+        ci::app::getWindow()->connectMouseDrag(&EventCenter::mouseDrag,   this);
+        ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp,       this);
+        ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
         
         ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
         ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
