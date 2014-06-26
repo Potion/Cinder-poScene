@@ -166,6 +166,7 @@ namespace po {
                 format.setColorInternalFormat(GL_RGBA);
                 format.enableDepthBuffer(false);
                 
+                
                 mFbo = ci::gl::Fbo(getWidth(), getHeight(), format);
             } catch (ci::gl::FboException) {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
@@ -206,7 +207,7 @@ namespace po {
     void Node::drawFbo()
     {
         ci::gl::enableAlphaBlending();
-        ci::gl::color(255,255,255);
+        ci::gl::color(ci::ColorAf::white());
         
         ci::gl::Texture tex = mFbo.getTexture();
         tex.setFlipped(true);

@@ -16,8 +16,8 @@ public:
     static MaskingRef create();
     
     void setup();
-    void _drawTree();
-    void _drawFbo();
+//    void _drawTree();
+//    void _drawFbo();
     
     void setMask(po::ShapeRef mask) { mMask = mask; };
     void keyDown(po::KeyEvent &event);
