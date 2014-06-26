@@ -161,7 +161,12 @@ namespace po {
                 glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
                 //            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
                 
-                mFbo = ci::gl::Fbo(getWidth(), getHeight());
+                ci::gl::Fbo::Format format;
+                format.setSamples(1);
+                format.setColorInternalFormat(GL_RGBA);
+                format.enableDepthBuffer(false);
+                
+                mFbo = ci::gl::Fbo(getWidth(), getHeight(), format);
             } catch (ci::gl::FboException) {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
                 return false;
@@ -177,6 +182,8 @@ namespace po {
         ci::gl::setMatrices(cam);
         
         //Draw into the FBO
+        ci::gl::clear();
+        
         ci::gl::pushMatrices();
         ci::gl::translate(-getFrame().getUpperLeft());
         mIsDrawingIntoFbo = true;
