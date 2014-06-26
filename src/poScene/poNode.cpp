@@ -182,7 +182,7 @@ namespace po {
         ci::gl::setMatrices(cam);
         
         //Draw into the FBO
-        ci::gl::clear();
+        ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
         
         ci::gl::pushMatrices();
         ci::gl::translate(-getFrame().getUpperLeft());
