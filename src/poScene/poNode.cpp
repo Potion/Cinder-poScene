@@ -92,6 +92,8 @@ namespace po {
         //Update our tween tie-in animations
         updateAttributeAnimations();
         
+        if(mIsMasked) mMask->updateTree();
+        
         //Call our update function
         update();
     }

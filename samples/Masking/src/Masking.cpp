@@ -24,8 +24,10 @@ void Masking::setup() {
     mZach = po::Shape::create(texture);
     //mZach->setTexture(texture, po::TextureFit::Type::EXACT);
 //    mZach->setAlignment(po::Alignment::CENTER_CENTER);
-    mZach->setPosition(ci::app::getWindowWidth()/2 - mZach->getWidth()/2,
-                       ci::app::getWindowHeight()/2 - mZach->getHeight()/2);
+    mZach->setPosition(ci::app::getWindowWidth()/2 - mZach->getHeight()/2,
+                       0);
+    
+    targetPos = ci::app::getWindowHeight()/2 - mZach->getHeight()/2;
     //image->setRotation(45);
     addChild(mZach);
     
@@ -35,7 +37,8 @@ void Masking::setup() {
     mZach->setMask(mMask);
     
     mMask->fillColor(ci::Color(1,0,1));
-    mMask->setPosition(0,0);
+    mMask->setPosition(0,mZach->getHeight());
+    
     //addChild(mMask);
     
     //Load the shader
@@ -56,6 +59,13 @@ void Masking::setup() {
     //    mask->setAlignment(po::Alignment::CENTER_CENTER);
     //    mask->setPosition(image->getPosition().x, image->getPosition().y);
     ////    addChild(mask);
+
+    ci::app::timeline().apply(&mZach->getPositionAnim(), ci::Vec2f(ci::app::getWindowWidth()/2 - mZach->getHeight()/2, targetPos), 1.f);
+    ci::app::timeline().apply(&mMask->getPositionAnim(), ci::Vec2f(0, 0), 1.f);
+}
+
+void Masking::update()
+{
 
 }
 

@@ -16,6 +16,7 @@ public:
     static MaskingRef create();
     
     void setup();
+    void update();
 //    void _drawTree();
 //    void _drawFbo();
     
@@ -31,6 +32,7 @@ protected:
     ci::gl::Fbo         mFbo;
     
     ci::Vec2f maskPos;
+    float targetPos;
     
     po::ShapeRef mZach;
 };
