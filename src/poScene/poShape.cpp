@@ -98,7 +98,8 @@ namespace po {
     {
     }
     
-    Shape::~Shape() {}
+    Shape::~Shape() {
+    }
     
     #pragma mark - ci::Shape2d -
     void Shape::setCiShape2d(ci::Shape2d shape)

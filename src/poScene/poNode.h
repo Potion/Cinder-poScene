@@ -65,7 +65,6 @@ namespace po {
         friend class EventCenter;
         
     public:
-        
         static NodeRef create(std::string name="");
         ~Node();
         

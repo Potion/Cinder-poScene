@@ -382,6 +382,8 @@ namespace po {
         ci::Rectf bounds = getBounds();
         
         switch (mAlignment) {
+            case Alignment::NONE:
+                break;
             case Alignment::TOP_LEFT:
                 mOffset.set(0,0); break;
             case Alignment::TOP_CENTER:
@@ -443,8 +445,7 @@ namespace po {
     
     ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
     {
-        po::SceneRef scene = mScene.lock();
-        if(scene) {
+        if(mHasScene) {
             return mMatrix.localToGlobal(scenePoint);
         }
         

@@ -253,7 +253,7 @@ namespace po {
         Node::updateTree();
         
         for(NodeRef &childNode : mChildren)
-            childNode->updateTree();
+            if(childNode->mVisible) childNode->updateTree();
     }
 
     
