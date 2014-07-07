@@ -26,7 +26,4 @@
 xcuserdata/
 build/
 
-# Data Updater Images
-Utils/DataUpdater/Resources/showImages/
-
 DerivedData
