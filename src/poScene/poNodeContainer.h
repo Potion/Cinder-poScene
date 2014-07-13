@@ -17,7 +17,7 @@ namespace po {
     class NodeContainer
     : public Node
     {
-        friend class Scene;
+        friend class po::Scene;
     public:
         static NodeContainerRef create(std::string name="");
         
