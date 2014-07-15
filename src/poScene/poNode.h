@@ -230,15 +230,15 @@ namespace po {
         #pragma mark - Signals -
         
         //Mouse
-        MouseEventSignal& getSignalMouseDownInside() { return mSignalMouseDownInside; };
-        MouseEventSignal& getSignalMouseMoveInside() { return mSignalMouseMoveInside; };
-        MouseEventSignal& getSignalMouseDragInside() { return mSignalMouseDragInside; };
-        MouseEventSignal& getSignalMouseUpInside()   { return mSignalMouseUpInside; };
+        MouseEventSignal& getSignalMouseDownInside()    { return mSignalMouseDownInside; };
+        MouseEventSignal& getSignalMouseMoveInside()    { return mSignalMouseMoveInside; };
+        MouseEventSignal& getSignalMouseDragInside()    { return mSignalMouseDragInside; };
+        MouseEventSignal& getSignalMouseUpInside()      { return mSignalMouseUpInside; };
         
         //Touch
-        TouchEventSignal& getSignalTouchesBeganInside()   { return mSignalTouchesBeganInside; };
-        TouchEventSignal& getSignalTouchesMovedInside()   { return mSignalTouchesMovedInside; };
-        TouchEventSignal& getSignalTouchesEndedInside()   { return mSignalTouchesEndedInside; };
+        TouchEventSignal& getSignalTouchesBeganInside()     { return mSignalTouchesBeganInside; };
+        TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
+        TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
     
         
         //------------------
@@ -294,6 +294,18 @@ namespace po {
         void drawMasked();
         po::ShapeRef mMask;
         bool mIsMasked;
+        
+        //Global Signals
+        //Mouse
+        MouseEventSignal& getSignalMouseDown()          { return mSignalMouseDown; };
+        MouseEventSignal& getSignalMouseMove()          { return mSignalMouseMove; };
+        MouseEventSignal& getSignalMouseDrag()          { return mSignalMouseDrag; };
+        MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
+        
+        //Touch
+        TouchEventSignal& getSignalTouchesBegan()           { return mSignalTouchesBegan; };
+        TouchEventSignal& getSignalTouchesMoved()           { return mSignalTouchesMoved; };
+        TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
         
     private:
         //Private attributes
@@ -361,20 +373,25 @@ namespace po {
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
         
-       
-        
         //Signals
-        MouseEventSignal mSignalMouseDownInside, mSignalMouseMoveInside, mSignalMouseDragInside, mSignalMouseUpInside;
-        bool hasConnection(po::MouseEvent::Type type);
+        MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
+                            mSignalMouseMove, mSignalMouseMoveInside,
+                            mSignalMouseDrag, mSignalMouseDragInside,
+                            mSignalMouseUp, mSignalMouseUpInside;
+        
+        bool hasConnection(const po::MouseEvent::Type &type);
         void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
         
-        TouchEventSignal mSignalTouchesBeganInside, mSignalTouchesMovedInside, mSignalTouchesEndedInside;
-        bool hasConnection(po::TouchEvent::Type type);
+        TouchEventSignal mSignalTouchesBegan, mSignalTouchesBeganInside,
+                            mSignalTouchesMoved, mSignalTouchesMovedInside,
+                            mSignalTouchesEnded, mSignalTouchesEndedInside;
+        
+        bool hasConnection(const po::TouchEvent::Type &type);
         void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
         
         //Global events (just send route it to this)
-        virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);
-        virtual void notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type);
+//        virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);
+//        virtual void notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type);
         virtual void notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type);
     };
 }

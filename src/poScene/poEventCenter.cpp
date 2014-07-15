@@ -83,12 +83,12 @@ namespace po {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            if(!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
             
             event.setShouldPropagate(true);
             
             //Notify the node
-            node->notifyGlobal(event, type);
+            node->emitEvent(event, type);
         }
     }
     
@@ -149,12 +149,12 @@ namespace po {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::TouchEvent event, const po::TouchEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            if(!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
             
             event.setShouldPropagate(true);
             
             //Notify the node
-            node->notifyGlobal(event, type);
+            node->emitEvent(event, type);
         }
     }    //Dispatch callback to top item, going up through draw tree
     

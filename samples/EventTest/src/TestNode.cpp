@@ -29,6 +29,12 @@ void TestNode::setup()
     setPosition(50,50);
     setRotation(45);
     
+    //Add global events
+    getSignalMouseDown().connect(std::bind(&TestNode::mouseDown,    this, std::_1));
+    getSignalMouseMove().connect(std::bind(&TestNode::mouseMove,    this, std::_1));
+    getSignalMouseDrag().connect(std::bind(&TestNode::mouseDrag,    this, std::_1));
+    getSignalMouseUp().connect(std::bind(&TestNode::mouseUp,        this, std::_1));
+    
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
             po::ShapeRef r = po::Shape::createRect(SIZE, SIZE);
@@ -77,18 +83,26 @@ void TestNode::mouseDown(po::MouseEvent& event)
 //    std::cout << "Right down: " << event.isRightDown() << std::endl;
 //    std::cout << "Center down: " << event.isMiddleDown() << std::endl;
     
-
+    ci::app::console() << "Mouse down!" << std::endl;
     
 }
 
 void TestNode::mouseDrag(po::MouseEvent& event)
 {
+    ci::app::console() << "Mouse drag!" << std::endl;
 }
 
 
 void TestNode::mouseMove(po::MouseEvent& event)
 {
+    ci::app::console() << "Mouse move!" << std::endl;
 }
+
+void TestNode::mouseUp(po::MouseEvent& event)
+{
+    ci::app::console() << "Mouse up!" << std::endl;
+}
+
 
 void TestNode::mouseDownInside(po::MouseEvent& event)
 {
@@ -146,13 +160,6 @@ void TestNode::mouseUpInside(po::MouseEvent& event)
 {
     std::cout << "Mouse up inside!" << std::endl;
 }
-
-void TestNode::mouseUp(po::MouseEvent& event)
-{
-    //std::cout << "Test node Mouse Up event!" << std::endl;
-    //rect->fillColor.set(255,255,255);
-}
-
 void TestNode::touchesBeganInside(po::TouchEvent &event)
 {
     std::cout << "Touches Began Inside!" << std::endl;

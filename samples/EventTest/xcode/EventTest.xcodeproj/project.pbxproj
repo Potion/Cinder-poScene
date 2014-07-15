@@ -40,7 +40,6 @@
 		0E5A42F618D7AF8B0019913F /* poNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poNode.h; sourceTree = "<group>"; };
 		0E5A42F718D7AF8B0019913F /* poScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poScene.cpp; sourceTree = "<group>"; };
 		0E5A42F818D7AF8B0019913F /* poScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poScene.h; sourceTree = "<group>"; };
-		0ED0B25318EB0F66008657C5 /* poUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poUtils.h; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -106,7 +105,6 @@
 		0E5A42F218D7AF8B0019913F /* poScene */ = {
 			isa = PBXGroup;
 			children = (
-				0ED0B25318EB0F66008657C5 /* poUtils.h */,
 				E4FD8CCA18DFBCC8002F6CF2 /* poMatrixSet.cpp */,
 				E4FD8CCB18DFBCC8002F6CF2 /* poMatrixSet.h */,
 				E434D45E18DE4F35002CE960 /* poEvents.h */,

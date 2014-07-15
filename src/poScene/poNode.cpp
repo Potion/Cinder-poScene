@@ -562,37 +562,45 @@ namespace po {
     
     #pragma mark -
     //Global Mouse Events
-    void Node::notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type) {
-        //Setup event
-        event.mSource    = shared_from_this();
-        
-        switch (type) {
-            case po::MouseEvent::Type::DOWN:
-                mouseDown(event); break;
-            case po::MouseEvent::Type::MOVE:
-                mouseMove(event); break;
-            case po::MouseEvent::Type::DRAG:
-                mouseDrag(event); break;
-            case po::MouseEvent::Type::UP:
-                mouseUp(event); break;
-            case po::MouseEvent::Type::WHEEL:
-                mouseWheel(event); break;
-        }
-    }
+//    void Node::notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type) {
+//        //Setup event
+//        event.mSource    = shared_from_this();
+//        
+//        switch (type) {
+//            case po::MouseEvent::Type::DOWN:
+//                mouseDown(event); break;
+//            case po::MouseEvent::Type::MOVE:
+//                mouseMove(event); break;
+//            case po::MouseEvent::Type::DRAG:
+//                mouseDrag(event); break;
+//            case po::MouseEvent::Type::UP:
+//                mouseUp(event); break;
+//            case po::MouseEvent::Type::WHEEL:
+//                mouseWheel(event); break;
+//        }
+//    }
     
     #pragma mark -
     //SceneGraph Specific events
     
     //See if we care about an event
-    bool Node::hasConnection(po::MouseEvent::Type type)
+    bool Node::hasConnection(const po::MouseEvent::Type &type)
     {
         switch (type) {
+            case po::MouseEvent::Type::DOWN:
+                return mSignalMouseDown.num_slots();
             case po::MouseEvent::Type::DOWN_INSIDE:
                 return mSignalMouseDownInside.num_slots();
+            case po::MouseEvent::Type::MOVE:
+                return mSignalMouseMove.num_slots();
             case po::MouseEvent::Type::MOVE_INSIDE:
                 return mSignalMouseMoveInside.num_slots();
+            case po::MouseEvent::Type::DRAG:
+                return mSignalMouseDrag.num_slots();
             case po::MouseEvent::Type::DRAG_INSIDE:
                 return mSignalMouseDragInside.num_slots();
+            case po::MouseEvent::Type::UP:
+                return mSignalMouseUp.num_slots();
             case po::MouseEvent::Type::UP_INSIDE:
                 return mSignalMouseUpInside.num_slots();
         }
@@ -610,12 +618,20 @@ namespace po {
         
         //Emit the Event
         switch (type) {
+            case po::MouseEvent::Type::DOWN:
+                mSignalMouseDown(event); break;
             case po::MouseEvent::Type::DOWN_INSIDE:
                 mSignalMouseDownInside(event); break;
+            case po::MouseEvent::Type::MOVE:
+                mSignalMouseMove(event); break;
             case po::MouseEvent::Type::MOVE_INSIDE:
                 mSignalMouseMoveInside(event); break;
+            case po::MouseEvent::Type::DRAG:
+                mSignalMouseDrag(event); break;
             case po::MouseEvent::Type::DRAG_INSIDE:
                 mSignalMouseDragInside(event); break;
+            case po::MouseEvent::Type::UP:
+                mSignalMouseUp(event); break;
             case po::MouseEvent::Type::UP_INSIDE:
                 mSignalMouseUpInside(event); break;
         }
@@ -623,21 +639,21 @@ namespace po {
     
     #pragma mark - Touch Events -
     //Global Mouse Events
-    void Node::notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type) {
-        for(po::TouchEvent::Touch &touch : event.getTouches()) {
-            //Setup event
-            touch.mSource    = shared_from_this();
-        }
-        
-        switch (type) {
-            case po::TouchEvent::Type::BEGAN:
-                touchesBegan(event); break;
-            case po::TouchEvent::Type::MOVED:
-                touchesMoved(event); break;
-            case po::TouchEvent::Type::ENDED:
-                touchesEnded(event); break;
-        }
-    }
+//    void Node::notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type) {
+//        for(po::TouchEvent::Touch &touch : event.getTouches()) {
+//            //Setup event
+//            touch.mSource    = shared_from_this();
+//        }
+//        
+//        switch (type) {
+//            case po::TouchEvent::Type::BEGAN:
+//                touchesBegan(event); break;
+//            case po::TouchEvent::Type::MOVED:
+//                touchesMoved(event); break;
+//            case po::TouchEvent::Type::ENDED:
+//                touchesEnded(event); break;
+//        }
+//    }
     
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type)
@@ -650,10 +666,16 @@ namespace po {
         
         //Emit the Event
         switch (type) {
+            case po::TouchEvent::Type::BEGAN:
+                mSignalTouchesBegan(event); break;
             case po::TouchEvent::Type::BEGAN_INSIDE:
                 mSignalTouchesBeganInside(event); break;
+            case po::TouchEvent::Type::MOVED:
+                mSignalTouchesMoved(event); break;
             case po::TouchEvent::Type::MOVED_INSIDE:
                 mSignalTouchesMovedInside(event); break;
+            case po::TouchEvent::Type::ENDED:
+                mSignalTouchesEnded(event); break;
             case po::TouchEvent::Type::ENDED_INSIDE:
                 mSignalTouchesEndedInside(event); break;
             default:
@@ -662,13 +684,19 @@ namespace po {
     }
     
     //See if we care about an event
-    bool Node::hasConnection(po::TouchEvent::Type type)
+    bool Node::hasConnection(const po::TouchEvent::Type &type)
     {
         switch (type) {
+            case po::TouchEvent::Type::BEGAN:
+                return mSignalTouchesBegan.num_slots();
             case po::TouchEvent::Type::BEGAN_INSIDE:
                 return mSignalTouchesBeganInside.num_slots();
+            case po::TouchEvent::Type::MOVED:
+                return mSignalTouchesMoved.num_slots();
             case po::TouchEvent::Type::MOVED_INSIDE:
                 return mSignalTouchesMovedInside.num_slots();
+            case po::TouchEvent::Type::ENDED:
+                return mSignalTouchesEnded.num_slots();
             case po::TouchEvent::Type::ENDED_INSIDE:
                 return mSignalTouchesEndedInside.num_slots();
         }
