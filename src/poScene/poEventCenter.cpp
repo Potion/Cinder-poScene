@@ -84,7 +84,8 @@ namespace po {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
-            
+            //if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+
             event.setShouldPropagate(true);
             
             //Notify the node
@@ -110,8 +111,8 @@ namespace po {
         for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
-               node->hasConnection(callbackType) &&
                node->mVisible &&
+               node->hasConnection(callbackType) &&
                node->pointInside(event.getWindowPos())
             ) {
                 node->emitEvent(event, callbackType);
@@ -156,9 +157,10 @@ namespace po {
             //Notify the node
             node->emitEvent(event, type);
         }
-    }    //Dispatch callback to top item, going up through draw tree
+    }
     
     
+    //Dispatch callback to top item, going up through draw tree
     void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::TouchEvent event, po::TouchEvent::Type &type)
     {
         //Set the callback type
@@ -176,7 +178,7 @@ namespace po {
         for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
-               node->mVisible &&
+               node->isVisible() &&
                node->hasConnection(callbackType)
                )
             {
