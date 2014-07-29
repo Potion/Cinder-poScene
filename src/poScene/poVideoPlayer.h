@@ -26,20 +26,24 @@ namespace po {
         void update();
         void draw();
         
+        //Returns the bounds of our video (if we have one)
         ci::Rectf getBounds();
         
         void load(const ci::fs::path &moviePath);
         void load(ci::DataSourceRef data);
         
-        void play() { if(mVideo) mVideo->play(); };
-        void stop();
-        void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
+        ci::qtime::MovieGlRef getMovieRef();
         
+        //Convenience functions
+        void play() { if(mVideo) mVideo->play(); };
+        void stop() { if(mVideo) mVideo->stop(); };
+        void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
         
     protected:
         VideoPlayer();
         
     private:
+        //Movie and texture refs
         ci::qtime::MovieGlRef mVideo;
         ci::gl::Texture mVideoTex;
     };

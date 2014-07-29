@@ -18,7 +18,6 @@ namespace po {
     
     VideoPlayer::VideoPlayer()
     {
-        
     }
     
     void VideoPlayer::update()
