@@ -34,7 +34,7 @@ namespace po {
     void VideoPlayer::draw()
     {
         if(mVideoTex) {
-            ci::gl::color(getFillColor());
+            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mVideoTex);
         }
     }
@@ -58,8 +58,13 @@ namespace po {
         }
         catch( ... ) {
             ci::app::console() << "Unable to load the movie from location " << data << std::endl;
-            mVideo->reset();
+            mVideo.reset();
             mVideoTex.reset();
         }
+    }
+    
+    void VideoPlayer::unload() {
+        mVideo.reset();
+        mVideoTex.reset();
     }
 }

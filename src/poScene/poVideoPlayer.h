@@ -32,11 +32,14 @@ namespace po {
         void load(const ci::fs::path &moviePath);
         void load(ci::DataSourceRef data);
         
+        void unload();
+        
         ci::qtime::MovieGlRef getMovieRef();
         
         //Convenience functions
-        void play() { if(mVideo) mVideo->play(); };
-        void stop() { if(mVideo) mVideo->stop(); };
+        void play()     { if(mVideo) mVideo->play();    };
+        void stop()     { if(mVideo) mVideo->stop();    };
+        bool isPlaying() { if(mVideo) return mVideo->isPlaying(); return false; }
         void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
         
     protected:
