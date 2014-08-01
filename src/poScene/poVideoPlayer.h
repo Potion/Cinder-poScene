@@ -42,6 +42,8 @@ namespace po {
         bool isPlaying() { if(mVideo) return mVideo->isPlaying(); return false; }
         void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
         
+        ci::gl::Texture getTexture() { return mVideoTex; };
+        
     protected:
         VideoPlayer();
         
