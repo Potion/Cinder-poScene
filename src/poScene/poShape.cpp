@@ -17,7 +17,7 @@ namespace po {
     ShapeRef Shape::create()
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
-        //s->render();
+
         return s;
     }
     
@@ -43,7 +43,6 @@ namespace po {
         shape.close();
         
         s->setCiShape2d(shape);
-        s->render();
         
         return s;
     }
@@ -79,7 +78,6 @@ namespace po {
         shape.close();
         
         s->setCiShape2d(shape);
-        s->render();
 
         return s;
     }
@@ -95,6 +93,7 @@ namespace po {
     :   mPrecision(100)
     ,   mTextureFitType(TextureFit::Type::NONE)
     ,   mTextureAlignment(Alignment::TOP_LEFT)
+    ,   mUseVBO(true)
     {
     }
     
@@ -115,9 +114,17 @@ namespace po {
         if(getFillEnabled()) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if(mTexture) mTexture->enableAndBind();
-            ci::gl::draw(mVboMesh);
-            if(mTexture) mTexture->disable();
+            if(mUseVBO) {
+                if(mTexture) mTexture->enableAndBind();
+                ci::gl::draw(mVboMesh);
+                if(mTexture) mTexture->disable();
+            }
+            
+            else {
+                if(mTexture) mTexture->enableAndBind();
+                ci::gl::draw(mCiShape2d);
+                if(mTexture) mTexture->disable();
+            }
         }
         
         //Draw stroke
@@ -161,17 +168,33 @@ namespace po {
     
     void Shape::render()
     {
-        //Create Mesh
-        ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
-        
-        if(mTexture) {
-            std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
-            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
-            mesh.appendTexCoords(&texCoords[0], texCoords.size());
+        if(mUseVBO) {
+            //Create Mesh
+            ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
+            
+            if(mTexture) {
+                std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
+                TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+                mesh.appendTexCoords(&texCoords[0], texCoords.size());
+            }
+            
+            //Create VBO Mesh
+            mVboMesh = ci::gl::VboMesh::create(mesh);
         }
         
-        //Create VBO Mesh
-        mVboMesh = ci::gl::VboMesh::create(mesh);
+//        else {
+//            if(mTexture) {
+//                std::vector<ci::Vec2f> texCoords;
+//                for(int i=0; i<mCiShape2d.getContours().size(); i++) {
+//                    std::vector<ci::Vec2f> coords;
+//                    
+//                }
+//                
+//                mCiShape2d.
+//                //TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+//                
+//            }
+//        }
     }
     
     #pragma mark - Dimensions -
@@ -184,7 +207,7 @@ namespace po {
     ci::Rectf Shape::getBounds()
     {
         //if(mBoundsDirty) {
-            mBounds       = mCiShape2d.calcPreciseBoundingBox();
+            mBounds       = mCiShape2d.calcBoundingBox();
             //mBoundsDirty = false;
         //}
         
