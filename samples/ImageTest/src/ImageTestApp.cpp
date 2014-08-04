@@ -1,5 +1,6 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
+#include "cinder/Utilities.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -15,15 +16,18 @@ class ImageTestApp : public AppNative {
 	void update();
 	void draw();
     
+    void keyDown(KeyEvent event);
+    
     po::SceneRef scene;
+    
+    Font mFont;
 };
 
 void ImageTestApp::setup()
 {
     ci::gl::enableAlphaBlending();
     
-    poImageTestAppRef app = poImageTestApp::create();
-    scene = po::Scene::create(app);
+    
 }
 
 void ImageTestApp::mouseDown( MouseEvent event )
@@ -32,7 +36,7 @@ void ImageTestApp::mouseDown( MouseEvent event )
 
 void ImageTestApp::update()
 {
-    scene->update();
+    if(scene) scene->update();
 }
 
 void ImageTestApp::draw()
@@ -40,7 +44,20 @@ void ImageTestApp::draw()
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
     
-    scene->draw();
+    if(scene) scene->draw();
+    
+    gl::pushMatrices();
+    gl::translate(1,1);
+    gl::drawString( "Framerate: " + toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color(0,0,0), mFont );
+    gl::popMatrices();
+    
+    gl::enableAlphaBlending();
+    gl::drawString( "Framerate: " + toString(getAverageFps()), Vec2f( 10.0f, 10.0f ), Color(1,0,0), mFont );
+}
+
+void ImageTestApp::keyDown(cinder::app::KeyEvent event) {
+    poImageTestAppRef app = poImageTestApp::create();
+    scene = po::Scene::create(app);
 }
 
 CINDER_APP_NATIVE( ImageTestApp, RendererGl )
