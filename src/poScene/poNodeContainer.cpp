@@ -56,6 +56,15 @@ namespace po {
         setAlignment(getAlignment());
     }
     
+    void NodeContainer::addChildren(std::vector<NodeRef> nodes) {
+        for (auto &node : nodes) {
+            setParentAndScene(node);
+            mChildren.push_back(node);
+        }
+        
+        setAlignment(getAlignment());
+    }
+    
     void NodeContainer::addChildAt(int index, NodeRef node)
     {
         setParentAndScene(node);

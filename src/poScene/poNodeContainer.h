@@ -26,6 +26,7 @@ namespace po {
         
 		int getNumChildren() { return mChildren.size(); };
         void addChild(NodeRef node);
+        void addChildren(std::vector<NodeRef> nodes);
         void addChildAt(int index, NodeRef node);
         void addChildBefore(NodeRef before, NodeRef node);
         void addChildAfter(NodeRef after, NodeRef node);
