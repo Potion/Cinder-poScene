@@ -41,8 +41,7 @@ namespace po {
         void stop()     { if(mVideo) mVideo->stop();    };
         bool isPlaying() { if(mVideo) return mVideo->isPlaying(); return false; }
         void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
-        
-        ci::gl::Texture getTexture() { return mVideoTex; };
+		bool isDone() { if(mVideo) return mVideo->isDone(); return false; }
         
     protected:
         VideoPlayer();
