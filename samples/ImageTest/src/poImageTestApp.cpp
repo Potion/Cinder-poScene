@@ -21,11 +21,19 @@ poImageTestAppRef poImageTestApp::create() {
 
 void poImageTestApp::setup() {
     ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage("../../../resources/bubbles.jpg"));
+
+    std::vector<po::NodeRef> images;
+    float curTime = ci::app::getElapsedSeconds();
+    for(int i=0; i<10000; i++) {
+        po::ShapeRef imageShape = po::Shape::create(texture);
+        //imageShape->setTexture(texture, po::TextureFit::HEIGHT);
+        //imageShape->setScale(0.25f, 0.25f);
+        images.push_back(imageShape);
+    }
     
-    po::ShapeRef imageShape = po::Shape::create(texture);
-    //imageShape->setTexture(texture, po::TextureFit::HEIGHT);
-    //imageShape->setScale(0.25f, 0.25f);
-    addChild(imageShape);
+    addChildren(images);
+    
+    std::cout << ci::app::getElapsedSeconds() - curTime;
     
 //    imageShape->alignment(po::Alignment::CENTER_CENTER)
 //                .rotation(45);

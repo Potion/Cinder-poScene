@@ -51,6 +51,7 @@ namespace po {
         void render();
         void setUseVBO(bool useVBO);
         bool getUseVBO() { return mUseVBO; };
+        ci::gl::VboMeshRef getVbo() { return mVboMesh; };
         
         //Texture
         void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
