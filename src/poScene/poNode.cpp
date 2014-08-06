@@ -151,6 +151,13 @@ namespace po {
     //------------------------------------------------------
     #pragma mark  - Caching -
     
+    void Node::setCacheToFboEnabled(bool enabled) {
+        mCacheToFbo = enabled;
+        if(mCacheToFbo) {
+            cacheToFbo();
+        }
+    }
+    
     bool Node::cacheToFbo()
     {
         //Save the window buffer
@@ -168,13 +175,17 @@ namespace po {
                 format.setColorInternalFormat(GL_RGBA);
                 format.enableDepthBuffer(false);
                 
-                
                 mFbo = ci::gl::Fbo(getWidth(), getHeight(), format);
             } catch (ci::gl::FboException) {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
+                mCacheToFbo = false;
                 return false;
             }
         }
+        
+        //We have to be visible, so if we aren't temporarily turn it on
+        bool visible = mVisible;
+        setVisible(true);
         
         ci::gl::setViewport(mFbo.getBounds());
         mFbo.bindFramebuffer();
@@ -201,8 +212,10 @@ namespace po {
         //Return the viewport
         ci::gl::setViewport(ci::app::getWindowBounds());
         
-        mCacheToFbo = true;
+        //Return to previous visibility
+        setVisible(visible);
         
+        mCacheToFbo = true;
         return true;
     }
     
@@ -237,6 +250,17 @@ namespace po {
     }
     
     
+    ci::gl::TextureRef Node::createTexture() {
+        cacheToFbo();
+        
+        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo.getTexture()));
+        
+//        if(!mCacheToFbo)
+//            mFbo.reset();
+        
+        return tex;
+    }
+    
     //------------------------------------------------------
     #pragma mark  - Masking -
     
@@ -265,7 +289,12 @@ namespace po {
     po::ShapeRef Node::removeMask(bool andStopCaching)
     {
         mIsMasked = false;
-        mCacheToFbo = !andStopCaching;
+        
+        if(andStopCaching) {
+            mCacheToFbo = false;
+            mFbo.reset();
+        }
+        
         po::ShapeRef mask = mMask;
         mMask.reset();
         return mask;

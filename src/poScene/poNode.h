@@ -64,6 +64,8 @@ namespace po {
         friend class NodeContainer;
         friend class EventCenter;
         
+        friend class ci::gl::Texture;
+        
     public:
         static NodeRef create(std::string name="");
         ~Node();
@@ -208,10 +210,11 @@ namespace po {
         
         //Caching and FBO
         Node& cacheToFboEnabled(bool cache)         { setCacheToFboEnabled(cache); return *this; };
-        void setCacheToFboEnabled(bool enabled)     { mCacheToFbo = enabled;};
+        void setCacheToFboEnabled(bool enabled);
         bool getCachToFboEnabled()                  { return mCacheToFbo; };
         
         bool cacheToFbo();
+        ci::gl::TextureRef createTexture();
         
         //Masking
         void setMask(po::ShapeRef mask);
