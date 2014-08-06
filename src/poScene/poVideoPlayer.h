@@ -43,6 +43,12 @@ namespace po {
         void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
         ci::gl::Texture getTexture() { return mVideoTex; };
 		bool isDone() { if(mVideo) return mVideo->isDone(); return false; }
+		float getCurrentTime() { return mVideo->getCurrentTime(); }
+		float getDuration() { return mVideo->getDuration(); }
+		void seekToTime( float seconds ) { mVideo->seekToTime(seconds); }
+		void seekToStart() { mVideo->seekToStart(); }
+		void seekToEnd() { mVideo->seekToEnd(); }
+		void setIsLoop(bool isLoop) { mVideo->setLoop(isLoop); }
         
     protected:
         VideoPlayer();
