@@ -22,7 +22,7 @@ namespace po {
     
     void VideoPlayer::update()
     {
-        if(mVideo) mVideoTex = mVideo->getTexture();
+        if(mVideo && mVideo->checkNewFrame()) mVideoTex = mVideo->getTexture();
     }
     
     ci::Rectf VideoPlayer::getBounds()
