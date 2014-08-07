@@ -251,13 +251,24 @@ namespace po {
     
     
     ci::gl::TextureRef Node::createTexture() {
-        cacheToFbo();
+        //Save caching state
+        bool alreadyCaching = mCacheToFbo;
         
+        //If we're not already caching, generate texture with FBO 
+        if(!alreadyCaching)
+            cacheToFbo();
+        
+        //Save a ref to the texture
         ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo.getTexture()));
         
-//        if(!mCacheToFbo)
-//            mFbo.reset();
+        //Return caching state
+        mCacheToFbo = alreadyCaching;
         
+        //Clean up if we're not caching
+        if(!mCacheToFbo)
+            mFbo.reset();
+        
+        //Return the texture
         return tex;
     }
     
