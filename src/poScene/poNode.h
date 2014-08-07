@@ -96,6 +96,9 @@ namespace po {
         float getWidth()    { return getBounds().getWidth(); };
         float getHeight()   { return getBounds().getHeight(); };
         
+        float getScaledWidth()  { return getWidth() * getScale().x;     };
+        float getScaledHeight() { return getHeight() * getScale().y;    };
+        
         //Bounds & Frame
         Node& drawBounds(bool enabled)  { setDrawBounds(enabled); return *this; };
         void setDrawBounds(bool enabled) { mDrawBounds = enabled; };
