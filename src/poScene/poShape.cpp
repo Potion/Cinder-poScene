@@ -166,6 +166,7 @@ namespace po {
         }
     }
     
+    
     void Shape::render()
     {
         if(mUseVBO) {
@@ -173,28 +174,21 @@ namespace po {
             ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
             
             if(mTexture) {
+                //Get the texture coords
                 std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
                 TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+                
+                //Check to see if texture is flipped, common if coming from FBO
+                if(mTexture->isFlipped())
+                    std::reverse(texCoords.begin(), texCoords.end());
+                
+                //Add coords to TriMesh
                 mesh.appendTexCoords(&texCoords[0], texCoords.size());
             }
             
             //Create VBO Mesh
             mVboMesh = ci::gl::VboMesh::create(mesh);
         }
-        
-//        else {
-//            if(mTexture) {
-//                std::vector<ci::Vec2f> texCoords;
-//                for(int i=0; i<mCiShape2d.getContours().size(); i++) {
-//                    std::vector<ci::Vec2f> coords;
-//                    
-//                }
-//                
-//                mCiShape2d.
-//                //TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
-//                
-//            }
-//        }
     }
     
     #pragma mark - Dimensions -
