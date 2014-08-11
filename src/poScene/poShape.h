@@ -55,7 +55,10 @@ namespace po {
         
         //Texture
         void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
+        void setTextureOffset(ci::Vec2f offset);
         ci::gl::TextureRef getTexture() { return mTexture; }
+        
+        void removeTexture();
         
         //Precision (for rendering)
         Shape& precision(int precision) { setPrecision(precision); return *this; }
@@ -77,6 +80,7 @@ namespace po {
         ci::gl::TextureRef mTexture;
         TextureFit::Type  mTextureFitType;
         Alignment   mTextureAlignment;
+        ci::Vec2f mTextureOffset;
         
         int mPrecision;
     };

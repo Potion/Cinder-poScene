@@ -153,6 +153,20 @@ namespace po {
         render();
     }
     
+    void Shape::setTextureOffset(ci::Vec2f offset)
+    {
+        mTextureOffset = offset;
+        render();
+    }
+    
+    void Shape::removeTexture()
+    {
+        if(mTexture) {
+            mTexture->reset();
+            render();
+        }
+    }
+    
     
     #pragma mark - Rendering/VBO Caching -
     void Shape::setUseVBO(bool useVBO)
@@ -177,6 +191,13 @@ namespace po {
                 //Get the texture coords
                 std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
                 TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+                
+                if(mTextureOffset != ci::Vec2f(0,0)) {
+                    ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f(getWidth(), getHeight());
+                    for(auto &coord : texCoords) {
+                        coord += normalizedOffset;
+                    }
+                }
                 
                 //Check to see if texture is flipped, common if coming from FBO
                 if(mTexture->isFlipped())
