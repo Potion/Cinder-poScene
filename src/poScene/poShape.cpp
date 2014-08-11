@@ -162,7 +162,7 @@ namespace po {
     void Shape::removeTexture()
     {
         if(mTexture) {
-            mTexture->reset();
+            mTexture.reset();
             render();
         }
     }
