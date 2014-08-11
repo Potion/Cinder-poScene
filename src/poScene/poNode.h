@@ -138,7 +138,6 @@ namespace po {
         void setPosition(float x, float y);
         
         ci::Vec2f getPosition()                 { return mPosition; };
-        ci::Anim<ci::Vec2f>& getPositionAnim()  { return mPositionAnim; };
         
         //Scale
         Node& scale(float x, float y)   { setScale(x,y); return *this; }
@@ -147,21 +146,18 @@ namespace po {
         void setScale(float x, float y);
         
         ci::Vec2f getScale()                { return mScale; };
-        ci::Anim<ci::Vec2f>& getScaleAnim() { return mScaleAnim; };
         
         //Rotation
         Node& rotation(float rotation)  { setRotation(rotation); return *this; }
         void setRotation(float rotation);
         
         float getRotation()                 { return mRotation; };
-        ci::Anim<float>& getRotationAnim()  { return mRotationAnim; };
         
         //Alpha
         Node& alpha(float alpha) { setAlpha(alpha); return *this; }
         void setAlpha(float alpha);
         
         float getAlpha()                { return mAlpha; };
-        ci::Anim<float>& getAlphaAnim() { return mAlphaAnim; };
         
         //Applied Alpha
         float getAppliedAlpha() { return mAppliedAlpha; }
@@ -173,7 +169,6 @@ namespace po {
         void setOffset(float x, float y);
         
         ci::Vec2f getOffset() { return mOffset; };
-        ci::Anim<ci::Vec2f>& getOffsetAnim() { return mOffsetAnim; };
         
         //Alignment
         Node& alignment(Alignment alignment) { setAlignment(alignment); return *this; }
@@ -228,6 +223,15 @@ namespace po {
         //Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
         uint32_t getUID() { return mUid; };
+        
+        
+        //Attribute Animation Getters
+        ci::Anim<ci::Vec2f> &getPositionAnim()  { return mPositionAnim; };
+        ci::Anim<ci::Vec2f> &getScaleAnim()     { return mScaleAnim; };
+        ci::Anim<float>     &getRotationAnim()  { return mRotationAnim; };
+        ci::Anim<float>     &getAlphaAnim()     { return mAlphaAnim; };
+        ci::Anim<ci::Vec2f> &getOffsetAnim()    { return mOffsetAnim; };
+        ci::Anim<ci::Color> &getFillColorAnim() { return mFillColorAnim; };
         
         
         
@@ -337,12 +341,14 @@ namespace po {
         ci::Anim<float>     mRotationAnim;
         ci::Anim<float>     mAlphaAnim;
         ci::Anim<ci::Vec2f> mOffsetAnim;
+        ci::Anim<ci::Color> mFillColorAnim;
         
-        bool mUpdatePositionFromAnim;
-        bool mUpdateScaleFromAnim;
-        bool mUpdateRotationFromAnim;
-        bool mUpdateOffsetFromAnim;
-        bool mUpdateAlphaFromAnim;
+        bool  mUpdatePositionFromAnim
+            , mUpdateScaleFromAnim
+            , mUpdateRotationFromAnim
+            , mUpdateOffsetFromAnim
+            , mUpdateAlphaFromAnim
+            , mUpdateFillColorFromAnim;
         
         //Alignment
         Alignment mAlignment;

@@ -36,6 +36,7 @@ namespace po {
         return std::shared_ptr<Node>(new Node(name));
     }
     
+    
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
@@ -53,7 +54,8 @@ namespace po {
     ,   mAlphaAnim(1.f)
     ,   mAlignment(Alignment::TOP_LEFT)
     ,   mMatrixOrder(MatrixOrder::TRS)
-    ,   mFillColor(255,255,255)
+    ,   mFillColor(1.f,1.f,1.f)
+    ,   mFillColorAnim(ci::Color(1.f,1.f,1.f))
     ,   mFillEnabled(true)
     ,   mStrokeColor(255,255,255)
     ,   mStrokeEnabled(false)
@@ -62,8 +64,9 @@ namespace po {
     ,   mUpdateRotationFromAnim(false)
     ,   mUpdateOffsetFromAnim(false)
     ,   mUpdateAlphaFromAnim(false)
+    ,   mUpdateFillColorFromAnim(false)
     ,   mDrawBounds(false)
-    ,   mBoundsColor(255,0,0)
+    ,   mBoundsColor(1.f,0,0)
     ,   mBoundsDirty(true)
     ,   mFrameDirty(true)
     ,   mVisible(true)
@@ -98,6 +101,7 @@ namespace po {
         update();
     }
     
+    
     void Node::beginDrawTree()
     {
         //Update our draw order
@@ -113,6 +117,7 @@ namespace po {
         ci::gl::pushMatrices();
         setTransformation();
     }
+    
     
     void Node::drawTree()
     {
@@ -134,6 +139,7 @@ namespace po {
         
         finishDrawTree();
     }
+    
     
     void Node::finishDrawTree()
     {
@@ -157,6 +163,7 @@ namespace po {
             cacheToFbo();
         }
     }
+    
     
     bool Node::cacheToFbo()
     {
@@ -219,6 +226,7 @@ namespace po {
         return true;
     }
     
+    
     void Node::drawFbo()
     {
         ci::gl::enableAlphaBlending();
@@ -272,6 +280,9 @@ namespace po {
         return tex;
     }
     
+    
+    
+    
     //------------------------------------------------------
     #pragma mark  - Masking -
     
@@ -296,6 +307,7 @@ namespace po {
             mCacheToFbo = true;
         }
     }
+    
     
     po::ShapeRef Node::removeMask(bool andStopCaching)
     {
@@ -326,6 +338,7 @@ namespace po {
         mFrameDirty = true;
     }
     
+    
     void Node::setScale(float x, float y)
     {
         mScaleAnim.stop();
@@ -336,6 +349,7 @@ namespace po {
         mFrameDirty     = true;
         mBoundsDirty    = true;
     }
+    
     
     void Node::setRotation(float rotation)
     {
@@ -348,6 +362,7 @@ namespace po {
         mBoundsDirty    = true;
     }
     
+    
     void Node::setAlpha(float alpha)
     {
         mAlphaAnim.stop();
@@ -355,6 +370,7 @@ namespace po {
         mAlpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
         mAlphaAnim = mAlpha;
     }
+    
     
     void Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
@@ -366,6 +382,7 @@ namespace po {
         //If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
     }
+    
     
     bool Node::isVisible()
     {
@@ -382,33 +399,46 @@ namespace po {
         return true;
     }
     
+    
+    
+    //------------------------------------------------------
+    #pragma mark  - Animation -
+    
     void Node::initAttrAnimations()
     {
-        //Initialize the isComplete() method of each tween, a bit annoying
+        //Initialize the isComplete() method of each tween
         mPositionAnim.stop();
         mScaleAnim.stop();
         mRotationAnim.stop();
         mOffsetAnim.stop();
         mAlphaAnim.stop();
+        mFillColorAnim.stop();
     }
+    
     
     void Node::updateAttributeAnimations()
     {
+        #pragma message "There has got to be a way better way to do this, probably some sort of map of active properties."
+        
         //See if a tween is in progress, if so we want to use that value
         //Setting an attribute calls stop(), so that will override this
-        if(!mPositionAnim.isComplete())  mUpdatePositionFromAnim = true;
-        if(!mScaleAnim.isComplete())     mUpdateScaleFromAnim    = true;
-        if(!mRotationAnim.isComplete())  mUpdateRotationFromAnim = true;
-        if(!mAlphaAnim.isComplete())     mUpdateAlphaFromAnim    = true;
-        if(!mOffsetAnim.isComplete())    mUpdateOffsetFromAnim   = true;
+        if(!mPositionAnim.isComplete())     mUpdatePositionFromAnim     = true;
+        if(!mScaleAnim.isComplete())        mUpdateScaleFromAnim        = true;
+        if(!mRotationAnim.isComplete())     mUpdateRotationFromAnim     = true;
+        if(!mAlphaAnim.isComplete())        mUpdateAlphaFromAnim        = true;
+        if(!mOffsetAnim.isComplete())       mUpdateOffsetFromAnim       = true;
+        if(!mFillColorAnim.isComplete())    mUpdateFillColorFromAnim    = true;
         
         //Update Anims if we care
-        if(mUpdatePositionFromAnim)     mPosition    = mPositionAnim;
-        if(mUpdateScaleFromAnim)        mScale       = mScaleAnim;
-        if(mUpdateRotationFromAnim)     mRotation    = mRotationAnim;
-        if(mUpdateAlphaFromAnim)        mAlpha       = mAlphaAnim;
-        if(mUpdateOffsetFromAnim)       mOffset      = mOffsetAnim;
+        if(mUpdatePositionFromAnim)     mPosition       = mPositionAnim;
+        if(mUpdateScaleFromAnim)        mScale          = mScaleAnim;
+        if(mUpdateRotationFromAnim)     mRotation       = mRotationAnim;
+        if(mUpdateAlphaFromAnim)        mAlpha          = mAlphaAnim;
+        if(mUpdateOffsetFromAnim)       mOffset         = mOffsetAnim;
+        if(mUpdateFillColorFromAnim)    mFillColor      = mFillColorAnim;
     }
+    
+    
     
     //------------------------------------------------------
     #pragma mark  - Alignment -
@@ -472,16 +502,19 @@ namespace po {
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
+    
     #pragma message "Do we need this?"
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         return ci::Vec2f();
     }
     
+    
     ci::Vec2f Node::globalToLocal(const ci::Vec2f &globalPoint)
     {
         return mMatrix.globalToLocal(globalPoint);
     }
+    
     
     ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
     {
@@ -491,6 +524,7 @@ namespace po {
         
         return ci::Vec2f();
     }
+    
     
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
@@ -510,15 +544,18 @@ namespace po {
         if(hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
+    
     SceneRef Node::getScene()
     {
         return mScene.lock();
     }
     
+    
     bool Node::hasScene()
     {
         return mHasScene;
     }
+    
     
     void Node::removeScene()
     {
@@ -527,20 +564,24 @@ namespace po {
         mHasScene = false;
     }
     
+    
     void Node::setParent(NodeContainerRef containerNode)
     {
         mParent = containerNode;
         mHasParent = mParent.lock() ? true : false;
     }
     
+    
     NodeContainerRef Node::getParent() const {
         return mParent.lock();
     }
-        
+    
+    
     bool Node::hasParent()
     {
         return mHasParent;
     }
+    
     
     void Node::removeParent() {
         mParent.reset();
@@ -648,6 +689,7 @@ namespace po {
         return false;
     }
     
+    
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type)
     {
@@ -676,6 +718,7 @@ namespace po {
                 mSignalMouseUpInside(event); break;
         }
     }
+    
     
     #pragma mark - Touch Events -
     //Global Mouse Events
@@ -723,6 +766,7 @@ namespace po {
         }
     }
     
+    
     //See if we care about an event
     bool Node::hasConnection(const po::TouchEvent::Type &type)
     {
@@ -743,6 +787,7 @@ namespace po {
         
         return false;
     }
+    
     
     #pragma mark - Key Events -
     //Global Mouse Events
