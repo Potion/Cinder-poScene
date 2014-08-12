@@ -447,15 +447,18 @@ namespace po {
     {
         mAlignment = alignment;
         
-        if(alignment == Alignment::NONE) return;
+        if(mAlignment == Alignment::NONE) return;
+        if(mAlignment == Alignment::TOP_LEFT)  {
+            mOffset.set(0,0);
+            return;
+        }
         
         ci::Rectf bounds = getBounds();
         
         switch (mAlignment) {
             case Alignment::NONE:
-                break;
             case Alignment::TOP_LEFT:
-                mOffset.set(0,0); break;
+                break;
             case Alignment::TOP_CENTER:
                 mOffset.set(-bounds.getWidth()/2.f,0); break;
             case Alignment::TOP_RIGHT:
@@ -473,8 +476,6 @@ namespace po {
             case Alignment::BOTTOM_RIGHT:
                 mOffset.set(-bounds.getWidth(),-bounds.getHeight()); break;
         }
-        
-        //mOffset = mOffset-bounds.getUpperLeft();
     }
     
     
