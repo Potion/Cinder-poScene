@@ -261,8 +261,12 @@ namespace po {
     {
         Node::updateTree();
         
-        for(NodeRef &childNode : mChildren)
-            if(childNode->mVisible) childNode->updateTree();
+        //We have to copy the children, because if any of the update loops remove children
+        //The vector is screwed (invalidated)
+        std::vector<po::NodeRef> children(mChildren);
+        
+        for(NodeRef &childNode : children)
+            if(childNode->mVisible && childNode->hasParent()) childNode->updateTree();
     }
 
     
