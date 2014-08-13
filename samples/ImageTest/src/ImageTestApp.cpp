@@ -27,6 +27,7 @@ void ImageTestApp::setup()
 {
     ci::gl::enableAlphaBlending();
     
+    scene = po::Scene::create(poImageTestApp::create());
     
 }
 
