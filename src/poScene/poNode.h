@@ -313,9 +313,9 @@ namespace po {
         MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
         
         //Touch
-        TouchEventSignal& getSignalTouchesBegan()           { return mSignalTouchesBegan; };
-        TouchEventSignal& getSignalTouchesMoved()           { return mSignalTouchesMoved; };
-        TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
+        TouchEventSignal& getSignalTouchesBegan()       { return mSignalTouchesBegan; };
+        TouchEventSignal& getSignalTouchesMoved()       { return mSignalTouchesMoved; };
+        TouchEventSignal& getSignalTouchesEnded()       { return mSignalTouchesEnded; };
         
     private:
         //Private attributes
