@@ -48,8 +48,10 @@ namespace po {
         
         void moveChildToFront(NodeRef node);
         void moveChildForward( NodeRef node);
+        void moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
         void moveChildToBack(NodeRef node);
         void moveChildBackward(NodeRef node);
+        void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
         
         //Bounds
         virtual ci::Rectf getBounds();
