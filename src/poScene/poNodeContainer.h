@@ -34,6 +34,7 @@ namespace po {
         
         std::vector<NodeRef> getChildren();
         std::vector<NodeRef>& getChildrenByReference();
+        bool hasChildren();
         
         int getChildIndex(const NodeRef& child);
         NodeRef getChildByIndex(int index);

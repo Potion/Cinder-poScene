@@ -26,6 +26,7 @@ namespace po {
         void processEvents(std::vector<NodeRef> &nodes);
         
         void setInteractionOffset(ci::Vec2f offset);
+        void setInteractionScale(ci::Vec2f scale);
         
     private:
         EventCenter();

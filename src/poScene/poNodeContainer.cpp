@@ -100,6 +100,11 @@ namespace po {
         return mChildren;
     }
     
+    bool NodeContainer::hasChildren()
+    {
+        return (mChildren.size() != 0);
+    }
+    
     int NodeContainer::getChildIndex(const NodeRef& child)
     {
         std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
