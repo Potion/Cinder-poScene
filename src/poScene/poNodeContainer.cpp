@@ -54,6 +54,7 @@ namespace po {
         setParentAndScene(node);
         mChildren.push_back(node);
         setAlignment(getAlignment());
+        calculateMatrices();
     }
     
     void NodeContainer::addChildren(std::vector<NodeRef> nodes) {
@@ -63,6 +64,7 @@ namespace po {
         }
         
         setAlignment(getAlignment());
+        calculateMatrices();
     }
     
     void NodeContainer::addChildAt(int index, NodeRef node)
@@ -70,6 +72,7 @@ namespace po {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin()+index, node);
         setAlignment(getAlignment());
+        calculateMatrices();
     }
     
     void NodeContainer::addChildBefore(NodeRef before, NodeRef node)
@@ -77,6 +80,7 @@ namespace po {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(before), node);
         setAlignment(getAlignment());
+        calculateMatrices();
     }
     
     void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
@@ -84,6 +88,7 @@ namespace po {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
         setAlignment(getAlignment());
+        calculateMatrices();
     }
     
     
@@ -292,6 +297,20 @@ namespace po {
         Node::drawFbo();
     }
     
+    //------------------------------------------------------
+    #pragma mark - Matrix/Transform -
+    
+    void NodeContainer::matrixTree() {
+        beginDrawTree();
+        
+        for(NodeRef &childNode : mChildren) {
+            childNode->matrixTree();
+        }
+        
+        finishDrawTree();
+    }
+
+    
     
     //------------------------------------------------------
     #pragma mark - Dimensions -
@@ -320,5 +339,15 @@ namespace po {
         }
         
         return false;
+    }
+    
+    void NodeContainer::calculateMatrices() {
+        if(hasParent()) {
+            getParent()->calculateMatrices();
+        } else {
+            for(NodeRef &childNode : mChildren) {
+                childNode->matrixTree();
+            }
+        }
     }
 }

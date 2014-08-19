@@ -77,7 +77,10 @@ namespace po {
         
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
+        void matrixTree();
         
         std::vector<NodeRef> mChildren;
+        
+        void calculateMatrices();
     };
 };

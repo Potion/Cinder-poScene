@@ -121,20 +121,16 @@ namespace po {
     
     void Node::drawTree()
     {
-        //If we're invisible, nothing to do here
-        if(!mVisible) return;
-        
-//        if (mCacheToFbo && !mIsDrawingIntoFbo) {
-//            cacheToFbo();
-//        }
-        
         beginDrawTree();
         
-        //Draw this item
-        if(!mCacheToFbo || mIsDrawingIntoFbo) {
-            draw();
-        } else {
-            drawFbo();
+        //If we're invisible, nothing to draw
+        if(mVisible) {
+            //Draw this item
+            if(!mCacheToFbo || mIsDrawingIntoFbo) {
+                draw();
+            } else {
+                drawFbo();
+            }
         }
         
         finishDrawTree();
@@ -152,6 +148,11 @@ namespace po {
     }
     
     
+    void Node::matrixTree()
+    {
+        beginDrawTree();
+        finishDrawTree();
+    }
     
     
     //------------------------------------------------------

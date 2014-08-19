@@ -356,10 +356,11 @@ namespace po {
         //Update and Draw trees, traverse child nodes
         virtual void updateTree();
         
-    public:
         virtual void beginDrawTree();
         virtual void drawTree();
         virtual void finishDrawTree();
+        
+        virtual void matrixTree();
         
     private:
         //Transformation Matrix
