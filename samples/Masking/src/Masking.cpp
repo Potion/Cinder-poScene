@@ -26,6 +26,7 @@ void Masking::setup() {
 //    mZach->setAlignment(po::Alignment::CENTER_CENTER);
     mZach->setPosition(ci::app::getWindowWidth()/2 - mZach->getHeight()/2,
                        0);
+    mZach->setAlignment(po::Alignment::CENTER_CENTER);
     
     targetPos = ci::app::getWindowHeight()/2 - mZach->getHeight()/2;
     //image->setRotation(45);
@@ -50,7 +51,7 @@ void Masking::setup() {
 //        exit(1);
 //    }
     
-    //ci::app::timeline().apply(&image->getRotationAnim(), 360.f, 3.f).loop();
+    //ci::app::timeline().apply(&mZach->getRotationAnim(), 360.f, 3.f).loop();
     
     //setCacheToFboEnabled(true);
     

@@ -169,8 +169,6 @@ namespace po {
     
     bool Node::createFbo(int width, int height)
     {
-        
-        
         //Create the FBO, set viewport and bind
         if(!mFbo) {
             try {
@@ -213,6 +211,11 @@ namespace po {
         
         ci::gl::pushMatrices();
         ci::gl::translate(-getFrame().getUpperLeft());
+        
+        //If we're masing, offset by the mask's position
+//        if(mMask)
+//            ci::gl::translate(mMask->getPosition());
+        
         mIsDrawingIntoFbo = true;
         drawTree();
         mIsDrawingIntoFbo = false;
@@ -247,7 +250,7 @@ namespace po {
             mMaskShader.uniform("tex", 0);
             mMaskShader.uniform("mask", 1);
             mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
-            mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
+            mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
 
             ci::gl::drawSolidRect(mFbo.getBounds());
             
