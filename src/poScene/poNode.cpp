@@ -129,6 +129,7 @@ namespace po {
             if(!mCacheToFbo || mIsDrawingIntoFbo) {
                 draw();
             } else {
+                captureFbo();
                 drawFbo();
             }
         }
@@ -168,21 +169,16 @@ namespace po {
     
     bool Node::createFbo(int width, int height)
     {
-        //Save the window buffer
-        ci::gl::SaveFramebufferBinding binding;
+        
         
         //Create the FBO, set viewport and bind
         if(!mFbo) {
             try {
-                GLint maxTextureSize;
-                glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
-                //            mFbo = ci::gl::Fbo(maxTextureSize/4, maxTextureSize/4);
-                
                 ci::gl::Fbo::Format format;
                 format.setSamples(1);
                 format.setColorInternalFormat(GL_RGBA);
                 format.enableDepthBuffer(false);
-                mFbo = ci::gl::Fbo(getWidth(), getHeight(), format);
+                mFbo = ci::gl::Fbo(width, height, format);
             } catch (ci::gl::FboException) {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
                 mCacheToFbo = false;
@@ -195,8 +191,11 @@ namespace po {
     }
     
     
-    void Node::drawFbo()
+    void Node::captureFbo()
     {
+        //Save the window buffer
+        ci::gl::SaveFramebufferBinding binding;
+        
         //We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
         setVisible(true);
@@ -206,7 +205,7 @@ namespace po {
         
         //Set Ortho camera to fbo bounds
         ci::CameraOrtho cam;
-        cam.setOrtho( 0,getBounds().getWidth(), getBounds().getHeight(), 0, -1, 1 );
+        cam.setOrtho( 0, mFbo.getWidth(), mFbo.getHeight(), 0, -1, 1 );
         ci::gl::setMatrices(cam);
         
         //Draw into the FBO
@@ -228,7 +227,12 @@ namespace po {
         
         //Return to previous visibility
         setVisible(visible);
-
+    }
+    
+    
+    void Node::drawFbo()
+    {
+       
         ci::gl::enableAlphaBlending();
         ci::gl::color(ci::ColorAf::white());
         
@@ -292,7 +296,7 @@ namespace po {
     void Node::setMask(po::ShapeRef mask)
     {
         //Try to cache to FBO
-        if(cacheToFbo()) {
+        if(createFbo(mask->getWidth(), mask->getHeight())) {
             //If successful, try to build the shader
             if(!mMaskShader)
             {

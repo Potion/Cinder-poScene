@@ -293,6 +293,7 @@ namespace po {
         
         //Caching/FBO
         bool createFbo(int width=0, int height=0);
+        void captureFbo();
         virtual void drawFbo();
         bool mIsDrawingIntoFbo;
         
