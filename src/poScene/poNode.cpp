@@ -158,15 +158,15 @@ namespace po {
     //------------------------------------------------------
     #pragma mark  - Caching -
     
-    void Node::setCacheToFboEnabled(bool enabled) {
+    void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
         if(mCacheToFbo) {
-            cacheToFbo();
+            createFbo(width, height);
         }
     }
     
     
-    bool Node::cacheToFbo()
+    bool Node::createFbo(int width, int height)
     {
         //Save the window buffer
         ci::gl::SaveFramebufferBinding binding;
@@ -182,7 +182,6 @@ namespace po {
                 format.setSamples(1);
                 format.setColorInternalFormat(GL_RGBA);
                 format.enableDepthBuffer(false);
-                
                 mFbo = ci::gl::Fbo(getWidth(), getHeight(), format);
             } catch (ci::gl::FboException) {
                 ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
@@ -191,6 +190,13 @@ namespace po {
             }
         }
         
+        mCacheToFbo = true;
+        return true;
+    }
+    
+    
+    void Node::drawFbo()
+    {
         //We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
         setVisible(true);
@@ -222,14 +228,7 @@ namespace po {
         
         //Return to previous visibility
         setVisible(visible);
-        
-        mCacheToFbo = true;
-        return true;
-    }
-    
-    
-    void Node::drawFbo()
-    {
+
         ci::gl::enableAlphaBlending();
         ci::gl::color(ci::ColorAf::white());
         
@@ -265,7 +264,7 @@ namespace po {
         
         //If we're not already caching, generate texture with FBO 
         if(!alreadyCaching)
-            cacheToFbo();
+            createFbo();
         
         //Check to make sure we could create the fbo
         if(!mFbo) return nullptr;

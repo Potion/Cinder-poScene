@@ -207,11 +207,10 @@ namespace po {
         ci::Color getStrokeColor()  { return mStrokeColor; }
         
         //Caching and FBO
-        Node& cacheToFboEnabled(bool cache)         { setCacheToFboEnabled(cache); return *this; };
-        void setCacheToFboEnabled(bool enabled);
-        bool getCachToFboEnabled()                  { return mCacheToFbo; };
+        Node& cacheToFboEnabled(bool cache, int width, int height) { setCacheToFboEnabled(cache); return *this; };
+        void setCacheToFboEnabled(bool enabled, int width = 0, int height = 0);
+        bool getCachToFboEnabled() { return mCacheToFbo; };
         
-        bool cacheToFbo();
         ci::gl::TextureRef createTexture();
         
         //Masking
@@ -293,6 +292,7 @@ namespace po {
         bool mInteractionEnabled;
         
         //Caching/FBO
+        bool createFbo(int width=0, int height=0);
         virtual void drawFbo();
         bool mIsDrawingIntoFbo;
         
@@ -362,7 +362,6 @@ namespace po {
         
         virtual void matrixTree();
         
-    private:
         //Transformation Matrix
         po::MatrixSet mMatrix;
         
