@@ -207,8 +207,8 @@ namespace po {
         ci::Color getStrokeColor()  { return mStrokeColor; }
         
         //Caching and FBO
-        Node& cacheToFboEnabled(bool cache, int width, int height) { setCacheToFboEnabled(cache, width, height); return *this; };
-        void setCacheToFboEnabled(bool enabled, int width, int height);
+        Node& cacheToFboEnabled(bool cache, int width=0, int height=0) { setCacheToFboEnabled(cache, width, height); return *this; };
+        void setCacheToFboEnabled(bool enabled, int width=0, int height=0);
         bool getCachToFboEnabled() { return mCacheToFbo; };
         
         ci::gl::TextureRef createTexture();
@@ -295,7 +295,7 @@ namespace po {
         bool createFbo(int width, int height);
         void captureFbo();
         virtual void drawFbo();
-        bool mIsDrawingIntoFbo;
+        bool mIsCapturingFbo;
         
         bool mCacheToFbo;
         std::shared_ptr<ci::gl::Fbo> mFbo;

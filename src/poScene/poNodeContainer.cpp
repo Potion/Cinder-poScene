@@ -289,11 +289,6 @@ namespace po {
     
     void NodeContainer::drawFbo()
     {
-        for(NodeRef &childNode : mChildren) {
-            childNode->beginDrawTree();
-            childNode->finishDrawTree();
-        }
-        
         Node::drawFbo();
     }
     

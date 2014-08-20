@@ -72,7 +72,7 @@ namespace po {
     ,   mVisible(true)
     ,   mInteractionEnabled(true)
     ,   mCacheToFbo(false)
-    ,   mIsDrawingIntoFbo(false)
+    ,   mIsCapturingFbo(false)
     ,   mIsMasked(false)
     ,   mHasScene(false)
     ,   mHasParent(false)
@@ -114,19 +114,22 @@ namespace po {
             mAppliedAlpha = mAlpha;
         
         //Push our Matrix
-        ci::gl::pushMatrices();
-        setTransformation();
+        if(!mIsCapturingFbo) {
+            ci::gl::pushMatrices();
+            setTransformation();
+        }
     }
     
     
     void Node::drawTree()
     {
+        
         beginDrawTree();
         
         //If we're invisible, nothing to draw
         if(mVisible) {
             //Draw this item
-            if(!mCacheToFbo || mIsDrawingIntoFbo) {
+            if(!mCacheToFbo || mIsCapturingFbo) {
                 draw();
             } else {
                 captureFbo();
@@ -134,7 +137,7 @@ namespace po {
             }
         }
         
-        finishDrawTree();
+        if(!mIsCapturingFbo) finishDrawTree();
     }
     
     
@@ -145,7 +148,8 @@ namespace po {
             drawBounds();
         
         //Pop our Matrix
-        ci::gl::popMatrices();
+        if(!mIsCapturingFbo)
+            ci::gl::popMatrices();
     }
     
     
@@ -200,6 +204,9 @@ namespace po {
         //Save the window buffer
         ci::gl::SaveFramebufferBinding binding;
         
+        //Save our matrix
+        ci::Area v  = ci::gl::getViewport();
+        
         //We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
         setVisible(true);
@@ -210,7 +217,9 @@ namespace po {
         //Bind the FBO
         mFbo->bindFramebuffer();
         
-        //Set Ortho camera to fbo bounds
+        //Set Ortho camera to fbo bounds, save matrices and push camera
+        ci::gl::pushMatrices();
+        
         ci::CameraOrtho cam;
         cam.setOrtho( 0, mFbo->getWidth(), mFbo->getHeight(), 0, -1, 1 );
         ci::gl::setMatrices(cam);
@@ -219,16 +228,16 @@ namespace po {
         ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
         
         //Draw into the FBO
-        mIsDrawingIntoFbo = true;
+        mIsCapturingFbo = true;
         drawTree();
-        mIsDrawingIntoFbo = false;
+        mIsCapturingFbo = false;
         
         //Set the camera up for the window
-        cam.setOrtho(0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1);
-        ci::gl::setMatrices(cam);
+        ci::gl::popMatrices();
         
         //Return the viewport
-        ci::gl::setViewport(ci::app::getWindowBounds());
+        ci::gl::setViewport(v);
+        
         
         //Return to previous visibility
         setVisible(visible);
@@ -259,8 +268,8 @@ namespace po {
             mMaskShader.uniform("tex", 0);
             mMaskShader.uniform("mask", 1);
             mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
-            mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-            //mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
+            //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
+            mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
             
             //Draw
             ci::gl::drawSolidRect(mFbo->getBounds());
@@ -278,7 +287,8 @@ namespace po {
     }
     
     
-    ci::gl::TextureRef Node::createTexture() {
+    ci::gl::TextureRef Node::createTexture()
+    {
         //Save caching state
         bool alreadyCaching = mCacheToFbo;
         
@@ -315,7 +325,9 @@ namespace po {
     void Node::setMask(po::ShapeRef mask)
     {
         //Try to cache to FBO
-        if(createFbo(mask->getWidth(), mask->getHeight())) {
+        setCacheToFboEnabled(true, mask->getWidth(), mask->getHeight());
+        
+        if(mFbo) {
             //If successful, try to build the shader
             if(!mMaskShader)
             {
