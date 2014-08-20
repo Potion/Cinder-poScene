@@ -287,7 +287,7 @@ namespace po {
             createFbo(getWidth(), getHeight());
         
         //Check to make sure we could create the fbo
-        if(!mFbo) return nullptr;
+        if(!mFbo.getTexture()) return nullptr;
         
         //Capture the fbo
         captureFbo();
