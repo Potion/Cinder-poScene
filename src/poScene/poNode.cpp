@@ -268,7 +268,7 @@ namespace po {
             cacheToFbo();
         
         //Check to make sure we could create the fbo
-        if(!mFbo) return nullptr;
+        if(!mFbo.getTexture()) return nullptr;
         
         //Save a ref to the texture
         ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo.getTexture()));
