@@ -35,7 +35,8 @@ void Masking::setup() {
     //Create mask
     ci::gl::TextureRef maskTex = gl::Texture::create(loadImage(loadAsset("mask.png")));
     mMask = po::Shape::create(maskTex);
-    mZach->setMask(mMask);
+    //mZach->setMask(mMask);
+    mZach->setCacheToFboEnabled(true, 200,200);
     
     mMask->fillColor(ci::Color(1,0,1));
     mMask->setPosition(0,mZach->getHeight());
@@ -51,7 +52,7 @@ void Masking::setup() {
 //        exit(1);
 //    }
     
-    //ci::app::timeline().apply(&mZach->getRotationAnim(), 360.f, 3.f).loop();
+    ci::app::timeline().apply(&mZach->getRotationAnim(), 360.f, 3.f).loop();
     
     //setCacheToFboEnabled(true);
     

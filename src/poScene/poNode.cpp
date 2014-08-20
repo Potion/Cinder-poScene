@@ -163,25 +163,31 @@ namespace po {
         mCacheToFbo = enabled;
         if(mCacheToFbo) {
             createFbo(width, height);
+        } else {
+            //Clear the fbo
+            mFbo.reset();
         }
     }
     
     
     bool Node::createFbo(int width, int height)
     {
-        //Create the FBO, set viewport and bind
-        if(!mFbo) {
-            try {
-                ci::gl::Fbo::Format format;
-                format.setSamples(1);
-                format.setColorInternalFormat(GL_RGBA);
-                format.enableDepthBuffer(false);
-                mFbo = ci::gl::Fbo(width, height, format);
-            } catch (ci::gl::FboException) {
-                ci::app::console() << "po::Scene: Couldn't create FBO, make sure your node has children or content!" << std::endl;
-                mCacheToFbo = false;
-                return false;
-            }
+        if(mFbo) {
+            mFbo.reset();
+        }
+
+        try {
+            //Create the FBO
+            ci::gl::Fbo::Format format;
+            format.setSamples(1);
+            format.setColorInternalFormat(GL_RGBA);
+            format.enableDepthBuffer(false);
+            mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(width, height, format));
+        } catch (ci::gl::FboException) {
+            //The main reason for failure is 
+            ci::app::console() << "po::Scene: Couldn't create FBO, please provide valid dimensions for your graphics card." << std::endl;
+            mCacheToFbo = false;
+            return false;
         }
         
         mCacheToFbo = true;
@@ -198,28 +204,24 @@ namespace po {
         bool visible = mVisible;
         setVisible(true);
         
-        ci::gl::setViewport(mFbo.getBounds());
-        mFbo.bindFramebuffer();
+        //Set the viewport
+        ci::gl::setViewport(mFbo->getBounds());
+        
+        //Bind the FBO
+        mFbo->bindFramebuffer();
         
         //Set Ortho camera to fbo bounds
         ci::CameraOrtho cam;
-        cam.setOrtho( 0, mFbo.getWidth(), mFbo.getHeight(), 0, -1, 1 );
+        cam.setOrtho( 0, mFbo->getWidth(), mFbo->getHeight(), 0, -1, 1 );
         ci::gl::setMatrices(cam);
         
         //Draw into the FBO
         ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
         
-        ci::gl::pushMatrices();
-        ci::gl::translate(-getFrame().getUpperLeft());
-        
-        //If we're masing, offset by the mask's position
-//        if(mMask)
-//            ci::gl::translate(mMask->getPosition());
-        
+        //Draw into the FBO
         mIsDrawingIntoFbo = true;
         drawTree();
         mIsDrawingIntoFbo = false;
-        ci::gl::popMatrices();
         
         //Set the camera up for the window
         cam.setOrtho(0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1);
@@ -235,32 +237,43 @@ namespace po {
     
     void Node::drawFbo()
     {
-       
+        //The fbo has premultiplied alpha, so we draw at full color
         ci::gl::enableAlphaBlending();
         ci::gl::color(ci::ColorAf::white());
         
-        ci::gl::Texture tex = mFbo.getTexture();
+        //Flip the FBO texture since it's coords are reversed
+        ci::gl::Texture tex = mFbo->getTexture();
         tex.setFlipped(true);
         
         if(mIsMasked) {
+            //Use masking shader to draw FBO with mask
+            
+            //Bind the fbo and mask texture
             tex.bind(0);
             mMask->getTexture()->bind(1);
             
+            //Bind Shader
             mMaskShader.bind();
+            
+            //Set uniforms
             mMaskShader.uniform("tex", 0);
             mMaskShader.uniform("mask", 1);
             mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-
-            ci::gl::drawSolidRect(mFbo.getBounds());
+            //mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo.getWidth(), mFbo.getHeight()) );
             
+            //Draw
+            ci::gl::drawSolidRect(mFbo->getBounds());
+            
+            //Restore everything
             tex.unbind();
             mMask->getTexture()->unbind();
             mMaskShader.unbind();
         }
         
         else {
-            ci::gl::draw(tex, getBounds());
+            //Just draw the fbo
+            ci::gl::draw(tex, mFbo->getBounds());
         }
     }
     
@@ -271,13 +284,16 @@ namespace po {
         
         //If we're not already caching, generate texture with FBO 
         if(!alreadyCaching)
-            createFbo();
+            createFbo(getWidth(), getHeight());
         
         //Check to make sure we could create the fbo
         if(!mFbo) return nullptr;
         
+        //Capture the fbo
+        captureFbo();
+        
         //Save a ref to the texture
-        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo.getTexture()));
+        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo->getTexture()));
         
         //Return caching state
         mCacheToFbo = alreadyCaching;
