@@ -46,7 +46,7 @@ namespace po {
         }
         catch( ... ) {
             ci::app::console() << "Unable to load the movie from location " << moviePath << std::endl;
-            mVideo->reset();
+            mVideo.reset();
             mVideoTex.reset();
         }
     }
