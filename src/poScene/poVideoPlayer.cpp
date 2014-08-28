@@ -16,55 +16,35 @@ namespace po {
         return ref;
     }
     
-    VideoPlayer::VideoPlayer()
-    {
+    VideoPlayerRef VideoPlayer::create(ci::qtime::MovieGlRef movieRef) {
+        VideoPlayerRef ref = VideoPlayerRef(new VideoPlayer());
+        ref->setup();
+        ref->setMovieRef(movieRef);
+        return ref;
     }
+    
+    VideoPlayer::VideoPlayer() {}
+    
+    void VideoPlayer::setup() {}
     
     void VideoPlayer::update()
     {
-        if(mVideo && mVideo->checkNewFrame()) mVideoTex = mVideo->getTexture();
+        ci::qtime::MovieGlRef m = mMovieRef.lock();
     }
     
     ci::Rectf VideoPlayer::getBounds()
     {
-        if(mVideo) return mVideo->getBounds();
+        ci::qtime::MovieGlRef m = mMovieRef.lock();
+        if(m) return m->getBounds();
         return ci::Rectf(0,0,0,0);
     }
     
     void VideoPlayer::draw()
     {
-        if(mVideoTex) {
+        ci::qtime::MovieGlRef m = mMovieRef.lock();
+        if(m && m->getTexture()) {
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            ci::gl::draw(mVideoTex);
+            ci::gl::draw(m->getTexture());
         }
-    }
-    
-    void VideoPlayer::load(const ci::fs::path &moviePath)
-    {
-        try {
-            mVideo = ci::qtime::MovieGl::create(moviePath);
-        }
-        catch( ... ) {
-            ci::app::console() << "Unable to load the movie from location " << moviePath << std::endl;
-            mVideo.reset();
-            mVideoTex.reset();
-        }
-    }
-    
-    void VideoPlayer::load(const ci::DataSourceRef data)
-    {
-        try {
-            mVideo = ci::qtime::MovieGl::create(data);
-        }
-        catch( ... ) {
-            ci::app::console() << "Unable to load the movie from location " << data << std::endl;
-            mVideo.reset();
-            mVideoTex.reset();
-        }
-    }
-    
-    void VideoPlayer::unload() {
-        mVideo.reset();
-        mVideoTex.reset();
     }
 }

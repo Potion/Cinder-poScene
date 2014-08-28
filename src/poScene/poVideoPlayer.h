@@ -22,40 +22,24 @@ namespace po {
     : public po::Node {
     public:
         static VideoPlayerRef create();
+        static VideoPlayerRef create(ci::qtime::MovieGlRef movieRef);
         
+        void setup();
         void update();
         void draw();
         
         //Returns the bounds of our video (if we have one)
         ci::Rectf getBounds();
         
-        void load(const ci::fs::path &moviePath);
-        void load(ci::DataSourceRef data);
-        
-        void unload();
-        
-        ci::qtime::MovieGlRef getMovieRef();
-        
-        //Convenience functions
-        void play()     { if(mVideo) mVideo->play();    };
-        void stop()     { if(mVideo) mVideo->stop();    };
-        bool isPlaying() { if(mVideo) return mVideo->isPlaying(); return false; }
-        void setLoop(bool loop) { if(mVideo) mVideo->setLoop(loop); };
-        ci::gl::Texture getTexture() { return mVideoTex; };
-		bool isDone() { if(mVideo) return mVideo->isDone(); return false; }
-		float getCurrentTime() { return mVideo->getCurrentTime(); }
-		float getDuration() { return mVideo->getDuration(); }
-		void seekToTime( float seconds ) { mVideo->seekToTime(seconds); }
-		void seekToStart() { mVideo->seekToStart(); }
-		void seekToEnd() { mVideo->seekToEnd(); }
-		void setIsLoop(bool isLoop) { mVideo->setLoop(isLoop); }
+        ci::qtime::MovieGlRef getMovieRef() { return mMovieRef.lock(); };
+        void setMovieRef(ci::qtime::MovieGlRef movieRef) { mMovieRef = movieRef; };
+        void clearMovieRef();
         
     protected:
         VideoPlayer();
         
     private:
         //Movie and texture refs
-        ci::qtime::MovieGlRef mVideo;
-        ci::gl::Texture mVideoTex;
+        std::weak_ptr<ci::qtime::MovieGl> mMovieRef;
     };
 }
