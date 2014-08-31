@@ -25,53 +25,28 @@ namespace po {
         typedef std::shared_ptr<T> GenericMovieRef;
         
     public:
-        static std::shared_ptr<VideoPlayer<T> > create() {
-            std::shared_ptr<VideoPlayer<T> > ref = std::shared_ptr<VideoPlayer<T> >(new VideoPlayer());
-            ref->setup();
-            return ref;
-        }
+        static std::shared_ptr<VideoPlayer<T> > create();
+        static std::shared_ptr<VideoPlayer<T> > create(GenericMovieRef movieRef);
         
-        static std::shared_ptr<VideoPlayer<T> > create(GenericMovieRef movieRef) {
-            std::shared_ptr<VideoPlayer<T> > ref = std::shared_ptr<VideoPlayer<T> >(new VideoPlayer());
-            ref->setup();
-            ref->setMovieRef(movieRef);
-            return ref;
-        }
+        void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
+        GenericMovieRef getMovieRef()               { return mMovieRef; };
         
-        void setMovieRef(GenericMovieRef movieRef)
-        {
-            mMovieRef = movieRef;
-        };
-        
-        GenericMovieRef getMovieRef() { return mMovieRef; };
-        
-        ci::Rectf getBounds()
-        {
-            GenericMovieRef m = mMovieRef.lock();
-            if(m) return m->getBounds();
-            return ci::Rectf(0,0,0,0);
-        }
+        ci::Rectf getBounds();
         
     protected:
         VideoPlayer() {}
         
-        void setup() {}
-        void update(){}
+        void setup();
+        void update();
         
-        void draw()
-        {
-            GenericMovieRef m = mMovieRef.lock();
-            if(m && m->getTexture()) {
-                ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-                ci::gl::draw(m->getTexture());
-            }
-        }
+        void draw();
         
     private:
-        
         //Movie and texture refs
         std::weak_ptr<T> mMovieRef;
     };
     
-    template<class T> using VideoPlayerRef = std::shared_ptr<VideoPlayer<T> >;
+    template<class T> using VideoPlayerRef = std::shared_ptr<VideoPlayer<T> >;    
 }
+
+#include "poVideoPlayer.cpp"
