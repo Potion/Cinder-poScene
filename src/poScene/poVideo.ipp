@@ -1,26 +1,26 @@
 //
-//  poVideoPlayer.cpp
-//  VideoPlayer
+//  poVideo.cpp
+//  Video
 //
 //  Created by Stephen Varga on 6/17/14.
 //
 //
 
-#include "poVideoPlayer.h"
+#include "poVideo.h"
 
 
 namespace po {
     template<class T>
-    std::shared_ptr<VideoPlayer<T> > VideoPlayer<T>::create() {
-        std::shared_ptr<VideoPlayer<T> > ref = std::shared_ptr<VideoPlayer<T> >(new VideoPlayer());
+    std::shared_ptr<Video<T> > Video<T>::create() {
+        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
         ref->setup();
         return ref;
     }
     
     
     template<class T>
-    std::shared_ptr<VideoPlayer<T> > VideoPlayer<T>::create(GenericMovieRef movieRef) {
-        std::shared_ptr<VideoPlayer<T> > ref = std::shared_ptr<VideoPlayer<T> >(new VideoPlayer());
+    std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef) {
+        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
         ref->setup();
         ref->setMovieRef(movieRef);
         return ref;
@@ -28,15 +28,15 @@ namespace po {
     
     
     template<class T>
-    void VideoPlayer<T>::setup() {}
+    void Video<T>::setup() {}
     
     
     template<class T>
-    void VideoPlayer<T>::update() {}
+    void Video<T>::update() {}
     
     
     template<class T>
-    ci::Rectf VideoPlayer<T>::getBounds()
+    ci::Rectf Video<T>::getBounds()
     {
         GenericMovieRef m = mMovieRef.lock();
         if(m) return m->getBounds();
@@ -45,7 +45,7 @@ namespace po {
     
     
     template<class T>
-    void VideoPlayer<T>::draw()
+    void Video<T>::draw()
     {
         GenericMovieRef m = mMovieRef.lock();
         if(m && m->getTexture()) {

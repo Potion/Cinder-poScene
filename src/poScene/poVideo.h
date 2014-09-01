@@ -1,6 +1,6 @@
 //
-//  poVideoPlayer.h
-//  VideoPlayer
+//  poVideo.h
+//  Video
 //
 //  Created by Stephen Varga on 6/17/14.
 //
@@ -18,15 +18,15 @@
 
 namespace po {
     template<class T>
-    class VideoPlayer
+    class Video
     : public po::Node {
         
     private:
         typedef std::shared_ptr<T> GenericMovieRef;
         
     public:
-        static std::shared_ptr<VideoPlayer<T> > create();
-        static std::shared_ptr<VideoPlayer<T> > create(GenericMovieRef movieRef);
+        static std::shared_ptr<Video<T> > create();
+        static std::shared_ptr<Video<T> > create(GenericMovieRef movieRef);
         
         void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
         GenericMovieRef getMovieRef()               { return mMovieRef; };
@@ -34,7 +34,7 @@ namespace po {
         ci::Rectf getBounds();
         
     protected:
-        VideoPlayer() {}
+        Video() {}
         
         void setup();
         void update();
@@ -46,7 +46,11 @@ namespace po {
         std::weak_ptr<T> mMovieRef;
     };
     
-    template<class T> using VideoPlayerRef = std::shared_ptr<VideoPlayer<T> >;    
+    //Template ref and GL ref
+    template<class T> using VideoRef = std::shared_ptr<Video<T> >;
+    
+    typedef Video<ci::qtime::MovieGl> VideoGl;
+    typedef std::shared_ptr<VideoGl> VideoGlRef;
 }
 
-#include "poVideoPlayer.cpp"
+#include "poVideo.ipp"
