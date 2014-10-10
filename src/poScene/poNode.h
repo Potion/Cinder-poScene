@@ -56,6 +56,7 @@ namespace po {
     //Signals
     typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
     typedef boost::signals2::signal<void(po::TouchEvent&)> TouchEventSignal;
+    typedef boost::signals2::signal<void(po::KeyEvent&)> KeyEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -386,7 +387,8 @@ namespace po {
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
         
-        //Signals
+        //Interaction Events
+        //Mouse
         MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
                             mSignalMouseMove, mSignalMouseMoveInside,
                             mSignalMouseDrag, mSignalMouseDragInside,
@@ -395,6 +397,7 @@ namespace po {
         bool hasConnection(const po::MouseEvent::Type &type);
         void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
         
+        //Touch
         TouchEventSignal mSignalTouchesBegan, mSignalTouchesBeganInside,
                             mSignalTouchesMoved, mSignalTouchesMovedInside,
                             mSignalTouchesEnded, mSignalTouchesEndedInside;
@@ -402,9 +405,10 @@ namespace po {
         bool hasConnection(const po::TouchEvent::Type &type);
         void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
         
-        //Global events (just send route it to this)
-//        virtual void notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type);
-//        virtual void notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type);
-        virtual void notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type);
+        //Key
+        KeyEventSignal mSignalKeyDown, mSignalKeyUp;
+        
+        bool hasConnection(const po::KeyEvent::Type &type);
+        void emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type);
     };
 }

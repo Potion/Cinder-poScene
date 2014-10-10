@@ -681,27 +681,6 @@ namespace po {
     #pragma mark - Mouse Events
     
     #pragma mark -
-    //Global Mouse Events
-//    void Node::notifyGlobal(po::MouseEvent &event, const po::MouseEvent::Type &type) {
-//        //Setup event
-//        event.mSource    = shared_from_this();
-//        
-//        switch (type) {
-//            case po::MouseEvent::Type::DOWN:
-//                mouseDown(event); break;
-//            case po::MouseEvent::Type::MOVE:
-//                mouseMove(event); break;
-//            case po::MouseEvent::Type::DRAG:
-//                mouseDrag(event); break;
-//            case po::MouseEvent::Type::UP:
-//                mouseUp(event); break;
-//            case po::MouseEvent::Type::WHEEL:
-//                mouseWheel(event); break;
-//        }
-//    }
-    
-    #pragma mark -
-    //SceneGraph Specific events
     
     //See if we care about an event
     bool Node::hasConnection(const po::MouseEvent::Type &type)
@@ -760,22 +739,6 @@ namespace po {
     
     
     #pragma mark - Touch Events -
-    //Global Mouse Events
-//    void Node::notifyGlobal(po::TouchEvent &event, const po::TouchEvent::Type &type) {
-//        for(po::TouchEvent::Touch &touch : event.getTouches()) {
-//            //Setup event
-//            touch.mSource    = shared_from_this();
-//        }
-//        
-//        switch (type) {
-//            case po::TouchEvent::Type::BEGAN:
-//                touchesBegan(event); break;
-//            case po::TouchEvent::Type::MOVED:
-//                touchesMoved(event); break;
-//            case po::TouchEvent::Type::ENDED:
-//                touchesEnded(event); break;
-//        }
-//    }
     
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type)
@@ -829,15 +792,32 @@ namespace po {
     
     
     #pragma mark - Key Events -
-    //Global Mouse Events
-    void Node::notifyGlobal(po::KeyEvent &event, const po::KeyEvent::Type &type) {
+    //Key Events
+    
+    void Node::emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type)
+    {
+        event.mSource = shared_from_this();
+        
         switch (type) {
             case po::KeyEvent::Type::DOWN:
-                keyDown(event);
-                break;
+                mSignalKeyDown(event); break;
+                
             case po::KeyEvent::Type::UP:
-                keyUp(event);
-                break;
+                mSignalKeyUp(event); break;
         }
+    }
+    
+    
+    //See if we care about a key event
+    bool Node::hasConnection(const po::KeyEvent::Type &type)
+    {
+        switch (type) {
+            case po::KeyEvent::Type::DOWN:
+                return mSignalKeyDown.num_slots();
+            case po::KeyEvent::Type::UP:
+                return mSignalKeyUp.num_slots();
+        }
+        
+        return false;
     }
 }
