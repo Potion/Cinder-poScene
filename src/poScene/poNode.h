@@ -249,6 +249,10 @@ namespace po {
         TouchEventSignal& getSignalTouchesBeganInside()     { return mSignalTouchesBeganInside; };
         TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
         TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
+        
+        //Key
+        KeyEventSignal& getSignalKeyDown()        { return mSignalKeyDown;    };
+        KeyEventSignal& getSignalKeyUp()          { return mSignalKeyUp;      };
     
         
         //------------------
