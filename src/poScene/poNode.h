@@ -14,6 +14,7 @@
 #include "cinder/gl/GlslProg.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
+#include "cinder/Exception.h"
 
 #include "poMatrixSet.h"
 #include "poEventCenter.h"
@@ -391,7 +392,10 @@ namespace po {
         //Name (optional, helps identify nodes when debugging)
         std::string mName;
         
-        //Interaction Events
+        //
+        //  Interaction Events
+        //
+        
         //Mouse
         MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
                             mSignalMouseMove, mSignalMouseMoveInside,
@@ -414,5 +418,15 @@ namespace po {
         
         bool hasConnection(const po::KeyEvent::Type &type);
         void emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type);
+        
+        
+        //
+        //  Exceptions
+        //
+        
+        class NodeException
+        : public ci::Exception
+        {
+        };
     };
 }

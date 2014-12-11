@@ -176,7 +176,7 @@ namespace po {
     //------------------------------------------------------
     #pragma mark - Remove Children -
     
-    bool NodeContainer::removeChild(NodeRef node)
+    void NodeContainer::removeChild(NodeRef node)
     {
         std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
         if(iter != mChildren.end()) {
@@ -187,26 +187,25 @@ namespace po {
             mChildren.erase(iter);
             
             setAlignment(getAlignment());
-            
-            return true;
+        } else {
+            NodeContainerInvalidChildException exc;
+            throw(exc);
         }
-        
-        return false;
     }
     
-    bool NodeContainer::removeChildAt(int index)
+    void NodeContainer::removeChildAt(int index)
     {
-        if(index <= 0 || index >= mChildren.size())
-            return false;
-        
-        mChildren[index]->removeParent();
-        mChildren[index]->removeScene();
-        
-        mChildren.erase(mChildren.begin() + index);
-        
-        setAlignment(getAlignment());
-        
-        return true;
+        if(index <= 0 || index >= mChildren.size()) {
+            NodeContainerInvalidChildException exc;
+            throw(exc);
+        } else {
+            mChildren[index]->removeParent();
+            mChildren[index]->removeScene();
+            
+            mChildren.erase(mChildren.begin() + index);
+            
+            setAlignment(getAlignment());
+        }
     }
     
     void NodeContainer::removeAllChildren()
@@ -227,29 +226,29 @@ namespace po {
     
     void NodeContainer::moveChildToFront(NodeRef node)
     {
-        if(removeChild(node))
-            addChild(node);
+        removeChild(node);
+        addChild(node);
     }
     
     void NodeContainer::moveChildForward(NodeRef node)
     {
+        removeChild(node);
+        #pragma message "Does this work with a vector, or would this be out of bounds?"
         int idx = getChildIndex(node);
-        if(removeChild(node))
-            #pragma message "Does this work with a vector, or would this be out of bounds?"
-            addChildAt(std::min(idx+1, getNumChildren()), node);
+        addChildAt(std::min(idx+1, getNumChildren()), node);
     }
     
     void NodeContainer::moveChildToBack(NodeRef node)
     {
-        if(removeChild(node))
-            addChildAt(0, node);
+        removeChild(node);
+        addChildAt(0, node);
     }
     
     void NodeContainer::moveChildBackward(NodeRef node)
     {
         int idx = getChildIndex(node);
-        if(removeChild(node))
-            addChildAt(std::max(idx-1, 0), node);
+        removeChild(node);
+        addChildAt(std::max(idx-1, 0), node);
     }
     
     void NodeContainer::setParentAndScene(NodeRef node)

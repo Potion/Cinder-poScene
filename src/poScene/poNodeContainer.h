@@ -43,8 +43,8 @@ namespace po {
         NodeRef getFirstChild();
         NodeRef getLastChild();
         
-        bool removeChild(NodeRef node);
-        bool removeChildAt(int index);
+        void removeChild(NodeRef node);
+        void removeChildAt(int index);
         void removeAllChildren();
         
         void moveChildToFront(NodeRef node);
@@ -82,5 +82,22 @@ namespace po {
         std::vector<NodeRef> mChildren;
         
         void calculateMatrices();
+        
+    };
+    
+    
+    
+    //
+    //  Exceptions
+    //
+    
+    class NodeContainerException
+    : public ci::Exception
+    {
+    };
+    
+    class NodeContainerInvalidChildException
+    : public NodeContainerException
+    {
     };
 };
