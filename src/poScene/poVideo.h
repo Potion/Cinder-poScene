@@ -43,7 +43,7 @@ namespace po {
         
     private:
         //Movie and texture refs
-        std::weak_ptr<T> mMovieRef;
+        std::shared_ptr<T> mMovieRef;
     };
     
     //Template ref and GL ref

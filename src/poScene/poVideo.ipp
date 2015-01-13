@@ -38,8 +38,7 @@ namespace po {
     template<class T>
     ci::Rectf Video<T>::getBounds()
     {
-        GenericMovieRef m = mMovieRef.lock();
-        if(m) return m->getBounds();
+        if(mMovieRef != nullptr) return mMovieRef->getBounds();
         return ci::Rectf(0,0,0,0);
     }
     
@@ -47,10 +46,9 @@ namespace po {
     template<class T>
     void Video<T>::draw()
     {
-        GenericMovieRef m = mMovieRef.lock();
-        if(m && m->getTexture()) {
+        if(mMovieRef != nullptr && mMovieRef->getTexture()) {
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            ci::gl::draw(m->getTexture());
+            ci::gl::draw(mMovieRef->getTexture());
         }
     }
 }
