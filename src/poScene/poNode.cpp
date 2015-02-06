@@ -31,12 +31,6 @@ namespace po {
     static const int ORIGIN_SIZE   = 2;
     
     
-    NodeRef Node::create(std::string name)
-    {
-        return std::shared_ptr<Node>(new Node(name));
-    }
-    
-    
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
@@ -82,7 +76,8 @@ namespace po {
     }
     
     Node::~Node() {
-        
+		//	Make sure to clear the fbo w/Cinder bug fix
+		resetFbo();
     }
     
     
@@ -104,26 +99,34 @@ namespace po {
     
     void Node::beginDrawTree()
     {
-        //Update our draw order
+        //	Update our draw order
         if(hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
-        //Set applied alpha
+        //	Set applied alpha
         if(hasParent())
             mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
         else
             mAppliedAlpha = mAlpha;
         
-        //Push our Matrix
+        //	Push our Matrix
         if(!mIsCapturingFbo) {
-            ci::gl::pushMatrices();
-            setTransformation();
-        }
+			ci::gl::pushModelView();
+			setTransformation();
+		}
+
+		GLint depth, maxDepth;
+		glGetIntegerv(GL_MODELVIEW_STACK_DEPTH, &depth);
+		glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH, &maxDepth);
+
+		if (depth > maxDepth) {
+		ci::app::console() << "Max Perspective Depth exceeded: " << depth << " Max Depth: " << maxDepth << std::endl;
+		}
+
     }
     
     
     void Node::drawTree()
     {
-        
         beginDrawTree();
         
         //If we're invisible, nothing to draw
@@ -137,7 +140,7 @@ namespace po {
             }
         }
         
-        if(!mIsCapturingFbo) finishDrawTree();
+        finishDrawTree();
     }
     
     
@@ -148,8 +151,9 @@ namespace po {
             drawBounds();
         
         //Pop our Matrix
-        if(!mIsCapturingFbo)
-            ci::gl::popMatrices();
+		if (!mIsCapturingFbo) {
+			ci::gl::popModelView();
+		}
     }
     
     
@@ -169,15 +173,15 @@ namespace po {
             createFbo(width, height);
         } else {
             //Clear the fbo
-            mFbo.reset();
+			resetFbo();
         }
     }
     
-    
+    //	Generate a new fbo
     bool Node::createFbo(int width, int height)
     {
         if(mFbo) {
-            mFbo.reset();
+			resetFbo();
         }
 
         try {
@@ -188,7 +192,7 @@ namespace po {
             format.enableDepthBuffer(false);
             mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(width, height, format));
         } catch (ci::gl::FboException) {
-            //The main reason for failure is 
+            //The main reason for failure is too big of a buffer
             ci::app::console() << "po::Scene: Couldn't create FBO, please provide valid dimensions for your graphics card." << std::endl;
             mCacheToFbo = false;
             return false;
@@ -198,95 +202,93 @@ namespace po {
         return true;
     }
     
-    
+    //	Bind the FBO and draw our heirarchy into it
     void Node::captureFbo()
     {
-        //Save the window buffer
+        //	Save the window buffer
         ci::gl::SaveFramebufferBinding binding;
         
-        //Save our matrix
+        //	Save our matrix
         ci::Area v  = ci::gl::getViewport();
         
-        //We have to be visible, so if we aren't temporarily turn it on
+        //	We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
         setVisible(true);
         
-        //Set the viewport
+        //	Set the viewport
+		//ci::gl::setViewport(ci::Area(ci::Vec2i(0,0), mFbo->getSize()));
         ci::gl::setViewport(mFbo->getBounds());
         
-        //Bind the FBO
+        //	Bind the FBO
         mFbo->bindFramebuffer();
         
-        //Set Ortho camera to fbo bounds, save matrices and push camera
+        //	Set Ortho camera to fbo bounds, save matrices and push camera
         ci::gl::pushMatrices();
-        
-        ci::CameraOrtho cam;
-        cam.setOrtho( 0, mFbo->getWidth(), mFbo->getHeight(), 0, -1, 1 );
-        ci::gl::setMatrices(cam);
-        
-        //Draw into the FBO
+		ci::gl::setMatricesWindow(mFbo->getSize(), true);
+       
+        //	Clear the FBO
         ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
         
-        //Draw into the FBO
-        mIsCapturingFbo = true;
-        drawTree();
+        //	Draw into the FBO
+		mIsCapturingFbo = true;
+		drawTree();
+
         mIsCapturingFbo = false;
         
-        //Set the camera up for the window
+        //	Set the camera up for the window
         ci::gl::popMatrices();
         
-        //Return the viewport
-        ci::gl::setViewport(v);
+        //	Return the viewport
+		ci::gl::setViewport(v);
         
-        
-        //Return to previous visibility
+        //	Return to previous visibility
         setVisible(visible);
     }
     
-    
+    //	Draw the fbo
     void Node::drawFbo()
     {
-        //The fbo has premultiplied alpha, so we draw at full color
+        //	The fbo has premultiplied alpha, so we draw at full color
         ci::gl::enableAlphaBlending();
         ci::gl::color(ci::ColorAf::white());
         
-        //Flip the FBO texture since it's coords are reversed
+        //	Flip the FBO texture since it's coords are reversed
         ci::gl::Texture tex = mFbo->getTexture();
         tex.setFlipped(true);
         
         if(mIsMasked) {
-            //Use masking shader to draw FBO with mask
+            //	Use masking shader to draw FBO with mask
             
-            //Bind the fbo and mask texture
+            //	Bind the fbo and mask texture
             tex.bind(0);
             mMask->getTexture()->bind(1);
             
-            //Bind Shader
+            //	Bind Shader
             mMaskShader.bind();
             
-            //Set uniforms
+            //	Set uniforms
             mMaskShader.uniform("tex", 0);
             mMaskShader.uniform("mask", 1);
             mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
             mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
             
-            //Draw
+            //	Draw
             ci::gl::drawSolidRect(mFbo->getBounds());
             
-            //Restore everything
+            //	Restore everything
             tex.unbind();
             mMask->getTexture()->unbind();
             mMaskShader.unbind();
         }
         
         else {
-            //Just draw the fbo
+            //	Just draw the fbo
             ci::gl::draw(tex, mFbo->getBounds());
         }
     }
     
-    
+    //	Cache to FBO and return the texture
     ci::gl::TextureRef Node::createTexture()
     {
         //Save caching state
@@ -309,19 +311,34 @@ namespace po {
         mCacheToFbo = alreadyCaching;
         
         //Clean up if we're not caching
-        if(!mCacheToFbo)
-            mFbo.reset();
+		if (!mCacheToFbo) {
+			resetFbo();
+		}
         
         //Return the texture
         return tex;
     }
     
+
+	//	Reset the FBO with Cinder bug fix
+	//	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
     
+	void Node::resetFbo() {
+		if (mCacheToFbo && mFbo != nullptr) {
+			GLuint depthTextureId = mFbo->getDepthTexture().getId();
+			mFbo.reset();
+
+			if (depthTextureId > 0) {
+				glDeleteTextures(1, &depthTextureId);
+			}
+		}
+	}
     
     
     //------------------------------------------------------
     #pragma mark  - Masking -
     
+	//	Apply the mask (as a shaperef)
     void Node::setMask(po::ShapeRef mask)
     {
         //Try to cache to FBO
@@ -346,14 +363,14 @@ namespace po {
         }
     }
     
-    
+    //	Remove the mask, and stop caching to FBO unless requested
     po::ShapeRef Node::removeMask(bool andStopCaching)
     {
         mIsMasked = false;
         
         if(andStopCaching) {
             mCacheToFbo = false;
-            mFbo.reset();
+			resetFbo();
         }
         
         po::ShapeRef mask = mMask;
@@ -367,6 +384,7 @@ namespace po {
     //------------------------------------------------------
     #pragma mark - Attributes -
     
+	//	Set the position
     void Node::setPosition(float x, float y)
     {
         mPositionAnim.stop();
@@ -376,7 +394,7 @@ namespace po {
         mFrameDirty = true;
     }
     
-    
+    //	Set the scale
     void Node::setScale(float x, float y)
     {
         mScaleAnim.stop();
@@ -388,7 +406,7 @@ namespace po {
         mBoundsDirty    = true;
     }
     
-    
+    //	Set the rotation
     void Node::setRotation(float rotation)
     {
         mRotationAnim.stop();
@@ -400,7 +418,7 @@ namespace po {
         mBoundsDirty    = true;
     }
     
-    
+    //	Set the alpha
     void Node::setAlpha(float alpha)
     {
         mAlphaAnim.stop();
@@ -409,7 +427,7 @@ namespace po {
         mAlphaAnim = mAlpha;
     }
     
-    
+    //	Offset the whole node from the origin
     void Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
@@ -421,7 +439,8 @@ namespace po {
         setAlignment(Alignment::NONE);
     }
     
-    
+    //	Check if we are visible, and up the scene graph
+	//	Somewhat slow, could be better implementation (i.e. parents set a var on their children like "parentIsVisible")
     bool Node::isVisible()
     {
         if(!mVisible) return false;
@@ -455,7 +474,7 @@ namespace po {
     
     
     void Node::updateAttributeAnimations()
-    {
+	{
         #pragma message "There has got to be a way better way to do this, probably some sort of map of active properties."
         
         //See if a tween is in progress, if so we want to use that value
@@ -537,8 +556,10 @@ namespace po {
         }
         
         ci::gl::translate(mOffset);
-    
-        mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
+		
+		if (!mIsCapturingFbo) {
+			mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
+		}
     }
     
     
@@ -647,11 +668,11 @@ namespace po {
         ci::gl::drawStrokedRect(getBounds());
         
         //Draw origin
-        ci::gl::pushMatrices();
+        ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
         ci::gl::scale(ci::Vec2f(1.f,1.f)/mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
-        ci::gl::popMatrices();
+        ci::gl::popModelView();
     }
     
     ci::Rectf Node::getFrame()

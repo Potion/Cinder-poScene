@@ -57,8 +57,9 @@ namespace po {
     {
         drawOrderCounter = 0;
         
-        if(mAutoCam)
-            ci::gl::setMatrices( mCamera );
+		if (mAutoCam)
+			ci::gl::setMatricesWindow(ci::app::getWindowSize());
+            //ci::gl::setMatrices( mCamera );
         
         getRootNode()->drawTree();
     }

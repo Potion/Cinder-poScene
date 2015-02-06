@@ -294,7 +294,7 @@ namespace po {
     //------------------------------------------------------
     #pragma mark - Matrix/Transform -
     
-    void NodeContainer::matrixTree() {
+    void NodeContainer::matrixTree() { 
         beginDrawTree();
         
         for(NodeRef &childNode : mChildren) {

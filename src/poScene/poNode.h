@@ -69,7 +69,6 @@ namespace po {
         friend class ci::gl::Texture;
         
     public:
-        static NodeRef create(std::string name="");
         ~Node();
         
         //------------------
@@ -82,7 +81,7 @@ namespace po {
         //UPDATE/DRAW
         //These are called automatically when your node is in the scene
         virtual void update()   {};
-        virtual void draw()     {};
+        virtual void draw() = 0;
         
         //------------------
         //SCENE GRAPH
@@ -300,6 +299,7 @@ namespace po {
         //Caching/FBO
         bool createFbo(int width, int height);
         void captureFbo();
+		void resetFbo();
         virtual void drawFbo();
         bool mIsCapturingFbo;
         
