@@ -325,7 +325,10 @@ namespace po {
     
 	void Node::resetFbo() {
 		if (mCacheToFbo && mFbo != nullptr) {
-			GLuint depthTextureId = mFbo->getDepthTexture().getId();
+			GLuint depthTextureId = 0;
+			if (mFbo->getDepthTexture()) {
+				depthTextureId = mFbo->getDepthTexture().getId();
+			}
 			mFbo.reset();
 
 			if (depthTextureId > 0) {
