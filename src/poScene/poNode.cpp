@@ -114,14 +114,6 @@ namespace po {
 			setTransformation();
 		}
 
-		GLint depth, maxDepth;
-		glGetIntegerv(GL_MODELVIEW_STACK_DEPTH, &depth);
-		glGetIntegerv(GL_MAX_MODELVIEW_STACK_DEPTH, &maxDepth);
-
-		if (depth > maxDepth) {
-		ci::app::console() << "Max Perspective Depth exceeded: " << depth << " Max Depth: " << maxDepth << std::endl;
-		}
-
     }
     
     
