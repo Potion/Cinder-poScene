@@ -315,18 +315,24 @@ namespace po {
 	//	Reset the FBO with Cinder bug fix
 	//	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
     
-	void Node::resetFbo() {
+    void Node::resetFbo() {
+        GLuint depthTextureId = 0;
+        
+        //  Get the id of depth texture
 		if (mCacheToFbo && mFbo != nullptr) {
-			GLuint depthTextureId = 0;
 			if (mFbo->getDepthTexture()) {
 				depthTextureId = mFbo->getDepthTexture().getId();
 			}
-			mFbo.reset();
-
-			if (depthTextureId > 0) {
-				glDeleteTextures(1, &depthTextureId);
-			}
-		}
+        }
+        
+        
+        //  Reset the FBO
+        mFbo.reset();
+        
+        //  Delete the depth texture (if necessary)
+        if (depthTextureId > 0) {
+            glDeleteTextures(1, &depthTextureId);
+        }
 	}
     
     
