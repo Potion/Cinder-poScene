@@ -95,12 +95,12 @@ namespace po {
     //------------------------------------------------------
     #pragma mark - Get Children -
     
-    std::vector<NodeRef> NodeContainer::getChildren()
+    std::deque<NodeRef> NodeContainer::getChildren()
     {
         return mChildren;
     };
     
-    std::vector<NodeRef>& NodeContainer::getChildrenByReference()
+    std::deque<NodeRef>& NodeContainer::getChildrenByReference()
     {
         return mChildren;
     }
@@ -112,7 +112,7 @@ namespace po {
     
     int NodeContainer::getChildIndex(const NodeRef& child)
     {
-        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
+        std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
         if(iter != mChildren.end())
             return (int)std::distance(mChildren.begin(), iter);
         return INVALID_INDEX;
@@ -178,7 +178,7 @@ namespace po {
     
     void NodeContainer::removeChild(NodeRef node)
     {
-        std::vector<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
+        std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
         if(iter != mChildren.end()) {
             (*iter)->removeParent();
             (*iter)->removeScene();
@@ -228,7 +228,8 @@ namespace po {
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if(nodeIter != mChildren.end()) {
-            std::iter_swap(nodeIter, std::find(mChildren.begin(), mChildren.end(), mChildren.back()));
+            mChildren.erase(nodeIter);
+            mChildren.push_back(node);
         }
     }
     
@@ -244,7 +245,8 @@ namespace po {
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if(nodeIter != mChildren.end()) {
-            std::iter_swap(nodeIter, mChildren.begin());
+            mChildren.erase(nodeIter);
+            mChildren.push_front(node);
         }
     }
     
@@ -277,7 +279,7 @@ namespace po {
         
         //We have to copy the children, because if any of the update loops remove children
         //The vector is screwed (invalidated)
-        std::vector<po::NodeRef> children(mChildren);
+        std::deque<po::NodeRef> children(mChildren);
         
         for(NodeRef &childNode : children)
             if(childNode->mVisible && childNode->hasParent()) childNode->updateTree();

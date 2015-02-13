@@ -32,8 +32,8 @@ namespace po {
         void addChildAfter(NodeRef after, NodeRef node);
         
         
-        std::vector<NodeRef> getChildren();
-        std::vector<NodeRef>& getChildrenByReference();
+        std::deque<NodeRef> getChildren();
+        std::deque<NodeRef>& getChildrenByReference();
         bool hasChildren();
         
         int getChildIndex(const NodeRef& child);
@@ -79,7 +79,7 @@ namespace po {
         virtual void updateTree();
         void matrixTree();
         
-        std::vector<NodeRef> mChildren;
+        std::deque<NodeRef> mChildren;
         
         void calculateMatrices();
         
