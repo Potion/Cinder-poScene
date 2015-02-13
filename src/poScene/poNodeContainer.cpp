@@ -226,29 +226,34 @@ namespace po {
     
     void NodeContainer::moveChildToFront(NodeRef node)
     {
-        removeChild(node);
-        addChild(node);
+        auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
+        if(nodeIter != mChildren.end()) {
+            std::iter_swap(nodeIter, std::find(mChildren.begin(), mChildren.end(), mChildren.back()));
+        }
     }
     
     void NodeContainer::moveChildForward(NodeRef node)
     {
-        removeChild(node);
-        #pragma message "Does this work with a vector, or would this be out of bounds?"
-        int idx = getChildIndex(node);
-        addChildAt(std::min(idx+1, getNumChildren()), node);
+        auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
+        if(nodeIter != mChildren.end() && *nodeIter != mChildren.back()) {
+            std::iter_swap(nodeIter, ++nodeIter);
+        }
     }
     
     void NodeContainer::moveChildToBack(NodeRef node)
     {
-        removeChild(node);
-        addChildAt(0, node);
+        auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
+        if(nodeIter != mChildren.end()) {
+            std::iter_swap(nodeIter, mChildren.begin());
+        }
     }
     
     void NodeContainer::moveChildBackward(NodeRef node)
     {
-        int idx = getChildIndex(node);
-        removeChild(node);
-        addChildAt(std::max(idx-1, 0), node);
+        auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
+        if(nodeIter != mChildren.end() && *nodeIter != mChildren.front()) {
+            std::iter_swap(nodeIter, --nodeIter);
+        }
     }
     
     void NodeContainer::setParentAndScene(NodeRef node)
