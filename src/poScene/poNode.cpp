@@ -287,13 +287,15 @@ namespace po {
         bool alreadyCaching = mCacheToFbo;
         
         //If we're not already caching, generate texture with FBO 
-        if(!alreadyCaching)
+        if(!alreadyCaching) {
             createFbo(getWidth(), getHeight());
+        }
         
         //Check to make sure we could create the fbo
         if(!mFbo) return nullptr;
         
         //Capture the fbo
+        ci::gl::clear();
         captureFbo();
         
         //Save a ref to the texture
