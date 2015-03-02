@@ -27,6 +27,8 @@ namespace po {
         
         virtual void draw();
         
+        void clear();
+        
         //Renders to an internal TextureRef for drawing
         ci::Surface render();
         ci::gl::TextureRef getTexure()  { return mTexture; };

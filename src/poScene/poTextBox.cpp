@@ -35,6 +35,11 @@ namespace po {
         }
     }
     
+    void TextBox::clear() {
+        setText("");
+        mTexture.reset();
+    }
+    
     ci::Surface TextBox::render()
     {
         ci::TextBox::setPremultiplied(true);

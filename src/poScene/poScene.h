@@ -44,7 +44,7 @@ namespace po {
         uint32_t getNextDrawOrder();
         
         //Root Node
-        NodeContainerRef getRootNode() { return rootNode; };
+        NodeContainerRef getRootNode() { return mRootNode; };
         void setRootNode(NodeContainerRef node);
         
         void setDrawOffset(ci::Vec2f offfset);
@@ -53,7 +53,7 @@ namespace po {
         Scene(NodeContainerRef rootNode);
         
         //Root node of scene
-        NodeContainerRef rootNode;
+        NodeContainerRef mRootNode;
         
         //Our Event Center (each scene has their own)
         EventCenterRef eventCenter;

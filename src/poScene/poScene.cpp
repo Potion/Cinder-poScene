@@ -26,7 +26,7 @@ namespace po {
     }
     
     Scene::Scene(NodeContainerRef rootNode)
-    : rootNode(rootNode)
+    : mRootNode(rootNode)
     , mAutoCam(true)
     , eventCenter(EventCenter::create())
     {
@@ -47,7 +47,8 @@ namespace po {
         //Send a copy of all over our children to be processed
         processTrackingQueue();
         eventCenter->processEvents(allChildren);
-        getRootNode()->updateTree();
+        
+        mRootNode->updateTree();
         
         if(mAutoCam)
             mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
@@ -57,11 +58,12 @@ namespace po {
     {
         drawOrderCounter = 0;
         
-		if (mAutoCam)
+        if (mAutoCam) {
 			ci::gl::setMatricesWindow(ci::app::getWindowSize());
-            //ci::gl::setMatrices( mCamera );
+        }
         
-        getRootNode()->drawTree();
+        mRootNode->drawTree();
+
     }
     
     #pragma mark -
@@ -73,10 +75,11 @@ namespace po {
     
     void Scene::setRootNode(NodeContainerRef node)
     {
-        rootNode->removeScene();
-        
-        rootNode = node;
-        rootNode->setScene(shared_from_this());
+        if(node) {
+            mRootNode->removeScene();
+            mRootNode = node;
+            mRootNode->setScene(shared_from_this());
+        }
     }
     
     
