@@ -77,7 +77,9 @@ namespace po {
     
     Node::~Node() {
 		//	Make sure to clear the fbo w/Cinder bug fix
-		resetFbo();
+        resetFbo();
+        removeParent();
+        removeScene();
     }
     
     

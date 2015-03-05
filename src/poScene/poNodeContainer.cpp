@@ -25,6 +25,13 @@ namespace po {
     {
     }
     
+    NodeContainer::~NodeContainer()
+    {
+        removeAllChildren();
+    }
+    
+    
+    
     
     //------------------------------------------------------
     #pragma mark - Scene -

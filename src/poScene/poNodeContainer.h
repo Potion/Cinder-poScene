@@ -21,6 +21,8 @@ namespace po {
     public:
         static NodeContainerRef create(std::string name="");
         
+        ~NodeContainer();
+        
         //Children
         static const int    INVALID_INDEX = -1;
         
