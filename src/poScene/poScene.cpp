@@ -96,12 +96,12 @@ namespace po {
     void Scene::processTrackingQueue()
     {
         for (auto &kv : mTrackingQueue) {
-            if(kv.second) {
+            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
+            if(kv.second && iter == allChildren.end()) {
                 allChildren.push_back(kv.first);
             }
             
             else {
-                std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
                 if(iter != allChildren.end())
                     allChildren.erase(iter);
             }
