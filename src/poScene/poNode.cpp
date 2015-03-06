@@ -80,6 +80,9 @@ namespace po {
         resetFbo();
         removeParent();
         removeScene();
+        
+        disconnectAllSignals();
+        
     }
     
     
@@ -703,6 +706,13 @@ namespace po {
     
     #pragma mark General
     
+    void Node::disconnectAllSignals()
+    {
+        disconnectMouseSignals();
+        disconnectTouchSignals();
+        disconnectKeySignals();
+    }
+    
     
     #pragma mark - Mouse Events
     
@@ -764,6 +774,19 @@ namespace po {
     }
     
     
+    void Node::disconnectMouseSignals()
+    {
+        mSignalMouseDown.disconnect_all_slots();
+        mSignalMouseDownInside.disconnect_all_slots();
+        mSignalMouseMove.disconnect_all_slots();
+        mSignalMouseMoveInside.disconnect_all_slots();
+        mSignalMouseDrag.disconnect_all_slots();
+        mSignalMouseDragInside.disconnect_all_slots();
+        mSignalMouseUp.disconnect_all_slots();
+        mSignalMouseUpInside.disconnect_all_slots();
+    }
+    
+    
     #pragma mark - Touch Events -
     
     //For the given event, notify everyone that we have as a subscriber
@@ -817,7 +840,18 @@ namespace po {
     }
     
     
-    #pragma mark - Key Events -
+    void Node::disconnectTouchSignals()
+    {
+        mSignalTouchesBegan.disconnect_all_slots();
+        mSignalTouchesBeganInside.disconnect_all_slots();
+        mSignalTouchesMoved.disconnect_all_slots();
+        mSignalTouchesMovedInside.disconnect_all_slots();
+        mSignalTouchesEnded.disconnect_all_slots();
+        mSignalTouchesEndedInside.disconnect_all_slots();
+    }
+    
+    
+    
     //Key Events
     
     void Node::emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type)
@@ -845,5 +879,11 @@ namespace po {
         }
         
         return false;
+    }
+    
+    void Node::disconnectKeySignals()
+    {
+        mSignalKeyDown.disconnect_all_slots();
+        mSignalKeyUp.disconnect_all_slots();
     }
 }

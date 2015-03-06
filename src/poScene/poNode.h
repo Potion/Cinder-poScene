@@ -396,6 +396,8 @@ namespace po {
         //  Interaction Events
         //
         
+        void disconnectAllSignals();
+        
         //Mouse
         MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
                             mSignalMouseMove, mSignalMouseMoveInside,
@@ -404,6 +406,7 @@ namespace po {
         
         bool hasConnection(const po::MouseEvent::Type &type);
         void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
+        void disconnectMouseSignals();
         
         //Touch
         TouchEventSignal mSignalTouchesBegan, mSignalTouchesBeganInside,
@@ -412,12 +415,14 @@ namespace po {
         
         bool hasConnection(const po::TouchEvent::Type &type);
         void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
+        void disconnectTouchSignals();
         
         //Key
         KeyEventSignal mSignalKeyDown, mSignalKeyUp;
         
         bool hasConnection(const po::KeyEvent::Type &type);
         void emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type);
+        void disconnectKeySignals();
         
         
         //
