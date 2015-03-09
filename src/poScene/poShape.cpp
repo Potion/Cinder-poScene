@@ -199,7 +199,7 @@ namespace po {
                 
                 if(mTextureOffset != ci::Vec2f(0,0)) {
                     ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
-                    std::cout << normalizedOffset << std::endl;
+                    ci::app::console() << normalizedOffset << std::endl;
                     for(auto &coord : texCoords) {
                         coord -= normalizedOffset;
                     }

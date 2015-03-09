@@ -813,7 +813,7 @@ namespace po {
             case po::TouchEvent::Type::ENDED_INSIDE:
                 mSignalTouchesEndedInside(event); break;
             default:
-                std::cout << "Touch event type " << type << " not found." << std::endl;
+                ci::app::console() << "Touch event type " << type << " not found." << std::endl;
         }
     }
     
