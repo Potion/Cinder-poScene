@@ -57,7 +57,7 @@ namespace po {
     ci::Rectf TextBox::getBounds()
     {
         if(mUseTextBounds) {
-            float xPos;
+            float xPos = 0.0f;
             switch (mAlign) {
                 case ci::TextBox::Alignment::LEFT:
                     xPos = 0; break;
