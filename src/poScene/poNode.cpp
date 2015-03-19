@@ -627,7 +627,8 @@ namespace po {
     
     void Node::removeScene()
     {
-        if(hasScene()) mScene.lock()->untrackChildNode(shared_from_this());
+        po::SceneRef scene = mScene.lock();
+        if(scene) scene->untrackChildNode(shared_from_this());
         mScene.reset();
         mHasScene = false;
     }
