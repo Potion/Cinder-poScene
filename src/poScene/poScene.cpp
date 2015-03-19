@@ -34,6 +34,8 @@ namespace po {
     
     Scene::~Scene()
     {
+        mRootNode->removeAllChildren();
+        mRootNode = nullptr;
     }
     
     void Scene::setDrawOffset(ci::Vec2f offset) {
@@ -86,11 +88,15 @@ namespace po {
     
     #pragma mark -
     void Scene::trackChildNode(NodeRef node) {
-        mTrackingQueue[node] = true;
+        if(node) {
+            mTrackingQueue[node] = true;
+        }
     }
     
     void Scene::untrackChildNode(NodeRef node) {
-        mTrackingQueue[node] = false;
+        if(node) {
+            mTrackingQueue[node] = false;
+        }
     }
     
     void Scene::processTrackingQueue()
