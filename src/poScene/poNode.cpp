@@ -117,8 +117,6 @@ namespace po {
         if(!mIsCapturingFbo) {
             ci::gl::pushModelView();
             setTransformation();
-        } else {
-            calculateMatrices();
         }
 
     }
