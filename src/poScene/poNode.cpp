@@ -114,10 +114,8 @@ namespace po {
             mAppliedAlpha = mAlpha;
         
         //	Push our Matrix
-        if(!mIsCapturingFbo) {
-			ci::gl::pushModelView();
-			setTransformation();
-		}
+        ci::gl::pushModelView();
+        setTransformation();
 
     }
     
@@ -148,9 +146,7 @@ namespace po {
             drawBounds();
         
         //Pop our Matrix
-		if (!mIsCapturingFbo) {
-			ci::gl::popModelView();
-		}
+        ci::gl::popModelView();
     }
     
     
@@ -229,6 +225,7 @@ namespace po {
         //	Draw into the FBO
 		mIsCapturingFbo = true;
 		drawTree();
+        
 
         mIsCapturingFbo = false;
         
@@ -565,9 +562,7 @@ namespace po {
         
         ci::gl::translate(mOffset);
 		
-		if (!mIsCapturingFbo) {
-			mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
-		}
+        mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
     
