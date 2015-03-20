@@ -114,8 +114,12 @@ namespace po {
             mAppliedAlpha = mAlpha;
         
         //	Push our Matrix
-        ci::gl::pushModelView();
-        setTransformation();
+        if(!mIsCapturingFbo) {
+            ci::gl::pushModelView();
+            setTransformation();
+        } else {
+            matrixTree();
+        }
 
     }
     
@@ -146,7 +150,9 @@ namespace po {
             drawBounds();
         
         //Pop our Matrix
-        ci::gl::popModelView();
+        if(!mIsCapturingFbo) {
+            ci::gl::popModelView();
+        }
     }
     
     
