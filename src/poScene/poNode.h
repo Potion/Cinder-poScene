@@ -368,6 +368,7 @@ namespace po {
         virtual void finishDrawTree();
         
         virtual void matrixTree();
+        virtual void calculateMatrices() {};
         
         //Transformation Matrix
         po::MatrixSet mMatrix;

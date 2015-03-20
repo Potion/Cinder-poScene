@@ -118,7 +118,7 @@ namespace po {
             ci::gl::pushModelView();
             setTransformation();
         } else {
-            matrixTree();
+            calculateMatrices();
         }
 
     }
