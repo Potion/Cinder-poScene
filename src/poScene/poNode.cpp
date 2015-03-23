@@ -114,27 +114,26 @@ namespace po {
             mAppliedAlpha = mAlpha;
         
         //	Push our Matrix
-        if(!mIsCapturingFbo) {
-            ci::gl::pushModelView();
-            setTransformation();
-        }
-
+        ci::gl::pushModelView();
+        setTransformation();
     }
     
     
     void Node::drawTree()
     {
+        //  Capture FBO if we need to
+        if(mCacheToFbo) {
+            captureFbo();
+        }
+        
+        //  Draw
         beginDrawTree();
         
-        //If we're invisible, nothing to draw
-        if(mVisible) {
-            //Draw this item
-            if(!mCacheToFbo || mIsCapturingFbo) {
-                draw();
-            } else {
-                captureFbo();
-                drawFbo();
-            }
+        if(!mCacheToFbo) {
+            draw();
+        } else {
+            calculateMatrices();
+            drawFbo();
         }
         
         finishDrawTree();
@@ -148,9 +147,7 @@ namespace po {
             drawBounds();
         
         //Pop our Matrix
-        if(!mIsCapturingFbo) {
-            ci::gl::popModelView();
-        }
+        ci::gl::popModelView();
     }
     
     
@@ -166,6 +163,7 @@ namespace po {
     
     void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
+        
         if(mCacheToFbo) {
             createFbo(width, height);
         } else {
@@ -173,6 +171,7 @@ namespace po {
 			resetFbo();
         }
     }
+    
     
     //	Generate a new fbo
     bool Node::createFbo(int width, int height)
@@ -199,6 +198,7 @@ namespace po {
         return true;
     }
     
+    
     //	Bind the FBO and draw our heirarchy into it
     void Node::captureFbo()
     {
@@ -213,7 +213,6 @@ namespace po {
         setVisible(true);
         
         //	Set the viewport
-		//ci::gl::setViewport(ci::Area(ci::Vec2i(0,0), mFbo->getSize()));
         ci::gl::setViewport(mFbo->getBounds());
         
         //	Bind the FBO
@@ -228,8 +227,8 @@ namespace po {
         
         //	Draw into the FBO
 		mIsCapturingFbo = true;
-		drawTree();
         
+        draw();
 
         mIsCapturingFbo = false;
         
@@ -242,6 +241,7 @@ namespace po {
         //	Return to previous visibility
         setVisible(visible);
     }
+    
     
     //	Draw the fbo
     void Node::drawFbo()
@@ -285,6 +285,7 @@ namespace po {
             ci::gl::draw(tex, mFbo->getBounds());
         }
     }
+    
     
     //	Cache to FBO and return the texture
     ci::gl::TextureRef Node::createTexture()
@@ -344,8 +345,10 @@ namespace po {
 	}
     
     
+    
+    
     //------------------------------------------------------
-    #pragma mark  - Masking -
+    //  Masking
     
 	//	Apply the mask (as a shaperef)
     void Node::setMask(po::ShapeRef mask)
@@ -372,6 +375,7 @@ namespace po {
         }
     }
     
+    
     //	Remove the mask, and stop caching to FBO unless requested
     po::ShapeRef Node::removeMask(bool andStopCaching)
     {
@@ -391,7 +395,7 @@ namespace po {
     
     
     //------------------------------------------------------
-    #pragma mark - Attributes -
+    //  Attributes
     
 	//	Set the position
     void Node::setPosition(float x, float y)
@@ -402,6 +406,7 @@ namespace po {
         mPositionAnim.ptr()->set(mPosition);
         mFrameDirty = true;
     }
+    
     
     //	Set the scale
     void Node::setScale(float x, float y)
@@ -415,6 +420,7 @@ namespace po {
         mBoundsDirty    = true;
     }
     
+    
     //	Set the rotation
     void Node::setRotation(float rotation)
     {
@@ -427,6 +433,7 @@ namespace po {
         mBoundsDirty    = true;
     }
     
+    
     //	Set the alpha
     void Node::setAlpha(float alpha)
     {
@@ -435,6 +442,7 @@ namespace po {
         mAlpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
         mAlphaAnim = mAlpha;
     }
+    
     
     //	Offset the whole node from the origin
     void Node::setOffset(float x, float y) {
@@ -447,6 +455,7 @@ namespace po {
         //If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
     }
+    
     
     //	Check if we are visible, and up the scene graph
 	//	Somewhat slow, could be better implementation (i.e. parents set a var on their children like "parentIsVisible")
@@ -467,8 +476,9 @@ namespace po {
     
     
     
+    
     //------------------------------------------------------
-    #pragma mark  - Animation -
+    //  Animation
     
     void Node::initAttrAnimations()
     {
@@ -506,8 +516,9 @@ namespace po {
     
     
     
+    
     //------------------------------------------------------
-    #pragma mark  - Alignment -
+    //  Alignment
     
     void Node::setAlignment(Alignment alignment)
     {
@@ -545,8 +556,10 @@ namespace po {
     }
     
     
+    
+    
     //------------------------------------------------------
-    #pragma mark - Transformation -
+    //  Transformation
     
     void Node::setTransformation()
     {
@@ -601,8 +614,9 @@ namespace po {
     
     
     
+    
     //------------------------------------------------------
-    #pragma mark - Parent & Scene -
+    //  Parent + Scene
     
     void Node::setScene(SceneRef sceneRef) {
         mScene = sceneRef;
@@ -658,8 +672,9 @@ namespace po {
     
     
     
+    
     //------------------------------------------------------
-    #pragma mark  - Dimensions -
+    //  Dimensions
     
     ci::Rectf Node::getBounds()
     {
@@ -667,6 +682,7 @@ namespace po {
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         return bounds;
     }
+    
     
     void Node::drawBounds()
     {
@@ -682,6 +698,7 @@ namespace po {
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
+    
     
     ci::Rectf Node::getFrame()
     {
@@ -701,10 +718,12 @@ namespace po {
     }
     
     
-    //------------------------------------------------------
-    #pragma mark  - Events -
     
-    #pragma mark General
+    
+    //------------------------------------------------------
+    //  Events
+    
+    //  General
     
     void Node::disconnectAllSignals()
     {
@@ -714,9 +733,7 @@ namespace po {
     }
     
     
-    #pragma mark - Mouse Events
-    
-    #pragma mark -
+    //  Mouse Events
     
     //See if we care about an event
     bool Node::hasConnection(const po::MouseEvent::Type &type)
@@ -787,7 +804,7 @@ namespace po {
     }
     
     
-    #pragma mark - Touch Events -
+    //  Touch Events
     
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type)
@@ -852,7 +869,7 @@ namespace po {
     
     
     
-    //Key Events
+    //  Key Events
     
     void Node::emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type)
     {
@@ -880,6 +897,7 @@ namespace po {
         
         return false;
     }
+    
     
     void Node::disconnectKeySignals()
     {

@@ -12,6 +12,8 @@
 		00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
+		0E34A3961ABC9D1E00AEB323 /* poMask_frag.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0E34A3941ABC9D1E00AEB323 /* poMask_frag.glsl */; };
+		0E34A3971ABC9D1E00AEB323 /* poMask_vert.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 0E34A3951ABC9D1E00AEB323 /* poMask_vert.glsl */; };
 		0E49C40018FDD9C900E163BC /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E49C3FF18FDD9C900E163BC /* poShape.cpp */; };
 		290E5F3FB3AA4096AF77173B /* poNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0BCC6DF4335A494E8F420328 /* poNode.cpp */; };
 		340517B4EAAD4809B69D9A81 /* RenderToFBOApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 43B55655DBB54486890D4B40 /* RenderToFBOApp.cpp */; };
@@ -36,6 +38,8 @@
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		0BCC6DF4335A494E8F420328 /* poNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poNode.cpp; path = ../../../src/poScene/poNode.cpp; sourceTree = "<group>"; };
+		0E34A3941ABC9D1E00AEB323 /* poMask_frag.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = poMask_frag.glsl; path = ../../../resources/poSceneResources/shaders/poMask_frag.glsl; sourceTree = "<group>"; };
+		0E34A3951ABC9D1E00AEB323 /* poMask_vert.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = poMask_vert.glsl; path = ../../../resources/poSceneResources/shaders/poMask_vert.glsl; sourceTree = "<group>"; };
 		0E49C3FF18FDD9C900E163BC /* poShape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = poShape.cpp; path = ../../../src/poScene/poShape.cpp; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		17C35AF9BE974C38B9CC34FA /* poMatrixSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poMatrixSet.h; path = ../../../src/poScene/poMatrixSet.h; sourceTree = "<group>"; };
@@ -97,6 +101,7 @@
 			isa = PBXGroup;
 			children = (
 				43B55655DBB54486890D4B40 /* RenderToFBOApp.cpp */,
+				781E6B54343F4B308646ED59 /* RenderToFBO.h */,
 				9E463AF925914765B4250134 /* RenderToFBO.cpp */,
 			);
 			name = Source;
@@ -152,7 +157,6 @@
 			children = (
 				2DDA1AF1C79749EDB97598F6 /* Resources.h */,
 				A6F9DEF200B44A008CDC26CA /* RenderToFBO_Prefix.pch */,
-				781E6B54343F4B308646ED59 /* RenderToFBO.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -160,6 +164,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0E34A3941ABC9D1E00AEB323 /* poMask_frag.glsl */,
+				0E34A3951ABC9D1E00AEB323 /* poMask_vert.glsl */,
 				2F48B793A8D04DB7B457A902 /* CinderApp.icns */,
 				70D556A8BF9C466F834BFBA2 /* Info.plist */,
 			);
@@ -267,7 +273,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E34A3961ABC9D1E00AEB323 /* poMask_frag.glsl in Resources */,
 				BAD80E5CD0EF4B8A86390022 /* CinderApp.icns in Resources */,
+				0E34A3971ABC9D1E00AEB323 /* poMask_vert.glsl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

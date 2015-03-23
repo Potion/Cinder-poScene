@@ -34,7 +34,7 @@ namespace po {
     
     
     //------------------------------------------------------
-    #pragma mark - Scene -
+    //  Scene
     
     void NodeContainer::setScene(SceneRef scene)
     {
@@ -54,7 +54,9 @@ namespace po {
     
     
     //------------------------------------------------------
-    #pragma mark - Add Children -
+    //  Children
+    
+    //  Add Children
 
     void NodeContainer::addChild(NodeRef node)
     {
@@ -98,9 +100,7 @@ namespace po {
         calculateMatrices();
     }
     
-    
-    //------------------------------------------------------
-    #pragma mark - Get Children -
+    //  Get Children
     
     std::deque<NodeRef> NodeContainer::getChildren()
     {
@@ -180,8 +180,7 @@ namespace po {
     }
     
     
-    //------------------------------------------------------
-    #pragma mark - Remove Children -
+    //  Remove Children
     
     void NodeContainer::removeChild(NodeRef node)
     {
@@ -228,8 +227,7 @@ namespace po {
     }
     
     
-    //------------------------------------------------------
-    #pragma mark - Move Children -
+    //  Move Children
     
     void NodeContainer::moveChildToFront(NodeRef node)
     {
@@ -278,7 +276,7 @@ namespace po {
     
     
     //------------------------------------------------------
-    #pragma mark - Update and Draw -
+    //  Update + Draw
 
     void NodeContainer::updateTree()
     {
@@ -304,24 +302,11 @@ namespace po {
     {
         Node::drawFbo();
     }
-    
-    //------------------------------------------------------
-    #pragma mark - Matrix/Transform -
-    
-    void NodeContainer::matrixTree() { 
-        beginDrawTree();
-        
-        for(NodeRef &childNode : mChildren) {
-            childNode->matrixTree();
-        }
-        
-        finishDrawTree();
-    }
 
     
     
     //------------------------------------------------------
-    #pragma mark - Dimensions -
+    //  Dimensions
 
     ci::Rectf NodeContainer::getBounds()
     {
@@ -336,6 +321,11 @@ namespace po {
         return bounds;
     }
     
+    
+    
+    
+    //------------------------------------------------------
+    //  Interaction
     bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
         for (const NodeRef &node : mChildren) {
@@ -347,6 +337,24 @@ namespace po {
         }
         
         return false;
+    }
+    
+    
+    
+    
+    
+    
+    //------------------------------------------------------
+    //  Matrices/Dimensions
+    
+    void NodeContainer::matrixTree() {
+        beginDrawTree();
+        
+        for(NodeRef &childNode : mChildren) {
+            childNode->matrixTree();
+        }
+        
+        finishDrawTree();
     }
     
     void NodeContainer::calculateMatrices() {

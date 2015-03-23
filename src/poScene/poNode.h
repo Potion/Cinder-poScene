@@ -209,7 +209,7 @@ namespace po {
         
         //Caching and FBO
         Node& cacheToFboEnabled(bool cache, int width=0, int height=0) { setCacheToFboEnabled(cache, width, height); return *this; };
-        void setCacheToFboEnabled(bool enabled, int width=0, int height=0);
+        void setCacheToFboEnabled(bool enabled, int width, int height);
         bool getCachToFboEnabled() { return mCacheToFbo; };
         
         ci::gl::TextureRef createTexture();
@@ -240,14 +240,21 @@ namespace po {
         #pragma mark - Signals -
         
         //Mouse
+        MouseEventSignal& getSignalMouseDown()          { return mSignalMouseDown; };
         MouseEventSignal& getSignalMouseDownInside()    { return mSignalMouseDownInside; };
+        MouseEventSignal& getSignalMouseMove()          { return mSignalMouseMove; };
         MouseEventSignal& getSignalMouseMoveInside()    { return mSignalMouseMoveInside; };
+        MouseEventSignal& getSignalMouseDrag()          { return mSignalMouseDrag; };
         MouseEventSignal& getSignalMouseDragInside()    { return mSignalMouseDragInside; };
+        MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
         MouseEventSignal& getSignalMouseUpInside()      { return mSignalMouseUpInside; };
         
         //Touch
+        TouchEventSignal& getSignalTouchesBegan()           { return mSignalTouchesBegan; };
         TouchEventSignal& getSignalTouchesBeganInside()     { return mSignalTouchesBeganInside; };
+        TouchEventSignal& getSignalTouchesMoved()           { return mSignalTouchesMoved; };
         TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
+        TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
         TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
         
         //Key
@@ -311,18 +318,6 @@ namespace po {
         void drawMasked();
         po::ShapeRef mMask;
         bool mIsMasked;
-        
-        //Global Signals
-        //Mouse
-        MouseEventSignal& getSignalMouseDown()          { return mSignalMouseDown; };
-        MouseEventSignal& getSignalMouseMove()          { return mSignalMouseMove; };
-        MouseEventSignal& getSignalMouseDrag()          { return mSignalMouseDrag; };
-        MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
-        
-        //Touch
-        TouchEventSignal& getSignalTouchesBegan()       { return mSignalTouchesBegan; };
-        TouchEventSignal& getSignalTouchesMoved()       { return mSignalTouchesMoved; };
-        TouchEventSignal& getSignalTouchesEnded()       { return mSignalTouchesEnded; };
         
     private:
         //Private attributes

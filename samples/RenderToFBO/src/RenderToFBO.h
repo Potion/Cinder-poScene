@@ -13,6 +13,10 @@ public:
     
     void setup();
     
+    void circlePressed(po::MouseEvent &event);
+    
     #pragma message "Should we declare all events for this template?"
 protected:
+    po::NodeContainerRef mContainer;
+    int mWidth, mHeight, mCircleSize;
 };

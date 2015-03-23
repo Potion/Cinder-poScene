@@ -27,56 +27,26 @@ void RenderToFBOApp::setup()
     //gl::SaveFramebufferBinding bindingSaver;
     
     scene = po::Scene::create(RenderToFBO::create());
-
-    //Create FBO
-    ci::gl::Fbo::Format format;
-//    format.setSamples(4);
-//    format.setColorInternalFormat(GL_RGBA);
-    
-    mFbo = gl::Fbo( scene->getRootNode()->getWidth(), scene->getRootNode()->getHeight());
-    //mFbo = gl::Fbo( getWindowWidth(), getWindowHeight());
+    scene->setAutoCam(false);
 }
 
 void RenderToFBOApp::update()
 {
-    //Save our buffer
-    gl::SaveFramebufferBinding bindingSaver;
-    
-    //Update the scene
     scene->update();
-    
-    gl::setViewport( mFbo.getBounds() );
-    CameraOrtho cam;
-    cam.setOrtho( 0, mFbo.getWidth(), mFbo.getHeight(), 0, -1, 1 );
-    gl::setMatrices(cam);
-    
-    // Draw our scene; it takes care of it's own Ortho camera settings
-    mFbo.bindFramebuffer();
-    gl::clear(Color(255,0,0));
-    scene->draw();
-    
-    gl::setViewport( getWindowBounds() );
 }
 
 void RenderToFBOApp::draw()
 {
     //Draw our Scene
 	gl::clear( Color( 0, 0, 0 ) );
+    ci::gl::pushMatrices();
+    ci::gl::setMatricesWindow(getWindowWidth(), getWindowHeight());
+    //ci::gl::translate(ci::Vec2f(-200.0f, 200.0f));
+    ci::gl::scale(0.8f, 0.8f);
     
-    gl::setMatrices(scene->getCamera());
     scene->draw();
     
-    //Draw the FBO
-    mFbo.bindTexture();
-    gl::color(255,255,255);
-
-    float ratio = (float)mFbo.getHeight()/(float)mFbo.getWidth();
-    gl::Texture tex = mFbo.getTexture();
-    tex.setFlipped(true);
-    gl::draw(tex, Rectf(0,0,app::getWindowWidth(), (app::getWindowWidth() * ratio)));
-    //gl::draw(mFbo.getTexture(), Rectf(0,0,mFbo.getWidth(), mFbo.getHeight()));
-    mFbo.unbindTexture();
-    
+    ci::gl::popModelView();
 }
 
 CINDER_APP_NATIVE( RenderToFBOApp, RendererGl )

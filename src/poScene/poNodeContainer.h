@@ -23,7 +23,7 @@ namespace po {
         
         ~NodeContainer();
         
-        //Children
+        //  Children
         static const int    INVALID_INDEX = -1;
         
 		int getNumChildren() { return mChildren.size(); };
@@ -56,10 +56,10 @@ namespace po {
         void moveChildBackward(NodeRef node);
         void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
         
-        //Bounds
+        //  Bounds
         virtual ci::Rectf getBounds();
 
-        //Interaction
+        //  Interaction
         virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
         
     protected:
@@ -74,17 +74,18 @@ namespace po {
         void removeScene();
         
     private:
-        //Set the parent to this container and the scene to this container's scene
+        //  Set the parent to this container and the scene to this container's scene
         void setParentAndScene(NodeRef node);
         
-        //Update and Draw trees, traverse child nodes
+        //  Update and Draw trees, traverse child nodes
         virtual void updateTree();
         void matrixTree();
         
+        //  Children
         std::deque<NodeRef> mChildren;
         
+        //  Matrices
         void calculateMatrices();
-        
     };
     
     
