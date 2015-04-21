@@ -361,9 +361,7 @@ namespace po {
         if(hasParent()) {
             getParent()->calculateMatrices();
         } else {
-            for(NodeRef &childNode : mChildren) {
-                childNode->matrixTree();
-            }
+            matrixTree();
         }
     }
 }

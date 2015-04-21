@@ -121,22 +121,26 @@ namespace po {
     
     void Node::drawTree()
     {
-        //  Capture FBO if we need to
-        if(mCacheToFbo) {
-            captureFbo();
+        if(mVisible) {
+            //  Capture FBO if we need to
+            if(mCacheToFbo) {
+                captureFbo();
+            }
+            
+            //  Draw
+            beginDrawTree();
+            
+            if(!mCacheToFbo) {
+                draw();
+            } else {
+                //  This messes up a lot of stuff, needs to be looked into
+                //calculateMatrices();
+                matrixTree();
+                drawFbo();
+            }
+            
+            finishDrawTree();
         }
-        
-        //  Draw
-        beginDrawTree();
-        
-        if(!mCacheToFbo) {
-            draw();
-        } else {
-            calculateMatrices();
-            drawFbo();
-        }
-        
-        finishDrawTree();
     }
     
     
