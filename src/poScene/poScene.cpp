@@ -47,7 +47,7 @@ namespace po {
     void Scene::update()
     {
         //Send a copy of all over our children to be processed
-        processTrackingQueue();
+        //processTrackingQueue();
         eventCenter->processEvents(allChildren);
         
         mRootNode->updateTree();
@@ -89,27 +89,38 @@ namespace po {
     #pragma mark -
     void Scene::trackChildNode(NodeRef node) {
         if(node) {
-            mTrackingQueue[node] = true;
+            //mTrackingQueue[node] = true;
+            
+            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
+            if(iter == allChildren.end()) {
+                allChildren.push_back(node);
+            }
         }
     }
     
     void Scene::untrackChildNode(NodeRef node) {
         if(node) {
-            mTrackingQueue[node] = false;
+            //mTrackingQueue[node] = false;
+            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
+            if(iter != allChildren.end()) {
+                allChildren.erase(iter);
+            }
         }
     }
     
     void Scene::processTrackingQueue()
     {
         for (auto &kv : mTrackingQueue) {
-            std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
-            if(kv.second && iter == allChildren.end()) {
-                allChildren.push_back(kv.first);
-            }
-            
-            else {
-                if(iter != allChildren.end())
-                    allChildren.erase(iter);
+            if(kv.first) {
+                std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
+                if(kv.second && iter == allChildren.end()) {
+                    allChildren.push_back(kv.first);
+                }
+                
+                else {
+                    if(iter != allChildren.end())
+                        allChildren.erase(iter);
+                }
             }
         }
         

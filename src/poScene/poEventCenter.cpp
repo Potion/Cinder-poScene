@@ -41,7 +41,7 @@ namespace po {
     }
     
     //Process all the event queues for this scene
-    void EventCenter::processEvents(std::vector<NodeRef> &nodes)
+    void EventCenter::processEvents(std::vector<NodeRef> nodes)
     {
         //Sort nodes to be top down
         std::sort(nodes.begin(), nodes.end(),
@@ -83,7 +83,7 @@ namespace po {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
+            if(node == nullptr || !node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
             //if(!node->hasScene() || !node->isInteractionEnabled()) continue;
 
             event.setShouldPropagate(true);
@@ -150,7 +150,9 @@ namespace po {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::TouchEvent event, const po::TouchEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
+            if(node == nullptr || (!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled())) {
+                continue;
+            }
             
             event.setShouldPropagate(true);
             
