@@ -28,7 +28,7 @@ void poTextBoxApp::setup() {
     
     t->setDrawBounds(true);
     t->setRotation(45);
-    
+	
     std::cout << t->getWidth() << std::endl;
     
     addChild(t);

@@ -10,12 +10,18 @@ using namespace std;
 
 class VideoPlayerApp : public AppNative {
   public:
+	void prepareSettings(Settings *settings);
 	void setup();
 	void update();
 	void draw();
     
     po::SceneRef scene;
 };
+
+void VideoPlayerApp::prepareSettings(Settings *settings)
+{
+	settings->setWindowSize(853, 480);
+}
 
 void VideoPlayerApp::setup()
 {

@@ -1,7 +1,7 @@
 #include "poShape.h"
 
 #include "VideoPlayer.h"
-#include "poVideoPlayer.h"
+#include "poVideo.h"
 
 VideoPlayerRef VideoPlayer::create() {
     VideoPlayerRef node(new VideoPlayer());
@@ -11,10 +11,18 @@ VideoPlayerRef VideoPlayer::create() {
 
 
 void VideoPlayer::setup() {
-    po::VideoPlayerRef player = po::VideoPlayer::create();
-    player->load(ci::app::loadAsset("big_buck_bunny.mp4"));
-    player->play();
-    addChild(player);
-    player->setAlignment(po::Alignment::CENTER_CENTER);
-    player->setRotation(90);
+	po::VideoGlRef player = po::VideoGl::create();
+	addChild(player);
+	player->setAlignment(po::Alignment::CENTER_CENTER);
+	player->setRotation(20);
+	
+	try {
+		ci::fs::path moviePath = ci::app::getAssetPath("trailer_480p.mov");
+		ci::app::console() << "path: " << moviePath << std::endl;
+		ci::qtime::MovieGlRef movieRef = ci::qtime::MovieGl::create(moviePath);
+		player->setMovieRef(movieRef);
+		player->getMovieRef()->play();
+	} catch(...) {
+		ci::app::console() << "Couldn't load movie" << std::endl;
+	}
 }

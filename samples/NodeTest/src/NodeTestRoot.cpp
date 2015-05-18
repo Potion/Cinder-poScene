@@ -12,8 +12,8 @@ void NodeTestRoot::setup() {
 //    setAlpha(0.5f);
 //    setAlignment(po::Alignment::CENTER_CENTER);
 //    setPosition(ci::app::getWindowWidth()/2, ci::app::getWindowHeight()/2);
-//    setDrawBoundsEnabled(true);
-//    
+//	drawBounds(true);
+//	
 //    float nSquares = 10;
 //    for(int i=0; i<nSquares; i++) {
 //        po::NodeContainerRef thisGroup = po::NodeContainer::create();
@@ -28,8 +28,8 @@ void NodeTestRoot::setup() {
 //            ci::app::timeline().apply(&square->getRotationAnim(), square->getRotation() - 360.f, 1.f * j).loop();
 //            ci::app::timeline().apply(&square->getPositionAnim(), ci::Vec2f(2.f * j, 0.f), 1.f * j).pingPong();
 //            
-//            square->getSignalMouseMoveInside().connect(std::bind(&NodeTestRoot::mouseMoveInside, this, std::_1));
-//            
+//			square->getSignalMouseMoveInside().connect(std::bind(&NodeTestRoot::mouseMoveInside, this, std::placeholders::_1));
+//			
 //            thisGroup->addChild(square);
 //        }
 //        
@@ -42,7 +42,7 @@ void NodeTestRoot::setup() {
 //    }
 //    
 //    ci::app::timeline().apply(&getRotationAnim(), 360.f, 5.f).loop();
-    
+	
     setPosition(50,50);
     a = po::Shape::createRect(50, 50);
     b = po::Shape::createRect(50, 50);
@@ -52,7 +52,7 @@ void NodeTestRoot::setup() {
     addChild(a);
     addChild(b);
     
-    setDrawBoundsEnabled(true);
+	drawBounds(true);
 }
 
 void NodeTestRoot::update() {

@@ -1,7 +1,7 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include "cinder/Rand.h"
-#include "cinder/Utilities.h";
+#include "cinder/Utilities.h"
 
 #include "poScene.h"
 #include "TestNode.h"
