@@ -11,10 +11,10 @@
 #include "poNodeContainer.h"
 
 
-namespace po {
+namespace po { namespace scene {
     SceneRef Scene::create()
     {
-        return create(po::NodeContainer::create());
+        return create(NodeContainer::create());
     }
     
     
@@ -126,4 +126,4 @@ namespace po {
         
         mTrackingQueue.clear();
     }
-}
+} } //  Namespace: po::scene

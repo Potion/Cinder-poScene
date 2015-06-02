@@ -10,7 +10,7 @@
 #include "poNode.h"
 #include "poScene.h"
 
-namespace po {
+namespace po { namespace scene {
 
     #pragma mark - Mouse Event -
     //Brutal copy-constructor replication...def not fun
@@ -44,7 +44,7 @@ namespace po {
     TouchEvent::TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset)
     {
         for(const ci::app::TouchEvent::Touch touch : event.getTouches()) {
-            mTouches.push_back(po::TouchEvent::Touch(touch, offset));
+            mTouches.push_back(TouchEvent::Touch(touch, offset));
         }
     }
     
@@ -75,4 +75,4 @@ namespace po {
         else
             return getWindowPos();
     }
-}
+} } //  Namespace: po::scene

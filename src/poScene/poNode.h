@@ -19,7 +19,8 @@
 #include "poMatrixSet.h"
 #include "poEventCenter.h"
 
-namespace po {
+namespace po { namespace scene {
+    
     enum class Alignment {
         NONE,
         TOP_LEFT,
@@ -55,8 +56,8 @@ namespace po {
     typedef std::shared_ptr<Shape> ShapeRef;
     
     //Signals
-    typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
-    typedef boost::signals2::signal<void(po::TouchEvent&)> TouchEventSignal;
+    typedef boost::signals2::signal<void(MouseEvent&)> MouseEventSignal;
+    typedef boost::signals2::signal<void(TouchEvent&)> TouchEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -214,10 +215,10 @@ namespace po {
         ci::gl::TextureRef createTexture();
         
         //Masking
-        void setMask(po::ShapeRef mask);
-        po::ShapeRef removeMask(bool andStopCaching = true);
+        void setMask(ShapeRef mask);
+        ShapeRef removeMask(bool andStopCaching = true);
         bool hasMask() { if(!mMask) return false; return true; };
-        po::ShapeRef getMask() { return mMask; };
+        ShapeRef getMask() { return mMask; };
         
         //Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
@@ -292,7 +293,7 @@ namespace po {
         
         //Masking
         void drawMasked();
-        po::ShapeRef mMask;
+        ShapeRef mMask;
         bool mIsMasked;
         
     private:
@@ -308,7 +309,7 @@ namespace po {
         
         float mAlpha, mAppliedAlpha;
         
-        po::MatrixOrder mMatrixOrder;
+        MatrixOrder mMatrixOrder;
         
         //Animation
         void initAttrAnimations();
@@ -342,7 +343,7 @@ namespace po {
         virtual void calculateMatrices() {};
         
         //Transformation Matrix
-        po::MatrixSet mMatrix;
+        MatrixSet mMatrix;
         
         //Scene this node belongs to
         std::weak_ptr<Scene> mScene;
@@ -376,8 +377,8 @@ namespace po {
                             mSignalMouseDrag, mSignalMouseDragInside,
                             mSignalMouseUp, mSignalMouseUpInside;
         
-        bool hasConnection(const po::MouseEvent::Type &type);
-        void emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type);
+        bool hasConnection(const MouseEvent::Type &type);
+        void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
         void disconnectMouseSignals();
         
         //Touch
@@ -385,8 +386,8 @@ namespace po {
                             mSignalTouchesMoved, mSignalTouchesMovedInside,
                             mSignalTouchesEnded, mSignalTouchesEndedInside;
         
-        bool hasConnection(const po::TouchEvent::Type &type);
-        void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
+        bool hasConnection(const TouchEvent::Type &type);
+        void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
         void disconnectTouchSignals();
         
         
@@ -399,4 +400,4 @@ namespace po {
         {
         };
     };
-}
+} } //  Namespace: po::scene

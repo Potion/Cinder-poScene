@@ -21,7 +21,7 @@
 #include <OpenGL/gl.h>
 #endif
 
-namespace po {
+namespace po { namespace scene {
     void MatrixSet::set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport)
     {
         mModelview     = modelview;
@@ -89,4 +89,4 @@ namespace po {
         
         return result;
     }
-}
+} } //  Namespace: po::scene

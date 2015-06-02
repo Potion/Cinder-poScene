@@ -8,7 +8,7 @@
 
 #include "poTextBox.h"
 
-namespace po {
+namespace po { namespace scene {
     TextBoxRef TextBox::create()
     {
         return TextBoxRef(new TextBox());
@@ -72,4 +72,4 @@ namespace po {
         else
             return ci::Rectf(0,0,getSize().x, getSize().y);
     }
-}
+} } //  Namespace: po::scene

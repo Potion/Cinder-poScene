@@ -11,7 +11,7 @@
 #include "poScene.h"
 
 
-namespace po {
+namespace po { namespace scene {
     //------------------------------------------------------------------
     EventCenterRef EventCenter::create() {
         return EventCenterRef(new EventCenter());
@@ -60,12 +60,12 @@ namespace po {
         //Go through the queue
         for(auto& queue : mMouseEventQueues) {
             //Get the type for this item in the std::map
-            po::MouseEvent::Type type = (po::MouseEvent::Type)queue.first;
+            MouseEvent::Type type = (MouseEvent::Type)queue.first;
             
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::MouseEvent poEvent(ciEvent, mOffset);
+                MouseEvent poEvent(ciEvent, mOffset);
                 notifyAllNodes(nodes,   poEvent, type);
                 notifyCallbacks(nodes,  poEvent, type);
             }
@@ -76,7 +76,7 @@ namespace po {
     }
     
     //Dispatch to the appropriate mouse event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type) {
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, MouseEvent event, const MouseEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(node == nullptr || !node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
@@ -90,9 +90,9 @@ namespace po {
     }
     
     //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::MouseEvent event, const po::MouseEvent::Type &type)
+    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, MouseEvent event, const MouseEvent::Type &type)
     {
-        po::MouseEvent::Type callbackType;
+        MouseEvent::Type callbackType;
         switch (type) {
             case MouseEvent::Type::DOWN:
                 callbackType = MouseEvent::Type::DOWN_INSIDE; break;
@@ -127,12 +127,12 @@ namespace po {
         //Go through the queue
         for(auto& queue : mTouchEventQueues) {
             //Get the type for this item in the std::map
-            po::TouchEvent::Type type = (po::TouchEvent::Type)queue.first;
+            TouchEvent::Type type = (TouchEvent::Type)queue.first;
             
             //Go through all the ci::MouseEvents for this type
             for(ci::app::TouchEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                po::TouchEvent poEvent(ciEvent, mOffset);
+                TouchEvent poEvent(ciEvent, mOffset);
                 notifyAllNodes(nodes, poEvent, type);
                 notifyCallbacks(nodes, poEvent, type);
             }
@@ -143,7 +143,7 @@ namespace po {
     }
     
     //Dispatch to the appropriate touch event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::TouchEvent event, const po::TouchEvent::Type &type) {
+    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, TouchEvent event, const TouchEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
             if(node == nullptr || (!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled())) {
@@ -159,10 +159,10 @@ namespace po {
     
     
     //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, po::TouchEvent event, po::TouchEvent::Type &type)
+    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event, TouchEvent::Type &type)
     {
         //Set the callback type
-        po::TouchEvent::Type callbackType;
+        TouchEvent::Type callbackType;
         switch (type) {
             case TouchEvent::Type::BEGAN:
                 callbackType = TouchEvent::Type::BEGAN_INSIDE; break;
@@ -182,8 +182,8 @@ namespace po {
             {
                 
                 //Go through all the touches, see if any are inside of this item
-                std::vector<po::TouchEvent::Touch> foundTouches;
-                for(po::TouchEvent::Touch &touch : event.getTouches()) {
+                std::vector<TouchEvent::Touch> foundTouches;
+                for(TouchEvent::Touch &touch : event.getTouches()) {
                     if(node->pointInside(touch.getWindowPos())) {
                         foundTouches.push_back(touch);
                     }
@@ -192,7 +192,7 @@ namespace po {
                 //If we found one or more that are inside,
                 //create a new event with just these touches
                 if(foundTouches.size()) {
-                    po::TouchEvent t = event;
+                    TouchEvent t = event;
                     t.mTouches       = foundTouches;
                     node->emitEvent(t, callbackType);
                     if(!t.getShouldPropagate()) {
@@ -202,4 +202,4 @@ namespace po {
             }
         }
     }
-}
+} } //  Namespace: po::scene
