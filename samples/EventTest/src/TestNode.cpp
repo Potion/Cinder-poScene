@@ -174,13 +174,3 @@ void TestNode::touchesEndedInside(po::TouchEvent &event)
 {
     std::cout << "Touches ended inside!" << std::endl;
 }
-
-void TestNode::keyDown(po::KeyEvent &event)
-{
-    std::cout << "Key down!" << std::endl;
-}
-
-void TestNode::keyUp(po::KeyEvent &event)
-{
-    std::cout << "Key Up!" << std::endl;
-}

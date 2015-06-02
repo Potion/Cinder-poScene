@@ -75,24 +75,4 @@ namespace po {
         else
             return getWindowPos();
     }
-                                                                    
-    
-    
-    #pragma mark - Key Event -
-    KeyEvent::KeyEvent(ci::app::KeyEvent event)
-    : ci::app::KeyEvent(event.getWindow()
-                       , event.getCode()
-                       , event.getCharUtf32()
-                       , event.getChar()
-                       , (0
-                            | (event.isShiftDown()     ? ci::app::MouseEvent::SHIFT_DOWN   : 0)
-                            | (event.isAltDown()       ? ci::app::MouseEvent::ALT_DOWN     : 0)
-                            | (event.isControlDown()   ? ci::app::MouseEvent::CTRL_DOWN    : 0)
-                            | (event.isMetaDown()      ? ci::app::MouseEvent::META_DOWN    : 0)
-                            | (event.isAccelDown()      ? ci::app::MouseEvent::ACCEL_DOWN  : 0)
-                        )
-                       , event.getNativeKeyCode()
-                       )
-    {
-    }
 }

@@ -144,26 +144,5 @@ namespace po {
             std::weak_ptr<Node> mSource;
         };
     };
-    
-    
-    
-    //KEY EVENTS
-    #pragma mark KEY Event
-    
-    class KeyEvent
-    : public ci::app::KeyEvent
-    , public po::Event
-    {
-        friend class EventCenter;
-    public:
-        enum Type {
-            DOWN,
-            UP
-        };
-        
-        KeyEvent(ci::app::KeyEvent event);
-        
-    private:
-    };
 }
 

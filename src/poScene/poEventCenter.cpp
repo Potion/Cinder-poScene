@@ -30,9 +30,6 @@ namespace po {
         ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
         ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
         ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
-        
-        ci::app::getWindow()->connectKeyDown(&EventCenter::keyDown, this);
-        ci::app::getWindow()->connectKeyUp(&EventCenter::keyUp,     this);
     }
     
     void EventCenter::setInteractionOffset(ci::Vec2f offset)
@@ -54,7 +51,6 @@ namespace po {
         //Process them
         processMouseEvents(nodes);
         processTouchEvents(nodes);
-        processKeyEvents(nodes);
     }
     
     
@@ -204,40 +200,6 @@ namespace po {
                     }
                 }
             }
-        }
-    }
-    
-    
-    #pragma mark - KeyEvents -
-    void EventCenter::processKeyEvents(std::vector<NodeRef> &nodes)
-    {
-        //Go through the queue
-        for(auto& queue : mKeyEventQueues) {
-            //Get the type for this item in the std::map
-            po::KeyEvent::Type type = (po::KeyEvent::Type)queue.first;
-            
-            //Go through all the ci::MouseEvents for this type
-            for(ci::app::KeyEvent &ciEvent : queue.second) {
-                //Create a po::MouseEvent
-                po::KeyEvent poEvent(ciEvent);
-                notifyAllNodes(nodes, poEvent, type);
-            }
-            
-            //Clear out the events
-            queue.second.clear();
-        }
-    }
-    
-    //Dispatch to the appropriate key event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event, const po::KeyEvent::Type &type) {
-        for(NodeRef &node : nodes) {
-            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(!node->hasConnection(type)) continue;
-            
-            event.setShouldPropagate(true);
-            
-            //Notify the node
-            node->emitEvent(event, type);
         }
     }
 }
