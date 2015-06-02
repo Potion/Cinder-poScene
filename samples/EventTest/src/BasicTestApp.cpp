@@ -12,6 +12,7 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+
 class BasicTestApp : public AppNative {
 public:
 	
@@ -24,7 +25,7 @@ public:
     void mouseDrag(MouseEvent event);
     void mouseUp(MouseEvent event);
     
-    po::SceneRef scene;
+    po::scene::SceneRef scene;
     
     ci::Font mFont;
 };
@@ -46,7 +47,7 @@ void BasicTestApp::setup()
 //    scene->setRootNode(TestNode::create());
     
     //Or this
-    scene = po::Scene::create(TestNode::create());
+    scene = po::scene::Scene::create(TestNode::create());
     
     mFont = Font( "Geneva", 18.0f );
 }

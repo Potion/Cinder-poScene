@@ -13,7 +13,7 @@
 #include "poNode.h"
 #include "poTextureFit.h"
 
-namespace po {
+namespace po { namespace scene {
     
     //Create ShapeRef typedef
     class Shape;
@@ -49,8 +49,6 @@ namespace po {
         
         //Caching to VBO
         void render();
-        void setUseVBO(bool useVBO);
-        bool getUseVBO() { return mUseVBO; };
         ci::gl::VboMeshRef getVbo() { return mVboMesh; };
         
         //Texture
@@ -83,4 +81,4 @@ namespace po {
         
         int mPrecision;
     };
-}
+} } //  Namespace: po::scene

@@ -14,6 +14,7 @@ const int TestNode::NUM_COLS		= 5;
 const int TestNode::SIZE			= 70;
 const int TestNode::SPACING         = 10;
 
+using namespace po::scene;
 
 TestNodeRef TestNode::create() {
     TestNodeRef t = TestNodeRef(new TestNode());
@@ -37,7 +38,7 @@ void TestNode::setup()
     
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
-            po::ShapeRef r = po::Shape::createRect(SIZE, SIZE);
+            ShapeRef r = Shape::createRect(SIZE, SIZE);
             r->setFillColor(ci::Color(1,0,1));
             r->setAlpha(1.f);
             //r->setInteractionEnabled(true);
@@ -46,14 +47,14 @@ void TestNode::setup()
 			float xPos = j * (SIZE + SPACING);
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
-            r->setAlignment(po::Alignment::CENTER_CENTER);
+            r->setAlignment(Alignment::CENTER_CENTER);
             r->setDrawBounds(true);
             
 			r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::placeholders::_1));
 			r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::placeholders::_1));
-//            boost::shared_ptr<po::Node> a(this);
-//            boost::weak_ptr<po::Node> n(a);
-//            r->getSignalMouseMoveInside().connect(po::MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
+//            boost::shared_ptr<Node> a(this);
+//            boost::weak_ptr<Node> n(a);
+//            r->getSignalMouseMoveInside().connect(MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
             
 			r->getSignalTouchesBeganInside().connect(std::bind(&TestNode::touchesBeganInside, this, std::placeholders::_1));
 			r->getSignalTouchesMovedInside().connect(std::bind(&TestNode::touchesMovedInside, this, std::placeholders::_1));
@@ -66,18 +67,18 @@ void TestNode::setup()
     setPosition((ci::app::getWindowWidth()/2)-(getWidth()/2) - getBounds().x1, ci::app::getWindowHeight()/2-getHeight()/2 - getBounds().y1);
 }
 
-void TestNode::squareFinishedTweening(po::ShapeRef square) {
+void TestNode::squareFinishedTweening(ShapeRef square) {
     square->setFillColor(0,255,0);
     std::cout << "Finished!" << std::endl;
 }
 
 //Events
-void TestNode::myMouseHandler(po::MouseEvent &event)
+void TestNode::myMouseHandler(MouseEvent &event)
 {
     std::cout <<  "My Mouse Handler!!!" << std::endl;
 }
 
-void TestNode::mouseDown(po::MouseEvent& event)
+void TestNode::mouseDown(MouseEvent& event)
 {
 //    std::cout << "Left down: " << event.isLeftDown() << std::endl;
 //    std::cout << "Right down: " << event.isRightDown() << std::endl;
@@ -87,26 +88,26 @@ void TestNode::mouseDown(po::MouseEvent& event)
     
 }
 
-void TestNode::mouseDrag(po::MouseEvent& event)
+void TestNode::mouseDrag(MouseEvent& event)
 {
     ci::app::console() << "Mouse drag!" << std::endl;
 }
 
 
-void TestNode::mouseMove(po::MouseEvent& event)
+void TestNode::mouseMove(MouseEvent& event)
 {
     ci::app::console() << "Mouse move!" << std::endl;
 }
 
-void TestNode::mouseUp(po::MouseEvent& event)
+void TestNode::mouseUp(MouseEvent& event)
 {
     ci::app::console() << "Mouse up!" << std::endl;
 }
 
 
-void TestNode::mouseDownInside(po::MouseEvent& event)
+void TestNode::mouseDownInside(MouseEvent& event)
 {
-    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
+    ShapeRef thisRect = std::static_pointer_cast<Shape>(event.getSource());
     
     thisRect->setFillColor(255,0,0);
     
@@ -138,9 +139,9 @@ void TestNode::mouseDownInside(po::MouseEvent& event)
     //thisRect->emitMouseUpInside(event);
 }
 
-void TestNode::mouseMoveInside(po::MouseEvent& event)
+void TestNode::mouseMoveInside(MouseEvent& event)
 {
-//    po::ShapeRef thisRect = std::static_pointer_cast<po::Shape>(event.getSource());
+//    ShapeRef thisRect = std::static_pointer_cast<Shape>(event.getSource());
     //    thisRect->fillColor.set(0,0,255);
 //    std::cout << "Local Pos: "  << event.getPos() << std::endl;
 //    std::cout << "Scene Pos: "  << event.getScenePos() << std::endl;
@@ -151,26 +152,26 @@ void TestNode::mouseMoveInside(po::MouseEvent& event)
 //    std::cout << "localToGlobal: "  << event.getSource()->localToGlobal(event.getPos()) << std::endl;
 }
 
-void TestNode::mouseDragInside(po::MouseEvent& event)
+void TestNode::mouseDragInside(MouseEvent& event)
 {
     std::cout << "Mouse drag inside!" << std::endl;
 }
 
-void TestNode::mouseUpInside(po::MouseEvent& event)
+void TestNode::mouseUpInside(MouseEvent& event)
 {
     std::cout << "Mouse up inside!" << std::endl;
 }
-void TestNode::touchesBeganInside(po::TouchEvent &event)
+void TestNode::touchesBeganInside(TouchEvent &event)
 {
     std::cout << "Touches Began Inside!" << std::endl;
 }
 
-void TestNode::touchesMovedInside(po::TouchEvent &event)
+void TestNode::touchesMovedInside(TouchEvent &event)
 {
     std::cout << "Touches Moved Inside!" << std::endl;
 }
 
-void TestNode::touchesEndedInside(po::TouchEvent &event)
+void TestNode::touchesEndedInside(TouchEvent &event)
 {
     std::cout << "Touches ended inside!" << std::endl;
 }

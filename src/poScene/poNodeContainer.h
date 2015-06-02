@@ -9,7 +9,7 @@
 
 #include "poNode.h"
 
-namespace po {
+namespace po { namespace scene {
     ///Create NodeContainerRef typedef
     class NodeContainer;
     typedef std::shared_ptr<NodeContainer> NodeContainerRef;
@@ -17,7 +17,7 @@ namespace po {
     class NodeContainer
     : public Node
     {
-        friend class po::Scene;
+        friend class Scene;
     public:
         static NodeContainerRef create(std::string name="");
         
@@ -103,4 +103,4 @@ namespace po {
     : public NodeContainerException
     {
     };
-};
+} } //  Namespace: po::scene

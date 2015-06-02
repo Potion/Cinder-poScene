@@ -11,7 +11,7 @@
 
 #include "poShape.h"
 
-namespace po {
+namespace po { namespace scene {
     #pragma mark - Create -
     
     ShapeRef Shape::create()
@@ -114,24 +114,16 @@ namespace po {
         if(getFillEnabled()) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if(mUseVBO) {
-                if(mTexture) mTexture->enableAndBind();
-                ci::gl::draw(mVboMesh);
-                if(mTexture) mTexture->disable();
-            }
-            
-            else {
-                if(mTexture) mTexture->enableAndBind();
-                ci::gl::draw(mCiShape2d);
-                if(mTexture) mTexture->disable();
-            }
+            if(mTexture) mTexture->enableAndBind();
+            ci::gl::draw(mVboMesh);
+            if(mTexture) mTexture->disable();
         }
         
         //Draw stroke
     }
     
     #pragma mark - Texture -
-    void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, po::Alignment alignment) {
+    void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment) {
         mTexture            = texture;
         mTextureFitType     = fit;
         mTextureAlignment   = alignment;
@@ -213,4 +205,4 @@ namespace po {
         
         return mBounds;
     }
-}
+} } //  Namespace: po::scene

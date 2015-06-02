@@ -12,7 +12,7 @@
 
 #include "poEvents.h"
 
-namespace po {
+namespace po { namespace scene {
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
@@ -41,7 +41,7 @@ namespace po {
     
     class MouseEvent
     : public ci::app::MouseEvent
-    , public po::Event
+    , public Event
     {
         friend class Node;
     public:
@@ -83,14 +83,14 @@ namespace po {
     
     class TouchEvent
     : public ci::app::TouchEvent
-    , public po::Event
+    , public Event
     {
         friend class EventCenter;
     public:
         class Touch;
         
         TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset);
-        std::vector<po::TouchEvent::Touch>& getTouches() { return mTouches; }
+        std::vector<TouchEvent::Touch>& getTouches() { return mTouches; }
     
     private:
         std::vector<Touch> mTouches;
@@ -144,5 +144,4 @@ namespace po {
             std::weak_ptr<Node> mSource;
         };
     };
-}
-
+} } //  Namespace: po::scene

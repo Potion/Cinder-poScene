@@ -9,7 +9,7 @@
 #include "poNodeContainer.h"
 #include "poScene.h"
 
-namespace po {
+namespace po { namespace scene {
     NodeContainerRef NodeContainer::create(std::string name)
     {
         return std::shared_ptr<NodeContainer>(new NodeContainer(name));
@@ -284,7 +284,7 @@ namespace po {
         
         //We have to copy the children, because if any of the update loops remove children
         //The vector is screwed (invalidated)
-        std::deque<po::NodeRef> children(mChildren);
+        std::deque<NodeRef> children(mChildren);
         
         for(NodeRef &childNode : children)
             if(childNode->mVisible && childNode->hasParent()) childNode->updateTree();
@@ -364,4 +364,4 @@ namespace po {
             matrixTree();
         }
     }
-}
+} } //  Namespace: po::scene

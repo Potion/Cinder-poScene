@@ -26,7 +26,8 @@
 #include "poShape.h"
 #include "poScene.h"
 
-namespace po {
+namespace po { namespace scene {
+    
     static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
     
@@ -355,7 +356,7 @@ namespace po {
     //  Masking
     
 	//	Apply the mask (as a shaperef)
-    void Node::setMask(po::ShapeRef mask)
+    void Node::setMask(ShapeRef mask)
     {
         //Try to cache to FBO
         setCacheToFboEnabled(true, mask->getWidth(), mask->getHeight());
@@ -381,7 +382,7 @@ namespace po {
     
     
     //	Remove the mask, and stop caching to FBO unless requested
-    po::ShapeRef Node::removeMask(bool andStopCaching)
+    ShapeRef Node::removeMask(bool andStopCaching)
     {
         mIsMasked = false;
         
@@ -390,7 +391,7 @@ namespace po {
 			resetFbo();
         }
         
-        po::ShapeRef mask = mMask;
+        ShapeRef mask = mMask;
         mMask.reset();
         return mask;
     }
@@ -644,7 +645,7 @@ namespace po {
     
     void Node::removeScene()
     {
-        po::SceneRef scene = mScene.lock();
+        SceneRef scene = mScene.lock();
         if(scene) scene->untrackChildNode(shared_from_this());
         mScene.reset();
         mHasScene = false;
@@ -739,24 +740,24 @@ namespace po {
     //  Mouse Events
     
     //See if we care about an event
-    bool Node::hasConnection(const po::MouseEvent::Type &type)
+    bool Node::hasConnection(const MouseEvent::Type &type)
     {
         switch (type) {
-            case po::MouseEvent::Type::DOWN:
+            case MouseEvent::Type::DOWN:
                 return mSignalMouseDown.num_slots();
-            case po::MouseEvent::Type::DOWN_INSIDE:
+            case MouseEvent::Type::DOWN_INSIDE:
                 return mSignalMouseDownInside.num_slots();
-            case po::MouseEvent::Type::MOVE:
+            case MouseEvent::Type::MOVE:
                 return mSignalMouseMove.num_slots();
-            case po::MouseEvent::Type::MOVE_INSIDE:
+            case MouseEvent::Type::MOVE_INSIDE:
                 return mSignalMouseMoveInside.num_slots();
-            case po::MouseEvent::Type::DRAG:
+            case MouseEvent::Type::DRAG:
                 return mSignalMouseDrag.num_slots();
-            case po::MouseEvent::Type::DRAG_INSIDE:
+            case MouseEvent::Type::DRAG_INSIDE:
                 return mSignalMouseDragInside.num_slots();
-            case po::MouseEvent::Type::UP:
+            case MouseEvent::Type::UP:
                 return mSignalMouseUp.num_slots();
-            case po::MouseEvent::Type::UP_INSIDE:
+            case MouseEvent::Type::UP_INSIDE:
                 return mSignalMouseUpInside.num_slots();
         }
         
@@ -765,7 +766,7 @@ namespace po {
     
     
     //For the given event, notify everyone that we have as a subscriber
-    void Node::emitEvent(po::MouseEvent &event, const po::MouseEvent::Type &type)
+    void Node::emitEvent(MouseEvent &event, const MouseEvent::Type &type)
     {
         //Setup event
         event.mSource    = shared_from_this();
@@ -774,21 +775,21 @@ namespace po {
         
         //Emit the Event
         switch (type) {
-            case po::MouseEvent::Type::DOWN:
+            case MouseEvent::Type::DOWN:
                 mSignalMouseDown(event); break;
-            case po::MouseEvent::Type::DOWN_INSIDE:
+            case MouseEvent::Type::DOWN_INSIDE:
                 mSignalMouseDownInside(event); break;
-            case po::MouseEvent::Type::MOVE:
+            case MouseEvent::Type::MOVE:
                 mSignalMouseMove(event); break;
-            case po::MouseEvent::Type::MOVE_INSIDE:
+            case MouseEvent::Type::MOVE_INSIDE:
                 mSignalMouseMoveInside(event); break;
-            case po::MouseEvent::Type::DRAG:
+            case MouseEvent::Type::DRAG:
                 mSignalMouseDrag(event); break;
-            case po::MouseEvent::Type::DRAG_INSIDE:
+            case MouseEvent::Type::DRAG_INSIDE:
                 mSignalMouseDragInside(event); break;
-            case po::MouseEvent::Type::UP:
+            case MouseEvent::Type::UP:
                 mSignalMouseUp(event); break;
-            case po::MouseEvent::Type::UP_INSIDE:
+            case MouseEvent::Type::UP_INSIDE:
                 mSignalMouseUpInside(event); break;
         }
     }
@@ -810,27 +811,27 @@ namespace po {
     //  Touch Events
     
     //For the given event, notify everyone that we have as a subscriber
-    void Node::emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type)
+    void Node::emitEvent(TouchEvent &event, const TouchEvent::Type &type)
     {
         //Setup event
         event.mSource    = shared_from_this();
-        for(po::TouchEvent::Touch &touch :event.getTouches()) {
+        for(TouchEvent::Touch &touch :event.getTouches()) {
 			touch.mSource	 = shared_from_this();
         }
         
         //Emit the Event
         switch (type) {
-            case po::TouchEvent::Type::BEGAN:
+            case TouchEvent::Type::BEGAN:
                 mSignalTouchesBegan(event); break;
-            case po::TouchEvent::Type::BEGAN_INSIDE:
+            case TouchEvent::Type::BEGAN_INSIDE:
                 mSignalTouchesBeganInside(event); break;
-            case po::TouchEvent::Type::MOVED:
+            case TouchEvent::Type::MOVED:
                 mSignalTouchesMoved(event); break;
-            case po::TouchEvent::Type::MOVED_INSIDE:
+            case TouchEvent::Type::MOVED_INSIDE:
                 mSignalTouchesMovedInside(event); break;
-            case po::TouchEvent::Type::ENDED:
+            case TouchEvent::Type::ENDED:
                 mSignalTouchesEnded(event); break;
-            case po::TouchEvent::Type::ENDED_INSIDE:
+            case TouchEvent::Type::ENDED_INSIDE:
                 mSignalTouchesEndedInside(event); break;
             default:
                 ci::app::console() << "Touch event type " << type << " not found." << std::endl;
@@ -839,20 +840,20 @@ namespace po {
     
     
     //See if we care about an event
-    bool Node::hasConnection(const po::TouchEvent::Type &type)
+    bool Node::hasConnection(const TouchEvent::Type &type)
     {
         switch (type) {
-            case po::TouchEvent::Type::BEGAN:
+            case TouchEvent::Type::BEGAN:
                 return mSignalTouchesBegan.num_slots();
-            case po::TouchEvent::Type::BEGAN_INSIDE:
+            case TouchEvent::Type::BEGAN_INSIDE:
                 return mSignalTouchesBeganInside.num_slots();
-            case po::TouchEvent::Type::MOVED:
+            case TouchEvent::Type::MOVED:
                 return mSignalTouchesMoved.num_slots();
-            case po::TouchEvent::Type::MOVED_INSIDE:
+            case TouchEvent::Type::MOVED_INSIDE:
                 return mSignalTouchesMovedInside.num_slots();
-            case po::TouchEvent::Type::ENDED:
+            case TouchEvent::Type::ENDED:
                 return mSignalTouchesEnded.num_slots();
-            case po::TouchEvent::Type::ENDED_INSIDE:
+            case TouchEvent::Type::ENDED_INSIDE:
                 return mSignalTouchesEndedInside.num_slots();
         }
         
@@ -869,4 +870,4 @@ namespace po {
         mSignalTouchesEnded.disconnect_all_slots();
         mSignalTouchesEndedInside.disconnect_all_slots();
     }
-}
+} } //  Namespace: po::scene

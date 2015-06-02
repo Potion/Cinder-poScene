@@ -14,28 +14,30 @@
 class TestNode;
 typedef std::shared_ptr<TestNode> TestNodeRef;
 
+
+
 class TestNode
-:   public po::NodeContainer
+:   public po::scene::NodeContainer
 {
 public:
     static TestNodeRef create();
     
     void setup();
     
-    void mouseDown(po::MouseEvent &event);
-    void mouseMove(po::MouseEvent &event);
-    void mouseDrag(po::MouseEvent &event);
-    void mouseUp(po::MouseEvent &event);
-    void mouseDownInside(po::MouseEvent &event);
-    void mouseMoveInside(po::MouseEvent &event);
-    void mouseDragInside(po::MouseEvent &event);
-    void mouseUpInside(po::MouseEvent &event);
+    void mouseDown(po::scene::MouseEvent &event);
+    void mouseMove(po::scene::MouseEvent &event);
+    void mouseDrag(po::scene::MouseEvent &event);
+    void mouseUp(po::scene::MouseEvent &event);
+    void mouseDownInside(po::scene::MouseEvent &event);
+    void mouseMoveInside(po::scene::MouseEvent &event);
+    void mouseDragInside(po::scene::MouseEvent &event);
+    void mouseUpInside(po::scene::MouseEvent &event);
     
-    void touchesBeganInside(po::TouchEvent &event);
-    void touchesMovedInside(po::TouchEvent &event);
-    void touchesEndedInside(po::TouchEvent &event);
+    void touchesBeganInside(po::scene::TouchEvent &event);
+    void touchesMovedInside(po::scene::TouchEvent &event);
+    void touchesEndedInside(po::scene::TouchEvent &event);
     
-    void myMouseHandler(po::MouseEvent &event);
+    void myMouseHandler(po::scene::MouseEvent &event);
     
 protected:
     
@@ -47,5 +49,5 @@ private:
 
     float p;
     
-    void squareFinishedTweening(po::ShapeRef square);
+    void squareFinishedTweening(po::scene::ShapeRef square);
 };

@@ -13,7 +13,7 @@
 
 #include "cinder/Camera.h"
 
-namespace po {
+namespace po { namespace scene {
     //Forward declare node
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
@@ -25,8 +25,8 @@ namespace po {
     class Scene
     : public std::enable_shared_from_this<Scene>
     {
-        friend class po::Node;
-        friend class po::EventCenter; //So we can access the child nodes
+        friend class Node;
+        friend class EventCenter; //So we can access the child nodes
         
     public:
         static SceneRef create();
@@ -78,4 +78,4 @@ namespace po {
         void processTrackingQueue();
         std::map<NodeRef, bool> mTrackingQueue;
     };
-}
+} } //  Namespace: po::scene
