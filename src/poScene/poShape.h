@@ -71,7 +71,6 @@ namespace po {
     private:
         //Our Vbo
         ci::gl::VboMeshRef mVboMesh;
-        bool mUseVBO;
         
         //Our underlying ci::Shape2d
         ci::Shape2d mCiShape2d;

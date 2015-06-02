@@ -94,7 +94,6 @@ namespace po {
     ,   mTextureFitType(TextureFit::Type::NONE)
     ,   mTextureAlignment(Alignment::TOP_LEFT)
     ,   mTextureOffset(0,0)
-    ,   mUseVBO(true)
     {
     }
     
@@ -129,11 +128,6 @@ namespace po {
         }
         
         //Draw stroke
-        #pragma message "Need to implement better stroke stuff"
-        if(getStrokeEnabled()) {
-            ci::gl::color(getStrokeColor());
-            ci::gl::draw(mCiShape2d, ci::app::getWindowContentScale());
-        }
     }
     
     #pragma mark - Texture -
@@ -169,51 +163,38 @@ namespace po {
     }
     
     
-    #pragma mark - Rendering/VBO Caching -
-    void Shape::setUseVBO(bool useVBO)
-    {
-        mUseVBO = useVBO;
-        
-        if(mUseVBO) {
-            render();
-        } else {
-            mVboMesh.reset();
-        }
-    }
-    
-    
+    #pragma mark - Rendering -
+
     void Shape::render()
     {
-        if(mUseVBO) {
-            //Create Mesh
-            ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
+        //Create Mesh
+        ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
+        
+        if(mTexture) {
+            //Get the texture coords
+            std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
+            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             
-            if(mTexture) {
-                //Get the texture coords
-                std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
-                TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
-                
-                //Check to see if texture is flipped, common if coming from FBO
-                if(mTexture->isFlipped())
-                    std::reverse(texCoords.begin(), texCoords.end());
-                
-                if(mTextureOffset != ci::Vec2f(0,0)) {
-                    ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
-                    ci::app::console() << normalizedOffset << std::endl;
-                    for(auto &coord : texCoords) {
-                        coord -= normalizedOffset;
-                    }
+            //Check to see if texture is flipped, common if coming from FBO
+            if(mTexture->isFlipped())
+                std::reverse(texCoords.begin(), texCoords.end());
+            
+            if(mTextureOffset != ci::Vec2f(0,0)) {
+                ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
+                ci::app::console() << normalizedOffset << std::endl;
+                for(auto &coord : texCoords) {
+                    coord -= normalizedOffset;
                 }
-                
-                
-                
-                //Add coords to TriMesh
-                mesh.appendTexCoords(&texCoords[0], texCoords.size());
             }
             
-            //Create VBO Mesh
-            mVboMesh = ci::gl::VboMesh::create(mesh);
+            
+            
+            //Add coords to TriMesh
+            mesh.appendTexCoords(&texCoords[0], texCoords.size());
         }
+        
+        //Create VBO Mesh
+        mVboMesh = ci::gl::VboMesh::create(mesh);
     }
     
     #pragma mark - Dimensions -
