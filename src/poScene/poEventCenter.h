@@ -68,21 +68,5 @@ namespace po {
         
         //Touch Event Queue
         std::map<po::TouchEvent::Type, std::vector<ci::app::TouchEvent> > mTouchEventQueues;
-        
-        
-        
-        //------------------------------------
-        //Key Events
-        #pragma mark - Key Events -
-        
-        void processKeyEvents(std::vector<NodeRef> &nodes);
-        void notifyAllNodes(std::vector<NodeRef> &nodes, po::KeyEvent event, const po::KeyEvent::Type &type);
-        
-        //Key Event Cinder Callbacks
-        virtual void    keyDown(ci::app::KeyEvent event)        { mKeyEventQueues[KeyEvent::Type::DOWN].push_back(event); }
-        virtual void    keyUp(ci::app::KeyEvent event)          { mKeyEventQueues[KeyEvent::Type::UP].push_back(event); }
-            
-        //Key Event Queue
-        std::map<po::KeyEvent::Type, std::vector<ci::app::KeyEvent> > mKeyEventQueues;
     };
 }

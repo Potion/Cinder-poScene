@@ -35,9 +35,6 @@ public:
     void touchesMovedInside(po::TouchEvent &event);
     void touchesEndedInside(po::TouchEvent &event);
     
-    void keyDown(po::KeyEvent &event);
-    void keyUp(po::KeyEvent &event);
-    
     void myMouseHandler(po::MouseEvent &event);
     
 protected:

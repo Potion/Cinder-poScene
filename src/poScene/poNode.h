@@ -57,7 +57,6 @@ namespace po {
     //Signals
     typedef boost::signals2::signal<void(po::MouseEvent&)> MouseEventSignal;
     typedef boost::signals2::signal<void(po::TouchEvent&)> TouchEventSignal;
-    typedef boost::signals2::signal<void(po::KeyEvent&)> KeyEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -256,29 +255,6 @@ namespace po {
         TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
         TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
         TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
-        
-        //Key
-        KeyEventSignal& getSignalKeyDown()        { return mSignalKeyDown;    };
-        KeyEventSignal& getSignalKeyUp()          { return mSignalKeyUp;      };
-    
-        
-        //------------------
-        //EVENT HANDLERS
-        #pragma mark - Events -
-        
-        //Override these methods to receive Global events
-        virtual void mouseDown(po::MouseEvent &event)       {};
-        virtual void mouseMove(po::MouseEvent &event)       {};
-        virtual void mouseDrag(po::MouseEvent &event)       {};
-        virtual void mouseUp(po::MouseEvent &event)         {};
-        virtual void mouseWheel( po::MouseEvent &event)     {};
-        
-        virtual void touchesBegan(po::TouchEvent &event)    {};
-        virtual void touchesMoved(po::TouchEvent &event)    {};
-        virtual void touchesEnded(po::TouchEvent &event)    {};
-        
-        virtual void keyDown(po::KeyEvent &event)           {};
-        virtual void keyUp(po::KeyEvent &event)             {};
 
     protected:
         #pragma mark -
@@ -412,13 +388,6 @@ namespace po {
         bool hasConnection(const po::TouchEvent::Type &type);
         void emitEvent(po::TouchEvent &event, const po::TouchEvent::Type &type);
         void disconnectTouchSignals();
-        
-        //Key
-        KeyEventSignal mSignalKeyDown, mSignalKeyUp;
-        
-        bool hasConnection(const po::KeyEvent::Type &type);
-        void emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type);
-        void disconnectKeySignals();
         
         
         //

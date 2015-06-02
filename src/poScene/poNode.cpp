@@ -733,7 +733,6 @@ namespace po {
     {
         disconnectMouseSignals();
         disconnectTouchSignals();
-        disconnectKeySignals();
     }
     
     
@@ -869,43 +868,5 @@ namespace po {
         mSignalTouchesMovedInside.disconnect_all_slots();
         mSignalTouchesEnded.disconnect_all_slots();
         mSignalTouchesEndedInside.disconnect_all_slots();
-    }
-    
-    
-    
-    //  Key Events
-    
-    void Node::emitEvent(po::KeyEvent &event, const po::KeyEvent::Type &type)
-    {
-        event.mSource = shared_from_this();
-        
-        switch (type) {
-            case po::KeyEvent::Type::DOWN:
-                mSignalKeyDown(event); break;
-                
-            case po::KeyEvent::Type::UP:
-                mSignalKeyUp(event); break;
-        }
-    }
-    
-    
-    //See if we care about a key event
-    bool Node::hasConnection(const po::KeyEvent::Type &type)
-    {
-        switch (type) {
-            case po::KeyEvent::Type::DOWN:
-                return mSignalKeyDown.num_slots();
-            case po::KeyEvent::Type::UP:
-                return mSignalKeyUp.num_slots();
-        }
-        
-        return false;
-    }
-    
-    
-    void Node::disconnectKeySignals()
-    {
-        mSignalKeyDown.disconnect_all_slots();
-        mSignalKeyUp.disconnect_all_slots();
     }
 }
