@@ -29,7 +29,7 @@ void TestNode::setup()
     ci::gl::enableAlphaBlending();
     setDrawBounds(true);
     setPosition(50,50);
-    setRotation(45);
+    //setRotation(45);
     
     //Add global events
     getSignal(MouseEvent::Type::DOWN).connect(std::bind(&TestNode::mouseDown,   this, std::placeholders::_1));
@@ -48,7 +48,7 @@ void TestNode::setup()
 			float xPos = j * (SIZE + SPACING);
 			float yPos = i * (SIZE + SPACING);
 			r->setPosition(xPos, yPos);
-            r->setAlignment(Alignment::CENTER_CENTER);
+            //r->setAlignment(Alignment::CENTER_CENTER);
             r->setDrawBounds(true);
             
 			r->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&TestNode::mouseDownInside, this, std::placeholders::_1));
@@ -65,7 +65,7 @@ void TestNode::setup()
         }
     }
     
-    setPosition((ci::app::getWindowWidth()/2)-(getWidth()/2) - getBounds().x1, ci::app::getWindowHeight()/2-getHeight()/2 - getBounds().y1);
+    //setPosition((ci::app::getWindowWidth()/2)-(getWidth()/2) - getBounds().x1, ci::app::getWindowHeight()/2-getHeight()/2 - getBounds().y1);
 }
 
 void TestNode::squareFinishedTweening(ShapeRef square) {
@@ -128,11 +128,11 @@ void TestNode::mouseDownInside(MouseEvent& event)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
-    ci::Vec2f globalPos(thisRect->localToWindow(event.getWindowPos()));
+    ci::Vec2f globalPos(thisRect->localToWindow(event.getLocalPos()));
     
-    std::cout << "Local Pos: "      << event.getLocalPos()                  << std::endl;
-    std::cout << "Global Pos"       << globalPos                            << std::endl;
-    std::cout << "Converted Pos"    << thisRect->windowToLocal(globalPos)   << std::endl;
+    std::cout << "Local Pos: "      << event.getLocalPos()                             << std::endl;
+    std::cout << "Window Pos"       << event.getWindowPos()                           << std::endl;
+    std::cout << "Converted Pos"    << thisRect->localToWindow(event.getLocalPos())   << std::endl;
     
     //thisRect->disconnectMouseDownInside(this);
     //event.setShouldPropagate(true);
