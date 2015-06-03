@@ -38,10 +38,6 @@ namespace po { namespace scene {
         mRootNode = nullptr;
     }
     
-    void Scene::setDrawOffset(ci::Vec2f offset) {
-        eventCenter->setInteractionOffset(offset);
-    }
-    
     #pragma mark -
     
     void Scene::update()

@@ -244,22 +244,8 @@ namespace po { namespace scene {
         #pragma mark - Signals -
         
         //Mouse
-        MouseEventSignal& getSignalMouseDown()          { return mSignalMouseDown; };
-        MouseEventSignal& getSignalMouseDownInside()    { return mSignalMouseDownInside; };
-        MouseEventSignal& getSignalMouseMove()          { return mSignalMouseMove; };
-        MouseEventSignal& getSignalMouseMoveInside()    { return mSignalMouseMoveInside; };
-        MouseEventSignal& getSignalMouseDrag()          { return mSignalMouseDrag; };
-        MouseEventSignal& getSignalMouseDragInside()    { return mSignalMouseDragInside; };
-        MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
-        MouseEventSignal& getSignalMouseUpInside()      { return mSignalMouseUpInside; };
-        
-        //Touch
-        TouchEventSignal& getSignalTouchesBegan()           { return mSignalTouchesBegan; };
-        TouchEventSignal& getSignalTouchesBeganInside()     { return mSignalTouchesBeganInside; };
-        TouchEventSignal& getSignalTouchesMoved()           { return mSignalTouchesMoved; };
-        TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
-        TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
-        TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
+        MouseEventSignal& getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
+        TouchEventSignal& getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
         #pragma mark -
@@ -376,24 +362,16 @@ namespace po { namespace scene {
         void disconnectAllSignals();
         
         //Mouse
-        MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
-                            mSignalMouseMove, mSignalMouseMoveInside,
-                            mSignalMouseDrag, mSignalMouseDragInside,
-                            mSignalMouseUp, mSignalMouseUpInside;
+        std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
         
         bool hasConnection(const MouseEvent::Type &type);
         void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
-        void disconnectMouseSignals();
         
         //Touch
-        TouchEventSignal mSignalTouchesBegan, mSignalTouchesBeganInside,
-                            mSignalTouchesMoved, mSignalTouchesMovedInside,
-                            mSignalTouchesEnded, mSignalTouchesEndedInside;
+        std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
         
         bool hasConnection(const TouchEvent::Type &type);
         void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
-        void disconnectTouchSignals();
-        
         
         //
         //  Exceptions

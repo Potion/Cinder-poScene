@@ -15,6 +15,7 @@ const int TestNode::SIZE			= 70;
 const int TestNode::SPACING         = 10;
 
 using namespace po::scene;
+using namespace std::placeholders;
 
 TestNodeRef TestNode::create() {
     TestNodeRef t = TestNodeRef(new TestNode());
@@ -31,10 +32,10 @@ void TestNode::setup()
     setRotation(45);
     
     //Add global events
-	getSignalMouseDown().connect(std::bind(&TestNode::mouseDown, this, std::placeholders::_1));
-	getSignalMouseMove().connect(std::bind(&TestNode::mouseMove, this, std::placeholders::_1));
-	getSignalMouseDrag().connect(std::bind(&TestNode::mouseDrag, this, std::placeholders::_1));
-	getSignalMouseUp().connect(std::bind(&TestNode::mouseUp, this, std::placeholders::_1));
+    getSignal(MouseEvent::Type::DOWN).connect(std::bind(&TestNode::mouseDown,   this, std::placeholders::_1));
+    getSignal(MouseEvent::Type::MOVE).connect(std::bind(&TestNode::mouseMove,   this, std::placeholders::_1));
+    getSignal(MouseEvent::Type::DRAG).connect(std::bind(&TestNode::mouseDrag,   this, std::placeholders::_1));
+	getSignal(MouseEvent::Type::UP).connect(std::bind(&TestNode::mouseUp,       this, std::placeholders::_1));
     
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
@@ -50,15 +51,15 @@ void TestNode::setup()
             r->setAlignment(Alignment::CENTER_CENTER);
             r->setDrawBounds(true);
             
-			r->getSignalMouseDownInside().connect(std::bind(&TestNode::mouseDownInside, this, std::placeholders::_1));
-			r->getSignalMouseMoveInside().connect(std::bind(&TestNode::mouseMoveInside, this, std::placeholders::_1));
+			r->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&TestNode::mouseDownInside, this, std::placeholders::_1));
+			r->getSignal(MouseEvent::Type::MOVE_INSIDE).connect(std::bind(&TestNode::mouseMoveInside, this, std::placeholders::_1));
 //            boost::shared_ptr<Node> a(this);
 //            boost::weak_ptr<Node> n(a);
 //            r->getSignalMouseMoveInside().connect(MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
             
-			r->getSignalTouchesBeganInside().connect(std::bind(&TestNode::touchesBeganInside, this, std::placeholders::_1));
-			r->getSignalTouchesMovedInside().connect(std::bind(&TestNode::touchesMovedInside, this, std::placeholders::_1));
-			r->getSignalTouchesEndedInside().connect(std::bind(&TestNode::touchesEndedInside, this, std::placeholders::_1));
+			r->getSignal(TouchEvent::Type::BEGAN_INSIDE).connect(std::bind(&TestNode::touchesBeganInside, this, std::placeholders::_1));
+			r->getSignal(TouchEvent::Type::MOVED_INSIDE).connect(std::bind(&TestNode::touchesMovedInside, this, std::placeholders::_1));
+			r->getSignal(TouchEvent::Type::ENDED_INSIDE).connect(std::bind(&TestNode::touchesEndedInside, this, std::placeholders::_1));
 			
             addChild(r);
         }
@@ -96,7 +97,7 @@ void TestNode::mouseDrag(MouseEvent& event)
 
 void TestNode::mouseMove(MouseEvent& event)
 {
-    ci::app::console() << "Mouse move!" << std::endl;
+    //ci::app::console() << "Mouse move!" << std::endl;
 }
 
 void TestNode::mouseUp(MouseEvent& event)
@@ -127,11 +128,11 @@ void TestNode::mouseDownInside(MouseEvent& event)
                             .finishFn(std::bind( &TestNode::squareFinishedTweening,this, thisRect));
     }
     
-    ci::Vec2f globalPos(thisRect->localToGlobal(event.getPos()));
+    ci::Vec2f globalPos(thisRect->localToWindow(event.getWindowPos()));
     
-    std::cout << "Local Pos: "      << event.getPos()                       << std::endl;
+    std::cout << "Local Pos: "      << event.getLocalPos()                  << std::endl;
     std::cout << "Global Pos"       << globalPos                            << std::endl;
-    std::cout << "Converted Pos"    << thisRect->globalToLocal(globalPos)   << std::endl;
+    std::cout << "Converted Pos"    << thisRect->windowToLocal(globalPos)   << std::endl;
     
     //thisRect->disconnectMouseDownInside(this);
     //event.setShouldPropagate(true);

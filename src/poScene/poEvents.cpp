@@ -12,10 +12,10 @@
 
 namespace po { namespace scene {
     
-#pragma mark - Event -
+    #pragma mark - Event -
     Event::Event()
     : mShouldPropagate(false)
-    , mWindowPos(event.getPos())
+    , mWindowPos(0,0)
     {
     }
     
@@ -40,6 +40,7 @@ namespace po { namespace scene {
         return getWindowPos();
     }
     
+    
     #pragma mark - Mouse Event -
     //Brutal copy-constructor replication...def not fun
     MouseEvent::MouseEvent(ci::app::MouseEvent event)
@@ -50,38 +51,9 @@ namespace po { namespace scene {
     
     
     #pragma mark - Touch Event -
-    TouchEvent::TouchEvent(ci::app::TouchEvent event)
+    TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event)
+    : mCiEvent(event)
     {
-        for(const ci::app::TouchEvent::Touch touch : event.getTouches()) {
-            mTouches.push_back(TouchEvent::Touch(touch, offset));
-        }
-    }
-    
-    TouchEvent::Touch::Touch(ci::app::TouchEvent::Touch touch, ci::Vec2f offset)
-    : mPrevPos(touch.getPrevPos())
-    , mWindowPos(touch.getPos())
-    , mId(touch.getId())
-    , mTime(touch.getTime())
-    , mNative((void *)touch.getNative())
-    {
-        mWindowPos += offset;
-    }
-    
-    ci::Vec2f TouchEvent::Touch::getPos()
-    {
-        NodeRef source = mSource.lock();
-        if(source)
-            return source->globalToLocal(getWindowPos());
-        else
-            return getWindowPos();
-    };
-    
-    ci::Vec2f TouchEvent::Touch::getScenePos()
-    {
-        NodeRef source = mSource.lock();
-        if(source && source->hasScene())
-            return source->getScene()->getRootNode()->globalToLocal(getWindowPos());
-        else
-            return getWindowPos();
+        mWindowPos = event.getPos();
     }
 } } //  Namespace: po::scene

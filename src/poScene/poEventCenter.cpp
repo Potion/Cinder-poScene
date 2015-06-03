@@ -18,7 +18,6 @@ namespace po { namespace scene {
     }
     
     EventCenter::EventCenter()
-    : mOffset(0,0)
     {
         //Connect mouse events
         ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown,   this);
@@ -30,11 +29,6 @@ namespace po { namespace scene {
         ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
         ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
         ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
-    }
-    
-    void EventCenter::setInteractionOffset(ci::Vec2f offset)
-    {
-        mOffset = offset;
     }
     
     //Process all the event queues for this scene
@@ -65,7 +59,7 @@ namespace po { namespace scene {
             //Go through all the ci::MouseEvents for this type
             for(ci::app::MouseEvent &ciEvent : queue.second) {
                 //Create a po::MouseEvent
-                MouseEvent poEvent(ciEvent, mOffset);
+                MouseEvent poEvent(ciEvent);
                 notifyAllNodes(nodes,   poEvent, type);
                 notifyCallbacks(nodes,  poEvent, type);
             }
@@ -107,7 +101,7 @@ namespace po { namespace scene {
         for(NodeRef &node : nodes) {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
-               node->mVisible &&
+               node->isVisible() &&
                node->hasConnection(callbackType) &&
                node->pointInside(event.getWindowPos())
             ) {
@@ -129,12 +123,13 @@ namespace po { namespace scene {
             //Get the type for this item in the std::map
             TouchEvent::Type type = (TouchEvent::Type)queue.first;
             
-            //Go through all the ci::MouseEvents for this type
-            for(ci::app::TouchEvent &ciEvent : queue.second) {
-                //Create a po::MouseEvent
-                TouchEvent poEvent(ciEvent, mOffset);
-                notifyAllNodes(nodes, poEvent, type);
-                notifyCallbacks(nodes, poEvent, type);
+            //Go through all the ci::TouchEvents for this type
+            for(ci::app::TouchEvent &ciTouchEvent : queue.second) {
+                for(ci::app::TouchEvent::Touch &ciTouch : ciTouchEvent.getTouches()) {
+                    TouchEvent poEvent(ciTouch);
+                    notifyAllNodes(nodes, poEvent, type);
+                    notifyCallbacks(nodes, poEvent, type);
+                }
             }
             
             //Clear out the events
@@ -177,27 +172,15 @@ namespace po { namespace scene {
             if(node->hasScene() &&
                node->isInteractionEnabled() &&
                node->isVisible() &&
-               node->hasConnection(callbackType)
+               node->hasConnection(callbackType) &&
+               node->pointInside(event.getWindowPos())
                )
             {
-                
-                //Go through all the touches, see if any are inside of this item
-                std::vector<TouchEvent::Touch> foundTouches;
-                for(TouchEvent::Touch &touch : event.getTouches()) {
-                    if(node->pointInside(touch.getWindowPos())) {
-                        foundTouches.push_back(touch);
-                    }
-                }
-                
-                //If we found one or more that are inside,
-                //create a new event with just these touches
-                if(foundTouches.size()) {
-                    TouchEvent t = event;
-                    t.mTouches       = foundTouches;
-                    node->emitEvent(t, callbackType);
-                    if(!t.getShouldPropagate()) {
-                        return;
-                    }
+                node->emitEvent(event, callbackType);
+                if(event.getShouldPropagate()) {
+                    event.setShouldPropagate(false);
+                } else {
+                    return;
                 }
             }
         }

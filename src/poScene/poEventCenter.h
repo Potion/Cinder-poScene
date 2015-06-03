@@ -25,14 +25,9 @@ namespace po { namespace scene {
         
         void processEvents(std::vector<NodeRef> nodes);
         
-        void setInteractionOffset(ci::Vec2f offset);
-        void setInteractionScale(ci::Vec2f scale);
-        
     private:
         EventCenter();
-        
-        ci::Vec2f mOffset;
-        
+                
         //------------------------------------
         //Mouse Events
         #pragma mark - Mouse Events -

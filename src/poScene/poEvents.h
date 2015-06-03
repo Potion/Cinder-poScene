@@ -21,6 +21,7 @@ namespace po { namespace scene {
     #pragma mark Base Event
     
     class Event {
+        friend class Node;
     public:
         Event();
         
@@ -30,11 +31,10 @@ namespace po { namespace scene {
         ci::Vec2f getWindowPos() { return mWindowPos; }
         ci::Vec2f getLocalPos();
         ci::Vec2f getScenePos();
-        
-        void setSource(NodeRef source);
         NodeRef getSource() { return mSource.lock(); };
         
     protected:
+        void setSource(NodeRef source) { mSource = source; };
         ci::Vec2f mWindowPos;
         
     private:
@@ -81,18 +81,8 @@ namespace po { namespace scene {
     #pragma mark Touch Event
     
     class TouchEvent
-    : public ci::app::TouchEvent
-    , public Event
+    : public Event
     {
-    public:
-        class Touch;
-        
-        TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset);
-        std::vector<TouchEvent::Touch>& getTouches() { return mTouches; }
-    
-    private:
-        std::vector<Touch> mTouches;
-        
     public:
         enum Type {
             BEGAN,
@@ -103,24 +93,11 @@ namespace po { namespace scene {
             ENDED_INSIDE
         };
         
-        class Touch {
-            friend class Node;
-        public:
-            Touch(ci::app::TouchEvent::Touch event);
-            
-            uint32_t	getId() const { return mId; }
-            double		getTime() const { return mTime; }
-            
-            
-        private:
-            uint32_t        mId;
-            double          mTime;
-
-			//Native events currently can't be passed through the po::Scene event system :/
-            const void      *getNative() const { return mNative; }
-            void			*mNative;
-            
-            std::weak_ptr<Node> mSource;
-        };
+        TouchEvent(ci::app::TouchEvent::Touch event);
+        
+        ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
+        
+    private:
+        ci::app::TouchEvent::Touch mCiEvent;
     };
 } } //  Namespace: po::scene
