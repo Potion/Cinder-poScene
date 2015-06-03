@@ -32,10 +32,10 @@ void TestNode::setup()
     //setRotation(45);
     
     //Add global events
-    getSignal(MouseEvent::Type::DOWN).connect(std::bind(&TestNode::mouseDown,   this, std::placeholders::_1));
-    getSignal(MouseEvent::Type::MOVE).connect(std::bind(&TestNode::mouseMove,   this, std::placeholders::_1));
-    getSignal(MouseEvent::Type::DRAG).connect(std::bind(&TestNode::mouseDrag,   this, std::placeholders::_1));
-	getSignal(MouseEvent::Type::UP).connect(std::bind(&TestNode::mouseUp,       this, std::placeholders::_1));
+//    getSignal(MouseEvent::Type::DOWN).connect(std::bind(&TestNode::mouseDown,   this, std::placeholders::_1));
+//    getSignal(MouseEvent::Type::MOVE).connect(std::bind(&TestNode::mouseMove,   this, std::placeholders::_1));
+//    getSignal(MouseEvent::Type::DRAG).connect(std::bind(&TestNode::mouseDrag,   this, std::placeholders::_1));
+//	getSignal(MouseEvent::Type::UP).connect(std::bind(&TestNode::mouseUp,       this, std::placeholders::_1));
     
     for(int i=0; i<NUM_ROWS; i++) {
 		for(int j=0; j<NUM_COLS; j++) {
@@ -52,14 +52,14 @@ void TestNode::setup()
             r->setDrawBounds(true);
             
 			r->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&TestNode::mouseDownInside, this, std::placeholders::_1));
-			r->getSignal(MouseEvent::Type::MOVE_INSIDE).connect(std::bind(&TestNode::mouseMoveInside, this, std::placeholders::_1));
+			//r->getSignal(MouseEvent::Type::MOVE_INSIDE).connect(std::bind(&TestNode::mouseMoveInside, this, std::placeholders::_1));
 //            boost::shared_ptr<Node> a(this);
 //            boost::weak_ptr<Node> n(a);
 //            r->getSignalMouseMoveInside().connect(MouseEventSignal::slot_type(&TestNode::mouseMoveInside, this, std::_1).track(a));
             
-			r->getSignal(TouchEvent::Type::BEGAN_INSIDE).connect(std::bind(&TestNode::touchesBeganInside, this, std::placeholders::_1));
-			r->getSignal(TouchEvent::Type::MOVED_INSIDE).connect(std::bind(&TestNode::touchesMovedInside, this, std::placeholders::_1));
-			r->getSignal(TouchEvent::Type::ENDED_INSIDE).connect(std::bind(&TestNode::touchesEndedInside, this, std::placeholders::_1));
+//			r->getSignal(TouchEvent::Type::BEGAN_INSIDE).connect(std::bind(&TestNode::touchesBeganInside, this, std::placeholders::_1));
+//			r->getSignal(TouchEvent::Type::MOVED_INSIDE).connect(std::bind(&TestNode::touchesMovedInside, this, std::placeholders::_1));
+//			r->getSignal(TouchEvent::Type::ENDED_INSIDE).connect(std::bind(&TestNode::touchesEndedInside, this, std::placeholders::_1));
 			
             addChild(r);
         }

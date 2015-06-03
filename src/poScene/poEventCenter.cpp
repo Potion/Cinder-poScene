@@ -73,8 +73,9 @@ namespace po { namespace scene {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, MouseEvent event, const MouseEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(node == nullptr || !node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
-            //if(!node->hasScene() || !node->isInteractionEnabled()) continue;
+            if(node == nullptr || (!node->isEligibleForInteractionEvents())) {
+                continue;
+            }
 
             event.setShouldPropagate(true);
             
@@ -99,12 +100,7 @@ namespace po { namespace scene {
         }
         
         for(NodeRef &node : nodes) {
-            if(node->hasScene() &&
-               node->isInteractionEnabled() &&
-               node->isVisible() &&
-               node->hasConnection(callbackType) &&
-               node->pointInside(event.getWindowPos())
-            ) {
+            if(node->isEligibleForInteractionEvent(callbackType) && node->pointInside(event.getWindowPos())) {
                 node->emitEvent(event, callbackType);
                 if(event.getShouldPropagate()) {
                     event.setShouldPropagate(false);
@@ -141,7 +137,7 @@ namespace po { namespace scene {
     void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, TouchEvent event, const TouchEvent::Type &type) {
         for(NodeRef &node : nodes) {
             //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(node == nullptr || (!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled())) {
+            if(node == nullptr || (!node->isEligibleForInteractionEvents())) {
                 continue;
             }
             
@@ -169,12 +165,7 @@ namespace po { namespace scene {
         
         //Go through the draw tree, notifying nodes that are listening
         for(NodeRef &node : nodes) {
-            if(node->hasScene() &&
-               node->isInteractionEnabled() &&
-               node->isVisible() &&
-               node->hasConnection(callbackType) &&
-               node->pointInside(event.getWindowPos())
-               )
+            if(node->isEligibleForInteractionEvent(callbackType) && node->pointInside(event.getWindowPos()))
             {
                 node->emitEvent(event, callbackType);
                 if(event.getShouldPropagate()) {

@@ -744,6 +744,19 @@ namespace po { namespace scene {
     
     //  General
     
+    bool Node::isEligibleForInteractionEvents()
+    {
+        if(!hasScene() ||
+           !isInteractionEnabled() ||
+           !isVisible())
+        {
+            return false;
+        }
+        
+        return true;
+
+    }
+    
     void Node::disconnectAllSignals()
     {
         for(auto &signal : mMouseEventSignals) {
@@ -759,9 +772,15 @@ namespace po { namespace scene {
     //  Mouse Events
     
     //See if we care about an event
-    bool Node::hasConnection(const MouseEvent::Type &type)
+    bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        return (mMouseEventSignals[type].num_slots() != 0);
+        std::cout << "Num Slots: " << mMouseEventSignals[type].num_slots() << std::endl;
+        if((mMouseEventSignals[type].num_slots() != 0))
+        {
+            return isEligibleForInteractionEvents();
+        }
+        
+        return false;
     }
     
     
@@ -784,8 +803,13 @@ namespace po { namespace scene {
     
     
     //See if we care about an event
-    bool Node::hasConnection(const TouchEvent::Type &type)
+    bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        return (mTouchEventSignals[type].num_slots() != 0);
+        if((mTouchEventSignals[type].num_slots() != 0))
+        {
+            return isEligibleForInteractionEvents();
+        }
+        
+        return false;
     }
 } } //  Namespace: po::scene

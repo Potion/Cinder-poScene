@@ -262,13 +262,13 @@ namespace po { namespace scene {
         //Visibility
         bool mVisible;
         
+        //Interaction
+        bool mInteractionEnabled;
+        
         //Bounds/Frame
         ci::Rectf mBounds;
         ci::Rectf mFrame;
         bool mBoundsDirty, mFrameDirty;
-        
-        //Interaction
-        bool mInteractionEnabled;
         
         //Caching/FBO
         bool createFbo(int width, int height);
@@ -358,20 +358,22 @@ namespace po { namespace scene {
         //
         //  Interaction Events
         //
-        
         void disconnectAllSignals();
+        bool isEligibleForInteractionEvents();
         
         //Mouse
         std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
         
-        bool hasConnection(const MouseEvent::Type &type);
+        bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
         void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
         
         //Touch
         std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
         
-        bool hasConnection(const TouchEvent::Type &type);
+        bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
         void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
+        
+        
         
         //
         //  Exceptions
