@@ -117,9 +117,13 @@ namespace po { namespace scene {
         
         //Hit Testing & Transformation
         virtual bool pointInside(const ci::Vec2f    &point, bool localize=true);
+        
         ci::Vec2f sceneToLocal(const ci::Vec2f      &point);
-        ci::Vec2f globalToLocal(const ci::Vec2f     &point);
-        ci::Vec2f localToGlobal(const ci::Vec2f     &point);
+        ci::Vec2f sceneToWindow(const ci::Vec2f     &point);
+        ci::Vec2f windowToScene(const ci::Vec2f     &point);
+        
+        ci::Vec2f windowToLocal(const ci::Vec2f     &point);
+        ci::Vec2f localToWindow(const ci::Vec2f     &point);
         
         //Visibility
         void setVisible(bool enabled) { mVisible = enabled; };

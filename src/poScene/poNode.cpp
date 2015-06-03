@@ -587,21 +587,35 @@ namespace po { namespace scene {
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
-    
-    #pragma message "Do we need this?"
+
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         return ci::Vec2f();
     }
     
+    ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
+    {
+        SceneRef scene = getScene();
+        if(scene != nullptr) {
+            return scene->getRootNode()->localToWindow(point);
+        }
     
-    ci::Vec2f Node::globalToLocal(const ci::Vec2f &globalPoint)
+        return point;
+    }
+    
+    ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
+    {
+        
+    }
+    
+    
+    ci::Vec2f Node::windowToLocal(const ci::Vec2f &globalPoint)
     {
         return mMatrix.globalToLocal(globalPoint);
     }
     
     
-    ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
+    ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
     {
         if(mHasScene) {
             return mMatrix.localToGlobal(scenePoint);
@@ -613,7 +627,7 @@ namespace po { namespace scene {
     
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
-        ci::Vec2f pos = localize ? globalToLocal(point) : point;
+        ci::Vec2f pos = localize ? windowToLocal(point) : point;
         return getBounds().contains(pos);
     }
     
