@@ -17,6 +17,7 @@
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		9DD2759CCDE4489A9C5784F6 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 7B55D5B08AD94001B3A14085 /* CinderApp.icns */; };
+		E41A63DB1B20D51E0098904C /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E41A63D91B20D51E0098904C /* poImage.cpp */; };
 		E491950A18E76114008C434A /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E49194FA18E76114008C434A /* poEventCenter.cpp */; };
 		E491950B18E76114008C434A /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E49194FC18E76114008C434A /* poEvents.cpp */; };
 		E491950C18E76114008C434A /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E49194FE18E76114008C434A /* poMatrixSet.cpp */; };
@@ -45,6 +46,8 @@
 		8DA6FBE100AD41ECAF6BF3CE /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		A8215FF25AE541678D6E3245 /* TextBox_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = TextBox_Prefix.pch; sourceTree = "<group>"; };
 		C4E12FBCDB0C4CF88E9CD00B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E41A63D91B20D51E0098904C /* poImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poImage.cpp; sourceTree = "<group>"; };
+		E41A63DA1B20D51E0098904C /* poImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poImage.h; sourceTree = "<group>"; };
 		E49194FA18E76114008C434A /* poEventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poEventCenter.cpp; sourceTree = "<group>"; };
 		E49194FB18E76114008C434A /* poEventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poEventCenter.h; sourceTree = "<group>"; };
 		E49194FC18E76114008C434A /* poEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poEvents.cpp; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 				E491950718E76114008C434A /* poShape.h */,
 				E491950818E76114008C434A /* poTextBox.cpp */,
 				E491950918E76114008C434A /* poTextBox.h */,
+				E41A63D91B20D51E0098904C /* poImage.cpp */,
+				E41A63DA1B20D51E0098904C /* poImage.h */,
 			);
 			name = poScene;
 			path = ../../../src/poScene;
@@ -266,6 +271,7 @@
 				E491950A18E76114008C434A /* poEventCenter.cpp in Sources */,
 				E491951418E77C43008C434A /* poTextBoxApp.cpp in Sources */,
 				429E67C27110427197495587 /* TextBoxApp.cpp in Sources */,
+				E41A63DB1B20D51E0098904C /* poImage.cpp in Sources */,
 				E491951018E76114008C434A /* poShape.cpp in Sources */,
 				E491950D18E76114008C434A /* poNode.cpp in Sources */,
 				E491951118E76114008C434A /* poTextBox.cpp in Sources */,

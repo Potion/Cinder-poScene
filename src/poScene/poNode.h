@@ -97,9 +97,11 @@ namespace po { namespace scene {
         bool hasParent();
         
         //Dimensions
+        ci::Vec2f getSize() { return getBounds().getSize(); }
         float getWidth()    { return getBounds().getWidth(); };
         float getHeight()   { return getBounds().getHeight(); };
         
+        ci::Vec2f getScaledSize() { return getSize() * getScale(); }
         float getScaledWidth()  { return getWidth() * getScale().x;     };
         float getScaledHeight() { return getHeight() * getScale().y;    };
         
@@ -121,7 +123,10 @@ namespace po { namespace scene {
         //Hit Testing & Transformation
         virtual bool pointInside(const ci::Vec2f    &point, bool localize=true);
         
+        ci::Vec2f nodeToLocal(const ci::Vec2f &point, NodeRef node);
+        ci::Vec2f localToNode(const ci::Vec2f &point, NodeRef node);
         ci::Vec2f sceneToLocal(const ci::Vec2f      &point);
+        ci::Vec2f localToScene(const ci::Vec2f &point);
         ci::Vec2f sceneToWindow(const ci::Vec2f     &point);
         ci::Vec2f windowToScene(const ci::Vec2f     &point);
         

@@ -40,15 +40,12 @@ namespace po { namespace scene {
         virtual void update();
         virtual void draw();
         
-        //Probably should not call this if you're not doing a custom draw tree!
         uint32_t getNextDrawOrder();
         
         //Root Node
         NodeContainerRef getRootNode() { return mRootNode; };
         void setRootNode(NodeContainerRef node);
-        
-        void setDrawOffset(ci::Vec2f offfset);
-        
+                
     protected:
         Scene(NodeContainerRef rootNode);
         
