@@ -14,7 +14,7 @@ class poTextBoxApp;
 typedef std::shared_ptr<poTextBoxApp> poTextBoxAppRef;
 
 class poTextBoxApp
-: public po::NodeContainer
+: public po::scene::NodeContainer
 {
 public:
     static poTextBoxAppRef create();
