@@ -24,6 +24,7 @@ namespace po { namespace scene {
     : mCiTextBox(ciTextBox)
     , mUseTextBounds(false)
     {
+        render();
     }
     
     void TextBox::draw()
@@ -48,27 +49,26 @@ namespace po { namespace scene {
     
     ci::Rectf TextBox::getBounds()
     {
-            if(mUseTextBounds) {
-                float xPos = 0.0f;
-                switch (mCiTextBox->getAlignment()) {
-                    case ci::TextBox::Alignment::LEFT:
-                        xPos = 0;
-                        break;
-                        
-                    case ci::TextBox::Alignment::CENTER:
-                        xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
-                        break;
-                        
-                    case ci::TextBox::Alignment::RIGHT:
-                        xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
-                        break;
-                }
-                
-                return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
+        if(mUseTextBounds) {
+            float xPos = 0.0f;
+            switch (mCiTextBox->getAlignment()) {
+                case ci::TextBox::Alignment::LEFT:
+                    xPos = 0;
+                    break;
+                    
+                case ci::TextBox::Alignment::CENTER:
+                    xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
+                    break;
+                    
+                case ci::TextBox::Alignment::RIGHT:
+                    xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
+                    break;
             }
-            else {
-                return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
-            }
+            
+            return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
+        }
+        else {
+            return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
         }
     }
 } } //  Namespace: po::scene
