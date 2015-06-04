@@ -18,7 +18,7 @@ class ImageTestApp : public AppNative {
     
     void keyDown(KeyEvent event);
     
-    po::SceneRef scene;
+    po::scene::SceneRef scene;
     
     Font mFont;
 };
@@ -27,7 +27,7 @@ void ImageTestApp::setup()
 {
     ci::gl::enableAlphaBlending();
     
-    scene = po::Scene::create(poImageTestApp::create());
+    scene = po::scene::Scene::create(poImageTestApp::create());
     
 }
 
@@ -58,7 +58,7 @@ void ImageTestApp::draw()
 
 void ImageTestApp::keyDown(cinder::app::KeyEvent event) {
     poImageTestAppRef app = poImageTestApp::create();
-    scene = po::Scene::create(app);
+    scene = po::scene::Scene::create(app);
 }
 
 CINDER_APP_NATIVE( ImageTestApp, RendererGl )

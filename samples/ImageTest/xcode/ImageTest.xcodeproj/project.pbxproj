@@ -15,6 +15,7 @@
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E41A63DE1B20DF8D0098904C /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E41A63DC1B20DF8D0098904C /* poImage.cpp */; };
 		E474EF9C18E8AB1B009D4CEE /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E474EF8C18E8AB1B009D4CEE /* poEventCenter.cpp */; };
 		E474EF9D18E8AB1B009D4CEE /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E474EF8E18E8AB1B009D4CEE /* poEvents.cpp */; };
 		E474EF9E18E8AB1B009D4CEE /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E474EF9018E8AB1B009D4CEE /* poMatrixSet.cpp */; };
@@ -46,6 +47,9 @@
 		61F5F395D41D45D088A018D0 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ImageTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F85E85DDC4D47DBA07AA401 /* ImageTest_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ImageTest_Prefix.pch; sourceTree = "<group>"; };
+		E41A63DC1B20DF8D0098904C /* poImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poImage.cpp; sourceTree = "<group>"; };
+		E41A63DD1B20DF8D0098904C /* poImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poImage.h; sourceTree = "<group>"; };
+		E41A63DF1B20E4EB0098904C /* poVideo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poVideo.h; sourceTree = "<group>"; };
 		E474EF8C18E8AB1B009D4CEE /* poEventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poEventCenter.cpp; sourceTree = "<group>"; };
 		E474EF8D18E8AB1B009D4CEE /* poEventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = poEventCenter.h; sourceTree = "<group>"; };
 		E474EF8E18E8AB1B009D4CEE /* poEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = poEvents.cpp; sourceTree = "<group>"; };
@@ -195,6 +199,9 @@
 				E474EF9918E8AB1B009D4CEE /* poShape.h */,
 				E474EF9A18E8AB1B009D4CEE /* poTextBox.cpp */,
 				E474EF9B18E8AB1B009D4CEE /* poTextBox.h */,
+				E41A63DC1B20DF8D0098904C /* poImage.cpp */,
+				E41A63DD1B20DF8D0098904C /* poImage.h */,
+				E41A63DF1B20E4EB0098904C /* poVideo.h */,
 			);
 			name = poScene;
 			path = ../../../src/poScene;
@@ -268,6 +275,7 @@
 				E474EF9C18E8AB1B009D4CEE /* poEventCenter.cpp in Sources */,
 				F29B3189BC96489DBF680849 /* ImageTestApp.cpp in Sources */,
 				E474EFA218E8AB1B009D4CEE /* poShape.cpp in Sources */,
+				E41A63DE1B20DF8D0098904C /* poImage.cpp in Sources */,
 				E474EF9F18E8AB1B009D4CEE /* poNode.cpp in Sources */,
 				E474EFA318E8AB1B009D4CEE /* poTextBox.cpp in Sources */,
 				E474EFA118E8AB1B009D4CEE /* poScene.cpp in Sources */,
