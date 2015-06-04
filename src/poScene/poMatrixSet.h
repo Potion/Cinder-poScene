@@ -32,7 +32,8 @@
 #include "cinder/Matrix.h"
 #include "cinder/Camera.h"
 
-namespace po { namespace scene {
+namespace po {
+	namespace scene {
         class MatrixSet
         {
         public:
@@ -47,5 +48,8 @@ namespace po { namespace scene {
             
             ci::Vec3f project(const ci::Vec3f &point);
             ci::Vec3f unproject(const ci::Vec3f &point);
+			
         };
-} } //  Namespace: po::scene
+		
+	}
+} //  Namespace: po::scene
