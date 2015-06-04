@@ -23,13 +23,22 @@ namespace po { namespace scene {
     class Event {
         friend class Node;
     public:
-        Event() : shouldPropagate(false) {};
-        void setShouldPropagate(bool shouldPropagate) { this->shouldPropagate = shouldPropagate; };
-        bool getShouldPropagate() { return shouldPropagate; };
+        Event();
         
+        void setShouldPropagate(bool shouldPropagate) { mShouldPropagate = shouldPropagate; };
+        bool getShouldPropagate() { return mShouldPropagate; };
+        
+        ci::Vec2f getWindowPos() { return mWindowPos; }
+        ci::Vec2f getLocalPos();
+        ci::Vec2f getScenePos();
         NodeRef getSource() { return mSource.lock(); };
+        
+    protected:
+        void setSource(NodeRef source) { mSource = source; };
+        ci::Vec2f mWindowPos;
+        
     private:
-        bool shouldPropagate;
+        bool mShouldPropagate;
         std::weak_ptr<Node> mSource;
     };
 
@@ -40,10 +49,10 @@ namespace po { namespace scene {
     #pragma mark Mouse Event
     
     class MouseEvent
-    : public ci::app::MouseEvent
-    , public Event
+    : public po::scene::Event
     {
         friend class Node;
+        
     public:
         enum Type {
             DOWN,
@@ -57,22 +66,12 @@ namespace po { namespace scene {
             WHEEL
         };
         
-        MouseEvent(ci::app::MouseEvent event, ci::Vec2f offset);
+        MouseEvent(ci::app::MouseEvent event);
         
-        float getX() { return mPos.x; };
-        float getY() { return mPos.y; };
-        ci::Vec2f getPos() { return mPos; };
-        
-        float getSceneX() { return mScenePos.x; };
-        float getSceneY() { return mScenePos.y; };
-        ci::Vec2f getScenePos() { return mScenePos; };
-        
-        float getWindowX() { return mWindowPos.x; };
-        float getWindowY() { return mWindowPos.y; };
-        ci::Vec2f getWindowPos() { return mWindowPos; };
+        ci::app::MouseEvent getCiEvent() { return mCiEvent; };
         
     private:
-        ci::Vec2f mPos, mScenePos, mWindowPos;
+        ci::app::MouseEvent mCiEvent;
     };
     
     
@@ -82,19 +81,8 @@ namespace po { namespace scene {
     #pragma mark Touch Event
     
     class TouchEvent
-    : public ci::app::TouchEvent
-    , public Event
+    : public Event
     {
-        friend class EventCenter;
-    public:
-        class Touch;
-        
-        TouchEvent(ci::app::TouchEvent event, ci::Vec2f offset);
-        std::vector<TouchEvent::Touch>& getTouches() { return mTouches; }
-    
-    private:
-        std::vector<Touch> mTouches;
-        
     public:
         enum Type {
             BEGAN,
@@ -105,43 +93,11 @@ namespace po { namespace scene {
             ENDED_INSIDE
         };
         
-        class Touch {
-            friend class Node;
-        public:
-            Touch(ci::app::TouchEvent::Touch event, ci::Vec2f offset);
-            
-            float getX() { return getPos().x; };
-            float getY() { return getPos().y; };
-            ci::Vec2f getPos();
-
-			float getPrevX() { return mPrevPos.x; };
-			float getPrevY() { return mPrevPos.y; };
-			ci::Vec2f getPrevPos() { return mPrevPos; };
-            
-            float getSceneX() { return getScenePos().x; };
-            float getSceneY() { return getScenePos().y; };
-            ci::Vec2f getScenePos();
-            
-            float getWindowX() { return mWindowPos.x; };
-            float getWindowY() { return mWindowPos.y; };
-            ci::Vec2f getWindowPos() { return mWindowPos; };
-            
-            uint32_t	getId() const { return mId; }
-            double		getTime() const { return mTime; }
-			NodeRef getSource() { return mSource.lock(); };
-            
-            
-        private:
-            ci::Vec2f       mWindowPos;
-			ci::Vec2f		mPrevPos;
-            uint32_t        mId;
-            double          mTime;
-
-			//Native events currently can't be passed through the po::Scene event system :/
-            const void*	getNative() const { return mNative; }
-            void			*mNative;
-            
-            std::weak_ptr<Node> mSource;
-        };
+        TouchEvent(ci::app::TouchEvent::Touch event);
+        
+        ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
+        
+    private:
+        ci::app::TouchEvent::Touch mCiEvent;
     };
 } } //  Namespace: po::scene

@@ -18,7 +18,6 @@ namespace po { namespace scene {
     }
     
     EventCenter::EventCenter()
-    : mOffset(0,0)
     {
         //Connect mouse events
         ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown,   this);
@@ -30,11 +29,6 @@ namespace po { namespace scene {
         ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
         ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
         ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
-    }
-    
-    void EventCenter::setInteractionOffset(ci::Vec2f offset)
-    {
-        mOffset = offset;
     }
     
     //Process all the event queues for this scene
@@ -49,157 +43,7 @@ namespace po { namespace scene {
         );
         
         //Process them
-        processMouseEvents(nodes);
-        processTouchEvents(nodes);
-    }
-    
-    
-    #pragma mark - Mouse Events -
-    void EventCenter::processMouseEvents(std::vector<NodeRef> &nodes)
-    {
-        //Go through the queue
-        for(auto& queue : mMouseEventQueues) {
-            //Get the type for this item in the std::map
-            MouseEvent::Type type = (MouseEvent::Type)queue.first;
-            
-            //Go through all the ci::MouseEvents for this type
-            for(ci::app::MouseEvent &ciEvent : queue.second) {
-                //Create a po::MouseEvent
-                MouseEvent poEvent(ciEvent, mOffset);
-                notifyAllNodes(nodes,   poEvent, type);
-                notifyCallbacks(nodes,  poEvent, type);
-            }
-            
-            //Clear out the events
-            queue.second.clear();
-        }
-    }
-    
-    //Dispatch to the appropriate mouse event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, MouseEvent event, const MouseEvent::Type &type) {
-        for(NodeRef &node : nodes) {
-            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(node == nullptr || !node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled()) continue;
-            //if(!node->hasScene() || !node->isInteractionEnabled()) continue;
-
-            event.setShouldPropagate(true);
-            
-            //Notify the node
-            node->emitEvent(event, type);
-        }
-    }
-    
-    //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, MouseEvent event, const MouseEvent::Type &type)
-    {
-        MouseEvent::Type callbackType;
-        switch (type) {
-            case MouseEvent::Type::DOWN:
-                callbackType = MouseEvent::Type::DOWN_INSIDE; break;
-            case MouseEvent::Type::MOVE:
-                callbackType = MouseEvent::Type::MOVE_INSIDE; break;
-            case MouseEvent::Type::DRAG:
-                callbackType = MouseEvent::Type::DRAG_INSIDE; break;
-            case MouseEvent::Type::UP:
-                callbackType = MouseEvent::Type::UP_INSIDE; break;
-        }
-        
-        for(NodeRef &node : nodes) {
-            if(node->hasScene() &&
-               node->isInteractionEnabled() &&
-               node->mVisible &&
-               node->hasConnection(callbackType) &&
-               node->pointInside(event.getWindowPos())
-            ) {
-                node->emitEvent(event, callbackType);
-                if(event.getShouldPropagate()) {
-                    event.setShouldPropagate(false);
-                } else {
-                    return;
-                }
-            }
-        }
-    }
-    
-    #pragma mark - Touch Events -
-    void EventCenter::processTouchEvents(std::vector<NodeRef> &nodes)
-    {
-        //Go through the queue
-        for(auto& queue : mTouchEventQueues) {
-            //Get the type for this item in the std::map
-            TouchEvent::Type type = (TouchEvent::Type)queue.first;
-            
-            //Go through all the ci::MouseEvents for this type
-            for(ci::app::TouchEvent &ciEvent : queue.second) {
-                //Create a po::MouseEvent
-                TouchEvent poEvent(ciEvent, mOffset);
-                notifyAllNodes(nodes, poEvent, type);
-                notifyCallbacks(nodes, poEvent, type);
-            }
-            
-            //Clear out the events
-            queue.second.clear();
-        }
-    }
-    
-    //Dispatch to the appropriate touch event function for each node in the scene
-    void EventCenter::notifyAllNodes(std::vector<NodeRef> &nodes, TouchEvent event, const TouchEvent::Type &type) {
-        for(NodeRef &node : nodes) {
-            //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-            if(node == nullptr || (!node->hasConnection(type) || !node->hasScene() || !node->isInteractionEnabled())) {
-                continue;
-            }
-            
-            event.setShouldPropagate(true);
-            
-            //Notify the node
-            node->emitEvent(event, type);
-        }
-    }
-    
-    
-    //Dispatch callback to top item, going up through draw tree
-    void EventCenter::notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event, TouchEvent::Type &type)
-    {
-        //Set the callback type
-        TouchEvent::Type callbackType;
-        switch (type) {
-            case TouchEvent::Type::BEGAN:
-                callbackType = TouchEvent::Type::BEGAN_INSIDE; break;
-            case TouchEvent::Type::MOVED:
-                callbackType = TouchEvent::Type::MOVED_INSIDE; break;
-            case TouchEvent::Type::ENDED:
-                callbackType = TouchEvent::Type::ENDED_INSIDE; break;
-        }
-        
-        //Go through the draw tree, notifying nodes that are listening
-        for(NodeRef &node : nodes) {
-            if(node->hasScene() &&
-               node->isInteractionEnabled() &&
-               node->isVisible() &&
-               node->hasConnection(callbackType)
-               )
-            {
-                
-                //Go through all the touches, see if any are inside of this item
-                std::vector<TouchEvent::Touch> foundTouches;
-                for(TouchEvent::Touch &touch : event.getTouches()) {
-                    if(node->pointInside(touch.getWindowPos())) {
-                        foundTouches.push_back(touch);
-                    }
-                }
-                
-                //If we found one or more that are inside,
-                //create a new event with just these touches
-                if(foundTouches.size()) {
-                    TouchEvent t = event;
-                    t.mTouches       = foundTouches;
-                    node->emitEvent(t, callbackType);
-                    if(!t.getShouldPropagate()) {
-                        return;
-                    }
-                }
-            }
-        }
+        mMouseProcessor.processEvents(nodes);
+        mTouchProcessor.processEvents(nodes);
     }
 } } //  Namespace: po::scene

@@ -192,7 +192,7 @@ namespace po { namespace scene {
     #pragma mark - Dimensions -
     bool Shape::pointInside(const ci::Vec2f &point, bool localize)
     {
-        ci::Vec2f pos = localize ? globalToLocal(point) : point;
+        ci::Vec2f pos = localize ? windowToLocal(point) : point;
         return mCiShape2d.contains(pos);
     }
     

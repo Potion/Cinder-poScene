@@ -17,7 +17,7 @@
 #include "cinder/Exception.h"
 
 #include "poMatrixSet.h"
-#include "poEventCenter.h"
+#include "poEvents.h"
 
 namespace po { namespace scene {
     
@@ -54,6 +54,9 @@ namespace po { namespace scene {
     
     class Shape;
     typedef std::shared_ptr<Shape> ShapeRef;
+    
+    class EventCenter;
+    typedef std::shared_ptr<EventCenter> EventCenterRef;
     
     //Signals
     typedef boost::signals2::signal<void(MouseEvent&)> MouseEventSignal;
@@ -117,9 +120,13 @@ namespace po { namespace scene {
         
         //Hit Testing & Transformation
         virtual bool pointInside(const ci::Vec2f    &point, bool localize=true);
+        
         ci::Vec2f sceneToLocal(const ci::Vec2f      &point);
-        ci::Vec2f globalToLocal(const ci::Vec2f     &point);
-        ci::Vec2f localToGlobal(const ci::Vec2f     &point);
+        ci::Vec2f sceneToWindow(const ci::Vec2f     &point);
+        ci::Vec2f windowToScene(const ci::Vec2f     &point);
+        
+        ci::Vec2f windowToLocal(const ci::Vec2f     &point);
+        ci::Vec2f localToWindow(const ci::Vec2f     &point);
         
         //Visibility
         void setVisible(bool enabled) { mVisible = enabled; };
@@ -240,22 +247,8 @@ namespace po { namespace scene {
         #pragma mark - Signals -
         
         //Mouse
-        MouseEventSignal& getSignalMouseDown()          { return mSignalMouseDown; };
-        MouseEventSignal& getSignalMouseDownInside()    { return mSignalMouseDownInside; };
-        MouseEventSignal& getSignalMouseMove()          { return mSignalMouseMove; };
-        MouseEventSignal& getSignalMouseMoveInside()    { return mSignalMouseMoveInside; };
-        MouseEventSignal& getSignalMouseDrag()          { return mSignalMouseDrag; };
-        MouseEventSignal& getSignalMouseDragInside()    { return mSignalMouseDragInside; };
-        MouseEventSignal& getSignalMouseUp()            { return mSignalMouseUp; };
-        MouseEventSignal& getSignalMouseUpInside()      { return mSignalMouseUpInside; };
-        
-        //Touch
-        TouchEventSignal& getSignalTouchesBegan()           { return mSignalTouchesBegan; };
-        TouchEventSignal& getSignalTouchesBeganInside()     { return mSignalTouchesBeganInside; };
-        TouchEventSignal& getSignalTouchesMoved()           { return mSignalTouchesMoved; };
-        TouchEventSignal& getSignalTouchesMovedInside()     { return mSignalTouchesMovedInside; };
-        TouchEventSignal& getSignalTouchesEnded()           { return mSignalTouchesEnded; };
-        TouchEventSignal& getSignalTouchesEndedInside()     { return mSignalTouchesEndedInside; };
+        MouseEventSignal& getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
+        TouchEventSignal& getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
         #pragma mark -
@@ -272,13 +265,13 @@ namespace po { namespace scene {
         //Visibility
         bool mVisible;
         
+        //Interaction
+        bool mInteractionEnabled;
+        
         //Bounds/Frame
         ci::Rectf mBounds;
         ci::Rectf mFrame;
         bool mBoundsDirty, mFrameDirty;
-        
-        //Interaction
-        bool mInteractionEnabled;
         
         //Caching/FBO
         bool createFbo(int width, int height);
@@ -368,27 +361,21 @@ namespace po { namespace scene {
         //
         //  Interaction Events
         //
-        
         void disconnectAllSignals();
+        bool isEligibleForInteractionEvents();
         
         //Mouse
-        MouseEventSignal mSignalMouseDown, mSignalMouseDownInside,
-                            mSignalMouseMove, mSignalMouseMoveInside,
-                            mSignalMouseDrag, mSignalMouseDragInside,
-                            mSignalMouseUp, mSignalMouseUpInside;
+        std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
         
-        bool hasConnection(const MouseEvent::Type &type);
+        bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
         void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
-        void disconnectMouseSignals();
         
         //Touch
-        TouchEventSignal mSignalTouchesBegan, mSignalTouchesBeganInside,
-                            mSignalTouchesMoved, mSignalTouchesMovedInside,
-                            mSignalTouchesEnded, mSignalTouchesEndedInside;
+        std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
         
-        bool hasConnection(const TouchEvent::Type &type);
+        bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
         void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
-        void disconnectTouchSignals();
+        
         
         
         //

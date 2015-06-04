@@ -587,21 +587,35 @@ namespace po { namespace scene {
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
-    
-    #pragma message "Do we need this?"
+
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         return ci::Vec2f();
     }
     
+    ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
+    {
+        SceneRef scene = getScene();
+        if(scene != nullptr) {
+            return scene->getRootNode()->localToWindow(point);
+        }
     
-    ci::Vec2f Node::globalToLocal(const ci::Vec2f &globalPoint)
+        return point;
+    }
+    
+    ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
+    {
+        
+    }
+    
+    
+    ci::Vec2f Node::windowToLocal(const ci::Vec2f &globalPoint)
     {
         return mMatrix.globalToLocal(globalPoint);
     }
     
     
-    ci::Vec2f Node::localToGlobal(const ci::Vec2f &scenePoint)
+    ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
     {
         if(mHasScene) {
             return mMatrix.localToGlobal(scenePoint);
@@ -613,7 +627,7 @@ namespace po { namespace scene {
     
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
-        ci::Vec2f pos = localize ? globalToLocal(point) : point;
+        ci::Vec2f pos = localize ? windowToLocal(point) : point;
         return getBounds().contains(pos);
     }
     
@@ -730,35 +744,40 @@ namespace po { namespace scene {
     
     //  General
     
+    bool Node::isEligibleForInteractionEvents()
+    {
+        if(!hasScene() ||
+           !isInteractionEnabled() ||
+           !isVisible())
+        {
+            return false;
+        }
+        
+        return true;
+
+    }
+    
     void Node::disconnectAllSignals()
     {
-        disconnectMouseSignals();
-        disconnectTouchSignals();
+        for(auto &signal : mMouseEventSignals) {
+            signal.second.disconnect_all_slots();
+        }
+        
+        for(auto &signal : mTouchEventSignals) {
+            signal.second.disconnect_all_slots();
+        }
     }
     
     
     //  Mouse Events
     
     //See if we care about an event
-    bool Node::hasConnection(const MouseEvent::Type &type)
+    bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        switch (type) {
-            case MouseEvent::Type::DOWN:
-                return mSignalMouseDown.num_slots();
-            case MouseEvent::Type::DOWN_INSIDE:
-                return mSignalMouseDownInside.num_slots();
-            case MouseEvent::Type::MOVE:
-                return mSignalMouseMove.num_slots();
-            case MouseEvent::Type::MOVE_INSIDE:
-                return mSignalMouseMoveInside.num_slots();
-            case MouseEvent::Type::DRAG:
-                return mSignalMouseDrag.num_slots();
-            case MouseEvent::Type::DRAG_INSIDE:
-                return mSignalMouseDragInside.num_slots();
-            case MouseEvent::Type::UP:
-                return mSignalMouseUp.num_slots();
-            case MouseEvent::Type::UP_INSIDE:
-                return mSignalMouseUpInside.num_slots();
+        std::cout << "Num Slots: " << mMouseEventSignals[type].num_slots() << std::endl;
+        if((mMouseEventSignals[type].num_slots() != 0))
+        {
+            return isEligibleForInteractionEvents();
         }
         
         return false;
@@ -768,43 +787,8 @@ namespace po { namespace scene {
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(MouseEvent &event, const MouseEvent::Type &type)
     {
-        //Setup event
-        event.mSource    = shared_from_this();
-        event.mPos       = globalToLocal(event.getWindowPos());
-        event.mScenePos  = getScene()->getRootNode()->globalToLocal(event.getWindowPos());
-        
-        //Emit the Event
-        switch (type) {
-            case MouseEvent::Type::DOWN:
-                mSignalMouseDown(event); break;
-            case MouseEvent::Type::DOWN_INSIDE:
-                mSignalMouseDownInside(event); break;
-            case MouseEvent::Type::MOVE:
-                mSignalMouseMove(event); break;
-            case MouseEvent::Type::MOVE_INSIDE:
-                mSignalMouseMoveInside(event); break;
-            case MouseEvent::Type::DRAG:
-                mSignalMouseDrag(event); break;
-            case MouseEvent::Type::DRAG_INSIDE:
-                mSignalMouseDragInside(event); break;
-            case MouseEvent::Type::UP:
-                mSignalMouseUp(event); break;
-            case MouseEvent::Type::UP_INSIDE:
-                mSignalMouseUpInside(event); break;
-        }
-    }
-    
-    
-    void Node::disconnectMouseSignals()
-    {
-        mSignalMouseDown.disconnect_all_slots();
-        mSignalMouseDownInside.disconnect_all_slots();
-        mSignalMouseMove.disconnect_all_slots();
-        mSignalMouseMoveInside.disconnect_all_slots();
-        mSignalMouseDrag.disconnect_all_slots();
-        mSignalMouseDragInside.disconnect_all_slots();
-        mSignalMouseUp.disconnect_all_slots();
-        mSignalMouseUpInside.disconnect_all_slots();
+        event.setSource(shared_from_this());
+        mMouseEventSignals[type](event);
     }
     
     
@@ -813,61 +797,19 @@ namespace po { namespace scene {
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(TouchEvent &event, const TouchEvent::Type &type)
     {
-        //Setup event
-        event.mSource    = shared_from_this();
-        for(TouchEvent::Touch &touch :event.getTouches()) {
-			touch.mSource	 = shared_from_this();
-        }
-        
-        //Emit the Event
-        switch (type) {
-            case TouchEvent::Type::BEGAN:
-                mSignalTouchesBegan(event); break;
-            case TouchEvent::Type::BEGAN_INSIDE:
-                mSignalTouchesBeganInside(event); break;
-            case TouchEvent::Type::MOVED:
-                mSignalTouchesMoved(event); break;
-            case TouchEvent::Type::MOVED_INSIDE:
-                mSignalTouchesMovedInside(event); break;
-            case TouchEvent::Type::ENDED:
-                mSignalTouchesEnded(event); break;
-            case TouchEvent::Type::ENDED_INSIDE:
-                mSignalTouchesEndedInside(event); break;
-            default:
-                ci::app::console() << "Touch event type " << type << " not found." << std::endl;
-        }
+        event.setSource(shared_from_this());
+        mTouchEventSignals[type](event);
     }
     
     
     //See if we care about an event
-    bool Node::hasConnection(const TouchEvent::Type &type)
+    bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        switch (type) {
-            case TouchEvent::Type::BEGAN:
-                return mSignalTouchesBegan.num_slots();
-            case TouchEvent::Type::BEGAN_INSIDE:
-                return mSignalTouchesBeganInside.num_slots();
-            case TouchEvent::Type::MOVED:
-                return mSignalTouchesMoved.num_slots();
-            case TouchEvent::Type::MOVED_INSIDE:
-                return mSignalTouchesMovedInside.num_slots();
-            case TouchEvent::Type::ENDED:
-                return mSignalTouchesEnded.num_slots();
-            case TouchEvent::Type::ENDED_INSIDE:
-                return mSignalTouchesEndedInside.num_slots();
+        if((mTouchEventSignals[type].num_slots() != 0))
+        {
+            return isEligibleForInteractionEvents();
         }
         
         return false;
-    }
-    
-    
-    void Node::disconnectTouchSignals()
-    {
-        mSignalTouchesBegan.disconnect_all_slots();
-        mSignalTouchesBeganInside.disconnect_all_slots();
-        mSignalTouchesMoved.disconnect_all_slots();
-        mSignalTouchesMovedInside.disconnect_all_slots();
-        mSignalTouchesEnded.disconnect_all_slots();
-        mSignalTouchesEndedInside.disconnect_all_slots();
     }
 } } //  Namespace: po::scene

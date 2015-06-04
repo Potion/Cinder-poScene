@@ -9,13 +9,73 @@
 #include "poTextBox.h"
 
 namespace po { namespace scene {
+    
     TextBoxRef TextBox::create()
     {
         return TextBoxRef(new TextBox());
     }
     
+    TextBoxRef TextBox::create(std::shared_ptr<ci::TextBox> ciTextBox)
+    {
+        return TextBoxRef(new TextBox(ciTextBox));
+    }
+    
     TextBox::TextBox()
-    : mUseTextBounds(true)
+    : mCiTextBox(std::shared_ptr<ci::TextBox>(new ci::TextBox()))
+    , mUseTextBounds(false)
+    {
+    }
+    
+    TextBox::TextBox(std::shared_ptr<ci::TextBox> ciTextBox)
+    : mCiTextBox(ciTextBox)
+    , mUseTextBounds(false)
+    {
+    }
+    
+    void TextBox::draw()
+    {
+        if(mTexture) {
+            if(getAppliedAlpha() == 1) {
+                ci::gl::enableAlphaBlending(true);
+            } else {
+                ci::gl::enableAdditiveBlending();
+            }
+            
+            ci::gl::color(1,1,1, getAppliedAlpha());
+            ci::gl::draw(mTexture);
+        }
+    }
+    
+    void TextBox::render()
+    {
+        mCiTextBox->setPremultiplied(true);
+        mTexture = ci::gl::Texture::create(mCiTextBox->render());
+    }
+    
+    ci::Rectf TextBox::getBounds()
+    {
+            if(mCiTextBox->) {
+                float xPos = 0.0f;
+                switch (mAlign) {
+                    case ci::TextBox::Alignment::LEFT:
+                        xPos = 0; break;
+                    case ci::TextBox::Alignment::CENTER:
+                        xPos = getSize().x/2 - measure().x/2; break;
+                    case ci::TextBox::Alignment::RIGHT:
+                        xPos = getSize().x - measure().x; break;
+                }
+                
+                return ci::Rectf(0,0, measure().x + xPos, measure().y);
+            }
+            else
+                return ci::Rectf(0,0,getSize().x, getSize().y);
+        }
+    }
+    
+    
+    
+    
+    TextBox::TextBox()
     {
         setSize(ci::Vec2f(ci::TextBox::GROW, ci::TextBox::GROW));
     }
@@ -48,11 +108,7 @@ namespace po { namespace scene {
         
         return surface;
     }
-    
-    void TextBox::setSize(ci::Vec2i sz) {
-        setUseTextBounds(false);
-        ci::TextBox::size(sz);
-    }
+
     
     ci::Rectf TextBox::getBounds()
     {
