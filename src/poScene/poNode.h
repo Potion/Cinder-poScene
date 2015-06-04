@@ -17,7 +17,7 @@
 #include "cinder/Exception.h"
 
 #include "poMatrixSet.h"
-#include "poEventCenter.h"
+#include "poEvents.h"
 
 namespace po { namespace scene {
     
@@ -54,6 +54,9 @@ namespace po { namespace scene {
     
     class Shape;
     typedef std::shared_ptr<Shape> ShapeRef;
+    
+    class EventCenter;
+    typedef std::shared_ptr<EventCenter> EventCenterRef;
     
     //Signals
     typedef boost::signals2::signal<void(MouseEvent&)> MouseEventSignal;
