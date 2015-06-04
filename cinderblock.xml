@@ -4,9 +4,9 @@
 		name="poScene" 
 		id="com.potiondesign.poscene"
 		git="git://github.com/Potion/Cinder-poScene.git"
-		author="Potion Design"
-		summary="Potion's Scene Graph for Cinder"
-		license="modbsd"
+		author="Potion Design LLC"
+		summary="Potion's Scene Graph block for Cinder"
+		license="BSD"
 		version="0.1"
 		url="http://www.potiondesign.com"
 		>
@@ -14,31 +14,9 @@
 		<supports os="macosx" />
 		<supports os="msw" />
 
-		<header>src/poScene/poEventCenter.h</header>
-		<source>src/poScene/poEventCenter.cpp</source>
-
-		<header>src/poScene/poEvents.h</header>
-		<source>src/poScene/poEvents.cpp</source>
-
-		<header>src/poScene/poMatrixSet.h</header>
-		<source>src/poScene/poMatrixSet.cpp</source>
-
-		<header>src/poScene/poNode.h</header>
-		<source>src/poScene/poNode.cpp</source>
-
-		<header>src/poScene/poNodeContainer.h</header>
-		<source>src/poScene/poNodeContainer.cpp</source>
-
-		<header>src/poScene/poScene.h</header>
-		<source>src/poScene/poScene.cpp</source>
-
-		<header>src/poScene/poShape.h</header>
-		<source>src/poScene/poShape.cpp</source>
-
-		<header>src/poScene/poTextBox.h</header>
-		<source>src/poScene/poTextBox.cpp</source>
-
-		<header>src/poScene/poTextureFit.h</header>
+		<headerPattern>src/poScene/*.h</headerPattern>
+		<sourcePattern>src/poScene/*.cpp</sourcePattern>
+		<source>src/poScene/poVideo.ipp</source>
 
 		<platform os="macosx">
 			<includePath>src/poScene</includePath>
