@@ -51,8 +51,6 @@ namespace po { namespace scene {
         EventCenter();
         
         //  Event Processor Template Class
-        //  99% of code is the same for Mouse + Touch
-        
         template<typename CiEventT, typename EventT, typename EventTypeT>
         class EventProcessor {
         public:
@@ -117,7 +115,6 @@ namespace po { namespace scene {
         
         // ------------------------------------
         // Mouse Events
-        #pragma mark - Mouse Events -
         
         class MouseEventProcessor
         : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
@@ -143,17 +140,16 @@ namespace po { namespace scene {
         MouseEventProcessor mMouseProcessor;
         
         // Mouse Event Cinder Callbacks
-        virtual void	mouseDown(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN,    event); };
-        virtual void	mouseMove(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE,    event); };
-        virtual void	mouseDrag(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG,    event); };
-        virtual void	mouseUp(ci::app::MouseEvent event)      { mMouseProcessor.addToQueue(MouseEvent::Type::UP,      event); };
-        virtual void	mouseWheel(ci::app::MouseEvent event)   { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL,   event); };
+        void	mouseDown(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN,    event); };
+        void	mouseMove(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE,    event); };
+        void	mouseDrag(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG,    event); };
+        void	mouseUp(ci::app::MouseEvent event)      { mMouseProcessor.addToQueue(MouseEvent::Type::UP,      event); };
+        void	mouseWheel(ci::app::MouseEvent event)   { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL,   event); };
         
         
         
         // ------------------------------------
         // Touch Events
-        #pragma mark - Touch Events -
         
         class TouchEventProcessor
         : public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type>

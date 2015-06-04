@@ -34,7 +34,9 @@
 
 namespace po { namespace scene {
     
-    #pragma mark - Event -
+    // ------------------------------------
+    // Base Event
+    
     Event::Event()
     : mShouldPropagate(false)
     , mWindowPos(0,0)
@@ -63,8 +65,9 @@ namespace po { namespace scene {
     }
     
     
-    #pragma mark - Mouse Event -
-    //Brutal copy-constructor replication...def not fun
+    // ------------------------------------
+    // Mouse Event
+
     MouseEvent::MouseEvent(ci::app::MouseEvent event)
     : mCiEvent(event)
     {
@@ -72,7 +75,9 @@ namespace po { namespace scene {
     }
     
     
-    #pragma mark - Touch Event -
+    // ------------------------------------
+    // Touch Event
+    
     TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event)
     : mCiEvent(event)
     {

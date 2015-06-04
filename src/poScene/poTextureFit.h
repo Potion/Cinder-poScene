@@ -34,8 +34,6 @@
 
 namespace po { namespace scene {
     namespace TextureFit {
-        #pragma message "Should we put this in a Texture or Utils Namespace"
-        
         enum class Type
         {
             NONE=0,

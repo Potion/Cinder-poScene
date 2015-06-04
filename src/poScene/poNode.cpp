@@ -109,9 +109,8 @@ namespace po { namespace scene {
     }
     
     
-    
-    //------------------------------------------------------
-    #pragma mark - Update & Draw Trees -
+    // ------------------------------------
+    // Update & Draw Trees
     
     void Node::updateTree()
     {
@@ -185,8 +184,8 @@ namespace po { namespace scene {
     }
     
     
-    //------------------------------------------------------
-    #pragma mark  - Caching -
+    // ------------------------------------
+    // Caching
     
     void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;

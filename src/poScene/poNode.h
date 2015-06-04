@@ -269,17 +269,13 @@ namespace po { namespace scene {
         ci::Anim<ci::Color> &getFillColorAnim() { return mFillColorAnim; };
         
         
+        // ------------------------------------
+        // Signals
         
-        //------------------
-        //SIGNALS
-        #pragma mark - Signals -
-        
-        //Mouse
         MouseEventSignal& getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
         TouchEventSignal& getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
-        #pragma mark -
         Node(std::string name ="");
         
         void setParent(NodeContainerRef node);
