@@ -16,7 +16,7 @@ class TextBoxApp : public AppNative {
 	void update();
 	void draw();
     
-    po::SceneRef scene;
+    po::scene::SceneRef scene;
 };
 
 void TextBoxApp::setup()
@@ -24,7 +24,7 @@ void TextBoxApp::setup()
     ci::gl::enableAlphaBlending();
     
     poTextBoxAppRef app = poTextBoxApp::create();
-    scene = po::Scene::create(app);
+    scene = po::scene::Scene::create(app);
     
 }
 

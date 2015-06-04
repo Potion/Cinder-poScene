@@ -796,7 +796,6 @@ namespace po { namespace scene {
     //See if we care about an event
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        std::cout << "Num Slots: " << mMouseEventSignals[type].num_slots() << std::endl;
         if((mMouseEventSignals[type].num_slots() != 0))
         {
             return isEligibleForInteractionEvents();

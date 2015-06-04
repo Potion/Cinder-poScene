@@ -34,7 +34,7 @@ namespace po { namespace scene {
     
     TextBoxRef TextBox::create()
     {
-        return TextBoxRef(new TextBox());
+        return TextBoxRef(new TextBox(std::shared_ptr<ci::TextBox>(new ci::TextBox())));
     }
     
     TextBoxRef TextBox::create(std::shared_ptr<ci::TextBox> ciTextBox)
@@ -42,16 +42,11 @@ namespace po { namespace scene {
         return TextBoxRef(new TextBox(ciTextBox));
     }
     
-    TextBox::TextBox()
-    : mCiTextBox(std::shared_ptr<ci::TextBox>(new ci::TextBox()))
-    , mUseTextBounds(false)
-    {
-    }
-    
     TextBox::TextBox(std::shared_ptr<ci::TextBox> ciTextBox)
     : mCiTextBox(ciTextBox)
     , mUseTextBounds(false)
     {
+        render();
     }
     
     void TextBox::draw()
@@ -76,78 +71,26 @@ namespace po { namespace scene {
     
     ci::Rectf TextBox::getBounds()
     {
-            if(mCiTextBox->) {
-                float xPos = 0.0f;
-                switch (mAlign) {
-                    case ci::TextBox::Alignment::LEFT:
-                        xPos = 0; break;
-                    case ci::TextBox::Alignment::CENTER:
-                        xPos = getSize().x/2 - measure().x/2; break;
-                    case ci::TextBox::Alignment::RIGHT:
-                        xPos = getSize().x - measure().x; break;
-                }
-                
-                return ci::Rectf(0,0, measure().x + xPos, measure().y);
-            }
-            else
-                return ci::Rectf(0,0,getSize().x, getSize().y);
-        }
-    }
-    
-    
-    
-    
-    TextBox::TextBox()
-    {
-        setSize(ci::Vec2f(ci::TextBox::GROW, ci::TextBox::GROW));
-    }
-    
-    void TextBox::draw()
-    {
-        if(mTexture) {
-            #pragma message "This needs to be looked at, might affect other stuff"
-            if(getAppliedAlpha() == 1) {
-                ci::gl::enableAlphaBlending(true);
-            } else {
-                ci::gl::enableAdditiveBlending();
-            }
-            
-            ci::gl::color(1,1,1, getAppliedAlpha());
-            ci::gl::draw(mTexture);
-        }
-    }
-    
-    void TextBox::clear() {
-        setText("");
-        mTexture.reset();
-    }
-    
-    ci::Surface TextBox::render()
-    {
-        ci::TextBox::setPremultiplied(true);
-        ci::Surface surface = ci::TextBox::render();
-        mTexture            = ci::gl::Texture::create(surface);
-        
-        return surface;
-    }
-
-    
-    ci::Rectf TextBox::getBounds()
-    {
         if(mUseTextBounds) {
             float xPos = 0.0f;
-            switch (mAlign) {
+            switch (mCiTextBox->getAlignment()) {
                 case ci::TextBox::Alignment::LEFT:
-                    xPos = 0; break;
+                    xPos = 0;
+                    break;
+                    
                 case ci::TextBox::Alignment::CENTER:
-                    xPos = getSize().x/2 - measure().x/2; break;
+                    xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
+                    break;
+                    
                 case ci::TextBox::Alignment::RIGHT:
-                    xPos = getSize().x - measure().x; break;
+                    xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
+                    break;
             }
             
-            return ci::Rectf(0,0, measure().x + xPos, measure().y);
+            return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
         }
-        else
-            return ci::Rectf(0,0,getSize().x, getSize().y);
+        else {
+            return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
+        }
     }
 } } //  Namespace: po::scene

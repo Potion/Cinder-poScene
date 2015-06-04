@@ -10,6 +10,8 @@
 
 #include "poTextBox.h"
 
+using namespace po::scene;
+
 poTextBoxAppRef poTextBoxApp::create() {
     poTextBoxAppRef app(new poTextBoxApp());
     app->setup();
@@ -20,17 +22,20 @@ poTextBoxAppRef poTextBoxApp::create() {
 void poTextBoxApp::setup() {
     std::string text = "Testing Testing Testing TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting TestingTesting Testing";
     
-    po::TextBoxRef t = po::TextBox::create();
+    std::shared_ptr<ci::TextBox> t(new ci::TextBox());
     t->font(ci::Font( "Helvetica", 12 ))
-        .text(text)
-        .size(ci::Vec2f(200,200))
-        .render();
+    .text(text)
+    .size(ci::Vec2f(200,200));
     
-    t->setDrawBounds(true);
-    t->setRotation(45);
+    TextBoxRef tb = TextBox::create(t);
+    
+
+    
+    tb->setDrawBounds(true);
+    tb->setRotation(45);
 	
-    std::cout << t->getWidth() << std::endl;
+    std::cout << tb->getWidth() << std::endl;
     
-    addChild(t);
+    addChild(tb);
 }
 
