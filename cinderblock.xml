@@ -5,9 +5,9 @@
 		id="com.potiondesign.poscene"
 		git="git://github.com/Potion/Cinder-poScene.git"
 		author="Potion Design LLC"
-		summary="Potion's Scene Graph block for Cinder"
-		license="BSD"
-		version="0.1"
+		summary="Potion's Scene Graph block for Cinder."
+		license="BSD New"
+		version="1.0"
 		url="http://www.potiondesign.com"
 		>
 
