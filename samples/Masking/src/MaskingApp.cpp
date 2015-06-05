@@ -12,13 +12,15 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+using namespace po::scene;
+
 class MaskingApp : public AppNative {
   public:
 	void setup();
 	void update();
 	void draw();
     
-    po::SceneRef scene;
+    SceneRef scene;
     
     gl::TextureRef tex;
     gl::TextureRef mask;
@@ -30,7 +32,7 @@ void MaskingApp::setup()
 {
     gl::enableAlphaBlending();
     MaskingRef m = Masking::create();
-    scene = po::Scene::create(m);
+    scene = Scene::create(m);
 }
 
 void MaskingApp::update()

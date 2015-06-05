@@ -28,6 +28,8 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#define GLSL(src) "#version 110\n" #src
+
 #if defined( CINDER_MSW )
 #include <windows.h>
 #undef min
@@ -52,6 +54,42 @@ namespace po { namespace scene {
     
     static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
+    
+    static ci::gl::GlslProgRef mMaskShader = nullptr;
+    
+    static const char *maskVertShader = GLSL(
+        uniform vec2 maskPosition;
+
+        void main()
+        {
+            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;// * vec4(1,-1,1,1);
+            gl_TexCoord[0]  = gl_MultiTexCoord0;
+            gl_TexCoord[1]  = gl_MultiTexCoord1;
+        }
+    );
+    
+    static const char *maskFragShader = GLSL(
+        uniform sampler2D tex;
+        uniform sampler2D mask;
+
+        uniform vec2 contentScale;
+        uniform vec2 maskPosition;
+
+        void main(void)
+        {
+            vec2 c0 = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t);
+            vec2 c1 = (gl_TexCoord[0].st - maskPosition) * contentScale;
+            
+            vec4 rgbValue       = texture2D(tex, c0);
+            vec4 alphaValue     = texture2D(mask, c1);
+            gl_FragColor.rgb    = rgbValue.rgb;
+            if(c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0) {
+                gl_FragColor.a      = alphaValue.r * rgbValue.a;
+            } else {
+                gl_FragColor.a = 0.0;
+            }
+        }
+    );
     
     
     Node::Node(std::string name)
@@ -288,14 +326,14 @@ namespace po { namespace scene {
             mMask->getTexture()->bind(1);
             
             //	Bind Shader
-            mMaskShader.bind();
+            mMaskShader->bind();
             
             //	Set uniforms
-            mMaskShader.uniform("tex", 0);
-            mMaskShader.uniform("mask", 1);
-            mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
+            mMaskShader->uniform("tex", 0);
+            mMaskShader->uniform("mask", 1);
+            mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-            mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
+            mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
             
             //	Draw
             ci::gl::drawSolidRect(mFbo->getBounds());
@@ -303,7 +341,7 @@ namespace po { namespace scene {
             //	Restore everything
             tex.unbind();
             mMask->getTexture()->unbind();
-            mMaskShader.unbind();
+            mMaskShader->unbind();
         }
         
         else {
@@ -387,7 +425,7 @@ namespace po { namespace scene {
             if(!mMaskShader)
             {
                 try {
-                    mMaskShader = ci::gl::GlslProg ( ci::app::loadResource(RES_GLSL_PO_MASK_VERT), ci::app::loadResource( RES_GLSL_PO_MASK_FRAG));
+                    mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
                 } catch (ci::gl::GlslProgCompileExc e) {
                     ci::app::console() << "Could not load shader: " << e.what() << std::endl;
                     return;

@@ -10,7 +10,7 @@ class Masking;
 typedef std::shared_ptr<Masking> MaskingRef;
 
 class Masking
-: public po::NodeContainer
+: public po::scene::NodeContainer
 {
 public:
     static MaskingRef create();
@@ -20,19 +20,19 @@ public:
 //    void _drawTree();
 //    void _drawFbo();
     
-    void setMask(po::ShapeRef mask) { mMask = mask; };
-    void keyDown(po::KeyEvent &event);
+    void setMask(po::scene::ShapeRef mask) { mMask = mask; };
+    void keyDown(ci::app::KeyEvent &event);
     
-    void mouseMove(po::MouseEvent &event);
+    void mouseMove(po::scene::MouseEvent &event);
     
 protected:
     //Masking
-    po::ShapeRef mMask;
+    po::scene::ShapeRef mMask;
     ci::gl::GlslProg    mShader;
     ci::gl::Fbo         mFbo;
     
     ci::Vec2f maskPos;
     float targetPos;
     
-    po::ShapeRef mZach;
+    po::scene::ShapeRef mZach;
 };

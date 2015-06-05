@@ -4,11 +4,10 @@
 #include "poScene.h"
 #include "Resources.h"
 
-using namespace ci;
-using namespace ci::app;
-
 bool bUseFbo = false;
 bool bShowMask = true;
+
+using namespace po::scene;
 
 MaskingRef Masking::create() {
     MaskingRef node(new Masking());
@@ -21,7 +20,7 @@ void Masking::setup() {
     //setPosition(200,50);
     
     ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset(("fish.png"))));
-    mZach = po::Shape::create(texture);
+    mZach = Shape::create(texture);
     //mZach->setTexture(texture, po::TextureFit::Type::EXACT);
 //    mZach->setAlignment(po::Alignment::CENTER_CENTER);
     mZach->setPosition(ci::app::getWindowWidth()/2 - mZach->getHeight()/2, 0);
@@ -32,13 +31,15 @@ void Masking::setup() {
     addChild(mZach);
     
     //Create mask
-    ci::gl::TextureRef maskTex = gl::Texture::create(loadImage(loadAsset("mask.png")));
-    mMask = po::Shape::create(maskTex);
+    ci::gl::TextureRef maskTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("mask.png")));
+    mMask = Shape::create(maskTex);
     //mZach->setMask(mMask);
     mZach->setCacheToFboEnabled(true, 200,200);
     
     mMask->fillColor(ci::Color(1,0,1));
     mMask->setPosition(0,mZach->getHeight());
+    
+    ci::app::getWindow()->connectKeyDown(&Masking::keyDown, this);
     
     //addChild(mMask);
     
@@ -108,16 +109,16 @@ void Masking::update()
 //}
 
 
-void Masking::mouseMove(po::MouseEvent &event)
+void Masking::mouseMove(MouseEvent &event)
 {
-    maskPos = event.getPos() - mMask->getTexture()->getSize()/2;
+    maskPos = event.getLocalPos() - mMask->getTexture()->getSize()/2;
     //std::cout << event.getPos() << std::endl;
     //maskPos = event.getPos() - ci::Vec2f(mMaskTex->getWidth(), mMaskTex->getHeight())/2;
     //std::cout << maskPos << std::endl;
 }
 
 
-void Masking::keyDown(po::KeyEvent &event)
+void Masking::keyDown(ci::app::KeyEvent &event)
 {
     if(event.getChar() == 'm') {
         if(mZach->hasMask()) {
