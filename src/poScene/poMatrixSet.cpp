@@ -67,8 +67,10 @@ namespace po { namespace scene {
 		return ci::Vec2f(p.x, p.y);
 	}
 	
-	//Reimplementation of glm::Project
-	//Based on original function at https://github.com/g-truc/glm/blob/0.9.5/glm/gtc/matrix_transform.inl
+	//
+	//	Reimplementation of glm::Project
+	//	Based on original function at https://github.com/g-truc/glm/blob/0.9.5/glm/gtc/matrix_transform.inl
+	//
 	ci::Vec3f MatrixSet::project(const ci::Vec3f &pt)
 	{
 		ci::Matrix44f a = mProjection * mModelview;
@@ -83,25 +85,27 @@ namespace po { namespace scene {
 		return ci::Vec3f(p.x, p.y, p.z);
 	}
 	
-	//Adapted from code by Paul Houx https://forum.libcinder.org/topic/glu-s-gluunproject-substitute
+	//
+	//	Adapted from code by Paul Houx https://forum.libcinder.org/topic/glu-s-gluunproject-substitute
+	//
 	ci::Vec3f MatrixSet::unproject(const ci::Vec3f &pt)
 	{
-		/* find the inverse modelview-projection-matrix */
+		//	find the inverse modelview-projection-matrix
 		ci::Matrix44f a = mProjection * mModelview;
 		a.invert(0.0f);
 		
-		/* transform to normalized coordinates in the range [-1, 1] */
+		//	transform to normalized coordinates in the range [-1, 1]
 		ci::Vec4f in;
 		in.x = (pt.x - mViewport.getX1()) / mViewport.getWidth() * 2.0f - 1.0f;
 		in.y = (pt.y - mViewport.getY1()) / mViewport.getHeight() * 2.0f - 1.0f;
 		in.z = 2.0f * pt.z - 1.0f;
 		in.w = 1.0f;
 		
-		/* find the object's coordinates */
+		//	find the object's coordinates
 		ci::Vec4f out = a * in;
 		if(out.w != 0.0f) out.w = 1.0f / out.w;
 		
-		/* calculate output */
+		//	calculate output
 		ci::Vec3f result;
 		result.x = out.x * out.w;
 		result.y = out.y * out.w;

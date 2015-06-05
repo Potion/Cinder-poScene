@@ -51,8 +51,8 @@
 
 namespace po { namespace scene {
     
-    static uint32_t OBJECT_UID  = 0;
-    static const int ORIGIN_SIZE   = 2;
+    static uint32_t OBJECT_UID		= 0;
+    static const int ORIGIN_SIZE	= 2;
     
     static ci::gl::GlslProgRef mMaskShader = nullptr;
     
@@ -61,7 +61,7 @@ namespace po { namespace scene {
 
         void main()
         {
-            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;// * vec4(1,-1,1,1);
+            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;	//	* vec4(1,-1,1,1);
             gl_TexCoord[0]  = gl_MultiTexCoord0;
             gl_TexCoord[1]  = gl_MultiTexCoord1;
         }
@@ -89,6 +89,7 @@ namespace po { namespace scene {
             }
         }
     );
+	
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
@@ -129,7 +130,7 @@ namespace po { namespace scene {
     ,   mHasScene(false)
     ,   mHasParent(false)
     {
-        //Initialize our animations
+        //	Initialize our animations
         initAttrAnimations();
     }
     
@@ -143,21 +144,22 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Update & Draw Trees
+    //------------------------------------
+    //	Update & Draw Trees
+		#pragma mark - Update & Draw Trees
+	//------------------------------------
     
     void Node::updateTree()
     {
-        //Update our tween tie-in animations
+        //	Update our tween tie-in animations
         updateAttributeAnimations();
         
         if(mIsMasked) mMask->updateTree();
         
-        //Call our update function
+        //	Call our update function
         update();
     }
-    
-    
+	
     void Node::beginDrawTree()
     {
         //	Update our draw order
@@ -174,8 +176,7 @@ namespace po { namespace scene {
         ci::gl::pushModelView();
         setTransformation();
     }
-    
-    
+	
     void Node::drawTree()
     {
         if(mVisible) {
@@ -197,18 +198,16 @@ namespace po { namespace scene {
             finishDrawTree();
         }
     }
-    
-    
+	
     void Node::finishDrawTree()
     {
-        //Draw bounds if necessary
+        //	Draw bounds if necessary
         if(mDrawBounds) drawBounds();
         
-        //Pop our Matrix
+        //	Pop our Matrix
         ci::gl::popModelView();
     }
-    
-    
+	
     void Node::matrixTree()
     {
         beginDrawTree();
@@ -216,8 +215,10 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Caching
+    //------------------------------------
+    //	Caching
+		#pragma mark - Caching
+	//------------------------------------
     
     void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
@@ -225,7 +226,7 @@ namespace po { namespace scene {
         if(mCacheToFbo) {
             createFbo(width, height);
         } else {
-            //Clear the fbo
+            //	Clear the fbo
 			resetFbo();
         }
     }
@@ -237,14 +238,14 @@ namespace po { namespace scene {
         if(mFbo) resetFbo();
 
         try {
-            //Create the FBO
+            //	Create the FBO
             ci::gl::Fbo::Format format;
             format.setSamples(1);
             format.setColorInternalFormat(GL_RGBA);
             format.enableDepthBuffer(false);
             mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(width, height, format));
         } catch (ci::gl::FboException) {
-            //The main reason for failure is too big of a buffer
+            //	The main reason for failure is too big of a buffer
             ci::app::console() << "po::Scene: Couldn't create FBO, please provide valid dimensions for your graphics card." << std::endl;
             mCacheToFbo = false;
             return false;
@@ -254,8 +255,9 @@ namespace po { namespace scene {
         return true;
     }
     
-    
+    //
     //	Bind the FBO and draw our heirarchy into it
+	//
     void Node::captureFbo()
     {
         //	Save the window buffer
@@ -298,8 +300,9 @@ namespace po { namespace scene {
         setVisible(visible);
     }
     
-    
+    //
     //	Draw the fbo
+	//
     void Node::drawFbo()
     {
         //	The fbo has premultiplied alpha, so we draw at full color
@@ -312,7 +315,6 @@ namespace po { namespace scene {
         
         if(mIsMasked) {
             //	Use masking shader to draw FBO with mask
-            
             //	Bind the fbo and mask texture
             tex.bind(0);
             mMask->getTexture()->bind(1);
@@ -340,40 +342,41 @@ namespace po { namespace scene {
         }
     }
     
-    
+    //
     //	Cache to FBO and return the texture
+	//
     ci::gl::TextureRef Node::createTexture()
     {
-        //Save caching state
+        //	Save caching state
         bool alreadyCaching = mCacheToFbo;
         
-        //If we're not already caching, generate texture with FBO 
+        //	If we're not already caching, generate texture with FBO
         if(!alreadyCaching) createFbo(getWidth(), getHeight());
         
-        //Check to make sure we could create the fbo
+        //	Check to make sure we could create the fbo
         if(!mFbo) return nullptr;
         
-        //Capture the fbo
+        //	Capture the fbo
         ci::gl::clear();
         captureFbo();
         
-        //Save a ref to the texture
+        //	Save a ref to the texture
         ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo->getTexture()));
         
-        //Return caching state
+        //	Return caching state
         mCacheToFbo = alreadyCaching;
         
-        //Clean up if we're not caching
+        //	Clean up if we're not caching
 		if (!mCacheToFbo) resetFbo();
         
-        //Return the texture
+        //	Return the texture
         return tex;
     }
     
-
+	//
 	//	Reset the FBO with Cinder bug fix
 	//	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
-    
+    //
     void Node::resetFbo()
 	{
         GLuint depthTextureId = 0;
@@ -384,8 +387,7 @@ namespace po { namespace scene {
 				depthTextureId = mFbo->getDepthTexture().getId();
 			}
         }
-        
-        
+		
         //  Reset the FBO
         mFbo.reset();
         
@@ -394,21 +396,23 @@ namespace po { namespace scene {
             glDeleteTextures(1, &depthTextureId);
         }
 	}
-    
-    
-    
-    
-    //------------------------------------------------------
-    //  Masking
-    
+	
+	
+    //------------------------------------
+    //	Masking
+		#pragma mark - Masking
+	//------------------------------------
+	
+	//
 	//	Apply the mask (as a shaperef)
+	//
     void Node::setMask(ShapeRef mask)
     {
-        //Try to cache to FBO
+        //	Try to cache to FBO
         setCacheToFboEnabled(true, mask->getWidth(), mask->getHeight());
         
         if(mFbo) {
-            //If successful, try to build the shader
+            //	If successful, try to build the shader
             if(!mMaskShader) {
                 try {
                     mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
@@ -418,15 +422,16 @@ namespace po { namespace scene {
                 }
             }
             
-            //Set our vars
+            //	Set our vars
             mMask       = mask;
             mIsMasked   = true;
             mCacheToFbo = true;
         }
     }
-    
-    
+	
+	//
     //	Remove the mask, and stop caching to FBO unless requested
+	//
     ShapeRef Node::removeMask(bool andStopCaching)
     {
         mIsMasked = false;
@@ -440,14 +445,16 @@ namespace po { namespace scene {
         mMask.reset();
         return mask;
     }
+
     
-    
-    
-    
-    //------------------------------------------------------
-    //  Attributes
-    
+    //------------------------------------
+    //	Attributes
+		#pragma mark - Attributes
+	//------------------------------------
+	
+	//
 	//	Set the position
+	//
     void Node::setPosition(float x, float y)
     {
         mPositionAnim.stop();
@@ -456,9 +463,10 @@ namespace po { namespace scene {
         mPositionAnim.ptr()->set(mPosition);
         mFrameDirty = true;
     }
-    
-    
+	
+	//
     //	Set the scale
+	//
     void Node::setScale(float x, float y)
     {
         mScaleAnim.stop();
@@ -470,8 +478,9 @@ namespace po { namespace scene {
         mBoundsDirty    = true;
     }
     
-    
+    //
     //	Set the rotation
+	//
     void Node::setRotation(float rotation)
     {
         mRotationAnim.stop();
@@ -483,8 +492,9 @@ namespace po { namespace scene {
         mBoundsDirty    = true;
     }
     
-    
+    //
     //	Set the alpha
+	//
     void Node::setAlpha(float alpha)
     {
         mAlphaAnim.stop();
@@ -493,8 +503,9 @@ namespace po { namespace scene {
         mAlphaAnim = mAlpha;
     }
     
-    
+    //
     //	Offset the whole node from the origin
+	//
     void Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
@@ -502,13 +513,14 @@ namespace po { namespace scene {
         mOffsetAnim.ptr()->set(mOffset);
         mFrameDirty = true;
         
-        //If we are manually setting the offset, we can't have alignment
+		//	If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
     }
     
-    
+    //
     //	Check if we are visible, and up the scene graph
 	//	Somewhat slow, could be better implementation (i.e. parents set a var on their children like "parentIsVisible")
+	//
     bool Node::isVisible()
     {
         if(!mVisible) return false;
@@ -523,15 +535,15 @@ namespace po { namespace scene {
         return true;
     }
     
-    
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Animation
+		#pragma mark - Animation
+	//------------------------------------
     
     void Node::initAttrAnimations()
     {
-        //Initialize the isComplete() method of each tween
+        //	Initialize the isComplete() method of each tween
         mPositionAnim.stop();
         mScaleAnim.stop();
         mRotationAnim.stop();
@@ -539,14 +551,14 @@ namespace po { namespace scene {
         mAlphaAnim.stop();
         mFillColorAnim.stop();
     }
-    
-    
+	
+	//
+	//	TODO: Find a better way to do this, probably some sort of map of active properties.
+	//
     void Node::updateAttributeAnimations()
 	{
-        #pragma message "There has got to be a way better way to do this, probably some sort of map of active properties."
-        
-        //See if a tween is in progress, if so we want to use that value
-        //Setting an attribute calls stop(), so that will override this
+        //	See if a tween is in progress, if so we want to use that value
+        //	Setting an attribute calls stop(), so that will override this
         if(!mPositionAnim.isComplete())     mUpdatePositionFromAnim     = true;
         if(!mScaleAnim.isComplete())        mUpdateScaleFromAnim        = true;
         if(!mRotationAnim.isComplete())     mUpdateRotationFromAnim     = true;
@@ -554,7 +566,7 @@ namespace po { namespace scene {
         if(!mOffsetAnim.isComplete())       mUpdateOffsetFromAnim       = true;
         if(!mFillColorAnim.isComplete())    mUpdateFillColorFromAnim    = true;
         
-        //Update Anims if we care
+        //	Update Anims if we care
         if(mUpdatePositionFromAnim)     mPosition       = mPositionAnim;
         if(mUpdateScaleFromAnim)        mScale          = mScaleAnim;
         if(mUpdateRotationFromAnim)     mRotation       = mRotationAnim;
@@ -563,11 +575,11 @@ namespace po { namespace scene {
         if(mUpdateFillColorFromAnim)    mFillColor      = mFillColorAnim;
     }
     
-    
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Alignment
+		#pragma mark - Alignment
+	//------------------------------------
     
     void Node::setAlignment(Alignment alignment)
     {
@@ -612,11 +624,11 @@ namespace po { namespace scene {
         }
     }
     
-    
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Transformation
+		#pragma mark - Transformation
+	//------------------------------------
     
     void Node::setTransformation()
     {
@@ -648,8 +660,7 @@ namespace po { namespace scene {
     {
         return node->windowToLocal(localToWindow(point));
     }
-    
-    
+	
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         SceneRef scene = getScene();
@@ -686,14 +697,12 @@ namespace po { namespace scene {
         
         return ci::Vec2f();
     }
-    
-    
+	
     ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint)
     {
         return mMatrix.globalToLocal(windowPoint);
     }
-    
-    
+	
     ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
     {
         if(mHasScene) {
@@ -703,23 +712,21 @@ namespace po { namespace scene {
         return ci::Vec2f();
     }
     
-    
-    //------------------------------------------------------
-    //  Point Inside
+    //
     //  This is used for hit-testing all Nodes
     //  Override this function to do any type of custom
-    
+    //
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {
         ci::Vec2f pos = localize ? windowToLocal(point) : point;
         return getBounds().contains(pos);
     }
+
     
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Parent + Scene
+		#pragma mark - Parent + Scene
+	//------------------------------------
     
     void Node::setScene(SceneRef sceneRef) {
         mScene = sceneRef;
@@ -728,19 +735,16 @@ namespace po { namespace scene {
         if(hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
-    
     SceneRef Node::getScene()
     {
         return mScene.lock();
     }
-    
-    
+	
     bool Node::hasScene()
     {
         return mHasScene;
     }
-    
-    
+	
     void Node::removeScene()
     {
         SceneRef scene = mScene.lock();
@@ -748,61 +752,55 @@ namespace po { namespace scene {
         mScene.reset();
         mHasScene = false;
     }
-    
-    
+	
     void Node::setParent(NodeContainerRef containerNode)
     {
         mParent = containerNode;
         mHasParent = mParent.lock() ? true : false;
     }
-    
-    
+	
     NodeContainerRef Node::getParent() const {
         return mParent.lock();
     }
-    
-    
+	
     bool Node::hasParent()
     {
         return mHasParent;
     }
-    
-    
+	
     void Node::removeParent() {
         mParent.reset();
         mHasParent = false;
     }
+	
     
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Dimensions
+		#pragma mark - Dimensions
+	//------------------------------------
     
     ci::Rectf Node::getBounds()
     {
-        //Reset Bounds
+        //	Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         return bounds;
     }
-    
-    
+	
     void Node::drawBounds()
     {
         ci::gl::color(mBoundsColor);
         
-        //Draw bounding box
+        //	Draw bounding box
         ci::gl::drawStrokedRect(getBounds());
         
-        //Draw origin
+        //	Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
         ci::gl::scale(ci::Vec2f(1.f,1.f) / mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
-    
-    
+	
     ci::Rectf Node::getFrame()
     {
 //        if(bFrameDirty) {
@@ -819,21 +817,21 @@ namespace po { namespace scene {
 //        }
         return mFrame;
     }
+	
     
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Events
-    
+		#pragma mark - Events
+	//------------------------------------
+	
+	//
     //  General
+	//
     
     bool Node::isEligibleForInteractionEvents()
     {
         if( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
-        
         return true;
-
     }
     
     void Node::disconnectAllSignals()
@@ -846,40 +844,51 @@ namespace po { namespace scene {
             signal.second.disconnect_all_slots();
         }
     }
-    
-    
+	
+	
+	//------------------------------------
     //  Mouse Events
-    
-    //See if we care about an event
+		#pragma mark - Mouse Events
+	//------------------------------------
+	
+	//
+    //	See if we care about an event
+	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
         if((mMouseEventSignals[type].num_slots() != 0)) {
             return isEligibleForInteractionEvents();
         }
-        
         return false;
     }
     
-    
-    //For the given event, notify everyone that we have as a subscriber
+    //
+    //	For the given event, notify everyone that we have as a subscriber
+	//
     void Node::emitEvent(MouseEvent &event, const MouseEvent::Type &type)
     {
         event.setSource(shared_from_this());
         mMouseEventSignals[type](event);
     }
     
-    
+	
+	//------------------------------------
     //  Touch Events
-    
-    //For the given event, notify everyone that we have as a subscriber
+		#pragma mark - Touch Events
+	//------------------------------------
+	
+	//
+    //	For the given event, notify everyone that we have as a subscriber
+	//
     void Node::emitEvent(TouchEvent &event, const TouchEvent::Type &type)
     {
         event.setSource(shared_from_this());
         mTouchEventSignals[type](event);
     }
-    
-    
-    //See if we care about an event
+	
+	//
+    //	See if we care about an event
+	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
         if((mTouchEventSignals[type].num_slots() != 0)) {

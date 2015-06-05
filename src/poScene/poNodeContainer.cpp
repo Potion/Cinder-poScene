@@ -53,11 +53,11 @@ namespace po { namespace scene {
         removeAllChildren();
     }
     
-    
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Scene
+		#pragma mark - Scene
+	//------------------------------------
     
     void NodeContainer::setScene(SceneRef scene)
     {
@@ -76,11 +76,16 @@ namespace po { namespace scene {
     }
     
     
-    //------------------------------------------------------
+    //------------------------------------
     //  Children
-    
+		#pragma mark - Children
+	//------------------------------------
+	
+	//
     //  Add Children
-
+		#pragma mark - Add Children
+	//
+	
     void NodeContainer::addChild(NodeRef node)
     {
         setParentAndScene(node);
@@ -122,9 +127,12 @@ namespace po { namespace scene {
         setAlignment(getAlignment());
         calculateMatrices();
     }
-    
+	
+	//
     //  Get Children
-    
+		#pragma mark - Get Children
+    //
+	
     std::deque<NodeRef> NodeContainer::getChildren()
     {
         return mChildren;
@@ -157,7 +165,7 @@ namespace po { namespace scene {
     
     NodeRef NodeContainer::getChildByUID(uint32_t uid)
     {
-        //Go through our tree to find any node with UID
+        //	Go through our tree to find any node with UID
         for(NodeRef& node : mChildren) {
             NodeContainerRef container = std::dynamic_pointer_cast<NodeContainer>(node);
             if(container) {
@@ -168,10 +176,10 @@ namespace po { namespace scene {
             }
         }
         
-        //See if it is us
+        //	See if it is us
         if(mUid == uid) return shared_from_this();
             
-        //Not found
+        //	Not found
         return NodeRef();
     }
     
@@ -198,8 +206,10 @@ namespace po { namespace scene {
         return mChildren.back();
     }
     
-    
+    //
     //  Remove Children
+		#pragma mark - Remove Children
+	//
     
     void NodeContainer::removeChild(NodeRef node)
     {
@@ -244,8 +254,10 @@ namespace po { namespace scene {
         mChildren.clear();
     }
     
-    
+    //
     //  Move Children
+		#pragma mark - Move Children
+	//
     
     void NodeContainer::moveChildToFront(NodeRef node)
     {
@@ -283,24 +295,26 @@ namespace po { namespace scene {
     
     void NodeContainer::setParentAndScene(NodeRef node)
     {
-        //See if the node is already a child of another node.
+        //	See if the node is already a child of another node.
         if(node->getParent()) node->getParent()->removeChild(node);
         
-        //Assign ourselves as the parent
+        //	Assign ourselves as the parent
         node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
         node->setScene(mScene.lock());
     }
     
     
-    //------------------------------------------------------
+    //------------------------------------
     //  Update + Draw
+		#pragma mark - Update + Draw
+	//------------------------------------
 
     void NodeContainer::updateTree()
     {
         Node::updateTree();
         
-        //We have to copy the children, because if any of the update loops remove children
-        //The vector is screwed (invalidated)
+        //	We have to copy the children, because if any of the update loops remove children
+        //	The vector is screwed (invalidated)
         std::deque<NodeRef> children(mChildren);
         
 		for(NodeRef &childNode : children) {
@@ -321,14 +335,15 @@ namespace po { namespace scene {
         Node::drawFbo();
     }
 
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Dimensions
+		#pragma mark - Dimensions
+	//------------------------------------
 
     ci::Rectf NodeContainer::getBounds()
     {
-        //Reset Bounds
+        //	Reset Bounds
         ci::Rectf bounds = ci::Rectf(0,0,0,0);
         
         for(NodeRef &childNode : mChildren) {
@@ -337,12 +352,13 @@ namespace po { namespace scene {
             
         return bounds;
     }
+	
     
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Interaction
+		#pragma mark - Interaction
+	//------------------------------------
+	
     bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
         for (const NodeRef &node : mChildren) {
@@ -352,14 +368,12 @@ namespace po { namespace scene {
         
         return false;
     }
+	
     
-    
-    
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Matrices/Dimensions
+		#pragma mark - Matrices/Dimensions
+	//------------------------------------
     
     void NodeContainer::matrixTree() {
         beginDrawTree();

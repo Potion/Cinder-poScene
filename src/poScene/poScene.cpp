@@ -38,8 +38,7 @@ namespace po { namespace scene {
     {
         return create(NodeContainer::create());
     }
-    
-    
+	
     SceneRef Scene::create(NodeContainerRef rootNode)
     {
         SceneRef scene(new Scene(rootNode));
@@ -62,7 +61,7 @@ namespace po { namespace scene {
     
     void Scene::update()
     {
-        //Send a copy of all over our children to be processed
+        //	Send a copy of all over our children to be processed
         //processTrackingQueue();
         eventCenter->processEvents(allChildren);
         
@@ -96,8 +95,10 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Child Node Tracking
+    //------------------------------------
+    //	Child Node Tracking
+		#pragma mark - Child Node Tracking
+	//------------------------------------
     
     void Scene::trackChildNode(NodeRef node) {
         if(node) {

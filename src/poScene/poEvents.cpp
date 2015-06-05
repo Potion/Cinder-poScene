@@ -34,8 +34,10 @@
 
 namespace po { namespace scene {
     
-    // ------------------------------------
-    // Base Event
+    //------------------------------------
+    //	Base Event
+		#pragma mark - Base Event
+	//------------------------------------
     
     Event::Event()
     : mShouldPropagate(false)
@@ -64,8 +66,10 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Mouse Event
+    //------------------------------------
+    //	Mouse Event
+		#pragma mark - Mouse Event
+	//------------------------------------
 
     MouseEvent::MouseEvent(ci::app::MouseEvent event)
     : mCiEvent(event)
@@ -74,8 +78,10 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Touch Event
+    //------------------------------------
+    //	Touch Event
+		#pragma mark - Touch Event
+	//------------------------------------
     
     TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event)
     : mCiEvent(event)

@@ -80,8 +80,6 @@ namespace po { namespace scene { namespace TextureFit {
 		return offset;
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
 	{
 		for(uint32_t i = 0; i < points.size(); i++) {
@@ -91,8 +89,6 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
 	{
 		ci::Vec2f max(FLT_MIN, FLT_MIN);
@@ -114,8 +110,6 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static void textureFitHorizontal(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
 	{
 		float new_w = rect.getWidth();
@@ -140,8 +134,6 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static void textureFitVertical(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
 	{
 		float new_h = rect.getHeight();
@@ -166,8 +158,6 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static void fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
 	{
 		switch(fit) {
@@ -198,8 +188,6 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	
-	//------------------------------------------------------------------------
 	static std::vector<ci::Vec2f> fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align)
 	{
 		std::vector<ci::Vec2f> coords(4);

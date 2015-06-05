@@ -59,16 +59,14 @@ namespace po { namespace scene {
 		
         void setup();
         void update();
-        
         void draw();
         
     private:
-        //Movie and texture refs
+        //	Movie and texture refs
         std::shared_ptr<T> mMovieRef;
 		
     };
-    
-    
+	
     //  Class Implementation
     template<class T>
     std::shared_ptr<Video<T> > Video<T>::create()
@@ -77,8 +75,7 @@ namespace po { namespace scene {
         ref->setup();
         return ref;
     }
-    
-    
+	
     template<class T>
     std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef)
 	{
@@ -87,24 +84,20 @@ namespace po { namespace scene {
         ref->setMovieRef(movieRef);
         return ref;
     }
-    
-    
+	
     template<class T>
     void Video<T>::setup() {}
-    
-    
+	
     template<class T>
     void Video<T>::update() {}
-    
-    
+	
     template<class T>
     ci::Rectf Video<T>::getBounds()
     {
         if(mMovieRef != nullptr) return mMovieRef->getBounds();
         return ci::Rectf(0,0,0,0);
     }
-    
-    
+	
     template<class T>
     void Video<T>::draw()
     {
@@ -114,7 +107,7 @@ namespace po { namespace scene {
         }
     }
     
-    //Template ref and GL ref
+    //	Template ref and GL ref
     template<class T> using VideoRef = std::shared_ptr<Video<T> >;
     
     typedef Video<ci::qtime::MovieGl> VideoGl;

@@ -25,18 +25,6 @@
 			<includePath>src/poScene</includePath>
 		</platform>
 
-		<resource
-            name="RES_GLSL_PO_MASK_VERT"
-            type="IMAGE"
-            id="128"
-            >resources/poSceneResources/shaders/poMask_vert.glsl</resource>
-
-		<resource
-            name="RES_GLSL_PO_MASK_FRAG"
-            type="IMAGE"
-            id="129"
-            >resources/poSceneResources/shaders/poMask_frag.glsl</resource>
-
 	</block>
 
 	<template>templates/Basic poScene/template.xml</template>

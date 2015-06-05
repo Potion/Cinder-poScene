@@ -38,11 +38,12 @@ namespace po { namespace scene {
     ShapeRef Shape::create()
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
-
         return s;
     }
-    
-    //Texture/Image
+	
+	//
+    //	Texture/Image
+	//
     ShapeRef Shape::create(ci::gl::TextureRef texture)
     {
         ShapeRef s = Shape::create();
@@ -50,8 +51,9 @@ namespace po { namespace scene {
         return s;
     }
     
-    
-    //Rect
+    //
+    //	Rect
+	//
     ShapeRef Shape::createRect(float width, float height)
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
@@ -62,7 +64,7 @@ namespace po { namespace scene {
         shape.lineTo(width,height);
         shape.lineTo(0,height);
         shape.close();
-        
+		
         s->setCiShape2d(shape);
         
         return s;
@@ -72,22 +74,24 @@ namespace po { namespace scene {
     {
         return createRect(size, size);
     }
-    
-    //Ellipse
+	
+	//
+    //	Ellipse
+	//
     ShapeRef Shape::createEllipse(float width, float height)
     {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
-        //Adapted from http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
+        //	Adapted from http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
         float kappa = .5522848;
         float x = 0;
         float y = 0;
-        float ox = (width / 2) * kappa; // control point offset horizontal
-        float oy = (height / 2) * kappa; // control point offset vertical
-        float xe = x + width;           // x-end
-        float ye = y + height;           // y-end
-        float xm = x + width / 2;       // x-middle
-        float ym = y + height / 2;       // y-middle
+        float ox = (width / 2) * kappa;		//	control point offset horizontal
+        float oy = (height / 2) * kappa;	//	control point offset vertical
+        float xe = x + width;				//	x-end
+        float ye = y + height;				//	y-end
+        float xm = x + width / 2;			//	x-middle
+        float ym = y + height / 2;			//	y-middle
         
         ci::Shape2d shape;
         
@@ -107,8 +111,7 @@ namespace po { namespace scene {
     {
         return createEllipse(size, size);
     }
-    
-    
+	
     Shape::Shape()
     :   mPrecision(100)
     ,   mTextureFitType(TextureFit::Type::NONE)
@@ -138,13 +141,14 @@ namespace po { namespace scene {
             if(mTexture) mTexture->disable();
         }
         
-        //Draw stroke
-        //NOT IMPLEMENTED
+        //	TODO: Draw stroke
     }
     
     
-    // ------------------------------------
-    // Texture
+    //------------------------------------
+    //	Texture
+		#pragma mark - Texture
+	//------------------------------------
     
     void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment)
 	{
@@ -152,7 +156,7 @@ namespace po { namespace scene {
         mTextureFitType     = fit;
         mTextureAlignment   = alignment;
         
-        //If we don't have an underlying shape, set it from the texture
+        //	If we don't have an underlying shape, set it from the texture
         if(!mCiShape2d.getNumContours()) {
             mCiShape2d.moveTo(0,0);
             mCiShape2d.lineTo(texture->getWidth(), 0);
@@ -179,20 +183,22 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Rendering
+    //------------------------------------
+    //	Rendering
+		#pragma mark - Rendering
+	//------------------------------------
 
     void Shape::render()
     {
-        //Create Mesh
+        //	Create Mesh
         ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
         
         if(mTexture) {
-            //Get the texture coords
+            //	Get the texture coords
             std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
             TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             
-            //Check to see if texture is flipped, common if coming from FBO
+            //	Check to see if texture is flipped, common if coming from FBO
             if(mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
             
             if(mTextureOffset != ci::Vec2f(0,0)) {
@@ -203,17 +209,19 @@ namespace po { namespace scene {
                 }
             }
             
-            //Add coords to TriMesh
+            //	Add coords to TriMesh
             mesh.appendTexCoords(&texCoords[0], texCoords.size());
         }
         
-        //Create VBO Mesh
+        //	Create VBO Mesh
         mVboMesh = ci::gl::VboMesh::create(mesh);
     }
     
     
-    // ------------------------------------
-    // Dimensions
+    //------------------------------------
+    //	Dimensions
+		#pragma mark - Dimensions
+	//------------------------------------
     
     bool Shape::pointInside(const ci::Vec2f &point, bool localize)
     {
