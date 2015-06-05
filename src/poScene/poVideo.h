@@ -46,8 +46,8 @@ namespace po { namespace scene {
         typedef std::shared_ptr<T> GenericMovieRef;
         
     public:
-        static std::shared_ptr<Video<T> > create();
-        static std::shared_ptr<Video<T> > create(GenericMovieRef movieRef);
+        static std::shared_ptr< Video<T> > create();
+        static std::shared_ptr< Video<T> > create(GenericMovieRef movieRef);
         
         void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
         GenericMovieRef getMovieRef()               { return mMovieRef; };
@@ -69,17 +69,17 @@ namespace po { namespace scene {
 	
     //  Class Implementation
     template<class T>
-    std::shared_ptr<Video<T> > Video<T>::create()
+    std::shared_ptr< Video<T> > Video<T>::create()
 	{
-        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
+        std::shared_ptr< Video<T> > ref = std::shared_ptr< Video<T> >(new Video());
         ref->setup();
         return ref;
     }
 	
     template<class T>
-    std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef)
+    std::shared_ptr< Video<T> > Video<T>::create(GenericMovieRef movieRef)
 	{
-        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
+        std::shared_ptr< Video<T> > ref = std::shared_ptr< Video<T> >(new Video());
         ref->setup();
         ref->setMovieRef(movieRef);
         return ref;
@@ -108,7 +108,7 @@ namespace po { namespace scene {
     }
     
     //	Template ref and GL ref
-    template<class T> using VideoRef = std::shared_ptr<Video<T> >;
+    template<class T> using VideoRef = std::shared_ptr< Video<T> >;
     
     typedef Video<ci::qtime::MovieGl> VideoGl;
     typedef std::shared_ptr<VideoGl> VideoGlRef;

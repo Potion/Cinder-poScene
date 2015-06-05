@@ -47,9 +47,9 @@ namespace po { namespace scene {
 		
 	void MatrixSet::set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport)
 	{
-		mModelview     = modelview;
-		mProjection    = projection;
-		mViewport      = viewport;
+		mModelview = modelview;
+		mProjection = projection;
+		mViewport = viewport;
 	}
 	
 	ci::Vec2f MatrixSet::globalToLocal(const ci::Vec2f &point)

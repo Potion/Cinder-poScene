@@ -78,7 +78,7 @@ namespace po { namespace scene {
                     xPos = 0;
                     break;
                 case ci::TextBox::Alignment::CENTER:
-                    xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
+                    xPos = mCiTextBox->getSize().x / 2 - mCiTextBox->measure().x / 2;
                     break;
                 case ci::TextBox::Alignment::RIGHT:
                     xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;

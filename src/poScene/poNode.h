@@ -261,7 +261,7 @@ namespace po { namespace scene {
         TouchEventSignal &getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
-        Node(std::string name ="");
+        Node(std::string name = "");
         
         void setParent(NodeContainerRef node);
         void removeParent();

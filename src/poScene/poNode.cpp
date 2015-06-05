@@ -83,7 +83,7 @@ namespace po { namespace scene {
             vec4 alphaValue     = texture2D(mask, c1);
             gl_FragColor.rgb    = rgbValue.rgb;
             if ( c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0 ) {
-                gl_FragColor.a      = alphaValue.r * rgbValue.a;
+                gl_FragColor.a = alphaValue.r * rgbValue.a;
             } else {
                 gl_FragColor.a = 0.0;
             }
@@ -264,7 +264,7 @@ namespace po { namespace scene {
         ci::gl::SaveFramebufferBinding binding;
         
         //	Save our matrix
-        ci::Area v  = ci::gl::getViewport();
+        ci::Area v = ci::gl::getViewport();
         
         //	We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
@@ -473,8 +473,8 @@ namespace po { namespace scene {
         mUpdateScaleFromAnim = false;
         mScale.set(x, y);
         mScaleAnim.ptr()->set(mScale);
-        mFrameDirty     = true;
-        mBoundsDirty    = true;
+        mFrameDirty = true;
+        mBoundsDirty = true;
     }
     
     //
@@ -486,8 +486,8 @@ namespace po { namespace scene {
         mUpdateRotationFromAnim = false;
         mRotation = rotation;
         mRotationAnim = rotation;
-        mFrameDirty     = true;
-        mBoundsDirty    = true;
+        mFrameDirty = true;
+        mBoundsDirty = true;
     }
     
     //

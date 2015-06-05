@@ -157,8 +157,7 @@ namespace po { namespace scene {
     
     NodeRef NodeContainer::getChildByIndex(int index)
     {
-        if (index < 0 || index >= mChildren.size())
-            return NodeRef();
+        if ( index < 0 || index >= mChildren.size() ) return NodeRef();
         return *(mChildren.begin() + index);
     }
     

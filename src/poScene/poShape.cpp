@@ -231,7 +231,7 @@ namespace po { namespace scene {
     ci::Rectf Shape::getBounds()
     {
         //if (mBoundsDirty) {
-            mBounds       = mCiShape2d.calcBoundingBox();
+            mBounds = mCiShape2d.calcBoundingBox();
             //mBoundsDirty = false;
         //}
         
