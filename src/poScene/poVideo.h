@@ -112,8 +112,6 @@ namespace po { namespace scene {
             ci::gl::draw(mMovieRef->getTexture());
         }
     }
-
-    
     
     //Template ref and GL ref
     template<class T> using VideoRef = std::shared_ptr<Video<T> >;

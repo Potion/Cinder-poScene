@@ -33,6 +33,7 @@
 #include "poNode.h"
 
 namespace po { namespace scene {
+	
     class Image;
     typedef std::shared_ptr<Image> ImageRef;
     
@@ -54,4 +55,4 @@ namespace po { namespace scene {
         ci::gl::TextureRef mTexture;
     };
 
-} } //  Namespace: po::scene
+} } //  namespace po::scene

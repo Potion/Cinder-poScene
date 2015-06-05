@@ -410,6 +410,7 @@ namespace po { namespace scene {
         : public ci::Exception
         {
         };
+		
     };
 	
 } } //  namespace po::scene
