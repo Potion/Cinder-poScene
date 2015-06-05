@@ -32,7 +32,6 @@
 
 #include "poNodeContainer.h"
 #include "poEventCenter.h"
-
 #include "cinder/Camera.h"
 
 namespace po { namespace scene {

@@ -31,20 +31,19 @@
 #define GLSL(src) "#version 110\n" #src
 
 #if defined( CINDER_MSW )
-#include <windows.h>
-#undef min
-#undef max
-#include <gl/gl.h>
+	#include <windows.h>
+	#undef min
+	#undef max
+	#include <gl/gl.h>
 #elif defined( CINDER_COCOA_TOUCH )
-#include <OpenGLES/ES1/gl.h>
-#include <OpenGLES/ES1/glext.h>
+	#include <OpenGLES/ES1/gl.h>
+	#include <OpenGLES/ES1/glext.h>
 #elif defined( CINDER_MAC )
-#include <OpenGL/gl.h>
+	#include <OpenGL/gl.h>
 #endif
 
 #include "cinder/CinderMath.h"
 #include "Resources.h"
-
 #include "poNode.h"
 #include "poNodeContainer.h"
 #include "poShape.h"

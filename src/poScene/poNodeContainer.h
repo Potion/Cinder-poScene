@@ -34,7 +34,7 @@
 
 namespace po { namespace scene {
 		
-	///Create NodeContainerRef typedef
+	//	Create NodeContainerRef typedef
 	class NodeContainer;
 	typedef std::shared_ptr<NodeContainer> NodeContainerRef;
 	
@@ -48,7 +48,7 @@ namespace po { namespace scene {
 		
 		~NodeContainer();
 		
-		//  Children
+		//	Children
 		static const int INVALID_INDEX = -1;
 		
 		int getNumChildren() { return mChildren.size(); };
@@ -57,7 +57,6 @@ namespace po { namespace scene {
 		void addChildAt(int index, NodeRef node);
 		void addChildBefore(NodeRef before, NodeRef node);
 		void addChildAfter(NodeRef after, NodeRef node);
-		
 		
 		std::deque<NodeRef> getChildren();
 		std::deque<NodeRef> &getChildrenByReference();
@@ -81,7 +80,7 @@ namespace po { namespace scene {
 		void moveChildBackward(NodeRef node);
 		void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
 		
-		//  Bounds
+		//	Bounds
 		virtual ci::Rectf getBounds();
 
 		//  Interaction
@@ -114,9 +113,10 @@ namespace po { namespace scene {
 		
 	};
 	
-	//
+	//------------------------------------
 	//  Exceptions
-	//
+		#pragma mark - Exceptions
+	//------------------------------------
 	
 	class NodeContainerException
 	: public ci::Exception

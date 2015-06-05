@@ -31,9 +31,7 @@
 #pragma once
 
 #include "poNode.h"
-
 #include "boost/any.hpp"
-
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/qtime/QuickTime.h"

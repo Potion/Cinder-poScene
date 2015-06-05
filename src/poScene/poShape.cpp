@@ -31,7 +31,6 @@
 #include "cinder/TriMesh.h"
 #include "cinder/Triangulate.h"
 #include "cinder/gl/Texture.h"
-
 #include "poShape.h"
 
 namespace po { namespace scene {

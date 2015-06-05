@@ -29,10 +29,8 @@
 */
 
 #include "cinder/app/App.h"
-
 #include "poScene.h"
 #include "poNodeContainer.h"
-
 
 namespace po { namespace scene {
 	
