@@ -18,9 +18,9 @@ using namespace po::scene;
 using namespace std::placeholders;
 
 TestNodeRef TestNode::create() {
-    TestNodeRef t = TestNodeRef(new TestNode());
-    t->setup();
-    return t;
+    TestNodeRef ref = TestNodeRef(new TestNode());
+    ref->setup();
+    return ref ;
 }
 
 void TestNode::setup()
