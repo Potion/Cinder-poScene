@@ -67,7 +67,7 @@ namespace po { namespace scene {
         
         mRootNode->updateTree();
         
-        if (mAutoCam) mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
+        if (mAutoCam) mCamera.setOrtho(0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1);
     }
     
     void Scene::draw()

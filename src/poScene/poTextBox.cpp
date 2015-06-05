@@ -58,7 +58,7 @@ namespace po { namespace scene {
                 ci::gl::enableAdditiveBlending();
             }
             
-            ci::gl::color(1,1,1, getAppliedAlpha());
+            ci::gl::color(1, 1, 1, getAppliedAlpha());
             ci::gl::draw(mTexture);
         }
     }
@@ -85,9 +85,9 @@ namespace po { namespace scene {
                     break;
             }
             
-            return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
+            return ci::Rectf(0, 0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
         } else {
-            return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
+            return ci::Rectf(0, 0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
         }
     }
 	

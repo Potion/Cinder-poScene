@@ -136,7 +136,7 @@ namespace po { namespace scene {
         bool isInteractionEnabled() { return mInteractionEnabled; };
         
         //	Hit Testing & Transformation
-        virtual bool pointInside(const ci::Vec2f    &point, bool localize=true);
+        virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
         
         ci::Vec2f nodeToLocal(const ci::Vec2f &point, NodeRef node);
         ci::Vec2f localToNode(const ci::Vec2f &point, NodeRef node);
@@ -164,14 +164,14 @@ namespace po { namespace scene {
         std::string getName() { return mName; }
         
         //	Position
-        virtual Node &position(float x, float y) { setPosition(x,y); return *this; }
+        virtual Node &position(float x, float y) { setPosition(x, y); return *this; }
         virtual Node &position(ci::Vec2f position) { return this->position(position.x, position.y); }
         void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
         void setPosition(float x, float y);
         ci::Vec2f getPosition() { return mPosition; };
         
         //	Scale
-        Node &scale(float x, float y) { setScale(x,y); return *this; }
+        Node &scale(float x, float y) { setScale(x, y); return *this; }
         Node &scale(ci::Vec2f scale) { return this->scale(scale.x, scale.y); }
         void setScale(ci::Vec2f scale) { setScale(scale.x, scale.y); };
         void setScale(float x, float y);

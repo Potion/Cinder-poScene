@@ -95,7 +95,7 @@ namespace po { namespace scene {
     ci::Rectf Video<T>::getBounds()
     {
         if (mMovieRef != nullptr) return mMovieRef->getBounds();
-        return ci::Rectf(0,0,0,0);
+        return ci::Rectf(0, 0, 0, 0);
     }
 	
     template<class T>

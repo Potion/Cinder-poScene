@@ -59,10 +59,10 @@ namespace po { namespace scene {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
         ci::Shape2d shape;
-        shape.moveTo(0,0);
-        shape.lineTo(width,0);
-        shape.lineTo(width,height);
-        shape.lineTo(0,height);
+        shape.moveTo(0, 0);
+        shape.lineTo(width, 0);
+        shape.lineTo(width, height);
+        shape.lineTo(0, height);
         shape.close();
 		
         s->setCiShape2d(shape);
@@ -112,10 +112,10 @@ namespace po { namespace scene {
     }
 	
     Shape::Shape()
-    :   mPrecision(100)
-    ,   mTextureFitType(TextureFit::Type::NONE)
-    ,   mTextureAlignment(Alignment::TOP_LEFT)
-    ,   mTextureOffset(0,0)
+    : mPrecision(100)
+    , mTextureFitType(TextureFit::Type::NONE)
+    , mTextureAlignment(Alignment::TOP_LEFT)
+    , mTextureOffset(0, 0)
     {
     }
     
@@ -157,10 +157,10 @@ namespace po { namespace scene {
         
         //	If we don't have an underlying shape, set it from the texture
         if (!mCiShape2d.getNumContours()) {
-            mCiShape2d.moveTo(0,0);
+            mCiShape2d.moveTo(0, 0);
             mCiShape2d.lineTo(texture->getWidth(), 0);
             mCiShape2d.lineTo(texture->getWidth(), texture->getHeight());
-            mCiShape2d.lineTo(0,texture->getHeight());
+            mCiShape2d.lineTo(0, texture->getHeight());
             mCiShape2d.close();
         }
         
@@ -200,7 +200,7 @@ namespace po { namespace scene {
             //	Check to see if texture is flipped, common if coming from FBO
             if (mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
             
-            if (mTextureOffset != ci::Vec2f(0,0)) {
+            if (mTextureOffset != ci::Vec2f(0, 0)) {
                 ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
                 ci::app::console() << normalizedOffset << std::endl;
                 for (auto &coord : texCoords) {

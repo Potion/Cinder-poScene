@@ -107,7 +107,7 @@ namespace po { namespace scene {
     void NodeContainer::addChildAt(int index, NodeRef node)
     {
         setParentAndScene(node);
-        mChildren.insert(mChildren.begin()+index, node);
+        mChildren.insert(mChildren.begin() + index, node);
         setAlignment(getAlignment());
         calculateMatrices();
     }
@@ -123,7 +123,7 @@ namespace po { namespace scene {
     void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
     {
         setParentAndScene(node);
-        mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
+        mChildren.insert(mChildren.begin() + getChildIndex(after) + 1, node);
         setAlignment(getAlignment());
         calculateMatrices();
     }
@@ -151,8 +151,7 @@ namespace po { namespace scene {
     int NodeContainer::getChildIndex(const NodeRef &child)
     {
         std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
-        if (iter != mChildren.end())
-            return (int)std::distance(mChildren.begin(), iter);
+        if (iter != mChildren.end()) return (int)std::distance(mChildren.begin(), iter);
         return INVALID_INDEX;
     }
     
@@ -342,8 +341,8 @@ namespace po { namespace scene {
     ci::Rectf NodeContainer::getBounds()
     {
         //	Reset Bounds
-        ci::Rectf bounds = ci::Rectf(0,0,0,0);
-        
+		ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
+		
         for (NodeRef &childNode : mChildren) {
 			if (childNode->mVisible) bounds.include(childNode->getFrame());
 		}

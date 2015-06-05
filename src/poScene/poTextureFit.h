@@ -36,7 +36,7 @@ namespace po { namespace scene { namespace TextureFit {
 		
 	enum class Type
 	{
-		NONE=0,
+		NONE = 0,
 		EXACT,
 		WIDTH,
 		HEIGHT,
@@ -85,7 +85,7 @@ namespace po { namespace scene { namespace TextureFit {
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / rect.getWidth();
 			float t = (points[i].y - rect.getY1()) / rect.getHeight();
-			coords[i].set(s,t);
+			coords[i].set(s, t);
 		}
 	}
 	
@@ -98,7 +98,7 @@ namespace po { namespace scene { namespace TextureFit {
 			float t = (points[i].y - rect.getY1()) / tex->getHeight();
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			coords[i].set(s,t);
+			coords[i].set(s, t);
 		}
 		
 		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
@@ -123,7 +123,7 @@ namespace po { namespace scene { namespace TextureFit {
 			coords[i].set(s,t);
 		}
 		
-		ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
+		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
 		for (uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
@@ -142,10 +142,10 @@ namespace po { namespace scene { namespace TextureFit {
 			float t = (points[i].y - rect.getY1()) / rect.getHeight();
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			coords[i].set(s,t);
+			coords[i].set(s, t);
 		}
 		
-		ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
+		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
 		for (uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;

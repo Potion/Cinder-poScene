@@ -61,7 +61,7 @@ namespace po { namespace scene {
 
         void main()
         {
-            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;	//	* vec4(1,-1,1,1);
+            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;	//	* vec4(1, -1, 1, 1);
             gl_TexCoord[0]  = gl_MultiTexCoord0;
             gl_TexCoord[1]  = gl_MultiTexCoord1;
         }
@@ -95,22 +95,22 @@ namespace po { namespace scene {
     , mName(name)
     , mDrawOrder(0)
     , mPosition(0.f, 0.f)
-    , mScale(1.f,1.f)
+    , mScale(1.f, 1.f)
     , mRotation(0)
     , mOffset(0.f,0.f)
     , mAlpha(1.f)
     , mAppliedAlpha(1.f)
-    , mPositionAnim(ci::Vec2f(0.f,0.f))
-    , mScaleAnim(ci::Vec2f(1.f,1.f))
+    , mPositionAnim(ci::Vec2f(0.f, 0.f))
+    , mScaleAnim(ci::Vec2f(1.f, 1.f))
     , mRotationAnim(0)
-    , mOffsetAnim(ci::Vec2f(0.f,0.f))
+    , mOffsetAnim(ci::Vec2f(0.f, 0.f))
     , mAlphaAnim(1.f)
     , mAlignment(Alignment::TOP_LEFT)
     , mMatrixOrder(MatrixOrder::TRS)
-    , mFillColor(1.f,1.f,1.f)
-    , mFillColorAnim(ci::Color(1.f,1.f,1.f))
+    , mFillColor(1.f, 1.f, 1.f)
+    , mFillColorAnim(ci::Color(1.f, 1.f, 1.f))
     , mFillEnabled(true)
-    , mStrokeColor(255,255,255)
+    , mStrokeColor(255, 255, 255)
     , mStrokeEnabled(false)
     , mUpdatePositionFromAnim(false)
     , mUpdateScaleFromAnim(false)
@@ -119,7 +119,7 @@ namespace po { namespace scene {
     , mUpdateAlphaFromAnim(false)
     , mUpdateFillColorFromAnim(false)
     , mDrawBounds(false)
-    , mBoundsColor(1.f,0,0)
+    , mBoundsColor(1.f, 0, 0)
     , mBoundsDirty(true)
     , mFrameDirty(true)
     , mVisible(true)
@@ -584,7 +584,7 @@ namespace po { namespace scene {
         
         if (mAlignment == Alignment::NONE) return;
         if (mAlignment == Alignment::TOP_LEFT)  {
-            mOffset.set(0,0);
+            mOffset.set(0, 0);
             return;
         }
         
@@ -595,28 +595,28 @@ namespace po { namespace scene {
             case Alignment::TOP_LEFT:
                 break;
             case Alignment::TOP_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f,0);
+                mOffset.set(-bounds.getWidth() / 2.f, 0);
 				break;
             case Alignment::TOP_RIGHT:
-                mOffset.set(-bounds.getWidth(),0);
+                mOffset.set(-bounds.getWidth(), 0);
 				break;
             case Alignment::CENTER_LEFT:
-                mOffset.set(0,-bounds.getHeight() / 2.f);
+                mOffset.set(0, -bounds.getHeight() / 2.f);
 				break;
             case Alignment::CENTER_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f,-bounds.getHeight() / 2.f);
+                mOffset.set(-bounds.getWidth() / 2.f, -bounds.getHeight() / 2.f);
 				break;
             case Alignment::CENTER_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight() / 2.f);
+                mOffset.set(-bounds.getWidth(), -bounds.getHeight() / 2.f);
 				break;
             case Alignment::BOTTOM_LEFT:
-                mOffset.set(0,-bounds.getHeight());
+                mOffset.set(0, -bounds.getHeight());
 				break;
             case Alignment::BOTTOM_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f,-bounds.getHeight());
+                mOffset.set(-bounds.getWidth() / 2.f, -bounds.getHeight());
 				break;
             case Alignment::BOTTOM_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight());
+                mOffset.set(-bounds.getWidth(), -bounds.getHeight());
 				break;
         }
     }
@@ -753,7 +753,7 @@ namespace po { namespace scene {
     ci::Rectf Node::getBounds()
     {
         //	Reset Bounds
-        ci::Rectf bounds = ci::Rectf(0,0,0,0);
+        ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
         return bounds;
     }
 	
@@ -767,7 +767,7 @@ namespace po { namespace scene {
         //	Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
-        ci::gl::scale(ci::Vec2f(1.f,1.f) / mScale);
+        ci::gl::scale(ci::Vec2f(1.f, 1.f) / mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
