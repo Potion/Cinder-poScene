@@ -31,52 +31,93 @@
 #pragma once
 
 #include "poNode.h"
+
 #include "boost/any.hpp"
+
 #include "cinder/app/AppBasic.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/qtime/QuickTime.h"
 
-namespace po {
-	namespace scene {
-		
-		template<class T>
-		
-		class Video
-		: public Node
-		{
-			
-		private:
-			typedef std::shared_ptr<T> GenericMovieRef;
-			
-		public:
-			static std::shared_ptr< Video<T> > create();
-			static std::shared_ptr< Video<T> > create(GenericMovieRef movieRef);
-			
-			void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
-			GenericMovieRef getMovieRef()               { return mMovieRef; };
-			
-			ci::Rectf getBounds();
-			
-		protected:
-			Video() {};
-			
-			void setup();
-			void update();
-			void draw();
-			
-		private:
-			//Movie and texture refs
-			std::shared_ptr<T> mMovieRef;
-			
-		};
-		
-		//Template ref and GL ref
-		template<class T> using VideoRef = std::shared_ptr< Video<T> >;
-		
-		typedef Video<ci::qtime::MovieGl> VideoGl;
-		typedef std::shared_ptr<VideoGl> VideoGlRef;
-		
-	}
-} // Namespace: po::scene
+namespace po { namespace scene {
+    template<class T>
+    class Video
+    : public po::Node {
+        
+    private:
+        typedef std::shared_ptr<T> GenericMovieRef;
+        
+    public:
+        static std::shared_ptr<Video<T> > create();
+        static std::shared_ptr<Video<T> > create(GenericMovieRef movieRef);
+        
+        void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
+        GenericMovieRef getMovieRef()               { return mMovieRef; };
+        
+        ci::Rectf getBounds();
+        
+    protected:
+        Video() {}
+        
+        void setup();
+        void update();
+        
+        void draw();
+        
+    private:
+        //Movie and texture refs
+        std::shared_ptr<T> mMovieRef;
+    };
+    
+    
+    //  Class Implementation
+    template<class T>
+    std::shared_ptr<Video<T> > Video<T>::create() {
+        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
+        ref->setup();
+        return ref;
+    }
+    
+    
+    template<class T>
+    std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef) {
+        std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
+        ref->setup();
+        ref->setMovieRef(movieRef);
+        return ref;
+    }
+    
+    
+    template<class T>
+    void Video<T>::setup() {}
+    
+    
+    template<class T>
+    void Video<T>::update() {}
+    
+    
+    template<class T>
+    ci::Rectf Video<T>::getBounds()
+    {
+        if(mMovieRef != nullptr) return mMovieRef->getBounds();
+        return ci::Rectf(0,0,0,0);
+    }
+    
+    
+    template<class T>
+    void Video<T>::draw()
+    {
+        if(mMovieRef != nullptr && mMovieRef->getTexture()) {
+            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
+            ci::gl::draw(mMovieRef->getTexture());
+        }
+    }
 
+    
+    
+    //Template ref and GL ref
+    template<class T> using VideoRef = std::shared_ptr<Video<T> >;
+    
+    typedef Video<ci::qtime::MovieGl> VideoGl;
+    typedef std::shared_ptr<VideoGl> VideoGlRef;
+} } //  Namespace: po::scene
 #include "poVideo.ipp"

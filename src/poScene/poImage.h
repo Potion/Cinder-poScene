@@ -26,61 +26,32 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
-#include "poEvents.h"
+#pragma once
+
 #include "poNode.h"
-#include "poScene.h"
 
 namespace po { namespace scene {
+    class Image;
+    typedef std::shared_ptr<Image> ImageRef;
     
-    // ------------------------------------
-    // Base Event
-    
-    Event::Event()
-    : mShouldPropagate(false)
-    , mWindowPos(0,0)
+    class Image
+    : public Node
     {
-    }
-    
-    ci::Vec2f Event::getScenePos()
-    {
-        NodeRef source = getSource();
-        if(source) {
-            return source->windowToScene(getWindowPos());
-        }
+    public:
+        static ImageRef create();
+        static ImageRef create(ci::gl::TextureRef texture);
         
-        return getWindowPos();
-    }
-    
-    ci::Vec2f Event::getLocalPos()
-    {
-        NodeRef source = getSource();
-        if(source)
-        {
-            return source->windowToLocal(getWindowPos());
-        }
+        void draw();
+        void setTexture(ci::gl::TextureRef texture) { mTexture = texture; }
+        ci::gl::TextureRef getTexture() { return mTexture; }
         
-        return getWindowPos();
-    }
-    
-    
-    // ------------------------------------
-    // Mouse Event
+    protected:
+        Image(ci::gl::TextureRef texture);
+        
+    private:
+        ci::gl::TextureRef mTexture;
+    };
 
-    MouseEvent::MouseEvent(ci::app::MouseEvent event)
-    : mCiEvent(event)
-    {
-        mWindowPos = event.getPos();
-    }
-    
-    
-    // ------------------------------------
-    // Touch Event
-    
-    TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event)
-    : mCiEvent(event)
-    {
-        mWindowPos = event.getPos();
-    }
 } } //  Namespace: po::scene

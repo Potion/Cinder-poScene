@@ -28,6 +28,8 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#pragma once
+
 #include "cinder/Area.h"
 #include "cinder/Matrix.h"
 #include "cinder/Camera.h"

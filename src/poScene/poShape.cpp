@@ -35,7 +35,6 @@
 #include "poShape.h"
 
 namespace po { namespace scene {
-    #pragma mark - Create -
     
     ShapeRef Shape::create()
     {
@@ -111,7 +110,6 @@ namespace po { namespace scene {
     }
     
     
-    #pragma mark - Shape -
     Shape::Shape()
     :   mPrecision(100)
     ,   mTextureFitType(TextureFit::Type::NONE)
@@ -123,14 +121,12 @@ namespace po { namespace scene {
     Shape::~Shape() {
     }
     
-    #pragma mark - ci::Shape2d -
     void Shape::setCiShape2d(ci::Shape2d shape)
     {
         mCiShape2d = shape;
         render();
     }
     
-    #pragma mark - Drawing -
     void Shape::draw()
     {
         //Draw fill
@@ -143,9 +139,13 @@ namespace po { namespace scene {
         }
         
         //Draw stroke
+        //NOT IMPLEMENTED
     }
     
-    #pragma mark - Texture -
+    
+    // ------------------------------------
+    // Texture
+    
     void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment) {
         mTexture            = texture;
         mTextureFitType     = fit;
@@ -178,7 +178,8 @@ namespace po { namespace scene {
     }
     
     
-    #pragma mark - Rendering -
+    // ------------------------------------
+    // Rendering
 
     void Shape::render()
     {
@@ -212,7 +213,10 @@ namespace po { namespace scene {
         mVboMesh = ci::gl::VboMesh::create(mesh);
     }
     
-    #pragma mark - Dimensions -
+    
+    // ------------------------------------
+    // Dimensions
+    
     bool Shape::pointInside(const ci::Vec2f &point, bool localize)
     {
         ci::Vec2f pos = localize ? windowToLocal(point) : point;
