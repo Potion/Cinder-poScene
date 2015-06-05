@@ -122,5 +122,3 @@ namespace po { namespace scene {
     typedef std::shared_ptr<VideoGl> VideoGlRef;
 	
 } } //  namespace po::scene
-
-#include "poVideo.ipp"
