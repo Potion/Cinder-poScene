@@ -91,7 +91,6 @@ namespace po { namespace scene {
         friend class Scene;
         friend class NodeContainer;
         friend class EventCenter;
-        
         friend class ci::gl::Texture;
         
     public:
@@ -101,12 +100,12 @@ namespace po { namespace scene {
         //SETUP
         //Use this to do non-initializing construction of your object, add children, add events, etc.
         //Since we're using shared_ptr's the constructor is a bit worthless, we can't call shared_from_this() or get a shared pointer to "this"
-        virtual void setup()    {};
+        virtual void setup() {};
         
         //------------------
         //UPDATE/DRAW
         //These are called automatically when your node is in the scene
-        virtual void update()   {};
+        virtual void update() {};
         virtual void draw() = 0;
         
         //------------------
@@ -409,5 +408,7 @@ namespace po { namespace scene {
         : public ci::Exception
         {
         };
+		
     };
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

@@ -32,6 +32,7 @@
 #include "poScene.h"
 
 namespace po { namespace scene {
+	
     NodeContainerRef NodeContainer::create(std::string name)
     {
         return std::shared_ptr<NodeContainer>(new NodeContainer(name));
@@ -385,4 +386,5 @@ namespace po { namespace scene {
             matrixTree();
         }
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

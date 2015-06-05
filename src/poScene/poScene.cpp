@@ -35,6 +35,7 @@
 
 
 namespace po { namespace scene {
+	
     SceneRef Scene::create()
     {
         return create(NodeContainer::create());
@@ -142,4 +143,5 @@ namespace po { namespace scene {
         
         mTrackingQueue.clear();
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

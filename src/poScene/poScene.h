@@ -36,6 +36,7 @@
 #include "cinder/Camera.h"
 
 namespace po { namespace scene {
+	
     //Forward declare node
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
@@ -96,5 +97,7 @@ namespace po { namespace scene {
         
         void processTrackingQueue();
         std::map<NodeRef, bool> mTrackingQueue;
+		
     };
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

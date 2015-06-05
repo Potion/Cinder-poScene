@@ -16,7 +16,6 @@
 
 		<headerPattern>src/poScene/*.h</headerPattern>
 		<sourcePattern>src/poScene/*.cpp</sourcePattern>
-		<source>src/poScene/poVideo.ipp</source>
 
 		<platform os="macosx">
 			<includePath>src/poScene</includePath>

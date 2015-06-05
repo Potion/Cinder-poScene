@@ -52,12 +52,14 @@ namespace po { namespace scene {
         
         //  Event Processor Template Class
         template<typename CiEventT, typename EventT, typename EventTypeT>
+		
         class EventProcessor {
         public:
             //EventProcessor();
             void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
             
-            void processEvents(std::vector<NodeRef> &nodes) {
+            void processEvents(std::vector<NodeRef> &nodes)
+			{
                 //Go through the queue
                 for(auto& eventQueue : mQueue) {
                     //Get the type for this item in the std::map
@@ -76,7 +78,8 @@ namespace po { namespace scene {
             }
             
         protected:
-            void notifyAllNodes(std::vector<NodeRef> &nodes, EventT event, const EventTypeT &type) {
+            void notifyAllNodes(std::vector<NodeRef> &nodes, EventT event, const EventTypeT &type)
+			{
                 for(NodeRef &node : nodes) {
                     //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
                     if(node == nullptr || (!node->isEligibleForInteractionEvents())) {
@@ -108,6 +111,7 @@ namespace po { namespace scene {
             }
             
             std::map<EventTypeT, std::vector<CiEventT> > mQueue;
+			
         };
         
         
@@ -135,6 +139,7 @@ namespace po { namespace scene {
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);
             }
+			
         };
         
         MouseEventProcessor mMouseProcessor;
@@ -156,7 +161,8 @@ namespace po { namespace scene {
         {
         public:
             //  Needs to break about grouped touches from Cinder
-            void addToQueue(TouchEvent::Type type, ci::app::TouchEvent event) {
+            void addToQueue(TouchEvent::Type type, ci::app::TouchEvent event)
+			{
                 for(auto &ciTouch : event.getTouches()) {
                     mQueue[type].push_back(ciTouch);
                 }
@@ -178,6 +184,7 @@ namespace po { namespace scene {
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);
             }
+			
         };
         
         TouchEventProcessor mTouchProcessor;
@@ -186,7 +193,7 @@ namespace po { namespace scene {
         void touchesBegan(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
         void touchesMoved(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
         void touchesEnded(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
+		
     };
     
-    
-} } //  Namespace: po::scene
+} } //  namespace po::scene

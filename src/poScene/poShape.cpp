@@ -118,7 +118,8 @@ namespace po { namespace scene {
     {
     }
     
-    Shape::~Shape() {
+    Shape::~Shape()
+	{
     }
     
     void Shape::setCiShape2d(ci::Shape2d shape)
@@ -146,7 +147,8 @@ namespace po { namespace scene {
     // ------------------------------------
     // Texture
     
-    void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment) {
+    void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment)
+	{
         mTexture            = texture;
         mTextureFitType     = fit;
         mTextureAlignment   = alignment;
@@ -232,4 +234,5 @@ namespace po { namespace scene {
         
         return mBounds;
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene
