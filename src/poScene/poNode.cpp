@@ -83,7 +83,7 @@ namespace po { namespace scene {
             vec4 rgbValue       = texture2D(tex, c0);
             vec4 alphaValue     = texture2D(mask, c1);
             gl_FragColor.rgb    = rgbValue.rgb;
-            if(c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0) {
+            if( c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0 ) {
                 gl_FragColor.a      = alphaValue.r * rgbValue.a;
             } else {
                 gl_FragColor.a = 0.0;
@@ -165,11 +165,12 @@ namespace po { namespace scene {
         if(hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //	Set applied alpha
-        if(hasParent())
+		if(hasParent()) {
             mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
-        else
+		} else {
             mAppliedAlpha = mAlpha;
-        
+		}
+		
         //	Push our Matrix
         ci::gl::pushModelView();
         setTransformation();
@@ -180,9 +181,7 @@ namespace po { namespace scene {
     {
         if(mVisible) {
             //  Capture FBO if we need to
-            if(mCacheToFbo) {
-                captureFbo();
-            }
+            if(mCacheToFbo) captureFbo();
             
             //  Draw
             beginDrawTree();
@@ -204,8 +203,7 @@ namespace po { namespace scene {
     void Node::finishDrawTree()
     {
         //Draw bounds if necessary
-        if(mDrawBounds)
-            drawBounds();
+        if(mDrawBounds) drawBounds();
         
         //Pop our Matrix
         ci::gl::popModelView();
@@ -237,9 +235,7 @@ namespace po { namespace scene {
     //	Generate a new fbo
     bool Node::createFbo(int width, int height)
     {
-        if(mFbo) {
-			resetFbo();
-        }
+        if(mFbo) resetFbo();
 
         try {
             //Create the FBO
@@ -339,9 +335,7 @@ namespace po { namespace scene {
             tex.unbind();
             mMask->getTexture()->unbind();
             mMaskShader->unbind();
-        }
-        
-        else {
+        } else {
             //	Just draw the fbo
             ci::gl::draw(tex, mFbo->getBounds());
         }
@@ -355,9 +349,7 @@ namespace po { namespace scene {
         bool alreadyCaching = mCacheToFbo;
         
         //If we're not already caching, generate texture with FBO 
-        if(!alreadyCaching) {
-            createFbo(getWidth(), getHeight());
-        }
+        if(!alreadyCaching) createFbo(getWidth(), getHeight());
         
         //Check to make sure we could create the fbo
         if(!mFbo) return nullptr;
@@ -373,9 +365,7 @@ namespace po { namespace scene {
         mCacheToFbo = alreadyCaching;
         
         //Clean up if we're not caching
-		if (!mCacheToFbo) {
-			resetFbo();
-		}
+		if (!mCacheToFbo) resetFbo();
         
         //Return the texture
         return tex;
@@ -390,7 +380,7 @@ namespace po { namespace scene {
         GLuint depthTextureId = 0;
         
         //  Get the id of depth texture
-		if (mCacheToFbo && mFbo != nullptr) {
+		if ( mCacheToFbo && mFbo != nullptr ) {
 			if (mFbo->getDepthTexture()) {
 				depthTextureId = mFbo->getDepthTexture().getId();
 			}
@@ -420,8 +410,7 @@ namespace po { namespace scene {
         
         if(mFbo) {
             //If successful, try to build the shader
-            if(!mMaskShader)
-            {
+            if(!mMaskShader) {
                 try {
                     mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
                 } catch (ci::gl::GlslProgCompileExc e) {
@@ -527,8 +516,7 @@ namespace po { namespace scene {
         
         NodeRef parent = getParent();
         while(parent) {
-            if(!parent->mVisible)
-                return false;
+            if(!parent->mVisible) return false;
         
             parent = parent->getParent();
         }
@@ -599,21 +587,29 @@ namespace po { namespace scene {
             case Alignment::TOP_LEFT:
                 break;
             case Alignment::TOP_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,0); break;
+                mOffset.set(-bounds.getWidth() / 2.f,0);
+				break;
             case Alignment::TOP_RIGHT:
-                mOffset.set(-bounds.getWidth(),0); break;
+                mOffset.set(-bounds.getWidth(),0);
+				break;
             case Alignment::CENTER_LEFT:
-                mOffset.set(0,-bounds.getHeight()/2.f); break;
+                mOffset.set(0,-bounds.getHeight() / 2.f);
+				break;
             case Alignment::CENTER_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
+                mOffset.set(-bounds.getWidth() / 2.f,-bounds.getHeight() / 2.f);
+				break;
             case Alignment::CENTER_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight() / 2.f);
+				break;
             case Alignment::BOTTOM_LEFT:
-                mOffset.set(0,-bounds.getHeight()); break;
+                mOffset.set(0,-bounds.getHeight());
+				break;
             case Alignment::BOTTOM_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
+                mOffset.set(-bounds.getWidth() / 2.f,-bounds.getHeight());
+				break;
             case Alignment::BOTTOM_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight()); break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight());
+				break;
         }
     }
     
@@ -631,7 +627,6 @@ namespace po { namespace scene {
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
                 break;
-                
             case MatrixOrder::RST:
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
@@ -803,8 +798,8 @@ namespace po { namespace scene {
         //Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
-        ci::gl::scale(ci::Vec2f(1.f,1.f)/mScale);
-        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
+        ci::gl::scale(ci::Vec2f(1.f,1.f) / mScale);
+        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
     
@@ -836,12 +831,7 @@ namespace po { namespace scene {
     
     bool Node::isEligibleForInteractionEvents()
     {
-        if(!hasScene() ||
-           !isInteractionEnabled() ||
-           !isVisible())
-        {
-            return false;
-        }
+        if( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
         
         return true;
 
@@ -864,8 +854,7 @@ namespace po { namespace scene {
     //See if we care about an event
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if((mMouseEventSignals[type].num_slots() != 0))
-        {
+        if((mMouseEventSignals[type].num_slots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         
@@ -894,8 +883,7 @@ namespace po { namespace scene {
     //See if we care about an event
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if((mTouchEventSignals[type].num_slots() != 0))
-        {
+        if((mTouchEventSignals[type].num_slots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         
