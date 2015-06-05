@@ -82,7 +82,7 @@ namespace po { namespace scene {
             vec4 rgbValue       = texture2D(tex, c0);
             vec4 alphaValue     = texture2D(mask, c1);
             gl_FragColor.rgb    = rgbValue.rgb;
-            if( c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0 ) {
+            if ( c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0 ) {
                 gl_FragColor.a      = alphaValue.r * rgbValue.a;
             } else {
                 gl_FragColor.a = 0.0;
@@ -154,7 +154,7 @@ namespace po { namespace scene {
         //	Update our tween tie-in animations
         updateAttributeAnimations();
         
-        if(mIsMasked) mMask->updateTree();
+        if (mIsMasked) mMask->updateTree();
         
         //	Call our update function
         update();
@@ -163,10 +163,10 @@ namespace po { namespace scene {
     void Node::beginDrawTree()
     {
         //	Update our draw order
-        if(hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
+        if (hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //	Set applied alpha
-		if(hasParent()) {
+		if (hasParent()) {
             mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
 		} else {
             mAppliedAlpha = mAlpha;
@@ -179,14 +179,14 @@ namespace po { namespace scene {
 	
     void Node::drawTree()
     {
-        if(mVisible) {
+        if (mVisible) {
             //  Capture FBO if we need to
-            if(mCacheToFbo) captureFbo();
+            if (mCacheToFbo) captureFbo();
             
             //  Draw
             beginDrawTree();
             
-            if(!mCacheToFbo) {
+            if (!mCacheToFbo) {
                 draw();
             } else {
                 //  This messes up a lot of stuff, needs to be looked into
@@ -202,7 +202,7 @@ namespace po { namespace scene {
     void Node::finishDrawTree()
     {
         //	Draw bounds if necessary
-        if(mDrawBounds) drawBounds();
+        if (mDrawBounds) drawBounds();
         
         //	Pop our Matrix
         ci::gl::popModelView();
@@ -223,7 +223,7 @@ namespace po { namespace scene {
     void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
         
-        if(mCacheToFbo) {
+        if (mCacheToFbo) {
             createFbo(width, height);
         } else {
             //	Clear the fbo
@@ -235,7 +235,7 @@ namespace po { namespace scene {
     //	Generate a new fbo
     bool Node::createFbo(int width, int height)
     {
-        if(mFbo) resetFbo();
+        if (mFbo) resetFbo();
 
         try {
             //	Create the FBO
@@ -313,7 +313,7 @@ namespace po { namespace scene {
         ci::gl::Texture tex = mFbo->getTexture();
         tex.setFlipped(true);
         
-        if(mIsMasked) {
+        if (mIsMasked) {
             //	Use masking shader to draw FBO with mask
             //	Bind the fbo and mask texture
             tex.bind(0);
@@ -351,10 +351,10 @@ namespace po { namespace scene {
         bool alreadyCaching = mCacheToFbo;
         
         //	If we're not already caching, generate texture with FBO
-        if(!alreadyCaching) createFbo(getWidth(), getHeight());
+        if (!alreadyCaching) createFbo(getWidth(), getHeight());
         
         //	Check to make sure we could create the fbo
-        if(!mFbo) return nullptr;
+        if (!mFbo) return nullptr;
         
         //	Capture the fbo
         ci::gl::clear();
@@ -411,9 +411,9 @@ namespace po { namespace scene {
         //	Try to cache to FBO
         setCacheToFboEnabled(true, mask->getWidth(), mask->getHeight());
         
-        if(mFbo) {
+        if (mFbo) {
             //	If successful, try to build the shader
-            if(!mMaskShader) {
+            if (!mMaskShader) {
                 try {
                     mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
                 } catch (ci::gl::GlslProgCompileExc e) {
@@ -436,7 +436,7 @@ namespace po { namespace scene {
     {
         mIsMasked = false;
         
-        if(andStopCaching) {
+        if (andStopCaching) {
             mCacheToFbo = false;
 			resetFbo();
         }
@@ -523,11 +523,11 @@ namespace po { namespace scene {
 	//
     bool Node::isVisible()
     {
-        if(!mVisible) return false;
+        if (!mVisible) return false;
         
         NodeRef parent = getParent();
-        while(parent) {
-            if(!parent->mVisible) return false;
+        while (parent) {
+            if (!parent->mVisible) return false;
         
             parent = parent->getParent();
         }
@@ -559,20 +559,20 @@ namespace po { namespace scene {
 	{
         //	See if a tween is in progress, if so we want to use that value
         //	Setting an attribute calls stop(), so that will override this
-        if(!mPositionAnim.isComplete())     mUpdatePositionFromAnim     = true;
-        if(!mScaleAnim.isComplete())        mUpdateScaleFromAnim        = true;
-        if(!mRotationAnim.isComplete())     mUpdateRotationFromAnim     = true;
-        if(!mAlphaAnim.isComplete())        mUpdateAlphaFromAnim        = true;
-        if(!mOffsetAnim.isComplete())       mUpdateOffsetFromAnim       = true;
-        if(!mFillColorAnim.isComplete())    mUpdateFillColorFromAnim    = true;
+        if (!mPositionAnim.isComplete())     mUpdatePositionFromAnim     = true;
+        if (!mScaleAnim.isComplete())        mUpdateScaleFromAnim        = true;
+        if (!mRotationAnim.isComplete())     mUpdateRotationFromAnim     = true;
+        if (!mAlphaAnim.isComplete())        mUpdateAlphaFromAnim        = true;
+        if (!mOffsetAnim.isComplete())       mUpdateOffsetFromAnim       = true;
+        if (!mFillColorAnim.isComplete())    mUpdateFillColorFromAnim    = true;
         
         //	Update Anims if we care
-        if(mUpdatePositionFromAnim)     mPosition       = mPositionAnim;
-        if(mUpdateScaleFromAnim)        mScale          = mScaleAnim;
-        if(mUpdateRotationFromAnim)     mRotation       = mRotationAnim;
-        if(mUpdateAlphaFromAnim)        mAlpha          = mAlphaAnim;
-        if(mUpdateOffsetFromAnim)       mOffset         = mOffsetAnim;
-        if(mUpdateFillColorFromAnim)    mFillColor      = mFillColorAnim;
+        if (mUpdatePositionFromAnim)     mPosition       = mPositionAnim;
+        if (mUpdateScaleFromAnim)        mScale          = mScaleAnim;
+        if (mUpdateRotationFromAnim)     mRotation       = mRotationAnim;
+        if (mUpdateAlphaFromAnim)        mAlpha          = mAlphaAnim;
+        if (mUpdateOffsetFromAnim)       mOffset         = mOffsetAnim;
+        if (mUpdateFillColorFromAnim)    mFillColor      = mFillColorAnim;
     }
     
 	
@@ -585,8 +585,8 @@ namespace po { namespace scene {
     {
         mAlignment = alignment;
         
-        if(mAlignment == Alignment::NONE) return;
-        if(mAlignment == Alignment::TOP_LEFT)  {
+        if (mAlignment == Alignment::NONE) return;
+        if (mAlignment == Alignment::TOP_LEFT)  {
             mOffset.set(0,0);
             return;
         }
@@ -664,7 +664,7 @@ namespace po { namespace scene {
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         SceneRef scene = getScene();
-        if(scene != nullptr) {
+        if (scene != nullptr) {
             return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
         }
         return ci::Vec2f();
@@ -673,7 +673,7 @@ namespace po { namespace scene {
     ci::Vec2f Node::localToScene(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if(scene != nullptr) {
+        if (scene != nullptr) {
             return localToNode(point, scene->getRootNode());
         }
     }
@@ -681,7 +681,7 @@ namespace po { namespace scene {
     ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if(scene != nullptr) {
+        if (scene != nullptr) {
             return scene->getRootNode()->localToWindow(point);
         }
     
@@ -691,7 +691,7 @@ namespace po { namespace scene {
     ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if(scene != nullptr) {
+        if (scene != nullptr) {
             return scene->getRootNode()->windowToLocal(point);
         }
         
@@ -705,7 +705,7 @@ namespace po { namespace scene {
 	
     ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
     {
-        if(mHasScene) {
+        if (mHasScene) {
             return mMatrix.localToGlobal(scenePoint);
         }
         
@@ -732,7 +732,7 @@ namespace po { namespace scene {
         mScene = sceneRef;
         mHasScene = mScene.lock() ? true : false;
         
-        if(hasScene()) mScene.lock()->trackChildNode(shared_from_this());
+        if (hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
     SceneRef Node::getScene()
@@ -748,7 +748,7 @@ namespace po { namespace scene {
     void Node::removeScene()
     {
         SceneRef scene = mScene.lock();
-        if(scene) scene->untrackChildNode(shared_from_this());
+        if (scene) scene->untrackChildNode(shared_from_this());
         mScene.reset();
         mHasScene = false;
     }
@@ -803,7 +803,7 @@ namespace po { namespace scene {
 	
     ci::Rectf Node::getFrame()
     {
-//        if(bFrameDirty) {
+//        if (bFrameDirty) {
             ci::Rectf r = getBounds();
             
             ci::MatrixAffine2f m;
@@ -830,17 +830,17 @@ namespace po { namespace scene {
     
     bool Node::isEligibleForInteractionEvents()
     {
-        if( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
+        if ( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
         return true;
     }
     
     void Node::disconnectAllSignals()
     {
-        for(auto &signal : mMouseEventSignals) {
+        for (auto &signal : mMouseEventSignals) {
             signal.second.disconnect_all_slots();
         }
         
-        for(auto &signal : mTouchEventSignals) {
+        for (auto &signal : mTouchEventSignals) {
             signal.second.disconnect_all_slots();
         }
     }
@@ -856,7 +856,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if((mMouseEventSignals[type].num_slots() != 0)) {
+        if ((mMouseEventSignals[type].num_slots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         return false;
@@ -891,7 +891,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if((mTouchEventSignals[type].num_slots() != 0)) {
+        if ((mTouchEventSignals[type].num_slots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         

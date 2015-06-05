@@ -94,14 +94,14 @@ namespace po { namespace scene {
     template<class T>
     ci::Rectf Video<T>::getBounds()
     {
-        if(mMovieRef != nullptr) return mMovieRef->getBounds();
+        if (mMovieRef != nullptr) return mMovieRef->getBounds();
         return ci::Rectf(0,0,0,0);
     }
 	
     template<class T>
     void Video<T>::draw()
     {
-        if(mMovieRef != nullptr && mMovieRef->getTexture()) {
+        if (mMovieRef != nullptr && mMovieRef->getTexture()) {
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mMovieRef->getTexture());
         }

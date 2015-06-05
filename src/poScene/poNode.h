@@ -252,7 +252,7 @@ namespace po { namespace scene {
         //	Masking
         void setMask(ShapeRef mask);
         ShapeRef removeMask(bool andStopCaching = true);
-        bool hasMask() { if(!mMask) return false; return true; };
+        bool hasMask() { if (!mMask) return false; return true; };
         ShapeRef getMask() { return mMask; };
         
         //	Identifiers (Assigned from Scene)

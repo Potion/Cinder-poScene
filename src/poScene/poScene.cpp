@@ -67,7 +67,7 @@ namespace po { namespace scene {
         
         mRootNode->updateTree();
         
-        if(mAutoCam) mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
+        if (mAutoCam) mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
     void Scene::draw()
@@ -87,7 +87,7 @@ namespace po { namespace scene {
     
     void Scene::setRootNode(NodeContainerRef node)
     {
-        if(node) {
+        if (node) {
             mRootNode->removeScene();
             mRootNode = node;
             mRootNode->setScene(shared_from_this());
@@ -101,21 +101,21 @@ namespace po { namespace scene {
 	//------------------------------------
     
     void Scene::trackChildNode(NodeRef node) {
-        if(node) {
+        if (node) {
             //mTrackingQueue[node] = true;
             
             std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
-            if(iter == allChildren.end()) {
+            if (iter == allChildren.end()) {
                 allChildren.push_back(node);
             }
         }
     }
     
     void Scene::untrackChildNode(NodeRef node) {
-        if(node) {
+        if (node) {
             //mTrackingQueue[node] = false;
             std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
-            if(iter != allChildren.end()) {
+            if (iter != allChildren.end()) {
                 allChildren.erase(iter);
             }
         }
@@ -124,12 +124,12 @@ namespace po { namespace scene {
     void Scene::processTrackingQueue()
     {
         for (auto &kv : mTrackingQueue) {
-            if(kv.first) {
+            if (kv.first) {
                 std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
-                if(kv.second && iter == allChildren.end()) {
+                if (kv.second && iter == allChildren.end()) {
                     allChildren.push_back(kv.first);
                 } else {
-                    if(iter != allChildren.end()) allChildren.erase(iter);
+                    if (iter != allChildren.end()) allChildren.erase(iter);
                 }
             }
         }

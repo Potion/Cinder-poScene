@@ -133,12 +133,12 @@ namespace po { namespace scene {
     void Shape::draw()
     {
         //Draw fill
-        if(getFillEnabled()) {
+        if (getFillEnabled()) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if(mTexture) mTexture->enableAndBind();
+            if (mTexture) mTexture->enableAndBind();
             ci::gl::draw(mVboMesh);
-            if(mTexture) mTexture->disable();
+            if (mTexture) mTexture->disable();
         }
         
         //	TODO: Draw stroke
@@ -157,7 +157,7 @@ namespace po { namespace scene {
         mTextureAlignment   = alignment;
         
         //	If we don't have an underlying shape, set it from the texture
-        if(!mCiShape2d.getNumContours()) {
+        if (!mCiShape2d.getNumContours()) {
             mCiShape2d.moveTo(0,0);
             mCiShape2d.lineTo(texture->getWidth(), 0);
             mCiShape2d.lineTo(texture->getWidth(), texture->getHeight());
@@ -176,7 +176,7 @@ namespace po { namespace scene {
     
     void Shape::removeTexture()
     {
-        if(mTexture) {
+        if (mTexture) {
             mTexture.reset();
             render();
         }
@@ -193,18 +193,18 @@ namespace po { namespace scene {
         //	Create Mesh
         ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
         
-        if(mTexture) {
+        if (mTexture) {
             //	Get the texture coords
             std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
             TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             
             //	Check to see if texture is flipped, common if coming from FBO
-            if(mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
+            if (mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
             
-            if(mTextureOffset != ci::Vec2f(0,0)) {
+            if (mTextureOffset != ci::Vec2f(0,0)) {
                 ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
                 ci::app::console() << normalizedOffset << std::endl;
-                for(auto &coord : texCoords) {
+                for (auto &coord : texCoords) {
                     coord -= normalizedOffset;
                 }
             }
@@ -231,7 +231,7 @@ namespace po { namespace scene {
     
     ci::Rectf Shape::getBounds()
     {
-        //if(mBoundsDirty) {
+        //if (mBoundsDirty) {
             mBounds       = mCiShape2d.calcBoundingBox();
             //mBoundsDirty = false;
         //}

@@ -103,7 +103,7 @@ namespace po { namespace scene {
 		
 		//	find the object's coordinates
 		ci::Vec4f out = a * in;
-		if(out.w != 0.0f) out.w = 1.0f / out.w;
+		if (out.w != 0.0f) out.w = 1.0f / out.w;
 		
 		//	calculate output
 		ci::Vec3f result;

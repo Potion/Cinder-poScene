@@ -51,8 +51,8 @@ namespace po { namespace scene {
     
     void TextBox::draw()
     {
-        if(mTexture) {
-            if(getAppliedAlpha() == 1) {
+        if (mTexture) {
+            if (getAppliedAlpha() == 1) {
                 ci::gl::enableAlphaBlending(true);
             } else {
                 ci::gl::enableAdditiveBlending();
@@ -71,7 +71,7 @@ namespace po { namespace scene {
     
     ci::Rectf TextBox::getBounds()
     {
-        if(mUseTextBounds) {
+        if (mUseTextBounds) {
             float xPos = 0.0f;
             switch (mCiTextBox->getAlignment()) {
                 case ci::TextBox::Alignment::LEFT:
