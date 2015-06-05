@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>poScene subclass Template</string>
+	<key>Kind</key>
+	<string>Xcode.IDEKit.TextSubstitutionFileTemplateKind</string>
+	<key>MainTemplateFile</key>
+	<string>___FILEBASENAME___.h</string>
+	<key>DefaultCompletionName</key>
+	<string>MyPoSceneSubclass</string>
+	<key>Options</key>
+	<array>
+		<dict>
+			<key>Default</key>
+			<string>0</string>
+			<key>Description</key>
+			<string>poScene type to subclass</string>
+			<key>Identifier</key>
+			<string>NodeContainerSubclass</string>
+			<key>Name</key>
+			<string>Subclass of:</string>
+			<key>Required</key>
+			<string>YES</string>
+			<key>Type</key>
+			<string>popup</string>
+			<key>Values</key>
+			<array>
+				<string>NodeContainer</string>
+				<string>Node</string>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
