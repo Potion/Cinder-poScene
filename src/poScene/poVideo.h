@@ -39,6 +39,7 @@
 #include "cinder/qtime/QuickTime.h"
 
 namespace po { namespace scene {
+	
     template<class T>
     class Video
     : public po::Node {
@@ -119,5 +120,5 @@ namespace po { namespace scene {
     
     typedef Video<ci::qtime::MovieGl> VideoGl;
     typedef std::shared_ptr<VideoGl> VideoGlRef;
-} } //  Namespace: po::scene
-#include "poVideo.ipp"
+	
+} } //  namespace po::scene

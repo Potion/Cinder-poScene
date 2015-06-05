@@ -32,8 +32,8 @@
 
 #include "cinder/gl/Texture.h"
 
-namespace po { namespace scene {
-    namespace TextureFit {
+namespace po { namespace scene { namespace TextureFit {
+		
         enum class Type
         {
             NONE=0,
@@ -203,5 +203,5 @@ namespace po { namespace scene {
             fitTexture(rect, tex, fit, align, coords, points);
             return coords;
         }
-    }
-} } //  Namespace: po::scene
+	
+} } } //  namespace po::scene::TextureFit

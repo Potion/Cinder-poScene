@@ -35,9 +35,9 @@
 #include "poEvents.h"
 
 namespace po { namespace scene {
+	
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
-    
     
     // ------------------------------------
     // Base Event
@@ -122,4 +122,5 @@ namespace po { namespace scene {
     private:
         ci::app::TouchEvent::Touch mCiEvent;
     };
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

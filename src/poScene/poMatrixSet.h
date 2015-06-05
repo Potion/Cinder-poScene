@@ -34,8 +34,8 @@
 #include "cinder/Matrix.h"
 #include "cinder/Camera.h"
 
-namespace po {
-	namespace scene {
+namespace po { namespace scene {
+	
         class MatrixSet
         {
         public:
@@ -53,5 +53,4 @@ namespace po {
 			
         };
 		
-	}
-} //  Namespace: po::scene
+} } //  namespace po::scene

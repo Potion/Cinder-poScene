@@ -32,8 +32,7 @@
 #include "poEventCenter.h"
 #include "poScene.h"
 
-namespace po {
-	namespace scene {
+namespace po { namespace scene {
 
 		EventCenterRef EventCenter::create()
 		{
@@ -69,5 +68,4 @@ namespace po {
 			mTouchProcessor.processEvents(nodes);
 		}
 		
-	}
-} //  Namespace: po::scene
+} } //  namespace po::scene

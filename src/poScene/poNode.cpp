@@ -865,4 +865,5 @@ namespace po { namespace scene {
         
         return false;
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

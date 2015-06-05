@@ -93,4 +93,5 @@ namespace po { namespace scene {
             return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
         }
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

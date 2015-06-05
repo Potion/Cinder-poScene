@@ -35,8 +35,7 @@
 #include "poNode.h"
 #include "poTextureFit.h"
 
-namespace po {
-	namespace scene {
+namespace po { namespace scene {
     
 		//Create ShapeRef typedef
 		class Shape;
@@ -106,5 +105,4 @@ namespace po {
 			
 		};
 		
-	}
-} //  Namespace: po::scene
+} } //  namespace po::scene
