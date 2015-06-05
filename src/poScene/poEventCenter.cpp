@@ -48,6 +48,7 @@ namespace po { namespace scene {
 		ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp, this);
 		ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
 		
+		//	Connect touch events
 		ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
 		ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
 		ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
@@ -58,9 +59,9 @@ namespace po { namespace scene {
 	{
 		//	Sort nodes to be top down
 		std::sort(nodes.begin(), nodes.end(),
-				  [&nodes] (const NodeRef &a, const NodeRef &b) {
-					  return a->getDrawOrder() > b->getDrawOrder();
-				  }
+			[&nodes] (const NodeRef &a, const NodeRef &b) {
+			  return a->getDrawOrder() > b->getDrawOrder();
+			}
 		);
 		
 		//	Process them

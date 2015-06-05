@@ -96,10 +96,8 @@ namespace po { namespace scene { namespace TextureFit {
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / tex->getWidth();
 			float t = (points[i].y - rect.getY1()) / tex->getHeight();
-			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			
 			coords[i].set(s,t);
 		}
 		
@@ -120,10 +118,8 @@ namespace po { namespace scene { namespace TextureFit {
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / rect.getWidth();
 			float t = (points[i].y - rect.getY1()) / new_h;
-			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			
 			coords[i].set(s,t);
 		}
 		
@@ -144,10 +140,8 @@ namespace po { namespace scene { namespace TextureFit {
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / new_w;
 			float t = (points[i].y - rect.getY1()) / rect.getHeight();
-			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			
 			coords[i].set(s,t);
 		}
 		

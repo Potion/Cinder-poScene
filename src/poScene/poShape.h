@@ -47,10 +47,8 @@ namespace po { namespace scene {
 	public:
 		static ShapeRef create();
 		static ShapeRef create(ci::gl::TextureRef texture);
-		
 		static ShapeRef createRect(float width, float height);
 		static ShapeRef createSquare(float size);
-		
 		static ShapeRef createEllipse(float width, float height);
 		static ShapeRef createCircle(float size);
 		
@@ -79,7 +77,6 @@ namespace po { namespace scene {
 		void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
 		void setTextureOffset(ci::Vec2f offset);
 		ci::gl::TextureRef getTexture() { return mTexture; }
-		
 		void removeTexture();
 		
 		//	Precision (for rendering)

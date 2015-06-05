@@ -138,7 +138,7 @@ namespace po { namespace scene {
         return mChildren;
     };
     
-    std::deque<NodeRef>& NodeContainer::getChildrenByReference()
+    std::deque<NodeRef> &NodeContainer::getChildrenByReference()
     {
         return mChildren;
     }
@@ -148,7 +148,7 @@ namespace po { namespace scene {
         return (mChildren.size() != 0);
     }
     
-    int NodeContainer::getChildIndex(const NodeRef& child)
+    int NodeContainer::getChildIndex(const NodeRef &child)
     {
         std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
         if (iter != mChildren.end())
@@ -166,7 +166,7 @@ namespace po { namespace scene {
     NodeRef NodeContainer::getChildByUID(uint32_t uid)
     {
         //	Go through our tree to find any node with UID
-        for (NodeRef& node : mChildren) {
+        for (NodeRef &node : mChildren) {
             NodeContainerRef container = std::dynamic_pointer_cast<NodeContainer>(node);
             if (container) {
                 NodeRef foundNode = container->getChildByUID(uid);
@@ -195,14 +195,12 @@ namespace po { namespace scene {
     NodeRef NodeContainer::getFirstChild()
     {
         if (mChildren.empty()) return NodeRef();
-        
         return mChildren.front();
     }
     
     NodeRef NodeContainer::getLastChild()
     {
         if (mChildren.empty()) return NodeRef();
-        
         return mChildren.back();
     }
     
@@ -244,7 +242,7 @@ namespace po { namespace scene {
     
     void NodeContainer::removeAllChildren()
     {
-        for (NodeRef& node : mChildren) {
+        for (NodeRef &node : mChildren) {
             node->removeParent();
             node->removeScene();
         }

@@ -59,7 +59,7 @@ namespace po { namespace scene {
             void processEvents(std::vector<NodeRef> &nodes)
 			{
                 //	Go through the queue
-                for (auto& eventQueue : mQueue) {
+                for (auto &eventQueue : mQueue) {
                     //	Get the type for this item in the std::map
                     EventTypeT type = (EventTypeT)eventQueue.first;
                     
@@ -144,11 +144,11 @@ namespace po { namespace scene {
         MouseEventProcessor mMouseProcessor;
         
         //	Mouse Event Cinder Callbacks
-        void mouseDown(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN, event); };
-        void mouseMove(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE, event); };
-        void mouseDrag(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG, event); };
-        void mouseUp(ci::app::MouseEvent event)      { mMouseProcessor.addToQueue(MouseEvent::Type::UP, event); };
-        void mouseWheel(ci::app::MouseEvent event)   { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL, event); };
+        void mouseDown(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN, event); };
+        void mouseMove(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE, event); };
+        void mouseDrag(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG, event); };
+        void mouseUp(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::UP, event); };
+        void mouseWheel(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL, event); };
 		
 		
         //------------------------------------
@@ -193,9 +193,9 @@ namespace po { namespace scene {
         TouchEventProcessor mTouchProcessor;
         
         //	Touch Event Cinder Callbacks
-        void touchesBegan(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
-        void touchesMoved(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
-        void touchesEnded(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
+        void touchesBegan(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
+        void touchesMoved(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
+        void touchesEnded(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
 		
     };
     

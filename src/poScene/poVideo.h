@@ -101,7 +101,7 @@ namespace po { namespace scene {
     template<class T>
     void Video<T>::draw()
     {
-        if (mMovieRef != nullptr && mMovieRef->getTexture()) {
+        if ( mMovieRef != nullptr && mMovieRef->getTexture() ) {
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mMovieRef->getTexture());
         }
