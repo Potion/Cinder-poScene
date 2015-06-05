@@ -34,8 +34,8 @@
 #include "cinder/gl/Texture.h"
 #include "poNode.h"
 
-namespace po {
-	namespace scene {
+namespace po { namespace scene {
+	
 		class TextBox;
 		typedef std::shared_ptr<TextBox> TextBoxRef;
 		
@@ -64,5 +64,4 @@ namespace po {
 			
 		};
 		
-	}
-} //  Namespace: po::scene
+} } //  namespace po::scene

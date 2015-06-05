@@ -32,8 +32,7 @@
 
 #include "poNode.h"
 
-namespace po {
-	namespace scene {
+namespace po { namespace scene {
 		
 		///Create NodeContainerRef typedef
 		class NodeContainer;
@@ -129,5 +128,4 @@ namespace po {
 		{
 		};
 		
-	}
-} //  Namespace: po::scene
+} } //  namespace po::scene

@@ -83,4 +83,5 @@ namespace po { namespace scene {
     {
         mWindowPos = event.getPos();
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

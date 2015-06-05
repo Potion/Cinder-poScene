@@ -411,4 +411,5 @@ namespace po { namespace scene {
         {
         };
     };
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene

@@ -188,5 +188,4 @@ namespace po { namespace scene {
         void touchesEnded(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
     };
     
-    
-} } //  Namespace: po::scene
+} } //  namespace po::scene

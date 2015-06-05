@@ -232,4 +232,5 @@ namespace po { namespace scene {
         
         return mBounds;
     }
-} } //  Namespace: po::scene
+	
+} } //  namespace po::scene
