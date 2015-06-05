@@ -94,7 +94,6 @@ namespace po { namespace scene {
         float ym = y + height / 2;			//	y-middle
         
         ci::Shape2d shape;
-        
         shape.moveTo(x, height/2);
         shape.curveTo(x, ym - oy, xm - ox, y, xm, y);
         shape.curveTo(xm + ox, y, xe, ym - oy, xe, ym);

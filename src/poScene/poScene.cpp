@@ -73,11 +73,8 @@ namespace po { namespace scene {
     void Scene::draw()
     {
         drawOrderCounter = 0;
-        
         if (mAutoCam) ci::gl::setMatricesWindow(ci::app::getWindowSize());
-        
         mRootNode->drawTree();
-
     }
     
     uint32_t Scene::getNextDrawOrder()
@@ -126,7 +123,7 @@ namespace po { namespace scene {
         for (auto &kv : mTrackingQueue) {
             if (kv.first) {
                 std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
-                if (kv.second && iter == allChildren.end()) {
+                if ( kv.second && iter == allChildren.end() ) {
                     allChildren.push_back(kv.first);
                 } else {
                     if (iter != allChildren.end()) allChildren.erase(iter);

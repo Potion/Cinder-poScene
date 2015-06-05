@@ -167,7 +167,6 @@ namespace po { namespace scene {
 	{		
 		if (mIsKeyShaderEnabled) {
 			mShader->bind();
-//			mShader->uniform("keyColor", Colors::KEY_COLOR);
 			mShader->uniform("replacementColor", mReplacementColor);
 			mShader->uniform("alpha", getAppliedAlpha());
 		} else {

@@ -55,7 +55,7 @@ namespace po { namespace scene {
         static SceneRef create(NodeContainerRef rootNode);
         ~Scene();
         
-        ci::CameraOrtho& getCamera() { return mCamera; }
+        ci::CameraOrtho &getCamera() { return mCamera; }
         void setAutoCam(bool autoCam) { mAutoCam = autoCam; }
         bool getAutoCam() { return mAutoCam; };
         

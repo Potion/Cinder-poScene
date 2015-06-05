@@ -91,44 +91,44 @@ namespace po { namespace scene {
     );
 	
     Node::Node(std::string name)
-    :   mUid(OBJECT_UID++)
-    ,   mName(name)
-    ,   mDrawOrder(0)
-    ,   mPosition(0.f,0.f)
-    ,   mScale(1.f,1.f)
-    ,   mRotation(0)
-    ,   mOffset(0.f,0.f)
-    ,   mAlpha(1.f)
-    ,   mAppliedAlpha(1.f)
-    ,   mPositionAnim(ci::Vec2f(0.f,0.f))
-    ,   mScaleAnim(ci::Vec2f(1.f,1.f))
-    ,   mRotationAnim(0)
-    ,   mOffsetAnim(ci::Vec2f(0.f,0.f))
-    ,   mAlphaAnim(1.f)
-    ,   mAlignment(Alignment::TOP_LEFT)
-    ,   mMatrixOrder(MatrixOrder::TRS)
-    ,   mFillColor(1.f,1.f,1.f)
-    ,   mFillColorAnim(ci::Color(1.f,1.f,1.f))
-    ,   mFillEnabled(true)
-    ,   mStrokeColor(255,255,255)
-    ,   mStrokeEnabled(false)
-    ,   mUpdatePositionFromAnim(false)
-    ,   mUpdateScaleFromAnim(false)
-    ,   mUpdateRotationFromAnim(false)
-    ,   mUpdateOffsetFromAnim(false)
-    ,   mUpdateAlphaFromAnim(false)
-    ,   mUpdateFillColorFromAnim(false)
-    ,   mDrawBounds(false)
-    ,   mBoundsColor(1.f,0,0)
-    ,   mBoundsDirty(true)
-    ,   mFrameDirty(true)
-    ,   mVisible(true)
-    ,   mInteractionEnabled(true)
-    ,   mCacheToFbo(false)
-    ,   mIsCapturingFbo(false)
-    ,   mIsMasked(false)
-    ,   mHasScene(false)
-    ,   mHasParent(false)
+    : mUid(OBJECT_UID++)
+    , mName(name)
+    , mDrawOrder(0)
+    , mPosition(0.f, 0.f)
+    , mScale(1.f,1.f)
+    , mRotation(0)
+    , mOffset(0.f,0.f)
+    , mAlpha(1.f)
+    , mAppliedAlpha(1.f)
+    , mPositionAnim(ci::Vec2f(0.f,0.f))
+    , mScaleAnim(ci::Vec2f(1.f,1.f))
+    , mRotationAnim(0)
+    , mOffsetAnim(ci::Vec2f(0.f,0.f))
+    , mAlphaAnim(1.f)
+    , mAlignment(Alignment::TOP_LEFT)
+    , mMatrixOrder(MatrixOrder::TRS)
+    , mFillColor(1.f,1.f,1.f)
+    , mFillColorAnim(ci::Color(1.f,1.f,1.f))
+    , mFillEnabled(true)
+    , mStrokeColor(255,255,255)
+    , mStrokeEnabled(false)
+    , mUpdatePositionFromAnim(false)
+    , mUpdateScaleFromAnim(false)
+    , mUpdateRotationFromAnim(false)
+    , mUpdateOffsetFromAnim(false)
+    , mUpdateAlphaFromAnim(false)
+    , mUpdateFillColorFromAnim(false)
+    , mDrawBounds(false)
+    , mBoundsColor(1.f,0,0)
+    , mBoundsDirty(true)
+    , mFrameDirty(true)
+    , mVisible(true)
+    , mInteractionEnabled(true)
+    , mCacheToFbo(false)
+    , mIsCapturingFbo(false)
+    , mIsMasked(false)
+    , mHasScene(false)
+    , mHasParent(false)
     {
         //	Initialize our animations
         initAttrAnimations();
@@ -473,7 +473,6 @@ namespace po { namespace scene {
         mUpdateScaleFromAnim = false;
         mScale.set(x, y);
         mScaleAnim.ptr()->set(mScale);
-        
         mFrameDirty     = true;
         mBoundsDirty    = true;
     }
@@ -487,7 +486,6 @@ namespace po { namespace scene {
         mUpdateRotationFromAnim = false;
         mRotation = rotation;
         mRotationAnim = rotation;
-        
         mFrameDirty     = true;
         mBoundsDirty    = true;
     }
@@ -528,7 +526,6 @@ namespace po { namespace scene {
         NodeRef parent = getParent();
         while (parent) {
             if (!parent->mVisible) return false;
-        
             parent = parent->getParent();
         }
         
@@ -559,20 +556,20 @@ namespace po { namespace scene {
 	{
         //	See if a tween is in progress, if so we want to use that value
         //	Setting an attribute calls stop(), so that will override this
-        if (!mPositionAnim.isComplete())     mUpdatePositionFromAnim     = true;
-        if (!mScaleAnim.isComplete())        mUpdateScaleFromAnim        = true;
-        if (!mRotationAnim.isComplete())     mUpdateRotationFromAnim     = true;
-        if (!mAlphaAnim.isComplete())        mUpdateAlphaFromAnim        = true;
-        if (!mOffsetAnim.isComplete())       mUpdateOffsetFromAnim       = true;
-        if (!mFillColorAnim.isComplete())    mUpdateFillColorFromAnim    = true;
+        if (!mPositionAnim.isComplete()) mUpdatePositionFromAnim = true;
+        if (!mScaleAnim.isComplete()) mUpdateScaleFromAnim = true;
+        if (!mRotationAnim.isComplete()) mUpdateRotationFromAnim = true;
+        if (!mAlphaAnim.isComplete()) mUpdateAlphaFromAnim = true;
+        if (!mOffsetAnim.isComplete()) mUpdateOffsetFromAnim = true;
+        if (!mFillColorAnim.isComplete()) mUpdateFillColorFromAnim = true;
         
         //	Update Anims if we care
-        if (mUpdatePositionFromAnim)     mPosition       = mPositionAnim;
-        if (mUpdateScaleFromAnim)        mScale          = mScaleAnim;
-        if (mUpdateRotationFromAnim)     mRotation       = mRotationAnim;
-        if (mUpdateAlphaFromAnim)        mAlpha          = mAlphaAnim;
-        if (mUpdateOffsetFromAnim)       mOffset         = mOffsetAnim;
-        if (mUpdateFillColorFromAnim)    mFillColor      = mFillColorAnim;
+        if (mUpdatePositionFromAnim) mPosition = mPositionAnim;
+        if (mUpdateScaleFromAnim) mScale = mScaleAnim;
+        if (mUpdateRotationFromAnim) mRotation = mRotationAnim;
+        if (mUpdateAlphaFromAnim) mAlpha = mAlphaAnim;
+        if (mUpdateOffsetFromAnim) mOffset = mOffsetAnim;
+        if (mUpdateFillColorFromAnim) mFillColor = mFillColorAnim;
     }
     
 	
@@ -646,69 +643,53 @@ namespace po { namespace scene {
         }
         
         ci::gl::translate(mOffset);
-		
         mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
     }
     
 
-    ci::Vec2f Node::nodeToLocal(const ci::Vec2f &point, NodeRef node)
-    {
-        return windowToLocal(node->localToWindow(point));
-    }
+    ci::Vec2f Node::nodeToLocal(const ci::Vec2f &point, NodeRef node) {
+		return windowToLocal(node->localToWindow(point));
+	}
     
-    ci::Vec2f Node::localToNode(const ci::Vec2f &point, NodeRef node)
-    {
-        return node->windowToLocal(localToWindow(point));
-    }
+    ci::Vec2f Node::localToNode(const ci::Vec2f &point, NodeRef node) {
+		return node->windowToLocal(localToWindow(point));
+	}
 	
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
         SceneRef scene = getScene();
-        if (scene != nullptr) {
-            return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
-        }
+        if (scene != nullptr) return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
         return ci::Vec2f();
     }
     
     ci::Vec2f Node::localToScene(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if (scene != nullptr) {
-            return localToNode(point, scene->getRootNode());
-        }
+        if (scene != nullptr) return localToNode(point, scene->getRootNode());
+		return ci::Vec2f();
     }
     
     ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if (scene != nullptr) {
-            return scene->getRootNode()->localToWindow(point);
-        }
-    
+        if (scene != nullptr) return scene->getRootNode()->localToWindow(point);
         return point;
     }
     
     ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
     {
         SceneRef scene = getScene();
-        if (scene != nullptr) {
-            return scene->getRootNode()->windowToLocal(point);
-        }
-        
+        if (scene != nullptr) return scene->getRootNode()->windowToLocal(point);
         return ci::Vec2f();
     }
 	
-    ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint)
-    {
-        return mMatrix.globalToLocal(windowPoint);
-    }
+    ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint) {
+		return mMatrix.globalToLocal(windowPoint);
+	}
 	
     ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
     {
-        if (mHasScene) {
-            return mMatrix.localToGlobal(scenePoint);
-        }
-        
+        if (mHasScene) return mMatrix.localToGlobal(scenePoint);
         return ci::Vec2f();
     }
     
@@ -731,19 +712,12 @@ namespace po { namespace scene {
     void Node::setScene(SceneRef sceneRef) {
         mScene = sceneRef;
         mHasScene = mScene.lock() ? true : false;
-        
         if (hasScene()) mScene.lock()->trackChildNode(shared_from_this());
     }
     
-    SceneRef Node::getScene()
-    {
-        return mScene.lock();
-    }
+    SceneRef Node::getScene() { return mScene.lock(); }
 	
-    bool Node::hasScene()
-    {
-        return mHasScene;
-    }
+    bool Node::hasScene() { return mHasScene; }
 	
     void Node::removeScene()
     {
@@ -760,13 +734,10 @@ namespace po { namespace scene {
     }
 	
     NodeContainerRef Node::getParent() const {
-        return mParent.lock();
-    }
+		return mParent.lock();
+	}
 	
-    bool Node::hasParent()
-    {
-        return mHasParent;
-    }
+    bool Node::hasParent() { return mHasParent; }
 	
     void Node::removeParent() {
         mParent.reset();
@@ -856,9 +827,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if ((mMouseEventSignals[type].num_slots() != 0)) {
-            return isEligibleForInteractionEvents();
-        }
+        if ((mMouseEventSignals[type].num_slots() != 0)) return isEligibleForInteractionEvents();
         return false;
     }
     
@@ -891,10 +860,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if ((mTouchEventSignals[type].num_slots() != 0)) {
-            return isEligibleForInteractionEvents();
-        }
-        
+        if ((mTouchEventSignals[type].num_slots() != 0)) return isEligibleForInteractionEvents();
         return false;
     }
 	

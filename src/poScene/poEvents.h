@@ -37,7 +37,8 @@ namespace po { namespace scene {
 	
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
-    
+	
+	
     //------------------------------------
     //	Base Event
 		#pragma mark - Base Event
@@ -92,7 +93,6 @@ namespace po { namespace scene {
         };
         
         MouseEvent(ci::app::MouseEvent event);
-        
         ci::app::MouseEvent getCiEvent() { return mCiEvent; };
         
     private:
@@ -120,7 +120,6 @@ namespace po { namespace scene {
         };
         
         TouchEvent(ci::app::TouchEvent::Touch event);
-        
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
         
     private:

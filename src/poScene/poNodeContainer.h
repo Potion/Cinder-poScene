@@ -50,29 +50,24 @@ namespace po { namespace scene {
 		
 		//	Children
 		static const int INVALID_INDEX = -1;
-		
 		int getNumChildren() { return mChildren.size(); };
 		void addChild(NodeRef node);
 		void addChildren(std::vector<NodeRef> nodes);
 		void addChildAt(int index, NodeRef node);
 		void addChildBefore(NodeRef before, NodeRef node);
 		void addChildAfter(NodeRef after, NodeRef node);
-		
 		std::deque<NodeRef> getChildren();
 		std::deque<NodeRef> &getChildrenByReference();
 		bool hasChildren();
-		
 		int getChildIndex(const NodeRef &child);
 		NodeRef getChildByIndex(int index);
 		NodeRef getChildByUID(uint32_t uid);
 		NodeRef getChildByName(const std::string &name);
 		NodeRef getFirstChild();
 		NodeRef getLastChild();
-		
 		void removeChild(NodeRef node);
 		void removeChildAt(int index);
 		void removeAllChildren();
-		
 		void moveChildToFront(NodeRef node);
 		void moveChildForward( NodeRef node);
 		void moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
@@ -91,9 +86,8 @@ namespace po { namespace scene {
 		
 		NodeContainer();
 		NodeContainer(std::string name);
-		
+
 		void drawFbo();
-		
 		void setScene(SceneRef scene);
 		void removeScene();
 		

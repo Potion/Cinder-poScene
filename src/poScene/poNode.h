@@ -111,28 +111,24 @@ namespace po { namespace scene {
         //	Scene & Parent
         SceneRef getScene();
         bool hasScene();
-        
         NodeContainerRef getParent() const;
         bool hasParent();
         
         //	Dimensions
         ci::Vec2f getSize() { return getBounds().getSize(); }
-        float getWidth()    { return getBounds().getWidth(); };
-        float getHeight()   { return getBounds().getHeight(); };
-        
-        ci::Vec2f getScaledSize()	{ return getSize() * getScale(); }
-        float getScaledWidth()		{ return getWidth() * getScale().x; };
-        float getScaledHeight()		{ return getHeight() * getScale().y; };
+        float getWidth() { return getBounds().getWidth(); };
+        float getHeight() { return getBounds().getHeight(); };
+        ci::Vec2f getScaledSize() { return getSize() * getScale(); }
+        float getScaledWidth() { return getWidth() * getScale().x; };
+        float getScaledHeight() { return getHeight() * getScale().y; };
         
         //	Bounds & Frame
-        Node &drawBounds(bool enabled)  { setDrawBounds(enabled); return *this; };
+        Node &drawBounds(bool enabled) { setDrawBounds(enabled); return *this; };
         void setDrawBounds(bool enabled) { mDrawBounds = enabled; };
         virtual ci::Rectf getBounds();
-        
         Node &boundsColor(ci::Color color) { setBoundsColor(color); return *this; };
         void setBoundsColor(ci::Color color) { mBoundsColor = color; };
         ci::Color getBoundsColor() { return mBoundsColor; };
-        
         ci::Rectf getFrame();
         
         //	Interaction
@@ -162,91 +158,79 @@ namespace po { namespace scene {
 			#pragma mark - Attributes
 		//------------------------------------
 		
-        Node &name(std::string name)    { setName(name); return *this; }
-        void setName(std::string name)  { mName = name; };
+        Node &name(std::string name) { setName(name); return *this; }
+        void setName(std::string name) { mName = name; };
         
         std::string getName() { return mName; }
         
         //	Position
-        virtual Node &position(float x, float y)	{ setPosition(x,y); return *this; }
-        virtual Node &position(ci::Vec2f position)	{ return this->position(position.x, position.y); }
-        void setPosition(ci::Vec2f position)		{ setPosition(position.x, position.y); };
+        virtual Node &position(float x, float y) { setPosition(x,y); return *this; }
+        virtual Node &position(ci::Vec2f position) { return this->position(position.x, position.y); }
+        void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
         void setPosition(float x, float y);
-        
         ci::Vec2f getPosition() { return mPosition; };
         
         //	Scale
-        Node &scale(float x, float y)   { setScale(x,y); return *this; }
-        Node &scale(ci::Vec2f scale)    { return this->scale(scale.x, scale.y); }
-        void setScale(ci::Vec2f scale)  { setScale(scale.x, scale.y); };
+        Node &scale(float x, float y) { setScale(x,y); return *this; }
+        Node &scale(ci::Vec2f scale) { return this->scale(scale.x, scale.y); }
+        void setScale(ci::Vec2f scale) { setScale(scale.x, scale.y); };
         void setScale(float x, float y);
-        
-        ci::Vec2f getScale()                { return mScale; };
+        ci::Vec2f getScale() { return mScale; };
         
         //	Rotation
-        Node &rotation(float rotation)  { setRotation(rotation); return *this; }
+        Node &rotation(float rotation) { setRotation(rotation); return *this; }
         void setRotation(float rotation);
-        
-        float getRotation()                 { return mRotation; };
+        float getRotation() { return mRotation; };
         
         //	Alpha
         Node &alpha(float alpha) { setAlpha(alpha); return *this; }
         void setAlpha(float alpha);
-        
-        float getAlpha()                { return mAlpha; };
+        float getAlpha() { return mAlpha; };
         
         //	Applied Alpha
         float getAppliedAlpha() { return mAppliedAlpha; }
         
         //Offset
-        Node &offset(float x, float y)      { setOffset(x,y); return *this; }
-        Node &offset(ci::Vec2f offset)      { return this->offset(offset.x, offset.y); }
-        void setOffset(ci::Vec2f offset)    { setOffset(offset.x, offset.y); };
+        Node &offset(float x, float y) { setOffset(x, y); return *this; }
+        Node &offset(ci::Vec2f offset) { return this->offset(offset.x, offset.y); }
+        void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
         void setOffset(float x, float y);
-        
         ci::Vec2f getOffset() { return mOffset; };
         
         //	Alignment
         Node &alignment(Alignment alignment) { setAlignment(alignment); return *this; }
         void setAlignment(Alignment alignment);
-        
         Alignment getAlignment() { return mAlignment; };
         
         //	Matrix Order
         Node &matrixOrder(MatrixOrder order) { setMatrixOrder(order); return *this; };
-        void setMatrixOrder(MatrixOrder order) { mMatrixOrder=order; }
-        
+        void setMatrixOrder(MatrixOrder order) { mMatrixOrder = order; }
         MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
         //	Fill
-        virtual Node &fillColor(ci::Color color)               { setFillColor(color); return *this; }
-        virtual Node &fillColor(float r, float g, float b)     { setFillColor(r,g,b); return *this; }
-        void setFillColor(ci::Color color)              { mFillColor = color; }
-        void setFillColor(float r, float g, float b)    { mFillColor.set(r,g,b); }
-        
-        Node &fillEnabled(bool enabled)    { setFillEnabled(enabled); return *this; }
-        void setFillEnabled(bool enabled)   { mFillEnabled = enabled; };
-        
+        virtual Node &fillColor(ci::Color color) { setFillColor(color); return *this; }
+        virtual Node &fillColor(float r, float g, float b) { setFillColor(r, g, b); return *this; }
+        void setFillColor(ci::Color color) { mFillColor = color; }
+        void setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); }
+        Node &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
+        void setFillEnabled(bool enabled) { mFillEnabled = enabled; };
         bool getFillEnabled() { return mFillEnabled; }
         ci::Color getFillColor() { return mFillColor; }
         
         //	Stroke
-        Node &strokeColor(ci::Color color)               { setStrokeColor(color); return *this; }
-        Node &strokeColor(float r, float g, float b)     { setStrokeColor(r,g,b); return *this; }
-        void setStrokeColor(ci::Color color)              { mStrokeColor = color; }
-        void setStrokeColor(float r, float g, float b)    { mStrokeColor.set(r,g,b); }
-        
-        Node &strokeEnabled(bool enabled)      { setStrokeEnabled(enabled); return *this; }
-        void setStrokeEnabled(bool enabled)     { mStrokeEnabled = enabled; };
-        
-        bool getStrokeEnabled()     { return mStrokeEnabled; }
-        ci::Color getStrokeColor()  { return mStrokeColor; }
+        Node &strokeColor(ci::Color color) { setStrokeColor(color); return *this; }
+        Node &strokeColor(float r, float g, float b) { setStrokeColor(r, g, b); return *this; }
+        void setStrokeColor(ci::Color color) { mStrokeColor = color; }
+        void setStrokeColor(float r, float g, float b) { mStrokeColor.set(r, g, b); }
+        Node &strokeEnabled(bool enabled) { setStrokeEnabled(enabled); return *this; }
+        void setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; };
+        bool getStrokeEnabled() { return mStrokeEnabled; }
+        ci::Color getStrokeColor() { return mStrokeColor; }
         
         //	Caching and FBO
         Node &cacheToFboEnabled(bool cache, int width = 0, int height = 0) { setCacheToFboEnabled(cache, width, height); return *this; };
         void setCacheToFboEnabled(bool enabled, int width, int height);
         bool getCachToFboEnabled() { return mCacheToFbo; };
-        
         ci::gl::TextureRef createTexture();
         
         //	Masking
@@ -258,14 +242,13 @@ namespace po { namespace scene {
         //	Identifiers (Assigned from Scene)
         uint32_t getDrawOrder() { return mDrawOrder; };
         uint32_t getUID() { return mUid; };
-        
-        
+		
         //	Attribute Animation Getters
-        ci::Anim<ci::Vec2f> &getPositionAnim()  { return mPositionAnim; };
-        ci::Anim<ci::Vec2f> &getScaleAnim()     { return mScaleAnim; };
-        ci::Anim<float>     &getRotationAnim()  { return mRotationAnim; };
-        ci::Anim<float>     &getAlphaAnim()     { return mAlphaAnim; };
-        ci::Anim<ci::Vec2f> &getOffsetAnim()    { return mOffsetAnim; };
+        ci::Anim<ci::Vec2f> &getPositionAnim() { return mPositionAnim; };
+        ci::Anim<ci::Vec2f> &getScaleAnim() { return mScaleAnim; };
+        ci::Anim<float> &getRotationAnim() { return mRotationAnim; };
+        ci::Anim<float> &getAlphaAnim() { return mAlphaAnim; };
+        ci::Anim<ci::Vec2f> &getOffsetAnim() { return mOffsetAnim; };
         ci::Anim<ci::Color> &getFillColorAnim() { return mFillColorAnim; };
         
         
@@ -274,8 +257,8 @@ namespace po { namespace scene {
 			#pragma mark - Signals
 		//------------------------------------
         
-        MouseEventSignal& getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
-        TouchEventSignal& getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
+        MouseEventSignal &getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
+        TouchEventSignal &getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
         Node(std::string name ="");
@@ -305,7 +288,6 @@ namespace po { namespace scene {
 		void resetFbo();
         virtual void drawFbo();
         bool mIsCapturingFbo;
-        
         bool mCacheToFbo;
         std::shared_ptr<ci::gl::Fbo> mFbo;
         
@@ -320,13 +302,10 @@ namespace po { namespace scene {
         ci::Vec2f mScale;
         float     mRotation;
         ci::Vec2f mOffset;
-        
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
-        
         float mAlpha, mAppliedAlpha;
-        
         MatrixOrder mMatrixOrder;
         
         //	Animation
@@ -335,8 +314,8 @@ namespace po { namespace scene {
         
         ci::Anim<ci::Vec2f> mPositionAnim;
         ci::Anim<ci::Vec2f> mScaleAnim;
-        ci::Anim<float>     mRotationAnim;
-        ci::Anim<float>     mAlphaAnim;
+        ci::Anim<float> mRotationAnim;
+        ci::Anim<float> mAlphaAnim;
         ci::Anim<ci::Vec2f> mOffsetAnim;
         ci::Anim<ci::Color> mFillColorAnim;
         
@@ -393,13 +372,11 @@ namespace po { namespace scene {
         
         //	Mouse
         std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
-        
         bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
         void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
         
         //	Touch
         std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
-        
         bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
         void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
 		

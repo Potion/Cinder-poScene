@@ -45,8 +45,7 @@ namespace po { namespace scene {
     
     Image::Image(ci::gl::TextureRef texture)
     : mTexture(texture)
-    {
-        
+    { 
     }
     
     void Image::draw()
