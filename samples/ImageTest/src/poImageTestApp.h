@@ -14,7 +14,7 @@ class poImageTestApp;
 typedef std::shared_ptr<poImageTestApp> poImageTestAppRef;
 
 class poImageTestApp
-: public po::NodeContainer
+: public po::scene::NodeContainer
 {
 public:
     static poImageTestAppRef create();

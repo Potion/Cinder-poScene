@@ -26,28 +26,36 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
-#pragma once
-
-#include "cinder/Area.h"
-#include "cinder/Matrix.h"
-#include "cinder/Camera.h"
+#include "poImage.h"
 
 namespace po { namespace scene {
-        class MatrixSet
-        {
-        public:
-            void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
-            
-            ci::Vec2f globalToLocal(const ci::Vec2f &point);
-            ci::Vec2f localToGlobal(const ci::Vec2f &point);
-            
-        private:
-            ci::Matrix44f mModelview, mProjection;
-            ci::Area mViewport;
-            
-            ci::Vec3f project(const ci::Vec3f &point);
-            ci::Vec3f unproject(const ci::Vec3f &point);
-        };
+    
+    ImageRef Image::create()
+    {
+        return create(nullptr);
+    }
+    
+    ImageRef Image::create(ci::gl::TextureRef texture)
+    {
+        ImageRef ref(new Image(texture));
+        return ref;
+    }
+    
+    Image::Image(ci::gl::TextureRef texture)
+    : mTexture(texture)
+    {
+        
+    }
+    
+    void Image::draw()
+    {
+        if(mTexture) {
+            ci::gl::enableAlphaBlending();
+            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
+            ci::gl::draw(mTexture);
+        }
+    }
+    
 } } //  Namespace: po::scene

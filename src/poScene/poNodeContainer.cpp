@@ -211,7 +211,6 @@ namespace po { namespace scene {
             (*iter)->removeParent();
             (*iter)->removeScene();
             
-            #pragma message "This is not safe in recursion..."
             mChildren.erase(iter);
             
             setAlignment(getAlignment());

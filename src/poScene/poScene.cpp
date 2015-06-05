@@ -61,8 +61,6 @@ namespace po { namespace scene {
         mRootNode = nullptr;
     }
     
-    #pragma mark -
-    
     void Scene::update()
     {
         //Send a copy of all over our children to be processed
@@ -87,8 +85,6 @@ namespace po { namespace scene {
 
     }
     
-    #pragma mark -
-    
     uint32_t Scene::getNextDrawOrder()
     {
         return drawOrderCounter++;
@@ -104,8 +100,9 @@ namespace po { namespace scene {
     }
     
     
+    // ------------------------------------
+    // Child Node Tracking
     
-    #pragma mark -
     void Scene::trackChildNode(NodeRef node) {
         if(node) {
             //mTrackingQueue[node] = true;

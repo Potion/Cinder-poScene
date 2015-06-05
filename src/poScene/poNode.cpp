@@ -109,9 +109,8 @@ namespace po { namespace scene {
     }
     
     
-    
-    //------------------------------------------------------
-    #pragma mark - Update & Draw Trees -
+    // ------------------------------------
+    // Update & Draw Trees
     
     void Node::updateTree()
     {
@@ -185,8 +184,8 @@ namespace po { namespace scene {
     }
     
     
-    //------------------------------------------------------
-    #pragma mark  - Caching -
+    // ------------------------------------
+    // Caching
     
     void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
@@ -610,9 +609,32 @@ namespace po { namespace scene {
     }
     
 
+    ci::Vec2f Node::nodeToLocal(const ci::Vec2f &point, NodeRef node)
+    {
+        return windowToLocal(node->localToWindow(point));
+    }
+    
+    ci::Vec2f Node::localToNode(const ci::Vec2f &point, NodeRef node)
+    {
+        return node->windowToLocal(localToWindow(point));
+    }
+    
+    
     ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
     {
+        SceneRef scene = getScene();
+        if(scene != nullptr) {
+            return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
+        }
         return ci::Vec2f();
+    }
+    
+    ci::Vec2f Node::localToScene(const ci::Vec2f &point)
+    {
+        SceneRef scene = getScene();
+        if(scene != nullptr) {
+            return localToNode(point, scene->getRootNode());
+        }
     }
     
     ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
@@ -627,13 +649,18 @@ namespace po { namespace scene {
     
     ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
     {
+        SceneRef scene = getScene();
+        if(scene != nullptr) {
+            return scene->getRootNode()->windowToLocal(point);
+        }
         
+        return ci::Vec2f();
     }
     
     
-    ci::Vec2f Node::windowToLocal(const ci::Vec2f &globalPoint)
+    ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint)
     {
-        return mMatrix.globalToLocal(globalPoint);
+        return mMatrix.globalToLocal(windowPoint);
     }
     
     
@@ -646,6 +673,11 @@ namespace po { namespace scene {
         return ci::Vec2f();
     }
     
+    
+    //------------------------------------------------------
+    //  Point Inside
+    //  This is used for hit-testing all Nodes
+    //  Override this function to do any type of custom
     
     bool Node::pointInside(const ci::Vec2f &point, bool localize)
     {

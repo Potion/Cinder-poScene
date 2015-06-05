@@ -26,28 +26,32 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
 #pragma once
 
-#include "cinder/Area.h"
-#include "cinder/Matrix.h"
-#include "cinder/Camera.h"
+#include "poNode.h"
 
 namespace po { namespace scene {
-        class MatrixSet
-        {
-        public:
-            void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
-            
-            ci::Vec2f globalToLocal(const ci::Vec2f &point);
-            ci::Vec2f localToGlobal(const ci::Vec2f &point);
-            
-        private:
-            ci::Matrix44f mModelview, mProjection;
-            ci::Area mViewport;
-            
-            ci::Vec3f project(const ci::Vec3f &point);
-            ci::Vec3f unproject(const ci::Vec3f &point);
-        };
+    class Image;
+    typedef std::shared_ptr<Image> ImageRef;
+    
+    class Image
+    : public Node
+    {
+    public:
+        static ImageRef create();
+        static ImageRef create(ci::gl::TextureRef texture);
+        
+        void draw();
+        void setTexture(ci::gl::TextureRef texture) { mTexture = texture; }
+        ci::gl::TextureRef getTexture() { return mTexture; }
+        
+    protected:
+        Image(ci::gl::TextureRef texture);
+        
+    private:
+        ci::gl::TextureRef mTexture;
+    };
+
 } } //  Namespace: po::scene

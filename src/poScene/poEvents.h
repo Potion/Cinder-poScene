@@ -38,9 +38,9 @@ namespace po { namespace scene {
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
-    //----------------------------------
-    //BASE EVENT
-    #pragma mark Base Event
+    
+    // ------------------------------------
+    // Base Event
     
     class Event {
         friend class Node;
@@ -63,12 +63,12 @@ namespace po { namespace scene {
         bool mShouldPropagate;
         std::weak_ptr<Node> mSource;
     };
-
     
     
-    //----------------------------------
-    //MOUSE EVENTS
-    #pragma mark Mouse Event
+    
+    
+    // ------------------------------------
+    // Mouse Event
     
     class MouseEvent
     : public po::scene::Event
@@ -98,9 +98,9 @@ namespace po { namespace scene {
     
     
     
-    //----------------------------------
-    //TOUCH EVENT
-    #pragma mark Touch Event
+    
+    // ------------------------------------
+    // Touch Event
     
     class TouchEvent
     : public Event
