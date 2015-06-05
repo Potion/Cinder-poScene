@@ -42,8 +42,8 @@ namespace po { namespace scene {
 	
     template<class T>
     class Video
-    : public po::Node {
-        
+    : public po::Node
+	{
     private:
         typedef std::shared_ptr<T> GenericMovieRef;
         
@@ -67,12 +67,14 @@ namespace po { namespace scene {
     private:
         //Movie and texture refs
         std::shared_ptr<T> mMovieRef;
+		
     };
     
     
     //  Class Implementation
     template<class T>
-    std::shared_ptr<Video<T> > Video<T>::create() {
+    std::shared_ptr<Video<T> > Video<T>::create()
+	{
         std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
         ref->setup();
         return ref;
@@ -80,7 +82,8 @@ namespace po { namespace scene {
     
     
     template<class T>
-    std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef) {
+    std::shared_ptr<Video<T> > Video<T>::create(GenericMovieRef movieRef)
+	{
         std::shared_ptr<Video<T> > ref = std::shared_ptr<Video<T> >(new Video());
         ref->setup();
         ref->setMovieRef(movieRef);

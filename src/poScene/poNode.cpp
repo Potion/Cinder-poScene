@@ -52,8 +52,7 @@ namespace po { namespace scene {
     
     static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
-    
-    
+	
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
@@ -98,14 +97,13 @@ namespace po { namespace scene {
         initAttrAnimations();
     }
     
-    Node::~Node() {
+    Node::~Node()
+	{
 		//	Make sure to clear the fbo w/Cinder bug fix
         resetFbo();
         removeParent();
         removeScene();
-        
         disconnectAllSignals();
-        
     }
     
     
@@ -350,7 +348,8 @@ namespace po { namespace scene {
 	//	Reset the FBO with Cinder bug fix
 	//	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
     
-    void Node::resetFbo() {
+    void Node::resetFbo()
+	{
         GLuint depthTextureId = 0;
         
         //  Get the id of depth texture

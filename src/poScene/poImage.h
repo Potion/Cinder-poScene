@@ -53,6 +53,7 @@ namespace po { namespace scene {
         
     private:
         ci::gl::TextureRef mTexture;
+		
     };
 
 } } //  namespace po::scene

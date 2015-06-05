@@ -44,6 +44,7 @@ namespace po { namespace scene {
     
     class Event {
         friend class Node;
+		
     public:
         Event();
         
@@ -62,6 +63,7 @@ namespace po { namespace scene {
     private:
         bool mShouldPropagate;
         std::weak_ptr<Node> mSource;
+		
     };
     
     
@@ -94,6 +96,7 @@ namespace po { namespace scene {
         
     private:
         ci::app::MouseEvent mCiEvent;
+		
     };
     
     
@@ -121,6 +124,7 @@ namespace po { namespace scene {
         
     private:
         ci::app::TouchEvent::Touch mCiEvent;
+		
     };
 	
 } } //  namespace po::scene

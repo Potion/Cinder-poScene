@@ -102,7 +102,7 @@ namespace po { namespace scene {
 		ci::Vec2f mTextureOffset;
 		
 		int mPrecision;
-		
+
 	};
 		
 } } //  namespace po::scene

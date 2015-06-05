@@ -97,6 +97,7 @@ namespace po { namespace scene {
         
         void processTrackingQueue();
         std::map<NodeRef, bool> mTrackingQueue;
+		
     };
 	
 } } //  namespace po::scene

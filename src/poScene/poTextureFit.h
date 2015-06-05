@@ -43,7 +43,8 @@ namespace po { namespace scene { namespace TextureFit {
 		INSIDE
 	};
 	
-	static ci::Vec2f alignInRect(ci::Vec2f max, ci::Rectf rect, Alignment align) {
+	static ci::Vec2f alignInRect(ci::Vec2f max, ci::Rectf rect, Alignment align)
+	{
 		ci::Vec2f offset;
 		switch(align) {
 			case Alignment::TOP_LEFT:
@@ -81,7 +82,8 @@ namespace po { namespace scene { namespace TextureFit {
 	
 	
 	//------------------------------------------------------------------------
-	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords) {
+	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
+	{
 		for(uint32_t i=0; i<points.size(); i++) {
 			float s = (points[i].x-rect.getX1()) / rect.getWidth();
 			float t = (points[i].y-rect.getY1()) / rect.getHeight();
@@ -91,7 +93,8 @@ namespace po { namespace scene { namespace TextureFit {
 	
 	
 	//------------------------------------------------------------------------
-	static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords) {
+	static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
+	{
 		ci::Vec2f max(FLT_MIN, FLT_MIN);
 		
 		for(uint32_t i=0; i<points.size(); i++) {
@@ -113,7 +116,8 @@ namespace po { namespace scene { namespace TextureFit {
 	
 	
 	//------------------------------------------------------------------------
-	static void textureFitHorizontal(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords ) {
+	static void textureFitHorizontal(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
+	{
 		float new_w = rect.getWidth();
 		float new_h = new_w / (tex->getWidth() / (float)tex->getHeight());
 		
@@ -138,7 +142,8 @@ namespace po { namespace scene { namespace TextureFit {
 	
 	
 	//------------------------------------------------------------------------
-	static void textureFitVertical(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords ) {
+	static void textureFitVertical(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
+	{
 		float new_h = rect.getHeight();
 		float new_w = new_h / (tex->getHeight() / (float)tex->getWidth());
 		
@@ -192,7 +197,8 @@ namespace po { namespace scene { namespace TextureFit {
 	
 	
 	//------------------------------------------------------------------------
-	static std::vector<ci::Vec2f> fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align) {
+	static std::vector<ci::Vec2f> fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align)
+	{
 		std::vector<ci::Vec2f> coords(4);
 		std::vector<ci::Vec2f> points;
 		points.push_back(rect.getUpperLeft());
