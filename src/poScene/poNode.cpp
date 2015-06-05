@@ -28,6 +28,8 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+#define GLSL(src) "#version 110\n" #src
+
 #if defined( CINDER_MSW )
 #include <windows.h>
 #undef min
@@ -52,7 +54,42 @@ namespace po { namespace scene {
     
     static uint32_t OBJECT_UID  = 0;
     static const int ORIGIN_SIZE   = 2;
-	
+    
+    static ci::gl::GlslProgRef mMaskShader = nullptr;
+    
+    static const char *maskVertShader = GLSL(
+        uniform vec2 maskPosition;
+
+        void main()
+        {
+            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;// * vec4(1,-1,1,1);
+            gl_TexCoord[0]  = gl_MultiTexCoord0;
+            gl_TexCoord[1]  = gl_MultiTexCoord1;
+        }
+    );
+    
+    static const char *maskFragShader = GLSL(
+        uniform sampler2D tex;
+        uniform sampler2D mask;
+
+        uniform vec2 contentScale;
+        uniform vec2 maskPosition;
+
+        void main(void)
+        {
+            vec2 c0 = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t);
+            vec2 c1 = (gl_TexCoord[0].st - maskPosition) * contentScale;
+            
+            vec4 rgbValue       = texture2D(tex, c0);
+            vec4 alphaValue     = texture2D(mask, c1);
+            gl_FragColor.rgb    = rgbValue.rgb;
+            if(c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0) {
+                gl_FragColor.a      = alphaValue.r * rgbValue.a;
+            } else {
+                gl_FragColor.a = 0.0;
+            }
+        }
+    );
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
@@ -128,12 +165,11 @@ namespace po { namespace scene {
         if(hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //	Set applied alpha
-		if(hasParent()) {
+        if(hasParent())
             mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
-		} else {
+        else
             mAppliedAlpha = mAlpha;
-		}
-		
+        
         //	Push our Matrix
         ci::gl::pushModelView();
         setTransformation();
@@ -144,7 +180,9 @@ namespace po { namespace scene {
     {
         if(mVisible) {
             //  Capture FBO if we need to
-            if(mCacheToFbo) { captureFbo(); }
+            if(mCacheToFbo) {
+                captureFbo();
+            }
             
             //  Draw
             beginDrawTree();
@@ -166,7 +204,8 @@ namespace po { namespace scene {
     void Node::finishDrawTree()
     {
         //Draw bounds if necessary
-        if(mDrawBounds) drawBounds();
+        if(mDrawBounds)
+            drawBounds();
         
         //Pop our Matrix
         ci::gl::popModelView();
@@ -198,7 +237,9 @@ namespace po { namespace scene {
     //	Generate a new fbo
     bool Node::createFbo(int width, int height)
     {
-        if(mFbo) { resetFbo(); }
+        if(mFbo) {
+			resetFbo();
+        }
 
         try {
             //Create the FBO
@@ -282,14 +323,14 @@ namespace po { namespace scene {
             mMask->getTexture()->bind(1);
             
             //	Bind Shader
-            mMaskShader.bind();
+            mMaskShader->bind();
             
             //	Set uniforms
-            mMaskShader.uniform("tex", 0);
-            mMaskShader.uniform("mask", 1);
-            mMaskShader.uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
+            mMaskShader->uniform("tex", 0);
+            mMaskShader->uniform("mask", 1);
+            mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
             //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-            mMaskShader.uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
+            mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
             
             //	Draw
             ci::gl::drawSolidRect(mFbo->getBounds());
@@ -297,8 +338,10 @@ namespace po { namespace scene {
             //	Restore everything
             tex.unbind();
             mMask->getTexture()->unbind();
-            mMaskShader.unbind();
-        } else {
+            mMaskShader->unbind();
+        }
+        
+        else {
             //	Just draw the fbo
             ci::gl::draw(tex, mFbo->getBounds());
         }
@@ -312,7 +355,9 @@ namespace po { namespace scene {
         bool alreadyCaching = mCacheToFbo;
         
         //If we're not already caching, generate texture with FBO 
-        if(!alreadyCaching) { createFbo(getWidth(), getHeight()); }
+        if(!alreadyCaching) {
+            createFbo(getWidth(), getHeight());
+        }
         
         //Check to make sure we could create the fbo
         if(!mFbo) return nullptr;
@@ -328,7 +373,9 @@ namespace po { namespace scene {
         mCacheToFbo = alreadyCaching;
         
         //Clean up if we're not caching
-		if (!mCacheToFbo) { resetFbo(); }
+		if (!mCacheToFbo) {
+			resetFbo();
+		}
         
         //Return the texture
         return tex;
@@ -348,7 +395,8 @@ namespace po { namespace scene {
 				depthTextureId = mFbo->getDepthTexture().getId();
 			}
         }
-		
+        
+        
         //  Reset the FBO
         mFbo.reset();
         
@@ -372,9 +420,10 @@ namespace po { namespace scene {
         
         if(mFbo) {
             //If successful, try to build the shader
-            if(!mMaskShader) {
+            if(!mMaskShader)
+            {
                 try {
-                    mMaskShader = ci::gl::GlslProg ( ci::app::loadResource(RES_GLSL_PO_MASK_VERT), ci::app::loadResource( RES_GLSL_PO_MASK_FRAG));
+                    mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
                 } catch (ci::gl::GlslProgCompileExc e) {
                     ci::app::console() << "Could not load shader: " << e.what() << std::endl;
                     return;
@@ -478,7 +527,8 @@ namespace po { namespace scene {
         
         NodeRef parent = getParent();
         while(parent) {
-            if(!parent->mVisible) return false;
+            if(!parent->mVisible)
+                return false;
         
             parent = parent->getParent();
         }
@@ -549,29 +599,21 @@ namespace po { namespace scene {
             case Alignment::TOP_LEFT:
                 break;
             case Alignment::TOP_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,0);
-				break;
+                mOffset.set(-bounds.getWidth()/2.f,0); break;
             case Alignment::TOP_RIGHT:
-                mOffset.set(-bounds.getWidth(),0);
-				break;
+                mOffset.set(-bounds.getWidth(),0); break;
             case Alignment::CENTER_LEFT:
-                mOffset.set(0,-bounds.getHeight()/2.f);
-				break;
+                mOffset.set(0,-bounds.getHeight()/2.f); break;
             case Alignment::CENTER_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f);
-				break;
+                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()/2.f); break;
             case Alignment::CENTER_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight()/2.f);
-				break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight()/2.f); break;
             case Alignment::BOTTOM_LEFT:
-                mOffset.set(0,-bounds.getHeight());
-				break;
+                mOffset.set(0,-bounds.getHeight()); break;
             case Alignment::BOTTOM_CENTER:
-                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight());
-				break;
+                mOffset.set(-bounds.getWidth()/2.f,-bounds.getHeight()); break;
             case Alignment::BOTTOM_RIGHT:
-                mOffset.set(-bounds.getWidth(),-bounds.getHeight());
-				break;
+                mOffset.set(-bounds.getWidth(),-bounds.getHeight()); break;
         }
     }
     
@@ -589,6 +631,7 @@ namespace po { namespace scene {
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
                 break;
+                
             case MatrixOrder::RST:
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
@@ -760,8 +803,8 @@ namespace po { namespace scene {
         //Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
-        ci::gl::scale(ci::Vec2f(1.f,1.f) / mScale);
-        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
+        ci::gl::scale(ci::Vec2f(1.f,1.f)/mScale);
+        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE/2, -ORIGIN_SIZE/2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
     
@@ -793,7 +836,10 @@ namespace po { namespace scene {
     
     bool Node::isEligibleForInteractionEvents()
     {
-        if( !hasScene() || !isInteractionEnabled() || !isVisible() ) {
+        if(!hasScene() ||
+           !isInteractionEnabled() ||
+           !isVisible())
+        {
             return false;
         }
         
@@ -818,13 +864,15 @@ namespace po { namespace scene {
     //See if we care about an event
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if( (mMouseEventSignals[type].num_slots() != 0) ) {
+        if((mMouseEventSignals[type].num_slots() != 0))
+        {
             return isEligibleForInteractionEvents();
         }
         
         return false;
     }
-	
+    
+    
     //For the given event, notify everyone that we have as a subscriber
     void Node::emitEvent(MouseEvent &event, const MouseEvent::Type &type)
     {
@@ -846,7 +894,8 @@ namespace po { namespace scene {
     //See if we care about an event
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if( (mTouchEventSignals[type].num_slots() != 0) ) {
+        if((mTouchEventSignals[type].num_slots() != 0))
+        {
             return isEligibleForInteractionEvents();
         }
         

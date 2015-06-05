@@ -20,7 +20,7 @@ using namespace std::placeholders;
 TestNodeRef TestNode::create() {
     TestNodeRef ref = TestNodeRef(new TestNode());
     ref->setup();
-    return ref ;
+    return ref;
 }
 
 void TestNode::setup()

@@ -305,7 +305,6 @@ namespace po { namespace scene {
         
         bool mCacheToFbo;
         std::shared_ptr<ci::gl::Fbo> mFbo;
-        ci::gl::GlslProg mMaskShader;
         
         //Masking
         void drawMasked();
