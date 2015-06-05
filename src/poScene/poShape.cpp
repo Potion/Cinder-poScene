@@ -93,7 +93,7 @@ namespace po { namespace scene {
         ci::Shape2d shape;
         
         shape.moveTo(x, height/2);
-        shape.curveTo(x, ym-oy, xm - ox, y, xm, y);
+        shape.curveTo(x, ym - oy, xm - ox, y, xm, y);
         shape.curveTo(xm + ox, y, xe, ym - oy, xe, ym);
         shape.curveTo(xe, ym + oy, xm + ox, ye, xm, ye);
         shape.curveTo(xm - ox, ye, x, ym + oy, x, ym);
@@ -194,8 +194,7 @@ namespace po { namespace scene {
             TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             
             //Check to see if texture is flipped, common if coming from FBO
-            if(mTexture->isFlipped())
-                std::reverse(texCoords.begin(), texCoords.end());
+            if(mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
             
             if(mTextureOffset != ci::Vec2f(0,0)) {
                 ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
@@ -204,8 +203,6 @@ namespace po { namespace scene {
                     coord -= normalizedOffset;
                 }
             }
-            
-            
             
             //Add coords to TriMesh
             mesh.appendTexCoords(&texCoords[0], texCoords.size());

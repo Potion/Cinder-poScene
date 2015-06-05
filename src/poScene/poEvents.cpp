@@ -56,8 +56,7 @@ namespace po { namespace scene {
     ci::Vec2f Event::getLocalPos()
     {
         NodeRef source = getSource();
-        if(source)
-        {
+        if(source) {
             return source->windowToLocal(getWindowPos());
         }
         

@@ -70,17 +70,14 @@ namespace po { namespace scene {
         
         mRootNode->updateTree();
         
-        if(mAutoCam)
-            mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
+        if(mAutoCam) mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
     }
     
     void Scene::draw()
     {
         drawOrderCounter = 0;
         
-        if (mAutoCam) {
-			ci::gl::setMatricesWindow(ci::app::getWindowSize());
-        }
+        if (mAutoCam) ci::gl::setMatricesWindow(ci::app::getWindowSize());
         
         mRootNode->drawTree();
 
@@ -132,11 +129,8 @@ namespace po { namespace scene {
                 std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
                 if(kv.second && iter == allChildren.end()) {
                     allChildren.push_back(kv.first);
-                }
-                
-                else {
-                    if(iter != allChildren.end())
-                        allChildren.erase(iter);
+                } else {
+                    if(iter != allChildren.end()) allChildren.erase(iter);
                 }
             }
         }

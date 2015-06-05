@@ -51,25 +51,25 @@ namespace po { namespace scene { namespace TextureFit {
 				offset.set(0.f, max.y - 1.f);
 				break;
 			case Alignment::TOP_CENTER:
-				offset.set((max.x - 1.f)/2.f, max.y - 1.f);
+				offset.set((max.x - 1.f) / 2.f, max.y - 1.f);
 				break;
 			case Alignment::TOP_RIGHT:
 				offset.set(max.x - 1.f, max.y - 1.f);
 				break;
 			case Alignment::CENTER_LEFT:
-				offset.set(0.f, (max.y - 1.f)/2.f);
+				offset.set(0.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::CENTER_CENTER:
-				offset.set((max.x - 1.f)/2.f, (max.y - 1.f)/2.f);
+				offset.set((max.x - 1.f) / 2.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::CENTER_RIGHT:
-				offset.set(max.x - 1.f, (max.y - 1.f)/2.f);
+				offset.set(max.x - 1.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::BOTTOM_LEFT:
 				offset.set(0.f, 0.f);
 				break;
 			case Alignment::BOTTOM_CENTER:
-				offset.set((max.x - 1.f)/2.f, 0.f);
+				offset.set((max.x - 1.f) / 2.f, 0.f);
 				break;
 			case Alignment::BOTTOM_RIGHT:
 				offset.set(max.x - 1.f, 0.f);
@@ -84,9 +84,9 @@ namespace po { namespace scene { namespace TextureFit {
 	//------------------------------------------------------------------------
 	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
 	{
-		for(uint32_t i=0; i<points.size(); i++) {
-			float s = (points[i].x-rect.getX1()) / rect.getWidth();
-			float t = (points[i].y-rect.getY1()) / rect.getHeight();
+		for(uint32_t i = 0; i < points.size(); i++) {
+			float s = (points[i].x - rect.getX1()) / rect.getWidth();
+			float t = (points[i].y - rect.getY1()) / rect.getHeight();
 			coords[i].set(s,t);
 		}
 	}
@@ -97,9 +97,9 @@ namespace po { namespace scene { namespace TextureFit {
 	{
 		ci::Vec2f max(FLT_MIN, FLT_MIN);
 		
-		for(uint32_t i=0; i<points.size(); i++) {
-			float s = (points[i].x-rect.getX1()) / tex->getWidth();
-			float t = (points[i].y-rect.getY1()) / tex->getHeight();
+		for(uint32_t i = 0; i < points.size(); i++) {
+			float s = (points[i].x - rect.getX1()) / tex->getWidth();
+			float t = (points[i].y - rect.getY1()) / tex->getHeight();
 			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
@@ -109,7 +109,7 @@ namespace po { namespace scene { namespace TextureFit {
 		
 		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
-		for(uint32_t i=0; i<coords.size(); i++) {
+		for(uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
@@ -123,9 +123,9 @@ namespace po { namespace scene { namespace TextureFit {
 		
 		ci::Vec2f max(FLT_MIN, FLT_MIN);
 		
-		for(uint32_t i=0; i<points.size(); i++) {
-			float s = (points[i].x-rect.getX1()) / rect.getWidth();
-			float t = (points[i].y-rect.getY1()) / new_h;
+		for(uint32_t i = 0; i < points.size(); i++) {
+			float s = (points[i].x - rect.getX1()) / rect.getWidth();
+			float t = (points[i].y - rect.getY1()) / new_h;
 			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
@@ -135,7 +135,7 @@ namespace po { namespace scene { namespace TextureFit {
 		
 		ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
 		
-		for(uint32_t i=0; i<coords.size(); i++) {
+		for(uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
@@ -149,9 +149,9 @@ namespace po { namespace scene { namespace TextureFit {
 		
 		ci::Vec2f max(FLT_MIN, FLT_MIN);
 		
-		for(uint32_t i=0; i<points.size(); i++) {
-			float s = (points[i].x-rect.getX1()) / new_w;
-			float t = (points[i].y-rect.getY1()) / rect.getHeight();
+		for(uint32_t i = 0; i < points.size(); i++) {
+			float s = (points[i].x - rect.getX1()) / new_w;
+			float t = (points[i].y - rect.getY1()) / rect.getHeight();
 			
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
@@ -161,7 +161,7 @@ namespace po { namespace scene { namespace TextureFit {
 		
 		ci::Vec2f offset = alignInRect(max, ci::Rectf(0,0,1,1), align);
 		
-		for(uint32_t i=0; i<coords.size(); i++) {
+		for(uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
@@ -172,26 +172,29 @@ namespace po { namespace scene { namespace TextureFit {
 	{
 		switch(fit) {
 			case Type::NONE:
-				textureFitNone(rect, tex, align, points, coords ); break;
+				textureFitNone(rect, tex, align, points, coords );
+				break;
 			case Type::EXACT:
-				textureFitExact(rect, tex, align, points, coords); break;
+				textureFitExact(rect, tex, align, points, coords);
+				break;
 			case Type::WIDTH:
-				textureFitHorizontal(rect, tex, align, points, coords); break;
+				textureFitHorizontal(rect, tex, align, points, coords);
+				break;
 			case Type::HEIGHT:
 				textureFitVertical(rect, tex, align, points, coords);
 				break;
-				
 			case Type::INSIDE:
 			{
 				float new_h = ((float)rect.getWidth()) * ((float)tex->getHeight()) / ((float)tex->getWidth());
-				if(new_h > rect.getHeight())
+				if(new_h > rect.getHeight()) {
 					textureFitVertical(rect, tex, align, points, coords);
-				else
+				} else {
 					textureFitHorizontal(rect, tex, align, points, coords);
+				}
 				break;
 			}
 			default:
-				;
+				break;
 		}
 	}
 	

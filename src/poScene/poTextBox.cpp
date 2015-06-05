@@ -77,19 +77,16 @@ namespace po { namespace scene {
                 case ci::TextBox::Alignment::LEFT:
                     xPos = 0;
                     break;
-                    
                 case ci::TextBox::Alignment::CENTER:
                     xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
                     break;
-                    
                 case ci::TextBox::Alignment::RIGHT:
                     xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
                     break;
             }
             
             return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
-        }
-        else {
+        } else {
             return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
         }
     }

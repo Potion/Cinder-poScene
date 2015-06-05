@@ -50,12 +50,11 @@ namespace po { namespace scene {
     private:
         EventCenter();
         
-        //  Event Processor Template Class
+        //  Event Processor
         template<typename CiEventT, typename EventT, typename EventTypeT>
 		
         class EventProcessor {
         public:
-            //EventProcessor();
             void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
             
             void processEvents(std::vector<NodeRef> &nodes)
@@ -82,9 +81,7 @@ namespace po { namespace scene {
 			{
                 for(NodeRef &node : nodes) {
                     //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-                    if(node == nullptr || (!node->isEligibleForInteractionEvents())) {
-                        continue;
-                    }
+                    if(node == nullptr || (!node->isEligibleForInteractionEvents())) { continue; }
                     
                     event.setShouldPropagate(true);
                     
@@ -98,8 +95,7 @@ namespace po { namespace scene {
             {
                 //Go through the draw tree, notifying nodes that are listening
                 for(NodeRef &node : nodes) {
-                    if(node->isEligibleForInteractionEvent(type) && node->pointInside(event.getWindowPos()))
-                    {
+                    if( node->isEligibleForInteractionEvent(type) && node->pointInside(event.getWindowPos()) ) {
                         node->emitEvent(event, type);
                         if(event.getShouldPropagate()) {
                             event.setShouldPropagate(false);
@@ -128,13 +124,17 @@ namespace po { namespace scene {
                 MouseEvent::Type callbackType;
                 switch (type) {
                     case MouseEvent::Type::DOWN:
-                        callbackType = MouseEvent::Type::DOWN_INSIDE; break;
+                        callbackType = MouseEvent::Type::DOWN_INSIDE;
+						break;
                     case MouseEvent::Type::MOVE:
-                        callbackType = MouseEvent::Type::MOVE_INSIDE; break;
+                        callbackType = MouseEvent::Type::MOVE_INSIDE;
+						break;
                     case MouseEvent::Type::DRAG:
-                        callbackType = MouseEvent::Type::DRAG_INSIDE; break;
+                        callbackType = MouseEvent::Type::DRAG_INSIDE;
+						break;
                     case MouseEvent::Type::UP:
-                        callbackType = MouseEvent::Type::UP_INSIDE; break;
+                        callbackType = MouseEvent::Type::UP_INSIDE;
+						break;
                 }
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);
@@ -175,11 +175,14 @@ namespace po { namespace scene {
                 TouchEvent::Type callbackType;
                 switch (type) {
                     case TouchEvent::Type::BEGAN:
-                        callbackType = TouchEvent::Type::BEGAN_INSIDE; break;
+                        callbackType = TouchEvent::Type::BEGAN_INSIDE;
+						break;
                     case TouchEvent::Type::MOVED:
-                        callbackType = TouchEvent::Type::MOVED_INSIDE; break;
+                        callbackType = TouchEvent::Type::MOVED_INSIDE;
+						break;
                     case TouchEvent::Type::ENDED:
-                        callbackType = TouchEvent::Type::ENDED_INSIDE; break;
+                        callbackType = TouchEvent::Type::ENDED_INSIDE;
+						break;
                 }
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);

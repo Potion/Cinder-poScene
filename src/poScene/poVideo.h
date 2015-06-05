@@ -57,8 +57,8 @@ namespace po { namespace scene {
         ci::Rectf getBounds();
         
     protected:
-        Video() {}
-        
+		Video() {};
+		
         void setup();
         void update();
         
