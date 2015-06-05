@@ -7,7 +7,9 @@ namespace po
 
 		___FILEBASENAME___Ref ___FILEBASENAME___::create() 
 		{
-	        return std::shared_ptr<___FILEBASENAME___>(new ___FILEBASENAME___());
+	        ___FILEBASENAME___Ref m_ref = std::shared_ptr<___FILEBASENAME___>(new ___FILEBASENAME___());
+			m_ref.setup();
+			return m_ref;
 	    }
 
 		___FILEBASENAME___::___FILEBASENAME___() 

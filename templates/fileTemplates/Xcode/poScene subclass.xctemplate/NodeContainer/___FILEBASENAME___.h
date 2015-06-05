@@ -16,12 +16,14 @@ namespace po {
 		{
 		public:
 			static ___FILEBASENAME___Ref create();
-			virtual ~___FILEBASENAME___();
+			virtual void setup();
 
 		protected:
+			 ___FILEBASENAME___();
+			virtual void update();
 		    virtual void draw();
-		    ___FILEBASENAME___();
-	
+		    virtual ~___FILEBASENAME___();
+		 
 		};
 
 	}
