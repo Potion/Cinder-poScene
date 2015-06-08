@@ -34,10 +34,11 @@ void Masking::setup() {
     ci::gl::TextureRef maskTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("mask.png")));
     mMask = Shape::create(maskTex);
     //mZach->setMask(mMask);
-    mZach->setCacheToFboEnabled(true, 200,200);
+    //mZach->setCacheToFboEnabled(true, 200,200);
     
     mMask->fillColor(ci::Color(1,0,1));
-    mMask->setPosition(0,mZach->getHeight());
+    //mMask->setPosition(0,mZach->getHeight());
+    //addChild(mMask);
     
     ci::app::getWindow()->connectKeyDown(&Masking::keyDown, this);
     

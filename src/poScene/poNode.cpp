@@ -90,6 +90,7 @@ namespace po { namespace scene {
             }
         }
     );
+    
     Node::Node(std::string name)
     :   mUid(OBJECT_UID++)
     ,   mName(name)
