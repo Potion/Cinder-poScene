@@ -89,7 +89,7 @@ namespace po { namespace scene {
             }
         }
     );
-    
+
     Node::Node(std::string name)
     : mUid(OBJECT_UID++)
     , mName(name)
@@ -455,19 +455,20 @@ namespace po { namespace scene {
 	//
 	//	Set the position
 	//
-    void Node::setPosition(float x, float y)
+    Node &Node::setPosition(float x, float y)
     {
         mPositionAnim.stop();
         mUpdatePositionFromAnim = false;
         mPosition.set(x, y);
         mPositionAnim.ptr()->set(mPosition);
         mFrameDirty = true;
+        return *this;
     }
 	
 	//
     //	Set the scale
 	//
-    void Node::setScale(float x, float y)
+    Node &Node::setScale(float x, float y)
     {
         mScaleAnim.stop();
         mUpdateScaleFromAnim = false;
@@ -475,12 +476,13 @@ namespace po { namespace scene {
         mScaleAnim.ptr()->set(mScale);
         mFrameDirty = true;
         mBoundsDirty = true;
+        return *this;
     }
     
     //
     //	Set the rotation
 	//
-    void Node::setRotation(float rotation)
+    Node &Node::setRotation(float rotation)
     {
         mRotationAnim.stop();
         mUpdateRotationFromAnim = false;
@@ -488,23 +490,25 @@ namespace po { namespace scene {
         mRotationAnim = rotation;
         mFrameDirty = true;
         mBoundsDirty = true;
+        return *this;
     }
     
     //
     //	Set the alpha
 	//
-    void Node::setAlpha(float alpha)
+    Node &Node::setAlpha(float alpha)
     {
         mAlphaAnim.stop();
         mUpdateAlphaFromAnim = false;
         mAlpha = ci::math<float>::clamp(alpha, 0.f, 1.f);
         mAlphaAnim = mAlpha;
+        return *this;
     }
     
     //
     //	Offset the whole node from the origin
 	//
-    void Node::setOffset(float x, float y) {
+    Node &Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
         mOffset.set(x, y);
@@ -513,6 +517,8 @@ namespace po { namespace scene {
         
 		//	If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
+        
+        return *this;
     }
     
     //
@@ -578,14 +584,14 @@ namespace po { namespace scene {
 		#pragma mark - Alignment
 	//------------------------------------
     
-    void Node::setAlignment(Alignment alignment)
+    Node &Node::setAlignment(Alignment alignment)
     {
         mAlignment = alignment;
         
-        if (mAlignment == Alignment::NONE) return;
+        if (mAlignment == Alignment::NONE) return *this;
         if (mAlignment == Alignment::TOP_LEFT)  {
             mOffset.set(0, 0);
-            return;
+            return *this;
         }
         
         ci::Rectf bounds = getBounds();
@@ -619,6 +625,8 @@ namespace po { namespace scene {
                 mOffset.set(-bounds.getWidth(), -bounds.getHeight());
 				break;
         }
+        
+        return *this;
     }
     
 	

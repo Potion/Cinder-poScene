@@ -92,14 +92,17 @@ namespace po { namespace scene {
     public:
         ~Node();
 		
-		//
-        //	Use this to do non-initializing construction of your object, add children, add events, etc.
-        //	Since we're using shared_ptr's the constructor is a bit worthless, we can't call shared_from_this() or get a shared pointer to "this"
-		//
+		//! Setup function, used to initialize node
+        /**	Use this to do non-initializing construction of your object, add children, add events, etc.
+            Since we're using shared_ptr's the constructor is a bit worthless, we can't call shared_from_this() or get a shared pointer to "this". **/
         virtual void setup() {};
 		
-        //	These are called automatically when your node is in the scene
+        //! Called automatically once per scene update for every node in the scene
+        /** Used for any calculations, state changes before drawing **/
         virtual void update() {};
+        //! Called automatically once per scene draw, do any OpenGL here
+        /** All matrix transformations take place before this call, so you are automatically in local space
+            when this function begins **/
         virtual void draw() = 0;
 		
 		
@@ -109,47 +112,94 @@ namespace po { namespace scene {
 		//------------------------------------
 		
         //	Scene & Parent
+        //  Nodes need a scene and a parent to draw.
+        //  Any node that has a scene should have a parent,
+        //  but if the node has a parent (any level up) that does not have a scene
+        //  it will not have a scene.
+        
+        //! Get the scene this node currently belongs to (if any)
         SceneRef getScene();
+        //! Check if this node currently belongs to a scene
         bool hasScene();
+        //! Get the parent of this node (if any)
         NodeContainerRef getParent() const;
+        //! Check if this node currently has a parent
         bool hasParent();
         
         //	Dimensions
+        //  Dimensions are determined by the getBounds() function
+        //  Override this function for custom bounds, i.e. invisible hit areas
+        //  or a fixed size
+        
+        //! Get the width + height
         ci::Vec2f getSize() { return getBounds().getSize(); }
+        //! Get the absolute (unscaled) width of the node
         float getWidth() { return getBounds().getWidth(); };
+        //! Get the absolute (unscaled) height of the node
         float getHeight() { return getBounds().getHeight(); };
+        //! Get the size with scaling applied
         ci::Vec2f getScaledSize() { return getSize() * getScale(); }
+        //! Get the width with scaling applied
         float getScaledWidth() { return getWidth() * getScale().x; };
+        //! Get the height with scaling applied
         float getScaledHeight() { return getHeight() * getScale().y; };
         
         //	Bounds & Frame
-        Node &drawBounds(bool enabled) { setDrawBounds(enabled); return *this; };
-        void setDrawBounds(bool enabled) { mDrawBounds = enabled; };
+        //  The bounds of the node are relative to local space around the top left origin.
+        //  The frame is relative to the position of the node
+        
+        //! Draw a frame around the bounds, useful for debugging
+        Node &setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
+        //! Return the bounds
         virtual ci::Rectf getBounds();
-        Node &boundsColor(ci::Color color) { setBoundsColor(color); return *this; };
-        void setBoundsColor(ci::Color color) { mBoundsColor = color; };
+        //! Set the color that the bounds should be drawn in
+        Node &setBoundsColor(ci::Color color) { setBoundsColor(color); return *this; };
+        //! Get the current bounds color
         ci::Color getBoundsColor() { return mBoundsColor; };
+        //! Get the frame
         ci::Rectf getFrame();
         
         //	Interaction
+        //  Flag to enable/disable interaction of objects. If it is disabled
+        //  they will not receive events and events will pass through, but they will still draw.
         void setInteractionEnabled(bool enabled) { mInteractionEnabled = enabled; };
         bool isInteractionEnabled() { return mInteractionEnabled; };
         
         //	Hit Testing & Transformation
+        //! Main function for determining hit testings
+        /** Inheriting classes should override this function in order to do hit testing outside of bounds, i.e. alpha test, ray casting, etc.**/
         virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
         
+        //! Transform a point from another node's local space into this node's local space
         ci::Vec2f nodeToLocal(const ci::Vec2f &point, NodeRef node);
+        //! Transform a point from this node's local space into another node's local space
         ci::Vec2f localToNode(const ci::Vec2f &point, NodeRef node);
-        ci::Vec2f sceneToLocal(const ci::Vec2f &point);
-        ci::Vec2f localToScene(const ci::Vec2f &point);
-        ci::Vec2f sceneToWindow(const ci::Vec2f &point);
-        ci::Vec2f windowToScene(const ci::Vec2f &point);
-        
+        //! Transform a point from window space to this node's local space
         ci::Vec2f windowToLocal(const ci::Vec2f &point);
+        //! Transform a point from this node's local space to window space
         ci::Vec2f localToWindow(const ci::Vec2f &point);
         
+        // Scene Transforms
+        // These are convenience functions that could also be accomplished
+        // using getScene()->getRootNode()->nodeToLocal(ci::Vec2f(0,0), shared_from_this), windowToLocal(ci::Vec2f(0,0), etc.
+        
+        //! Transform a point from the scene's root node's local space to this node's local space. Return (0,0) if this node does not have a scene
+        ci::Vec2f sceneToLocal(const ci::Vec2f &point);
+        //! Transform a point from this node's local space to this node's scene's local space.
+        ci::Vec2f localToScene(const ci::Vec2f &point);
+        //! Transform a point from this node's scene's local space to window space
+        ci::Vec2f sceneToWindow(const ci::Vec2f &point);
+        //! Transform a point from window space to this node's scene's local space
+        ci::Vec2f windowToScene(const ci::Vec2f &point);
+        
         //	Visibility
+        //  Nodes that are not visible are not drawn and ignored for events. To have a node that remains in the scene (i.e. for a hit area)
+        //  set the alpha to 0.0 instead
+        
+        //! Set visibility on/off
         void setVisible(bool enabled) { mVisible = enabled; };
+        //! Find out if this node is visible.
+        /** This checks not only the node's visibility but also it's parents up the draw tree to make sure it is visible**/
         bool isVisible();
 		
 		
@@ -158,48 +208,77 @@ namespace po { namespace scene {
 			#pragma mark - Attributes
 		//------------------------------------
 		
-        Node &name(std::string name) { setName(name); return *this; }
-        void setName(std::string name) { mName = name; };
+        // Names are convenient ways to label nodes
+        // They are not unique and it is up to the user to get right
         
+        //! Set the name of the node
+        Node &setName(std::string name) { mName = name; return *this; };
+        //! Get the name of the node
         std::string getName() { return mName; }
         
-        //	Position
-        virtual Node &position(float x, float y) { setPosition(x, y); return *this; }
-        virtual Node &position(ci::Vec2f position) { return this->position(position.x, position.y); }
-        void setPosition(ci::Vec2f position) { setPosition(position.x, position.y); };
-        void setPosition(float x, float y);
+        // Position
+        // The position that the origin is at within the parent node
+        //! Set the position of the node with a ci::Vec2f
+        Node &setPosition(ci::Vec2f position) { return setPosition(position.x, position.y); };
+        //! Set the position of the node, convenience method
+        Node &setPosition(float x, float y);
+        //! Get the position of the node
         ci::Vec2f getPosition() { return mPosition; };
         
-        //	Scale
-        Node &scale(float x, float y) { setScale(x, y); return *this; }
-        Node &scale(ci::Vec2f scale) { return this->scale(scale.x, scale.y); }
-        void setScale(ci::Vec2f scale) { setScale(scale.x, scale.y); };
-        void setScale(float x, float y);
+        // Scale
+        // Scales around the origin of the node
+        
+        //! Set the scale with a ci::Vec2f
+        Node &setScale(ci::Vec2f scale) { setScale(scale.x, scale.y); };
+        //! Set the scale, convenience method
+        Node &setScale(float x, float y);
+        //! Get the scale
         ci::Vec2f getScale() { return mScale; };
         
-        //	Rotation
-        Node &rotation(float rotation) { setRotation(rotation); return *this; }
-        void setRotation(float rotation);
+        // Rotation
+        // Rotates around the origin of the node
+        // Expressed in degrees
+        
+        //! Set the rotation (in degrees)
+        Node &setRotation(float rotation);
+        //! Get the rotation (in degrees)
         float getRotation() { return mRotation; };
         
-        //	Alpha
-        Node &alpha(float alpha) { setAlpha(alpha); return *this; }
-        void setAlpha(float alpha);
+        // Alpha
+        // Expressed in range (0.0, 1.0), clamped
+        
+        //! Set the alpha (0.0, 1.0)
+        Node &setAlpha(float alpha);
+        //! Get the alpha
         float getAlpha() { return mAlpha; };
         
-        //	Applied Alpha
+        // Applied Alpha
+        // This represents the alpha of the node * all of the alpha's above it
+        // in the scene graph. This is the actual expected alpha that will be displayed
+        // on screen.
+        // Use this method when drawing custom nodes
+        
+        //! Get the applied alpha
         float getAppliedAlpha() { return mAppliedAlpha; }
         
-        //Offset
-        Node &offset(float x, float y) { setOffset(x, y); return *this; }
-        Node &offset(ci::Vec2f offset) { return this->offset(offset.x, offset.y); }
-        void setOffset(ci::Vec2f offset) { setOffset(offset.x, offset.y); };
-        void setOffset(float x, float y);
+        // Offset
+        // The offset of drawing, relative to the origin.
+        // This can be set either by using one of the built in alignments,
+        // or manually by using one of the below methods
+        
+        //! Set the offset using a ci::Vec2f
+        Node &setOffset(ci::Vec2f offset) { return setOffset(offset.x, offset.y); };
+        //! Set the offset (convenience method)
+        Node &setOffset(float x, float y);
+        //! Get the offset
         ci::Vec2f getOffset() { return mOffset; };
         
         //	Alignment
-        Node &alignment(Alignment alignment) { setAlignment(alignment); return *this; }
-        void setAlignment(Alignment alignment);
+        //  Alignments set automatic offset based on the bounds of the node
+        //  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
+        
+        //! 
+        Node &setAlignment(Alignment alignment);
         Alignment getAlignment() { return mAlignment; };
         
         //	Matrix Order
