@@ -220,7 +220,7 @@ namespace po { namespace scene {
 		#pragma mark - Caching
 	//------------------------------------
     
-    void Node::setCacheToFboEnabled(bool enabled, int width, int height) {
+    Node &Node::setCacheToFboEnabled(bool enabled, int width, int height) {
         mCacheToFbo = enabled;
         
         if (mCacheToFbo) {
@@ -229,6 +229,8 @@ namespace po { namespace scene {
             //	Clear the fbo
 			resetFbo();
         }
+        
+        return *this;
     }
     
     

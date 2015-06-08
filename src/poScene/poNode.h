@@ -108,7 +108,6 @@ namespace po { namespace scene {
 		
         //------------------------------------
         //	Scene graph
-			#pragma mark - Scene graph
 		//------------------------------------
 		
         //	Scene & Parent
@@ -205,8 +204,11 @@ namespace po { namespace scene {
 		
         //------------------------------------
         //	Attributes
-			#pragma mark - Attributes
-		//------------------------------------
+        //
+        // Attributes of the node can be manipulated and animated by using these methods.
+        // They are stored within the node, allowing you to set them once and forget them
+        //
+        //------------------------------------
 		
         // Names are convenient ways to label nodes
         // They are not unique and it is up to the user to get right
@@ -277,77 +279,142 @@ namespace po { namespace scene {
         //  Alignments set automatic offset based on the bounds of the node
         //  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
         
-        //! 
-        Node &setAlignment(Alignment alignment);
+        //! Set the alignment
+        Node &setAlignment(Alignment alignment);\
+        //! Get the alignment
         Alignment getAlignment() { return mAlignment; };
         
-        //	Matrix Order
-        Node &matrixOrder(MatrixOrder order) { setMatrixOrder(order); return *this; };
-        void setMatrixOrder(MatrixOrder order) { mMatrixOrder = order; }
+        // Matrix Order
+        // Support for different orders of Rotate, Translate and Scale. Default is TRS
+        
+        //! Set the matrix order
+        Node &setMatrixOrder(MatrixOrder order) { mMatrixOrder = order; return *this; }
+        //! Get the matrix order
         MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
-        //	Fill
-        virtual Node &fillColor(ci::Color color) { setFillColor(color); return *this; }
-        virtual Node &fillColor(float r, float g, float b) { setFillColor(r, g, b); return *this; }
-        void setFillColor(ci::Color color) { mFillColor = color; }
-        void setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); }
+        // Fill
+        // This is the color used when drawing the node,
+        // in general when creating a Node class you should use this color
+        // but you can ignore it if doing something custom
+        
+        //! Set the fill color
+        Node &setFillColor(ci::Color color) { mFillColor = color; return *this; }
+        //! Get the fill color
+        Node &setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); return *this; }
+        //! Enable fill
         Node &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
+        //! Disable fill
         void setFillEnabled(bool enabled) { mFillEnabled = enabled; };
+        //! Get fill enabled
         bool getFillEnabled() { return mFillEnabled; }
+        //! Get the fill color
         ci::Color getFillColor() { return mFillColor; }
         
-        //	Stroke
-        Node &strokeColor(ci::Color color) { setStrokeColor(color); return *this; }
-        Node &strokeColor(float r, float g, float b) { setStrokeColor(r, g, b); return *this; }
-        void setStrokeColor(ci::Color color) { mStrokeColor = color; }
-        void setStrokeColor(float r, float g, float b) { mStrokeColor.set(r, g, b); }
-        Node &strokeEnabled(bool enabled) { setStrokeEnabled(enabled); return *this; }
-        void setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; };
+        // Stroke
+        // This is the stroke color used by the node.
+        // Works similar to fill color, Stroke needs to be supported by inheriting node to have any effect.
+        
+        //! Set the stroke color with a ci::Color
+        Node &setStrokeColor(ci::Color color) { mStrokeColor = color; return *this; }
+        //! Set the stroke color (convenience method)
+        Node &setStrokeColor(float r, float g, float b) { mStrokeColor.set(r, g, b); return *this;}
+        //! Enable or disable the stroke
+        Node &setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; return *this; };
+        //! Get stroke enabled
         bool getStrokeEnabled() { return mStrokeEnabled; }
+        //! Get the stroke color
         ci::Color getStrokeColor() { return mStrokeColor; }
         
-        //	Caching and FBO
-        Node &cacheToFboEnabled(bool cache, int width = 0, int height = 0) { setCacheToFboEnabled(cache, width, height); return *this; };
-        void setCacheToFboEnabled(bool enabled, int width, int height);
+        // Caching/FBO
+        // Nodes can be cached to an FBO. This is generally useful when applying a shader to a whole node,
+        // for example this is how we are doing masking.
+        // Note that the size of the FBO is fixed, the update/draw loop remains the same, events will still work
+        // To statically cache a Node and it's entire draw tree, use the createTexture() function
+        // This is useful when the layout is complex but does not update regularly as an optimization, or to map the scene
+        // as a texture.
+        
+        //! Set FBO enabled
+        Node &setCacheToFboEnabled(bool enabled, int width, int height);
+        //! Get FBO enabled
         bool getCachToFboEnabled() { return mCacheToFbo; };
+        //! Create an FBO, draw this node (and it's entire hierarchy if applicable) into it, and return the texture
         ci::gl::TextureRef createTexture();
         
-        //	Masking
+        // Masking
+        // Nodes can be masked to another node
+        // The masking node can then be positioned, animated, etc.
+        // FBO caching is required for masking, so it is enabled automatically
+        
+        //! Set the mask
         void setMask(ShapeRef mask);
+        //! Remove the mask
         ShapeRef removeMask(bool andStopCaching = true);
+        //! Find if we have a mask or not
         bool hasMask() { if (!mMask) return false; return true; };
+        //! Get the mask object
         ShapeRef getMask() { return mMask; };
         
-        //	Identifiers (Assigned from Scene)
+        // Identifiers (Assigned from Scene)
+        // Used by the scene to identifier the objects
+        // and find their depth in the scene for hit testing
+        
+        //! Get the draw order, updated every frame
         uint32_t getDrawOrder() { return mDrawOrder; };
+        //! Get the UID for this object
         uint32_t getUID() { return mUid; };
 		
-        //	Attribute Animation Getters
+        // Attribute Animation Getters
+        // Use these to tie in to the ci::Timeline functions
+        // They are updated every frame and automatically cancelled by manually setting any
+        // of the underlying values, i.e. setPosition() cancels the position animation
+        
+        //! Get the position animation
         ci::Anim<ci::Vec2f> &getPositionAnim() { return mPositionAnim; };
+        //! Get the scale animation
         ci::Anim<ci::Vec2f> &getScaleAnim() { return mScaleAnim; };
+        //! Get the rotation animation
         ci::Anim<float> &getRotationAnim() { return mRotationAnim; };
-        ci::Anim<float> &getAlphaAnim() { return mAlphaAnim; };
+        //! Get the offset animation
         ci::Anim<ci::Vec2f> &getOffsetAnim() { return mOffsetAnim; };
+        //! Get the fill color animation
         ci::Anim<ci::Color> &getFillColorAnim() { return mFillColorAnim; };
+        //! Get the alpha animation
+        ci::Anim<float> &getAlphaAnim() { return mAlphaAnim; };
         
         
         //------------------------------------
-        //	Signals
-			#pragma mark - Signals
-		//------------------------------------
+        // Signals
+        //
+        // Nodes currently support mouse and touch events.
+        // These both support and extend the basic Cinder events
+        // to allow for specific hit-testing use cases,
+        // i.e. "Mouse Down Inside"
+        //
+        // Requesting a specific event from an object will create a signal (if no one has requested one yet)
+        // and then return it for you to make a connection to any function.
+        //
+        //------------------------------------
         
+        //! Get a Mouse Event Signal
         MouseEventSignal &getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
+        //! Get a Touch Event Signal
         TouchEventSignal &getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
 
     protected:
+        // Constructor
         Node(std::string name = "");
         
+        //! Set the parent for this node
         void setParent(NodeContainerRef node);
+        //! Remove the parent for this node
         void removeParent();
+        //! Set the scene for this node
         virtual void setScene(SceneRef scene);
+        //! Remove the scene for this node
         virtual void removeScene();
         
         //	Tranformation
+        //! Push the transformation matrix based on our attributes
         void setTransformation();
         
         //	Visibility
@@ -362,21 +429,26 @@ namespace po { namespace scene {
         bool mBoundsDirty, mFrameDirty;
         
         //	Caching/FBO
+        //! Generate an FBO to draw into
         bool createFbo(int width, int height);
+        //! Render our drawTree into the FBO
         void captureFbo();
+        //! Clear our FBO and reset it (using Cinder hack with depth buffer to avoid memory leak)
 		void resetFbo();
+        //! Draw our FBO
         virtual void drawFbo();
         bool mIsCapturingFbo;
         bool mCacheToFbo;
         std::shared_ptr<ci::gl::Fbo> mFbo;
         
-        //	Masking
+        // Masking
+        //! Draw with mask applied to FBO
         void drawMasked();
         ShapeRef mMask;
         bool mIsMasked;
         
     private:
-        //	Private attributes
+        // Private attributes
         ci::Vec2f mPosition;
         ci::Vec2f mScale;
         float     mRotation;
@@ -387,8 +459,10 @@ namespace po { namespace scene {
         float mAlpha, mAppliedAlpha;
         MatrixOrder mMatrixOrder;
         
-        //	Animation
+        // Animation
+        //! Initialize our attribute animations
         void initAttrAnimations();
+        //! Update our attributes based on animation settings
         void updateAttributeAnimations();
         
         ci::Anim<ci::Vec2f> mPositionAnim;
@@ -405,17 +479,25 @@ namespace po { namespace scene {
             , mUpdateAlphaFromAnim
             , mUpdateFillColorFromAnim;
         
-        //	Alignment
+        // Alignment
         Alignment mAlignment;
         
-        //	Update and Draw trees, traverse child nodes
-        virtual void updateTree();
+        // Update and Draw trees
+        // These traverse child nodes and run
+        // Until they hit an endpoint (Node with no children)
         
+        //! Run the update tree
+        virtual void updateTree();
+        //! Start the draw tree, push transformations and settings, etc.
         virtual void beginDrawTree();
+        //! Go through the draw tree
         virtual void drawTree();
+        //! Finish drawTree, ending our transformations and restoring to previous state
         virtual void finishDrawTree();
         
+        //! Run through just the matrix tree to update positions and bounds
         virtual void matrixTree();
+        //! Calculate the matrices only
         virtual void calculateMatrices() {};
         
         //	Transformation Matrix
@@ -430,6 +512,7 @@ namespace po { namespace scene {
         bool mHasParent;
         
         //	Bounds and frame
+        //! Draw the bounds/frame
         void drawBounds();
         bool mDrawBounds;
         ci::Color mBoundsColor;
@@ -443,10 +526,11 @@ namespace po { namespace scene {
         
         //------------------------------------
         //  Interaction Events
-			#pragma mark - Interaction Events
         //------------------------------------
 		
+        //! Disconnect all of our event signals
         void disconnectAllSignals();
+        //! Determine if this node is visible, has a scene and parent, etc.
         bool isEligibleForInteractionEvents();
         
         //	Mouse
@@ -462,7 +546,6 @@ namespace po { namespace scene {
         
         //------------------------------------
         //  Exceptions
-			#pragma mark - Exceptions
         //------------------------------------
         
         class NodeException
