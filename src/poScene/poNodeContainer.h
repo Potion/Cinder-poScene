@@ -34,7 +34,7 @@
 
 namespace po { namespace scene {
 		
-	///Create NodeContainerRef typedef
+	//	Create NodeContainerRef typedef
 	class NodeContainer;
 	typedef std::shared_ptr<NodeContainer> NodeContainerRef;
 	
@@ -44,36 +44,30 @@ namespace po { namespace scene {
 		friend class Scene;
 		
 	public:
-		static NodeContainerRef create(std::string name="");
+		static NodeContainerRef create(std::string name = "");
 		
 		~NodeContainer();
 		
-		//  Children
+		//	Children
 		static const int INVALID_INDEX = -1;
-		
 		int getNumChildren() { return mChildren.size(); };
 		void addChild(NodeRef node);
 		void addChildren(std::vector<NodeRef> nodes);
 		void addChildAt(int index, NodeRef node);
 		void addChildBefore(NodeRef before, NodeRef node);
 		void addChildAfter(NodeRef after, NodeRef node);
-		
-		
 		std::deque<NodeRef> getChildren();
 		std::deque<NodeRef> &getChildrenByReference();
 		bool hasChildren();
-		
 		int getChildIndex(const NodeRef &child);
 		NodeRef getChildByIndex(int index);
 		NodeRef getChildByUID(uint32_t uid);
 		NodeRef getChildByName(const std::string &name);
 		NodeRef getFirstChild();
 		NodeRef getLastChild();
-		
 		void removeChild(NodeRef node);
 		void removeChildAt(int index);
 		void removeAllChildren();
-		
 		void moveChildToFront(NodeRef node);
 		void moveChildForward( NodeRef node);
 		void moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
@@ -81,7 +75,7 @@ namespace po { namespace scene {
 		void moveChildBackward(NodeRef node);
 		void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
 		
-		//  Bounds
+		//	Bounds
 		virtual ci::Rectf getBounds();
 
 		//  Interaction
@@ -92,9 +86,8 @@ namespace po { namespace scene {
 		
 		NodeContainer();
 		NodeContainer(std::string name);
-		
+
 		void drawFbo();
-		
 		void setScene(SceneRef scene);
 		void removeScene();
 		
@@ -114,9 +107,10 @@ namespace po { namespace scene {
 		
 	};
 	
-	//
+	//------------------------------------
 	//  Exceptions
-	//
+		#pragma mark - Exceptions
+	//------------------------------------
 	
 	class NodeContainerException
 	: public ci::Exception

@@ -45,13 +45,12 @@ namespace po { namespace scene {
     
     Image::Image(ci::gl::TextureRef texture)
     : mTexture(texture)
-    {
-        
+    { 
     }
     
     void Image::draw()
     {
-        if(mTexture) {
+        if (mTexture) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mTexture);

@@ -29,10 +29,8 @@
 */
 
 #include "cinder/app/App.h"
-
 #include "poScene.h"
 #include "poNodeContainer.h"
-
 
 namespace po { namespace scene {
 	
@@ -40,8 +38,7 @@ namespace po { namespace scene {
     {
         return create(NodeContainer::create());
     }
-    
-    
+	
     SceneRef Scene::create(NodeContainerRef rootNode)
     {
         SceneRef scene(new Scene(rootNode));
@@ -64,26 +61,20 @@ namespace po { namespace scene {
     
     void Scene::update()
     {
-        //Send a copy of all over our children to be processed
+        //	Send a copy of all over our children to be processed
         //processTrackingQueue();
         eventCenter->processEvents(allChildren);
         
         mRootNode->updateTree();
         
-        if(mAutoCam)
-            mCamera.setOrtho( 0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1 );
+        if (mAutoCam) mCamera.setOrtho(0, ci::app::getWindowWidth(), ci::app::getWindowHeight(), 0, -1, 1);
     }
     
     void Scene::draw()
     {
         drawOrderCounter = 0;
-        
-        if (mAutoCam) {
-			ci::gl::setMatricesWindow(ci::app::getWindowSize());
-        }
-        
+        if (mAutoCam) ci::gl::setMatricesWindow(ci::app::getWindowSize());
         mRootNode->drawTree();
-
     }
     
     uint32_t Scene::getNextDrawOrder()
@@ -93,7 +84,7 @@ namespace po { namespace scene {
     
     void Scene::setRootNode(NodeContainerRef node)
     {
-        if(node) {
+        if (node) {
             mRootNode->removeScene();
             mRootNode = node;
             mRootNode->setScene(shared_from_this());
@@ -101,25 +92,27 @@ namespace po { namespace scene {
     }
     
     
-    // ------------------------------------
-    // Child Node Tracking
+    //------------------------------------
+    //	Child Node Tracking
+		#pragma mark - Child Node Tracking
+	//------------------------------------
     
     void Scene::trackChildNode(NodeRef node) {
-        if(node) {
+        if (node) {
             //mTrackingQueue[node] = true;
             
             std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
-            if(iter == allChildren.end()) {
+            if (iter == allChildren.end()) {
                 allChildren.push_back(node);
             }
         }
     }
     
     void Scene::untrackChildNode(NodeRef node) {
-        if(node) {
+        if (node) {
             //mTrackingQueue[node] = false;
             std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), node);
-            if(iter != allChildren.end()) {
+            if (iter != allChildren.end()) {
                 allChildren.erase(iter);
             }
         }
@@ -128,15 +121,12 @@ namespace po { namespace scene {
     void Scene::processTrackingQueue()
     {
         for (auto &kv : mTrackingQueue) {
-            if(kv.first) {
+            if (kv.first) {
                 std::vector<NodeRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
-                if(kv.second && iter == allChildren.end()) {
+                if ( kv.second && iter == allChildren.end() ) {
                     allChildren.push_back(kv.first);
-                }
-                
-                else {
-                    if(iter != allChildren.end())
-                        allChildren.erase(iter);
+                } else {
+                    if (iter != allChildren.end()) allChildren.erase(iter);
                 }
             }
         }

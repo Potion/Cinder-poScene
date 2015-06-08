@@ -31,16 +31,18 @@
 #pragma once
 
 #include "cinder/app/App.h"
-
 #include "poEvents.h"
 
 namespace po { namespace scene {
 	
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
-    
-    // ------------------------------------
-    // Base Event
+	
+	
+    //------------------------------------
+    //	Base Event
+		#pragma mark - Base Event
+	//------------------------------------
     
     class Event {
         friend class Node;
@@ -65,12 +67,12 @@ namespace po { namespace scene {
         std::weak_ptr<Node> mSource;
 		
     };
+	
     
-    
-    
-    
-    // ------------------------------------
-    // Mouse Event
+    //------------------------------------
+    //	Mouse Event
+		#pragma mark - Mouse Event
+	//------------------------------------
     
     class MouseEvent
     : public po::scene::Event
@@ -91,7 +93,6 @@ namespace po { namespace scene {
         };
         
         MouseEvent(ci::app::MouseEvent event);
-        
         ci::app::MouseEvent getCiEvent() { return mCiEvent; };
         
     private:
@@ -99,11 +100,11 @@ namespace po { namespace scene {
 		
     };
     
-    
-    
-    
-    // ------------------------------------
-    // Touch Event
+	
+    //------------------------------------
+    //	Touch Event
+		#pragma mark - Touch Event
+	//------------------------------------
     
     class TouchEvent
     : public Event
@@ -119,7 +120,6 @@ namespace po { namespace scene {
         };
         
         TouchEvent(ci::app::TouchEvent::Touch event);
-        
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
         
     private:

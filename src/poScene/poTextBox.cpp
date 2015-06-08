@@ -51,14 +51,14 @@ namespace po { namespace scene {
     
     void TextBox::draw()
     {
-        if(mTexture) {
-            if(getAppliedAlpha() == 1) {
+        if (mTexture) {
+            if (getAppliedAlpha() == 1) {
                 ci::gl::enableAlphaBlending(true);
             } else {
                 ci::gl::enableAdditiveBlending();
             }
             
-            ci::gl::color(1,1,1, getAppliedAlpha());
+            ci::gl::color(1, 1, 1, getAppliedAlpha());
             ci::gl::draw(mTexture);
         }
     }
@@ -71,26 +71,23 @@ namespace po { namespace scene {
     
     ci::Rectf TextBox::getBounds()
     {
-        if(mUseTextBounds) {
+        if (mUseTextBounds) {
             float xPos = 0.0f;
             switch (mCiTextBox->getAlignment()) {
                 case ci::TextBox::Alignment::LEFT:
                     xPos = 0;
                     break;
-                    
                 case ci::TextBox::Alignment::CENTER:
-                    xPos = mCiTextBox->getSize().x/2 - mCiTextBox->measure().x/2;
+                    xPos = mCiTextBox->getSize().x / 2 - mCiTextBox->measure().x / 2;
                     break;
-                    
                 case ci::TextBox::Alignment::RIGHT:
                     xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
                     break;
             }
             
-            return ci::Rectf(0,0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
-        }
-        else {
-            return ci::Rectf(0,0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
+            return ci::Rectf(0, 0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
+        } else {
+            return ci::Rectf(0, 0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
         }
     }
 	

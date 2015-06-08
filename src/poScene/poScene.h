@@ -32,16 +32,15 @@
 
 #include "poNodeContainer.h"
 #include "poEventCenter.h"
-
 #include "cinder/Camera.h"
 
 namespace po { namespace scene {
 	
-    //Forward declare node
+    //	Forward declare node
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
     
-    //Create SceneRef typedef
+    //	Create SceneRef typedef
     class Scene;
     typedef std::shared_ptr<Scene> SceneRef;
     
@@ -49,14 +48,14 @@ namespace po { namespace scene {
     : public std::enable_shared_from_this<Scene>
     {
         friend class Node;
-        friend class EventCenter; //So we can access the child nodes
+        friend class EventCenter; // So we can access the child nodes
         
     public:
         static SceneRef create();
         static SceneRef create(NodeContainerRef rootNode);
         ~Scene();
         
-        ci::CameraOrtho& getCamera() { return mCamera; }
+        ci::CameraOrtho &getCamera() { return mCamera; }
         void setAutoCam(bool autoCam) { mAutoCam = autoCam; }
         bool getAutoCam() { return mAutoCam; };
         
@@ -65,36 +64,39 @@ namespace po { namespace scene {
         
         uint32_t getNextDrawOrder();
         
-        //Root Node
+        //	Root Node
         NodeContainerRef getRootNode() { return mRootNode; };
         void setRootNode(NodeContainerRef node);
                 
     protected:
         Scene(NodeContainerRef rootNode);
         
-        //Root node of scene
+        //	Root node of scene
         NodeContainerRef mRootNode;
         
-        //Our Event Center (each scene has their own)
+        //	Our Event Center (each scene has their own)
         EventCenterRef eventCenter;
         
-        //Reference to all our our children
+        //	Reference to all our our children
         void trackChildNode(NodeRef node);
         void untrackChildNode(NodeRef node);
         std::vector<NodeRef> allChildren;
         
     private:
-        //Each object get's its own draw order every frame.
-        //This lets us sort objects for hit testing
+		//
+        //	Each object get's its own draw order every frame.
+        //	This lets us sort objects for hit testing
+		//
         uint32_t drawOrderCounter;
         
         ci::CameraOrtho mCamera;
         bool mAutoCam;
-        
-        //Queue to track/untrack children on the next frame
-        //This lets us pass our children to the event center by reference (copying super slow)
-        //but not risk Modifying the vector during iteration (i.e. add/remove child during event callback)
-        
+		
+		//
+        //	Queue to track/untrack children on the next frame
+        //	This lets us pass our children to the event center by reference (copying super slow)
+        //	but not risk Modifying the vector during iteration (i.e. add/remove child during event callback)
+		//
         void processTrackingQueue();
         std::map<NodeRef, bool> mTrackingQueue;
 		

@@ -53,16 +53,16 @@ namespace po { namespace scene {
         removeAllChildren();
     }
     
-    
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Scene
+		#pragma mark - Scene
+	//------------------------------------
     
     void NodeContainer::setScene(SceneRef scene)
     {
         Node::setScene(scene);
-        for(NodeRef &childNode : mChildren) {
+        for (NodeRef &childNode : mChildren) {
             childNode->setScene(scene);
         }
     }
@@ -70,17 +70,22 @@ namespace po { namespace scene {
     void NodeContainer::removeScene()
     {
         Node::removeScene();
-        for(NodeRef &childNode : mChildren) {
+        for (NodeRef &childNode : mChildren) {
             childNode->removeScene();
         }
     }
     
     
-    //------------------------------------------------------
+    //------------------------------------
     //  Children
-    
+		#pragma mark - Children
+	//------------------------------------
+	
+	//
     //  Add Children
-
+		#pragma mark - Add Children
+	//
+	
     void NodeContainer::addChild(NodeRef node)
     {
         setParentAndScene(node);
@@ -102,7 +107,7 @@ namespace po { namespace scene {
     void NodeContainer::addChildAt(int index, NodeRef node)
     {
         setParentAndScene(node);
-        mChildren.insert(mChildren.begin()+index, node);
+        mChildren.insert(mChildren.begin() + index, node);
         setAlignment(getAlignment());
         calculateMatrices();
     }
@@ -118,19 +123,22 @@ namespace po { namespace scene {
     void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
     {
         setParentAndScene(node);
-        mChildren.insert(mChildren.begin() + getChildIndex(after)+1, node);
+        mChildren.insert(mChildren.begin() + getChildIndex(after) + 1, node);
         setAlignment(getAlignment());
         calculateMatrices();
     }
-    
+	
+	//
     //  Get Children
-    
+		#pragma mark - Get Children
+    //
+	
     std::deque<NodeRef> NodeContainer::getChildren()
     {
         return mChildren;
     };
     
-    std::deque<NodeRef>& NodeContainer::getChildrenByReference()
+    std::deque<NodeRef> &NodeContainer::getChildrenByReference()
     {
         return mChildren;
     }
@@ -140,47 +148,43 @@ namespace po { namespace scene {
         return (mChildren.size() != 0);
     }
     
-    int NodeContainer::getChildIndex(const NodeRef& child)
+    int NodeContainer::getChildIndex(const NodeRef &child)
     {
         std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
-        if(iter != mChildren.end())
-            return (int)std::distance(mChildren.begin(), iter);
+        if (iter != mChildren.end()) return (int)std::distance(mChildren.begin(), iter);
         return INVALID_INDEX;
     }
     
     NodeRef NodeContainer::getChildByIndex(int index)
     {
-        if(index < 0 || index >= mChildren.size())
-            return NodeRef();
+        if ( index < 0 || index >= mChildren.size() ) return NodeRef();
         return *(mChildren.begin() + index);
     }
     
     NodeRef NodeContainer::getChildByUID(uint32_t uid)
     {
-        //Go through our tree to find any node with UID
-        for(NodeRef& node : mChildren) {
+        //	Go through our tree to find any node with UID
+        for (NodeRef &node : mChildren) {
             NodeContainerRef container = std::dynamic_pointer_cast<NodeContainer>(node);
-            if(container) {
+            if (container) {
                 NodeRef foundNode = container->getChildByUID(uid);
-                if(foundNode) return foundNode;
-            }
-            
-            else {
-                if(node->getUID() == uid) return node;
+                if (foundNode) return foundNode;
+            } else {
+                if (node->getUID() == uid) return node;
             }
         }
         
-        //See if it is us
-        if(mUid == uid) return shared_from_this();
+        //	See if it is us
+        if (mUid == uid) return shared_from_this();
             
-        //Not found
+        //	Not found
         return NodeRef();
     }
     
     NodeRef NodeContainer::getChildByName(const std::string &name)
     {
-        for(NodeRef& node : mChildren) {
-            if(node->getName() == name) return node;
+        for (NodeRef& node : mChildren) {
+            if (node->getName() == name) return node;
         }
         
         return NodeRef();
@@ -188,27 +192,25 @@ namespace po { namespace scene {
     
     NodeRef NodeContainer::getFirstChild()
     {
-        if(mChildren.empty())
-            return NodeRef();
-        
+        if (mChildren.empty()) return NodeRef();
         return mChildren.front();
     }
     
     NodeRef NodeContainer::getLastChild()
     {
-        if(mChildren.empty())
-            return NodeRef();
-        
+        if (mChildren.empty()) return NodeRef();
         return mChildren.back();
     }
     
-    
+    //
     //  Remove Children
+		#pragma mark - Remove Children
+	//
     
     void NodeContainer::removeChild(NodeRef node)
     {
         std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
-        if(iter != mChildren.end()) {
+        if (iter != mChildren.end()) {
             (*iter)->removeParent();
             (*iter)->removeScene();
             
@@ -223,7 +225,7 @@ namespace po { namespace scene {
     
     void NodeContainer::removeChildAt(int index)
     {
-        if(index <= 0 || index >= mChildren.size()) {
+        if ( index <= 0 || index >= mChildren.size() ) {
             NodeContainerInvalidChildException exc;
             throw(exc);
         } else {
@@ -238,7 +240,7 @@ namespace po { namespace scene {
     
     void NodeContainer::removeAllChildren()
     {
-        for(NodeRef& node : mChildren) {
+        for (NodeRef &node : mChildren) {
             node->removeParent();
             node->removeScene();
         }
@@ -248,13 +250,15 @@ namespace po { namespace scene {
         mChildren.clear();
     }
     
-    
+    //
     //  Move Children
+		#pragma mark - Move Children
+	//
     
     void NodeContainer::moveChildToFront(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
-        if(nodeIter != mChildren.end()) {
+        if (nodeIter != mChildren.end()) {
             mChildren.erase(nodeIter);
             mChildren.push_back(node);
         }
@@ -263,7 +267,7 @@ namespace po { namespace scene {
     void NodeContainer::moveChildForward(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
-        if(nodeIter != mChildren.end() && *nodeIter != mChildren.back()) {
+        if ( nodeIter != mChildren.end() && *nodeIter != mChildren.back() ) {
             std::iter_swap(nodeIter, ++nodeIter);
         }
     }
@@ -271,7 +275,7 @@ namespace po { namespace scene {
     void NodeContainer::moveChildToBack(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
-        if(nodeIter != mChildren.end()) {
+        if (nodeIter != mChildren.end()) {
             mChildren.erase(nodeIter);
             mChildren.push_front(node);
         }
@@ -280,42 +284,44 @@ namespace po { namespace scene {
     void NodeContainer::moveChildBackward(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
-        if(nodeIter != mChildren.end() && *nodeIter != mChildren.front()) {
+        if ( nodeIter != mChildren.end() && *nodeIter != mChildren.front() ) {
             std::iter_swap(nodeIter, --nodeIter);
         }
     }
     
     void NodeContainer::setParentAndScene(NodeRef node)
     {
-        //See if the node is already a child of another node.
-        if(node->getParent())
-            node->getParent()->removeChild(node);
+        //	See if the node is already a child of another node.
+        if (node->getParent()) node->getParent()->removeChild(node);
         
-        //Assign ourselves as the parent
+        //	Assign ourselves as the parent
         node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
         node->setScene(mScene.lock());
     }
     
     
-    //------------------------------------------------------
+    //------------------------------------
     //  Update + Draw
+		#pragma mark - Update + Draw
+	//------------------------------------
 
     void NodeContainer::updateTree()
     {
         Node::updateTree();
         
-        //We have to copy the children, because if any of the update loops remove children
-        //The vector is screwed (invalidated)
+        //	We have to copy the children, because if any of the update loops remove children
+        //	The vector is screwed (invalidated)
         std::deque<NodeRef> children(mChildren);
         
-        for(NodeRef &childNode : children)
-            if(childNode->mVisible && childNode->hasParent()) childNode->updateTree();
+		for (NodeRef &childNode : children) {
+            if (childNode->mVisible && childNode->hasParent()) childNode->updateTree();
+		}
     }
 
     
     void NodeContainer::draw()
     {
-        for(NodeRef &childNode : mChildren) {
+        for (NodeRef &childNode : mChildren) {
             childNode->drawTree();
         }
     }
@@ -325,54 +331,50 @@ namespace po { namespace scene {
         Node::drawFbo();
     }
 
-    
-    
-    //------------------------------------------------------
+	
+    //------------------------------------
     //  Dimensions
+		#pragma mark - Dimensions
+	//------------------------------------
 
     ci::Rectf NodeContainer::getBounds()
     {
-        //Reset Bounds
-        ci::Rectf bounds = ci::Rectf(0,0,0,0);
-        
-        for(NodeRef &childNode : mChildren) {
-			if(childNode->mVisible)
-				bounds.include(childNode->getFrame());
+        //	Reset Bounds
+		ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
+		
+        for (NodeRef &childNode : mChildren) {
+			if (childNode->mVisible) bounds.include(childNode->getFrame());
 		}
             
         return bounds;
     }
+	
     
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Interaction
+		#pragma mark - Interaction
+	//------------------------------------
+	
     bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
     {
         for (const NodeRef &node : mChildren) {
-            if(!node->mVisible) continue;
-            
-            if(node->pointInside(point, localize)) {
-                return true;
-            }
+            if (!node->mVisible) continue;
+            if (node->pointInside(point, localize)) return true;
         }
         
         return false;
     }
+	
     
-    
-    
-    
-    
-    
-    //------------------------------------------------------
+    //------------------------------------
     //  Matrices/Dimensions
+		#pragma mark - Matrices/Dimensions
+	//------------------------------------
     
     void NodeContainer::matrixTree() {
         beginDrawTree();
         
-        for(NodeRef &childNode : mChildren) {
+        for (NodeRef &childNode : mChildren) {
             childNode->matrixTree();
         }
         
@@ -380,7 +382,7 @@ namespace po { namespace scene {
     }
     
     void NodeContainer::calculateMatrices() {
-        if(hasParent()) {
+        if (hasParent()) {
             getParent()->calculateMatrices();
         } else {
             matrixTree();

@@ -31,7 +31,6 @@
 #pragma once
 
 #include "cinder/app/MouseEvent.h"
-
 #include "poEvents.h"
 #include "poNode.h"
 
@@ -50,29 +49,28 @@ namespace po { namespace scene {
     private:
         EventCenter();
         
-        //  Event Processor Template Class
+        //	Event Processor
         template<typename CiEventT, typename EventT, typename EventTypeT>
 		
         class EventProcessor {
         public:
-            //EventProcessor();
             void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
             
             void processEvents(std::vector<NodeRef> &nodes)
 			{
-                //Go through the queue
-                for(auto& eventQueue : mQueue) {
-                    //Get the type for this item in the std::map
+                //	Go through the queue
+                for (auto &eventQueue : mQueue) {
+                    //	Get the type for this item in the std::map
                     EventTypeT type = (EventTypeT)eventQueue.first;
                     
-                    //Go through all the ci::MouseEvents for this type
-                    for(CiEventT &ciEvent : eventQueue.second) {
+                    //	Go through all the ci::MouseEvents for this type
+                    for (CiEventT &ciEvent : eventQueue.second) {
                         EventT poEvent(ciEvent);
                         notifyAllNodes(nodes, poEvent, type);
                         notifyCallbacks(nodes, poEvent, type);
                     }
                     
-                    //Clear out the events
+                    //	Clear out the events
                     eventQueue.second.clear();
                 }
             }
@@ -80,15 +78,13 @@ namespace po { namespace scene {
         protected:
             void notifyAllNodes(std::vector<NodeRef> &nodes, EventT event, const EventTypeT &type)
 			{
-                for(NodeRef &node : nodes) {
-                    //Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-                    if(node == nullptr || (!node->isEligibleForInteractionEvents())) {
-                        continue;
-                    }
+                for (NodeRef &node : nodes) {
+                    //	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+                    if ( node == nullptr || (!node->isEligibleForInteractionEvents()) ) continue;
                     
                     event.setShouldPropagate(true);
                     
-                    //Notify the node
+                    //	Notify the node
                     node->emitEvent(event, type);
                 }
             }
@@ -96,12 +92,11 @@ namespace po { namespace scene {
             //  Extend this function to define custom callback type
             virtual void notifyCallbacks(std::vector<NodeRef> &nodes, EventT event, EventTypeT &type)
             {
-                //Go through the draw tree, notifying nodes that are listening
-                for(NodeRef &node : nodes) {
-                    if(node->isEligibleForInteractionEvent(type) && node->pointInside(event.getWindowPos()))
-                    {
+                //	Go through the draw tree, notifying nodes that are listening
+                for (NodeRef &node : nodes) {
+                    if ( node->isEligibleForInteractionEvent(type) && node->pointInside(event.getWindowPos()) ) {
                         node->emitEvent(event, type);
-                        if(event.getShouldPropagate()) {
+                        if (event.getShouldPropagate()) {
                             event.setShouldPropagate(false);
                         } else {
                             return;
@@ -114,12 +109,12 @@ namespace po { namespace scene {
 			
         };
         
-        
-        
-        
-        // ------------------------------------
-        // Mouse Events
-        
+		
+        //------------------------------------
+        //	Mouse Events
+			#pragma mark - Mouse Events
+		//------------------------------------
+		
         class MouseEventProcessor
         : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
         {
@@ -128,13 +123,17 @@ namespace po { namespace scene {
                 MouseEvent::Type callbackType;
                 switch (type) {
                     case MouseEvent::Type::DOWN:
-                        callbackType = MouseEvent::Type::DOWN_INSIDE; break;
+                        callbackType = MouseEvent::Type::DOWN_INSIDE;
+						break;
                     case MouseEvent::Type::MOVE:
-                        callbackType = MouseEvent::Type::MOVE_INSIDE; break;
+                        callbackType = MouseEvent::Type::MOVE_INSIDE;
+						break;
                     case MouseEvent::Type::DRAG:
-                        callbackType = MouseEvent::Type::DRAG_INSIDE; break;
+                        callbackType = MouseEvent::Type::DRAG_INSIDE;
+						break;
                     case MouseEvent::Type::UP:
-                        callbackType = MouseEvent::Type::UP_INSIDE; break;
+                        callbackType = MouseEvent::Type::UP_INSIDE;
+						break;
                 }
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);
@@ -144,26 +143,27 @@ namespace po { namespace scene {
         
         MouseEventProcessor mMouseProcessor;
         
-        // Mouse Event Cinder Callbacks
-        void	mouseDown(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN,    event); };
-        void	mouseMove(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE,    event); };
-        void	mouseDrag(ci::app::MouseEvent event)    { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG,    event); };
-        void	mouseUp(ci::app::MouseEvent event)      { mMouseProcessor.addToQueue(MouseEvent::Type::UP,      event); };
-        void	mouseWheel(ci::app::MouseEvent event)   { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL,   event); };
-        
-        
-        
-        // ------------------------------------
-        // Touch Events
-        
+        //	Mouse Event Cinder Callbacks
+        void mouseDown(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN, event); };
+        void mouseMove(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE, event); };
+        void mouseDrag(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG, event); };
+        void mouseUp(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::UP, event); };
+        void mouseWheel(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL, event); };
+		
+		
+        //------------------------------------
+        //	Touch Events
+			#pragma mark - Touch Events
+		//------------------------------------
+		
         class TouchEventProcessor
         : public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type>
         {
         public:
-            //  Needs to break about grouped touches from Cinder
+            //	Needs to break about grouped touches from Cinder
             void addToQueue(TouchEvent::Type type, ci::app::TouchEvent event)
 			{
-                for(auto &ciTouch : event.getTouches()) {
+                for (auto &ciTouch : event.getTouches()) {
                     mQueue[type].push_back(ciTouch);
                 }
             }
@@ -171,15 +171,18 @@ namespace po { namespace scene {
         private:
             void notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event, TouchEvent::Type &type)
             {
-                //Set the callback type
+                //	Set the callback type
                 TouchEvent::Type callbackType;
                 switch (type) {
                     case TouchEvent::Type::BEGAN:
-                        callbackType = TouchEvent::Type::BEGAN_INSIDE; break;
+                        callbackType = TouchEvent::Type::BEGAN_INSIDE;
+						break;
                     case TouchEvent::Type::MOVED:
-                        callbackType = TouchEvent::Type::MOVED_INSIDE; break;
+                        callbackType = TouchEvent::Type::MOVED_INSIDE;
+						break;
                     case TouchEvent::Type::ENDED:
-                        callbackType = TouchEvent::Type::ENDED_INSIDE; break;
+                        callbackType = TouchEvent::Type::ENDED_INSIDE;
+						break;
                 }
                 
                 EventProcessor::notifyCallbacks(nodes, event, callbackType);
@@ -189,11 +192,11 @@ namespace po { namespace scene {
         
         TouchEventProcessor mTouchProcessor;
         
-        // Touch Event Cinder Callbacks
-        void touchesBegan(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
-        void touchesMoved(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
-        void touchesEnded(ci::app::TouchEvent event)    { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
+        //	Touch Event Cinder Callbacks
+        void touchesBegan(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
+        void touchesMoved(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
+        void touchesEnded(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
 		
     };
     
-} } //  namespace po::scene
+} } //	namespace po::scene
