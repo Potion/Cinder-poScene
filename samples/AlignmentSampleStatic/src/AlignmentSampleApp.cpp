@@ -22,6 +22,7 @@ class AlignmentSampleApp
 
 void AlignmentSampleApp::setup()
 {
+    setWindowSize(550, 550);
     scene = Scene::create(AlignmentSample::create());
 }
 
