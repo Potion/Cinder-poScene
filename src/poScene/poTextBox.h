@@ -51,7 +51,7 @@ namespace po { namespace scene {
 		
 		ci::Rectf getBounds();
 		void setCiTextBox(std::shared_ptr<ci::TextBox> ciTextBox);
-		std::shared_ptr<ci::TextBox> getCiTextBox();
+        std::shared_ptr<ci::TextBox> getCiTextBox() { return mCiTextBox; };
 		
 	protected:
 		TextBox(std::shared_ptr<ci::TextBox> ciTextBox);
