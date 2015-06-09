@@ -20,8 +20,9 @@ public:
 protected:
 	
 private:
-    po::scene::ShapeRef mShapeNode;
-    po::scene::TextBoxRef mText;
+    po::scene::ShapeRef     mShapeNode;
+    po::scene::TextBoxRef   mTextBottom;
+    
     void keyDown(ci::app::KeyEvent &event);
 
 };
