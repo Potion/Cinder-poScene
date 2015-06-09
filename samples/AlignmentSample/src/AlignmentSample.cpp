@@ -18,8 +18,9 @@ void AlignmentSample::setup()
     
     //  create and add instructions text box (using local variable)
     std::string instructions = "Press a number key to change alignment";
-    std::shared_ptr<ci::TextBox> t(new ci::TextBox());
-    t->font(ci::Font("Helvetica", 24))
+    
+    ci::TextBox t;
+    t.font(ci::Font("Helvetica", 24))
         .text(instructions)
         .size(ci::Vec2f(250, 50));
     TextBoxRef tbTop = TextBox::create(t);
@@ -28,8 +29,8 @@ void AlignmentSample::setup()
     
     //  create and add text box that shows current alignment (using member variable)
     std::string currentAlignment = "Alignment: NONE";
-    std::shared_ptr<ci::TextBox> u(new ci::TextBox());
-    u->font(ci::Font("Helvetica", 24))
+    ci::TextBox u;
+    u.font(ci::Font("Helvetica", 24))
         .text(currentAlignment)
         .size(ci::Vec2f(350, 25));
     mTextBottom = TextBox::create(u);
@@ -114,7 +115,8 @@ void AlignmentSample::keyDown(ci::app::KeyEvent &event)
     }
     
     if (labelText != "") {
-        mTextBottom->getCiTextBox()->text("Alignment: " + labelText);
-        mTextBottom->render();
+        ci::TextBox textBox = mTextBottom->getCiTextBoxCopy();
+        textBox.text("Alignment: " + labelText);
+        mTextBottom->setCiTextBox(textBox);
     }
 }

@@ -17,14 +17,19 @@ public:
 
 	virtual void setup();
 	
-	void setIsDown(bool isDown);
+	//	Show selected state
+	void showSelected();
 
 protected:
 	Square();
 
 private:
-	ShapeRef mShape;
-	ci::Color mDownColor;
-	ci::Color mUpColor;
+	//	Active state
+	ShapeRef mActive;
+	ci::Color mActiveColor;
+	
+	//	Selected state
+	ShapeRef mSelected;
+	ci::Color mSelectedColor;
 	
 };

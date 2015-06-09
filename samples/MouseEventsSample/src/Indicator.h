@@ -22,15 +22,20 @@ public:
 
 	virtual void setup(std::string name);
 	
-	void setIsHighlighted(bool isHighlighted);
+	//	Show highlight
+	void showHighlighted();
 
 protected:
 	Indicator();
 
 private:
+	//	Text box with event name
 	TextBoxRef mTextBox;
+	
+	//	Highlight shape
 	ShapeRef mHighlight;
-	ci::Color mHighlightedColor;
-	ci::Color mUnhighlightedColor;
+	
+	//	Highlight color
+	ci::Color mColor;
 	
 };
