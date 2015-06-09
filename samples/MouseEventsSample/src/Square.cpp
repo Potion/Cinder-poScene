@@ -17,4 +17,7 @@ Square::~Square()
 
 void Square::setup()
 {
+	mShape = Shape::createRect(100, 100);
+	mShape->setFillColor(255.f/255, 123.f/255, 172.f/255);
+	addChild(mShape);
 }

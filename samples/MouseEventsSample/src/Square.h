@@ -1,6 +1,9 @@
 #pragma once
 
 #include "poNodeContainer.h"
+#include "poShape.h"
+
+using namespace po::scene;
 
 class Square;
 typedef std::shared_ptr<Square> SquareRef;
@@ -18,5 +21,6 @@ protected:
 	Square();
 
 private:
- 
+	ShapeRef mShape;
+	
 };

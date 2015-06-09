@@ -2,6 +2,7 @@
 
 #include "poNodeContainer.h"
 
+
 class MouseEventsSample;
 typedef std::shared_ptr<MouseEventsSample> MouseEventsSampleRef;
 
