@@ -163,7 +163,6 @@ namespace po { namespace scene {
 	
 	//------------------------------------
 	//  Exceptions
-		#pragma mark - Exceptions
 	//------------------------------------
 	
 	class NodeContainerException

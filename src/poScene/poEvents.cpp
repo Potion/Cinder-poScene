@@ -36,7 +36,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Base Event
-		#pragma mark - Base Event
 	//------------------------------------
     
     Event::Event()
@@ -68,7 +67,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Mouse Event
-		#pragma mark - Mouse Event
 	//------------------------------------
 
     MouseEvent::MouseEvent(ci::app::MouseEvent event, Type type)
@@ -81,7 +79,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Touch Event
-		#pragma mark - Touch Event
 	//------------------------------------
     
     TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event, Type type)

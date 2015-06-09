@@ -94,7 +94,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Child Node Tracking
-		#pragma mark - Child Node Tracking
 	//------------------------------------
     
     void Scene::trackChildNode(NodeRef node) {

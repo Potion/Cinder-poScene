@@ -146,7 +146,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Update & Draw Trees
-		#pragma mark - Update & Draw Trees
 	//------------------------------------
     
     void Node::updateTree()
@@ -217,7 +216,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Caching
-		#pragma mark - Caching
 	//------------------------------------
     
     Node &Node::setCacheToFboEnabled(bool enabled, int width, int height) {
@@ -402,7 +400,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //	Masking
-		#pragma mark - Masking
 	//------------------------------------
 	
 	//
@@ -451,7 +448,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Attributes
-		#pragma mark - Attributes
 	//------------------------------------
 	
 	//
@@ -543,7 +539,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //  Animation
-		#pragma mark - Animation
 	//------------------------------------
     
     void Node::initAttrAnimations()
@@ -583,7 +578,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //  Alignment
-		#pragma mark - Alignment
 	//------------------------------------
     
     Node &Node::setAlignment(Alignment alignment)
@@ -634,7 +628,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //  Transformation
-		#pragma mark - Transformation
 	//------------------------------------
     
     void Node::setTransformation()
@@ -716,7 +709,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Parent + Scene
-		#pragma mark - Parent + Scene
 	//------------------------------------
     
     void Node::setScene(SceneRef sceneRef) {
@@ -757,7 +749,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Dimensions
-		#pragma mark - Dimensions
 	//------------------------------------
     
     ci::Rectf Node::getBounds()
@@ -802,7 +793,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Events
-		#pragma mark - Events
 	//------------------------------------
 	
 	//
@@ -829,7 +819,6 @@ namespace po { namespace scene {
 	
 	//------------------------------------
     //  Mouse Events
-		#pragma mark - Mouse Events
 	//------------------------------------
 	
 	//
@@ -855,7 +844,6 @@ namespace po { namespace scene {
 	
 	//------------------------------------
     //  Touch Events
-		#pragma mark - Touch Events
 	//------------------------------------
 	
 	//
