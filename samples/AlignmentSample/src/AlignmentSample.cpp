@@ -62,7 +62,7 @@ void AlignmentSample::keyDown(ci::app::KeyEvent &event)
     ss<< event.getChar();
     ss>> s;
     //internalTextBox->setText(s);
-    mText->getCiTextBox()->text(s);
+    //mText->getCiTextBox()->text(s);
     
     std::cout << s << std::endl;
     
