@@ -307,7 +307,7 @@ namespace po { namespace scene {
         // but you can ignore it if doing something custom
         
         //! Set the fill color
-        Node &setFillColor(ci::Color color) { mFillColor = color; return *this; }
+        Node &setFillColor(ci::Color color);
         //! Get the fill color
         Node &setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); return *this; }
         //! Enable fill

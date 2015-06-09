@@ -504,6 +504,15 @@ namespace po { namespace scene {
     }
     
     //
+    // Set the fill color
+    Node &Node::setFillColor(ci::Color color)
+    {
+        mFillColor = color;
+        mFillColorAnim.ptr()->set(mFillColor);
+        return *this;
+    }
+    
+    //
     //	Offset the whole node from the origin
 	//
     Node &Node::setOffset(float x, float y) {
@@ -621,6 +630,8 @@ namespace po { namespace scene {
                 mOffset.set(-bounds.getWidth(), -bounds.getHeight());
 				break;
         }
+        
+        mOffsetAnim.ptr()->set(mOffset);
         
         return *this;
     }
