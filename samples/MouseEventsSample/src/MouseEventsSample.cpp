@@ -19,6 +19,7 @@ void MouseEventsSample::setup()
 	getSignal(MouseEvent::MOVE).connect(std::bind(&MouseEventsSample::onMouseEvent, this, std::placeholders::_1));
 	getSignal(MouseEvent::DRAG).connect(std::bind(&MouseEventsSample::onMouseEvent, this, std::placeholders::_1));
 	getSignal(MouseEvent::UP).connect(std::bind(&MouseEventsSample::onMouseEvent, this, std::placeholders::_1));
+	getSignal(MouseEvent::WHEEL).connect(std::bind(&MouseEventsSample::onMouseEvent, this, std::placeholders::_1));
 }
 
 void MouseEventsSample::createIndicators()
@@ -116,6 +117,9 @@ void MouseEventsSample::onMouseEvent(po::scene::MouseEvent &event)
 			break;
 		case po::scene::MouseEvent::UP:
 			showIndicator("UP");
+			break;
+		case po::scene::MouseEvent::WHEEL:
+			showIndicator("WHEEL");
 			break;
 		default:
 			break;
