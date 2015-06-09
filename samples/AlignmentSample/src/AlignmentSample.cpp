@@ -72,6 +72,4 @@ void AlignmentSample::setup()
     
     //  move the entire node to the right and down
     setPosition(100, 100);
-    
-    std::cout << "size of main node: " << getWidth() << ", " << getHeight() << std::endl;
 }
