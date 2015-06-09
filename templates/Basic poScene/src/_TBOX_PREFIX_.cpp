@@ -1,5 +1,3 @@
-#include "poShape.h"
-
 #include "_TBOX_PREFIX_.h"
 
 _TBOX_PREFIX_Ref _TBOX_PREFIX_::create() 
