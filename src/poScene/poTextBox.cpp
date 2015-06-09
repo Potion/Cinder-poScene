@@ -34,15 +34,15 @@ namespace po { namespace scene {
     
     TextBoxRef TextBox::create()
     {
-        return TextBoxRef(new TextBox(std::shared_ptr<ci::TextBox>(new ci::TextBox())));
+        return TextBoxRef(new TextBox(ci::TextBox()));
     }
     
-    TextBoxRef TextBox::create(std::shared_ptr<ci::TextBox> ciTextBox)
+    TextBoxRef TextBox::create(ci::TextBox ciTextBox)
     {
         return TextBoxRef(new TextBox(ciTextBox));
     }
     
-    TextBox::TextBox(std::shared_ptr<ci::TextBox> ciTextBox)
+    TextBox::TextBox(ci::TextBox ciTextBox)
     : mCiTextBox(ciTextBox)
     , mUseTextBounds(false)
     {
@@ -65,29 +65,29 @@ namespace po { namespace scene {
     
     void TextBox::render()
     {
-        mCiTextBox->setPremultiplied(true);
-        mTexture = ci::gl::Texture::create(mCiTextBox->render());
+        mCiTextBox.setPremultiplied(true);
+        mTexture = ci::gl::Texture::create(mCiTextBox.render());
     }
     
     ci::Rectf TextBox::getBounds()
     {
         if (mUseTextBounds) {
             float xPos = 0.0f;
-            switch (mCiTextBox->getAlignment()) {
+            switch (mCiTextBox.getAlignment()) {
                 case ci::TextBox::Alignment::LEFT:
                     xPos = 0;
                     break;
                 case ci::TextBox::Alignment::CENTER:
-                    xPos = mCiTextBox->getSize().x / 2 - mCiTextBox->measure().x / 2;
+                    xPos = mCiTextBox.getSize().x / 2 - mCiTextBox.measure().x / 2;
                     break;
                 case ci::TextBox::Alignment::RIGHT:
-                    xPos = mCiTextBox->getSize().x - mCiTextBox->measure().x;
+                    xPos = mCiTextBox.getSize().x - mCiTextBox.measure().x;
                     break;
             }
             
-            return ci::Rectf(0, 0, mCiTextBox->measure().x + xPos, mCiTextBox->measure().y);
+            return ci::Rectf(0, 0, mCiTextBox.measure().x + xPos, mCiTextBox.measure().y);
         } else {
-            return ci::Rectf(0, 0, mCiTextBox->getSize().x, mCiTextBox->getSize().y);
+            return ci::Rectf(0, 0, mCiTextBox.getSize().x, mCiTextBox.getSize().y);
         }
     }
 	

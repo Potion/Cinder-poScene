@@ -13,16 +13,16 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{26C9F928-2BF5-40FA-9AC1-A954DBF46539}</UniqueIdentifier>
+      <UniqueIdentifier>{B2D96F97-02E7-45F8-BA3D-3A0FB13E6EF4}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene">
-      <UniqueIdentifier>{D680C8D2-C973-47ED-B71C-0CDBBE9793B1}</UniqueIdentifier>
+      <UniqueIdentifier>{F2A4EB16-9A62-45A5-A852-4D2636E31685}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src">
-      <UniqueIdentifier>{BF2828C8-EE9D-474E-8573-BFB1E7479C39}</UniqueIdentifier>
+      <UniqueIdentifier>{91BC0327-ECA9-4693-BBF9-49E6745D798F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src\poScene">
-      <UniqueIdentifier>{D77DFFCC-313A-45EC-9FBA-7984247171FA}</UniqueIdentifier>
+      <UniqueIdentifier>{B9DBD221-8F05-4E2B-A0E0-73AD8EBDEDE4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

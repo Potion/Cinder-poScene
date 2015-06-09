@@ -35,7 +35,26 @@
 
 namespace po { namespace scene {
     
-    //  Events in poScene extend the functionality of
+    // Events in poScene extend the functionality of Cinder events
+    //
+    // First, they include a "Type", which lets you handle multiple events with one
+    // function using a switch statement. This is optional, you can of course have a
+    // separate function for each event type.
+    //
+    // Second, they include a source, which lets you
+    // subscribe to events from multiple NodeRefs and identify which one is firing using
+    // a single method.
+    //
+    // Last but not least the scene graph allows for Node interaction events,
+    // i.e. "Down Inside", "Drag", "Up Inside", etc. which tie into the hit testing functions
+    // of all nodes.
+    //
+    // They also allow for propagation. By default all global events (i.e. "Down", "Move", "Up"
+    // propagate to all nodes in the scene. Events like "Down Inside" do not propagate by default,
+    // i.e. they will only fire on the top object. You can turn propagation to true on these,
+    // and they will continue to fire through the draw tree. You have to set propagation to true
+    // everytime an event fires on a node, otherwise the event will stop propagating at that level.
+    
     
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
@@ -45,19 +64,24 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //	Base Event
-    
     class Event {
         friend class Node;
 		
     public:
         Event();
         
-        void setShouldPropagate(bool shouldPropagate) { mShouldPropagate = shouldPropagate; };
-        bool getShouldPropagate() { return mShouldPropagate; };
+        //! Enable/Disable propagation
+        void setPropagationEnabled(bool enabled) { mPropagationEnabled = enabled; };
+        //! Get propagation enabled
+        bool getPropagationEnabled() { return mPropagationEnabled; };
         
+        //! Get the position of the event in window Coords
         ci::Vec2f getWindowPos() { return mWindowPos; }
+        //! Get the position of the event in coords local to the source node
         ci::Vec2f getLocalPos();
+        //! Get the position of the event in coords local to the Scene root node
         ci::Vec2f getScenePos();
+        //! Get the source of the event
         NodeRef getSource() { return mSource.lock(); };
         
     protected:
@@ -65,9 +89,8 @@ namespace po { namespace scene {
         ci::Vec2f mWindowPos;
         
     private:
-        bool mShouldPropagate;
+        bool mPropagationEnabled;
         std::weak_ptr<Node> mSource;
-		
     };
 	
     
@@ -82,6 +105,7 @@ namespace po { namespace scene {
         friend class EventCenter;
         
     public:
+        //! Mouse event types
         enum Type {
             DOWN,
             DOWN_INSIDE,
@@ -118,6 +142,7 @@ namespace po { namespace scene {
     {
         friend class EventCenter;
     public:
+        //! Touch Event Types
         enum Type {
             BEGAN,
             BEGAN_INSIDE,

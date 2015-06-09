@@ -40,7 +40,7 @@ namespace po { namespace scene {
 	//------------------------------------
     
     Event::Event()
-    : mShouldPropagate(false)
+    : mPropagationEnabled(false)
     , mWindowPos(0, 0)
     {
     }

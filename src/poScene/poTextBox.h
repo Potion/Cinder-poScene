@@ -43,21 +43,21 @@ namespace po { namespace scene {
 	: public Node
 	{
 	public:
-		static TextBoxRef create(std::shared_ptr<ci::TextBox> ciTextBox);
+		static TextBoxRef create(ci::TextBox ciTextBox);
 		static TextBoxRef create();
 		
-		void render();
 		void draw();
 		
 		ci::Rectf getBounds();
-		void setCiTextBox(std::shared_ptr<ci::TextBox> ciTextBox) { mCiTextBox = ciTextBox; }
-		std::shared_ptr<ci::TextBox> getCiTextBox() { return mCiTextBox; }
+		void setCiTextBox(ci::TextBox ciTextBox) { mCiTextBox = ciTextBox; render(); }
+        ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 		
 	protected:
-		TextBox(std::shared_ptr<ci::TextBox> ciTextBox);
+		TextBox(ci::TextBox ciTextBox);
 		
 	private:
-		std::shared_ptr<ci::TextBox> mCiTextBox;
+        void render();
+		ci::TextBox mCiTextBox;
 		ci::gl::TextureRef mTexture;
 		bool mUseTextBounds;
 		

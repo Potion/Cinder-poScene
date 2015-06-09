@@ -35,6 +35,9 @@
 #include "poNode.h"
 
 namespace po { namespace scene {
+    // EventCenter is an internal class that is used by Scene's to process their child nodes
+    // and distribute events to the draw tree
+    // It should never be accessed directly except by Scenes.
     
     class EventCenter;
     typedef std::shared_ptr<EventCenter> EventCenterRef;
@@ -82,7 +85,7 @@ namespace po { namespace scene {
                     //	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
                     if ( node == nullptr || (!node->isEligibleForInteractionEvent(event.getType())) ) continue;
                     
-                    event.setShouldPropagate(true);
+                    event.setPropagationEnabled(true);
                     
                     //	Notify the node
                     node->emitEvent(event);
@@ -96,8 +99,8 @@ namespace po { namespace scene {
                 for (NodeRef &node : nodes) {
                     if ( node->isEligibleForInteractionEvent(event.getType()) && node->pointInside(event.getWindowPos()) ) {
                         node->emitEvent(event);
-                        if (event.getShouldPropagate()) {
-                            event.setShouldPropagate(false);
+                        if (event.getPropagationEnabled()) {
+                            event.setPropagationEnabled(false);
                         } else {
                             return;
                         }
