@@ -167,7 +167,7 @@ namespace po { namespace scene {
         //	Hit Testing & Transformation
         //! Main function for determining hit testings
         /** Inheriting classes should override this function in order to do hit testing outside of bounds, i.e. alpha test, ray casting, etc.**/
-        virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
+        virtual bool pointInside(const ci::Vec2f &windowPoint);
         
         //! Transform a point from another node's local space into this node's local space
         ci::Vec2f nodeToLocal(const ci::Vec2f &point, NodeRef node);

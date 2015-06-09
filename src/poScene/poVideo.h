@@ -37,6 +37,12 @@
 #include "cinder/qtime/QuickTime.h"
 
 namespace po { namespace scene {
+    // This class is a generic wrapper for any Cinder based video player
+    // that provides a "getBounds() and getTexture()" function.
+    //
+    // It is designed to be as flexible as possible given the numerous Cinder video
+    // players that exist, and provide a po::scene::VideoGl type that uses
+    // the Cinder Quicktime player (currently the most standard player in 0.8.6)
 	
     template<class T>
     class Video
@@ -46,12 +52,15 @@ namespace po { namespace scene {
         typedef std::shared_ptr<T> GenericMovieRef;
         
     public:
+        //! Create empty Video node
         static std::shared_ptr< Video<T> > create();
+        //! Create with a movieref
         static std::shared_ptr< Video<T> > create(GenericMovieRef movieRef);
-        
+        //! Set the movie ref
         void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
+        //! Get the movie ref
         GenericMovieRef getMovieRef()               { return mMovieRef; };
-        
+        //! Get the bounds (based on the movie's bounds)
         ci::Rectf getBounds();
         
     protected:
@@ -64,10 +73,9 @@ namespace po { namespace scene {
     private:
         //	Movie and texture refs
         std::shared_ptr<T> mMovieRef;
-		
     };
 	
-    //  Class Implementation
+    //  Template Class Implementation
     template<class T>
     std::shared_ptr< Video<T> > Video<T>::create()
 	{

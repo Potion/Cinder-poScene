@@ -33,7 +33,18 @@
 #include "poNode.h"
 
 namespace po { namespace scene {
-		
+    // NodeContainers are groups of Nodes. They do not render anything themselves,
+    // but they should render all of their children, allow for grouped alpha,
+    // and be hit testable. Hit testing on a Node Container is true if any of it's
+    // children return true to a pointInside query.
+    //
+    // Node containers can also be use to generate a texture from a complex layout,
+    // hide/show collections of objects, enable/disable interaction on a group level,
+    // etc.
+    //
+    // Child nodes are drawn in the order they are added, i.e. last node added will
+    // appear on top. These positions are their indices.
+    
 	//	Create NodeContainerRef typedef
 	class NodeContainer;
 	typedef std::shared_ptr<NodeContainer> NodeContainerRef;
@@ -44,42 +55,85 @@ namespace po { namespace scene {
 		friend class Scene;
 		
 	public:
+        //! Create a NodeContainer
 		static NodeContainerRef create(std::string name = "");
 		
 		~NodeContainer();
 		
 		//	Children
 		static const int INVALID_INDEX = -1;
-		int getNumChildren() { return mChildren.size(); };
-		void addChild(NodeRef node);
+        
+        // Add Children
+        
+        //! Add a Node to this NodeContainer
+        void addChild(NodeRef node);
+        //! Add multiple children to this NodeContainer
+        /** This method should be preferred when adding a large amount of children at the same time. 
+            The node container needs to recalculate it's matrices every time we add a child (to update bounds)
+            so using this only causes that to happen once vs n times**/
 		void addChildren(std::vector<NodeRef> nodes);
+        //! Add a child at an index
 		void addChildAt(int index, NodeRef node);
+        //! Add a child before (below) another node
 		void addChildBefore(NodeRef before, NodeRef node);
-		void addChildAfter(NodeRef after, NodeRef node);
+        //! Add a child after (above) another node
+        void addChildAfter(NodeRef after, NodeRef node);
+        
+        // Get Children
+        
+        //! Get the total number of children for this NodeContainer
+        int getNumChildren() { return mChildren.size(); };
+        //! Get all this NodeContainer's children
 		std::deque<NodeRef> getChildren();
+        //! Get a reference to all of this NodeContainer's children
 		std::deque<NodeRef> &getChildrenByReference();
+        //! Find if the NodeContainer has any children
 		bool hasChildren();
+        //! Get a child at an index. Returns INVALID_INDEX if not found
 		int getChildIndex(const NodeRef &child);
+        //! Get a child by an index. Returns null_ptr if not found.
 		NodeRef getChildByIndex(int index);
+        //! Get a child by it's UID. Returns null_ptr if not found.
 		NodeRef getChildByUID(uint32_t uid);
+        //! Get a child by name. Returns null_ptr if not found.
 		NodeRef getChildByName(const std::string &name);
+        //! Get the first (bottom) child
 		NodeRef getFirstChild();
+        //! Get the last (top) child
 		NodeRef getLastChild();
+        
+        // Remove children
+        
+        //! Remove a child by node reference
 		void removeChild(NodeRef node);
+        //! Remove a child at a specific index
 		void removeChildAt(int index);
+        //! Remove all the children from this NodeContainer.
 		void removeAllChildren();
+        
+        // Move Child nodes
+        
+        //! Move a child to the front (top)
 		void moveChildToFront(NodeRef node);
+        //! Move a child forward one index
 		void moveChildForward( NodeRef node);
+        //! Move a child to after (in front of) a node
 		void moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
+        //! Move a child to back (bottom)
 		void moveChildToBack(NodeRef node);
+        //! Move a child backward one index
 		void moveChildBackward(NodeRef node);
+        //! Move a child to before (behind) another node
 		void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
 		
 		//	Bounds
+        
+        //! Get the bounds
 		virtual ci::Rectf getBounds();
 
 		//  Interaction
-		virtual bool pointInside(const ci::Vec2f &point, bool localize = true);
+        //! Determine if a point is inside of any of this NodeContainer's children
+		virtual bool pointInside(const ci::Vec2f &windowPoint);
 		
 	protected:
 		virtual void draw();

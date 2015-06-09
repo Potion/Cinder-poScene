@@ -707,9 +707,9 @@ namespace po { namespace scene {
     //  This is used for hit-testing all Nodes
     //  Override this function to do any type of custom
     //
-    bool Node::pointInside(const ci::Vec2f &point, bool localize)
+    bool Node::pointInside(const ci::Vec2f &point)
     {
-        ci::Vec2f pos = localize ? windowToLocal(point) : point;
+        ci::Vec2f pos = windowToLocal(point);
         return getBounds().contains(pos);
     }
 

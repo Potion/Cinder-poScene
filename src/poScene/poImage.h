@@ -33,7 +33,13 @@
 #include "poNode.h"
 
 namespace po { namespace scene {
-	
+	// Images are simple wrappers that draw a ci::gl::Texture to a
+    // quad at their actual size.
+    // The Node attributes (i.e. position, scale, rotation, animation,  etc.) can then be applied
+    //
+    // For more complex usage of textures (i.e. mapping to complex shapes)
+    // use the Shape class.
+    
     class Image;
     typedef std::shared_ptr<Image> ImageRef;
     
@@ -41,12 +47,21 @@ namespace po { namespace scene {
     : public Node
     {
     public:
+        //! Create an empty image (texture is a null_ptr, won't draw until set)
         static ImageRef create();
+        //! Create an image with a ci::gl::TextureRef
         static ImageRef create(ci::gl::TextureRef texture);
         
+        //! Draw the texture if set
         void draw();
+        
+        //! Set the ci::gl::TextureRef
         void setTexture(ci::gl::TextureRef texture) { mTexture = texture; }
+        //! Get the ci::gl::TextureRef
         ci::gl::TextureRef getTexture() { return mTexture; }
+        
+        //! Get the bounds of the Image
+        ci::Rectf getBounds();
         
     protected:
         Image(ci::gl::TextureRef texture);
