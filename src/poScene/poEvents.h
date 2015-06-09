@@ -34,15 +34,17 @@
 #include "poEvents.h"
 
 namespace po { namespace scene {
-	
+    
+    //  Events in poScene extend the functionality of
+    
     class Node;
     typedef std::shared_ptr<Node> NodeRef;
+    
+    class EventCenter;
 	
 	
     //------------------------------------
     //	Base Event
-		#pragma mark - Base Event
-	//------------------------------------
     
     class Event {
         friend class Node;
@@ -77,7 +79,7 @@ namespace po { namespace scene {
     class MouseEvent
     : public po::scene::Event
     {
-        friend class Node;
+        friend class EventCenter;
         
     public:
         enum Type {
@@ -92,11 +94,16 @@ namespace po { namespace scene {
             WHEEL
         };
         
-        MouseEvent(ci::app::MouseEvent event);
+        MouseEvent(ci::app::MouseEvent event, Type type);
         ci::app::MouseEvent getCiEvent() { return mCiEvent; };
+        Type getType() { return mType; };
+        
+    protected:
+        void setType(Type type) { mType = type; };
         
     private:
         ci::app::MouseEvent mCiEvent;
+        Type mType;
 		
     };
     
@@ -109,6 +116,7 @@ namespace po { namespace scene {
     class TouchEvent
     : public Event
     {
+        friend class EventCenter;
     public:
         enum Type {
             BEGAN,
@@ -119,11 +127,16 @@ namespace po { namespace scene {
             ENDED_INSIDE
         };
         
-        TouchEvent(ci::app::TouchEvent::Touch event);
+        TouchEvent(ci::app::TouchEvent::Touch event, Type type);
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
+        Type getType() { return mType; }
+        
+    protected:
+        void setType(Type type) { mType = type; };
         
     private:
         ci::app::TouchEvent::Touch mCiEvent;
+        Type mType;
 		
     };
 	
