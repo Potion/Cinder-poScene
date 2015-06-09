@@ -355,11 +355,11 @@ namespace po { namespace scene {
 		#pragma mark - Interaction
 	//------------------------------------
 	
-    bool NodeContainer::pointInside(const ci::Vec2f &point, bool localize)
+    bool NodeContainer::pointInside(const ci::Vec2f &windowPoint)
     {
         for (const NodeRef &node : mChildren) {
             if (!node->mVisible) continue;
-            if (node->pointInside(point, localize)) return true;
+            if (node->pointInside(windowPoint)) return true;
         }
         
         return false;
