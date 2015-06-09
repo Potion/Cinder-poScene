@@ -56,10 +56,8 @@ namespace po { namespace scene {
 		
 		virtual void draw();
 		
-		//
-		//	Set/Return the backing ci::Shape2d
-		//	This should be used for modifying or changing the shape
-		//
+		//!	Set/Return the backing ci::Shape2d
+		/**	This should be used for modifying or changing the shape **/
 		ci::Shape2d getCiShape2dCopy() { return mCiShape2d; };
 		void setCiShape2d(ci::Shape2d shape);
 		
