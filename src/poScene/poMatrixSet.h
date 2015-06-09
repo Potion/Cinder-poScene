@@ -35,13 +35,19 @@
 #include "cinder/Camera.h"
 
 namespace po { namespace scene {
-	
+	// MatrixSet
+    // Used to record the current Model View Projection Matrices
+    // for nodes, then perform translations
+    
 	class MatrixSet
 	{
 	public:
+        //! Set the matrix set
 		void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
 		
+        //! Convert a point from window space to local space
 		ci::Vec2f globalToLocal(const ci::Vec2f &point);
+        //! Convert a point from local space back to window space
 		ci::Vec2f localToGlobal(const ci::Vec2f &point);
 		
 	private:

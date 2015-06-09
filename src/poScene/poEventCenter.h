@@ -65,9 +65,9 @@ namespace po { namespace scene {
                     
                     //	Go through all the ci::MouseEvents for this type
                     for (CiEventT &ciEvent : eventQueue.second) {
-                        EventT poEvent(ciEvent);
-                        notifyAllNodes(nodes, poEvent, type);
-                        notifyCallbacks(nodes, poEvent, type);
+                        EventT poEvent(ciEvent, type);
+                        notifyAllNodes(nodes, poEvent);
+                        notifyCallbacks(nodes, poEvent);
                     }
                     
                     //	Clear out the events
@@ -76,26 +76,26 @@ namespace po { namespace scene {
             }
             
         protected:
-            void notifyAllNodes(std::vector<NodeRef> &nodes, EventT event, const EventTypeT &type)
+            void notifyAllNodes(std::vector<NodeRef> &nodes, EventT event)
 			{
                 for (NodeRef &node : nodes) {
                     //	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-                    if ( node == nullptr || (!node->isEligibleForInteractionEvents()) ) continue;
+                    if ( node == nullptr || (!node->isEligibleForInteractionEvent(event.getType())) ) continue;
                     
                     event.setShouldPropagate(true);
                     
                     //	Notify the node
-                    node->emitEvent(event, type);
+                    node->emitEvent(event);
                 }
             }
             
             //  Extend this function to define custom callback type
-            virtual void notifyCallbacks(std::vector<NodeRef> &nodes, EventT event, EventTypeT &type)
+            virtual void notifyCallbacks(std::vector<NodeRef> &nodes, EventT event)
             {
                 //	Go through the draw tree, notifying nodes that are listening
                 for (NodeRef &node : nodes) {
-                    if ( node->isEligibleForInteractionEvent(type) && node->pointInside(event.getWindowPos()) ) {
-                        node->emitEvent(event, type);
+                    if ( node->isEligibleForInteractionEvent(event.getType()) && node->pointInside(event.getWindowPos()) ) {
+                        node->emitEvent(event);
                         if (event.getShouldPropagate()) {
                             event.setShouldPropagate(false);
                         } else {
@@ -118,10 +118,10 @@ namespace po { namespace scene {
         class MouseEventProcessor
         : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
         {
-            void notifyCallbacks(std::vector<NodeRef> &nodes, MouseEvent event, MouseEvent::Type &type)
+            void notifyCallbacks(std::vector<NodeRef> &nodes, MouseEvent event)
             {
                 MouseEvent::Type callbackType;
-                switch (type) {
+                switch (event.getType()) {
                     case MouseEvent::Type::DOWN:
                         callbackType = MouseEvent::Type::DOWN_INSIDE;
 						break;
@@ -136,7 +136,8 @@ namespace po { namespace scene {
 						break;
                 }
                 
-                EventProcessor::notifyCallbacks(nodes, event, callbackType);
+                event.setType(callbackType);
+                EventProcessor::notifyCallbacks(nodes, event);
             }
 			
         };
@@ -169,11 +170,11 @@ namespace po { namespace scene {
             }
             
         private:
-            void notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event, TouchEvent::Type &type)
+            void notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event)
             {
                 //	Set the callback type
                 TouchEvent::Type callbackType;
-                switch (type) {
+                switch (event.getType()) {
                     case TouchEvent::Type::BEGAN:
                         callbackType = TouchEvent::Type::BEGAN_INSIDE;
 						break;
@@ -185,7 +186,8 @@ namespace po { namespace scene {
 						break;
                 }
                 
-                EventProcessor::notifyCallbacks(nodes, event, callbackType);
+                event.setType(callbackType);
+                EventProcessor::notifyCallbacks(nodes, event);
             }
 			
         };
