@@ -35,6 +35,10 @@
 #include "poNode.h"
 
 namespace po { namespace scene {
+    // TextBoxes are Node wrappers for Cinder's ci::TextBox class.
+    // All text settings should be done on a ci::TextBox object,
+    // which can then be attached to this object for rendering as a texture
+    // and hit testing.
 	
 	class TextBox;
 	typedef std::shared_ptr<TextBox> TextBoxRef;
@@ -43,13 +47,20 @@ namespace po { namespace scene {
 	: public Node
 	{
 	public:
+        //! Create with a ci::TextBox
 		static TextBoxRef create(ci::TextBox ciTextBox);
+        //! Create with a default (blank) ci::TextBox
 		static TextBoxRef create();
 		
+        //! Draw the texture generated from the ci::TextBox
 		void draw();
 		
+        //! Return the bounds based on the ci::TextBox's bounds + offset/alignment
 		ci::Rectf getBounds();
-		void setCiTextBox(ci::TextBox ciTextBox) { mCiTextBox = ciTextBox; render(); }
+        
+        //! Set the ci::TextBox object (by copying) and render to a texture
+		void setCiTextBox(ci::TextBox &ciTextBox) { mCiTextBox = ciTextBox; render(); }
+        //! Get a copy of the backing ci::TextBox for manipulation
         ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 		
 	protected:

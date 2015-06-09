@@ -36,6 +36,15 @@
 #include "poTextureFit.h"
 
 namespace po { namespace scene {
+    // Shape2d is a class that converts any Cinder Shape2d to a VBO Mesh
+    // and uses it as the drawable object.
+    //
+    // It supports textures, which can be mapped using the po::Scene::TextureFit::Type enums.
+    //
+    // Interaction is supported through the ci::Shape2d contains method, which is localized
+    // to the position and the offset/alignment of the node.
+    //
+    // Setting the Shape, Texture or TextureFit will invalidate the VBOMesh and re-render the shape.
     
 	//	Create ShapeRef typedef
 	class Shape;
@@ -45,42 +54,58 @@ namespace po { namespace scene {
 	: public Node
 	{
 	public:
+        //! Create an empy Shape
 		static ShapeRef create();
+        //! Create a shape with a texture (defaults to a rect shape)
 		static ShapeRef create(ci::gl::TextureRef texture);
+        //! Create a rectangular shape
 		static ShapeRef createRect(float width, float height);
-		static ShapeRef createSquare(float size);
+        //! Create an square shape
+        static ShapeRef createSquare(float size);
+        //! Create an elliptical shape
 		static ShapeRef createEllipse(float width, float height);
+        //! Create an circle
 		static ShapeRef createCircle(float size);
 		
 		~Shape();
 		
+        //! Draw the shape's VBOMesh and attach texture if set
 		virtual void draw();
 		
 		//!	Set/Return the backing ci::Shape2d
 		/**	This should be used for modifying or changing the shape **/
 		ci::Shape2d getCiShape2dCopy() { return mCiShape2d; };
+        
+        /**	This should be used for modifying or changing the shape **/
 		void setCiShape2d(ci::Shape2d shape);
 		
-		//	Bounds
+        //! Get the bounds
+        /** The bounds of a Shape are determined by the bounds of the ci::Shape2d 
+            plus any offsets/alignments**/
 		virtual ci::Rectf getBounds();
 		
-		//	Hit testing
+		//! Determine if a point is inside the shape by localizing it and checking if it intersects
 		bool pointInside(const ci::Vec2f &point, bool localize = true);
 		
 		//	Caching to VBO
+        //! Triangulate the ci::Shape2d and push to a VBOMesh with correct texture coords
 		void render();
+        //! Get the VBOMeshRef
 		ci::gl::VboMeshRef getVbo() { return mVboMesh; };
 		
-		//	Texture
-		void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
+        //! Set the texture with fit and alignment
+        void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
+        //! Set an offset for the texture
 		void setTextureOffset(ci::Vec2f offset);
+        //! Get the texture
 		ci::gl::TextureRef getTexture() { return mTexture; }
+        //! Remove the texture and return to using fill color to render
 		void removeTexture();
-		
-		//	Precision (for rendering)
-		Shape &precision(int precision) { setPrecision(precision); return *this; }
-		int getPrecision() { return mPrecision; }
-		void setPrecision(int precision) { mPrecision = precision; }
+        
+        //! Get the internal precision
+        int getPrecision() { return mPrecision; }
+        //! Set the internal precision to use when triangulating the ci::Shape2d
+        Shape &setPrecision(int precision) { mPrecision = precision; return *this;}
 		
 	protected:
 		Shape();
