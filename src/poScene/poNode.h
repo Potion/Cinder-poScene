@@ -42,6 +42,15 @@
 
 namespace po { namespace scene {
     
+    // Nodes are the base items in a scene. They are architected to have standardized
+    // methods for attributes (position, scale, rotation, etc.), Cinder animation variables that automatically
+    // apply to attributes when running, bounds, hit-testing, interaction event handling, updating and drawing,
+    // rendering to textures, rendering into an FBO, Masking, point-transformation and a number of other
+    // features.
+    //
+    // All items that are part of a scene should inherit from Node in some way.
+    // The Node base class is intended to be inherited-only, hence the private constructor.
+    
     enum class Alignment {
         NONE,
         TOP_LEFT,
