@@ -837,17 +837,19 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if ((mMouseEventSignals[type].num_slots() != 0)) return isEligibleForInteractionEvents();
+        if ((mMouseEventSignals.count(type) && mMouseEventSignals[type].num_slots() != 0)) {
+            return isEligibleForInteractionEvents();
+        }
         return false;
     }
     
     //
     //	For the given event, notify everyone that we have as a subscriber
 	//
-    void Node::emitEvent(MouseEvent &event, const MouseEvent::Type &type)
+    void Node::emitEvent(MouseEvent &event)
     {
         event.setSource(shared_from_this());
-        mMouseEventSignals[type](event);
+        mMouseEventSignals[event.getType()](event);
     }
     
 	
@@ -859,10 +861,10 @@ namespace po { namespace scene {
 	//
     //	For the given event, notify everyone that we have as a subscriber
 	//
-    void Node::emitEvent(TouchEvent &event, const TouchEvent::Type &type)
+    void Node::emitEvent(TouchEvent &event)
     {
         event.setSource(shared_from_this());
-        mTouchEventSignals[type](event);
+        mTouchEventSignals[event.getType()](event);
     }
 	
 	//
@@ -870,7 +872,9 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if ((mTouchEventSignals[type].num_slots() != 0)) return isEligibleForInteractionEvents();
+        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].num_slots() != 0)) {
+            return isEligibleForInteractionEvents();
+        }
         return false;
     }
 	

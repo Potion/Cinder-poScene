@@ -536,12 +536,12 @@ namespace po { namespace scene {
         //	Mouse
         std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
         bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
-        void emitEvent(MouseEvent &event, const MouseEvent::Type &type);
+        void emitEvent(MouseEvent &event);
         
         //	Touch
         std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
         bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
-        void emitEvent(TouchEvent &event, const TouchEvent::Type &type);
+        void emitEvent(TouchEvent &event);
 		
         
         //------------------------------------

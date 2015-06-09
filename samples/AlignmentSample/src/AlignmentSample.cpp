@@ -19,16 +19,16 @@ void AlignmentSample::setup()
     
     //  create and add the blue shape
     ShapeRef shapeBlue = Shape::createRect(100, 100);
-    shapeBlue->setAlignment(Alignment::NONE);
-    shapeBlue->setFillColor(63.f/255, 169.f/255, 245.f/255);
+    shapeBlue->setAlignment(Alignment::NONE)
+               .setFillColor(63.f/255, 169.f/255, 245.f/255);
     // default position is (0, 0)
     addChild(shapeBlue);
     
     //  create and add the orange shape
     ShapeRef shapeOrange = Shape::createRect(150, 150);
-    shapeOrange->setAlignment(Alignment::TOP_LEFT);
-    shapeOrange->setFillColor(255.f/255, 147.f/255, 30.f/255);
-    shapeOrange->setPosition(100, 100);
+    shapeOrange->setAlignment(Alignment::TOP_LEFT)
+                .setFillColor(255.f/255, 147.f/255, 30.f/255)
+                .setPosition(100, 100);
     addChild(shapeOrange);
     
     //  create and add the green shape
@@ -52,7 +52,6 @@ void AlignmentSample::setup()
     shapePink->setPosition(250, 200);
     addChild(shapePink);
     
-    
     //  Add a reference dot at the position of each shape node
     
     //  grab all children added so far
@@ -73,3 +72,6 @@ void AlignmentSample::setup()
     //  move the entire node to the right and down
     setPosition(100, 100);
 }
+
+
+
