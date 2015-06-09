@@ -36,7 +36,7 @@ void Masking::setup() {
     //mZach->setMask(mMask);
     //mZach->setCacheToFboEnabled(true, 200,200);
     
-    mMask->fillColor(ci::Color(1,0,1));
+    mMask->setFillColor(ci::Color(1,0,1));
     //mMask->setPosition(0,mZach->getHeight());
     //addChild(mMask);
     
