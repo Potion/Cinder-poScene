@@ -2,13 +2,41 @@
 //  AnimationSquare.h
 //  AnimationSample
 //
-//  Created by Jennifer on 6/9/15.
+//  Created by Jennifer Presto on 6/9/15.
 //
 //
 
-#ifndef __AnimationSample__AnimationSquare__
-#define __AnimationSample__AnimationSquare__
+#pragma once
 
-#include <stdio.h>
+#include "poNodeContainer.h"
+#include "poShape.h"
+#include "Indicator.h"
 
-#endif /* defined(__AnimationSample__AnimationSquare__) */
+class AnimationSquare;
+typedef std::shared_ptr<AnimationSquare> AnimationSquareRef;
+
+class AnimationSquare
+: public po::scene::NodeContainer
+{
+public:
+    static AnimationSquareRef create(std::string name, ci::Color color);
+    void setup(std::string name, ci::Color color);
+    
+    void doPositionAnimation();
+    void doScaleAnimation();
+    void doAlphaAnimation();
+    void doRotationAnimation();
+    void doOffsetAnimation();
+    void doColorAnimation();
+    
+protected:
+
+private:
+    po::scene::ShapeRef mBaseShape;
+    ci::Vec2f           mBasePosition;
+    ci::Color           mBaseColor;
+    
+    IndicatorRef        mIndicator;
+    void                showIndicator();
+    
+};
