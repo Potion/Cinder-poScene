@@ -1,5 +1,5 @@
 #include "AlignmentSample.h"
-#include "poShape.h"
+
 
 using namespace po::scene;
 
@@ -13,63 +13,57 @@ AlignmentSampleRef AlignmentSample::create()
 
 void AlignmentSample::setup() 
 {
-    //  draw debugging bounds around the entire node
-    //  these default to red
-    setDrawBounds(true);
+    //  Cinder method for key events
+    ci::app::getWindow()->connectKeyDown(&AlignmentSample::keyDown, this);
     
-    //  create and add the blue shape
-    ShapeRef shapeBlue = Shape::createRect(100, 100);
-    shapeBlue->setAlignment(Alignment::NONE);
-    shapeBlue->setFillColor(63.f/255, 169.f/255, 245.f/255);
-    // default position is (0, 0)
-    addChild(shapeBlue);
+    //  create and add instructions text box (using local variable)
+    std::string instructions = "Press a number key to change alignment";
+    std::shared_ptr<ci::TextBox> t(new ci::TextBox());
+    t->font(ci::Font("Helvetica", 24))
+        .text(instructions)
+        .size(ci::Vec2f(250, ci::TextBox::GROW));
+    TextBoxRef tbTop = TextBox::create(t);
+    tbTop->setPosition(20, 20);
+    addChild(tbTop);
     
-    //  create and add the orange shape
-    ShapeRef shapeOrange = Shape::createRect(150, 150);
-    shapeOrange->setAlignment(Alignment::TOP_LEFT);
-    shapeOrange->setFillColor(255.f/255, 147.f/255, 30.f/255);
-    shapeOrange->setPosition(100, 100);
-    addChild(shapeOrange);
+    //  create and add text box that shows current alignment (using member variable)
+    std::string currentAlignment = "NONE";
+    std::shared_ptr<ci::TextBox> u(new ci::TextBox());
+    u->font(ci::Font("Helvetica", 24))
+        .text(currentAlignment)
+        .size(ci::Vec2f(250, ci::TextBox::GROW));
+    mText = TextBox::create(u);
+    mText->setPosition(20, 220);
+    addChild(mText);
     
-    //  create and add the green shape
-    ShapeRef shapeGreen = Shape::createRect(100, 100);
-    shapeGreen->setAlignment(Alignment::CENTER_CENTER);
-    shapeGreen->setFillColor(122.f/255, 201.f/255, 67.f/255);
-    shapeGreen->setPosition(175, 175);
-    addChild(shapeGreen);
+    //  create and add the shape
+    mShapeNode = Shape::createRect(200, 100);
     
-    //  create and add the gray shape
-    ShapeRef shapeGray = Shape::createRect(100, 100);
-    shapeGray->setAlignment(Alignment::TOP_CENTER);
-    shapeGray->setFillColor(189.f/255, 204.f/255, 212.f/255);
-    shapeGray->setPosition(175, 250);
-    addChild(shapeGray);
+    mShapeNode->setAlignment(po::scene::Alignment::NONE)
+                .setFillColor(122.f/255, 201.f/255, 67.4/255)
+                .setPosition(250, 250);
+    addChild(mShapeNode);
+
+    //  add a reference dot to indicate position of mShapeNode
+    ShapeRef dot = Shape::createCircle(10);
+    dot->setAlignment(po::scene::Alignment::CENTER_CENTER)
+        .setFillColor(255.f/255, 123.f/255, 172.f/255)
+        .setPosition(250, 250);
+    addChild(dot);
+}
+
+void AlignmentSample::keyDown(ci::app::KeyEvent &event)
+{
+    std::cout << "Key down: " << event.getChar() << std::endl;
+    //std::shared_ptr<ci::TextBox> internalTextBox = mText->getCiTextBox();
     
-    //  create and add the pink shape
-    ShapeRef shapePink = Shape::createRect(100, 100);
-    shapePink->setAlignment(Alignment::BOTTOM_LEFT);
-    shapePink->setFillColor(255.f/255, 123.f/255, 172.f/255);
-    shapePink->setPosition(250, 200);
-    addChild(shapePink);
+    std::stringstream ss;
+    std::string s;
+    ss<< event.getChar();
+    ss>> s;
+    //internalTextBox->setText(s);
+    mText->getCiTextBox()->text(s);
     
+    std::cout << s << std::endl;
     
-    //  Add a reference dot at the position of each shape node
-    
-    //  grab all children added so far
-    std::deque<NodeRef> children = getChildren();
-    
-    //  add a dot at the same position of each child
-    //  each dot will be the same color, but darker, as its reference shape
-    for (auto &child : children) {
-        ShapeRef referenceDot = Shape::createCircle(10);
-        referenceDot->setAlignment(Alignment::CENTER_CENTER);
-        referenceDot->setPosition(child->getPosition());
-        ci::Color dotColor = child->getFillColor();
-        dotColor *= 0.7f;
-        referenceDot->setFillColor(dotColor);
-        addChild(referenceDot);
-    }
-    
-    //  move the entire node to the right and down
-    setPosition(100, 100);
 }

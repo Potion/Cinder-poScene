@@ -10,7 +10,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{E309B8FA-EFAF-45EF-8D58-E8C43865E061}</ProjectGuid>
+    <ProjectGuid>{5D800DF5-72C4-4FE5-93A5-EA740EA772A2}</ProjectGuid>
     <RootNamespace>AlignmentSample</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
