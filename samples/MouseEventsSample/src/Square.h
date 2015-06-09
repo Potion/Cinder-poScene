@@ -16,11 +16,15 @@ public:
 	virtual ~Square();
 
 	virtual void setup();
+	
+	void setIsDown(bool isDown);
 
 protected:
 	Square();
 
 private:
 	ShapeRef mShape;
+	ci::Color mDownColor;
+	ci::Color mUpColor;
 	
 };

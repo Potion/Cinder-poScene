@@ -7,7 +7,9 @@ SquareRef Square::create()
 	return ref;
 }
 
-Square::Square() 
+Square::Square()
+: mDownColor(255.f/255, 147.f/255, 30.f/255)
+, mUpColor(255.f/255, 123.f/255, 172.f/255)
 {
 }
 
@@ -18,6 +20,15 @@ Square::~Square()
 void Square::setup()
 {
 	mShape = Shape::createRect(100, 100);
-	mShape->setFillColor(255.f/255, 123.f/255, 172.f/255);
+	mShape->setFillColor(mUpColor);
 	addChild(mShape);
+}
+
+void Square::setIsDown(bool isDown)
+{
+	if (isDown) {
+		mShape->setFillColor(mDownColor);
+	} else {
+		mShape->setFillColor(mUpColor);
+	}
 }

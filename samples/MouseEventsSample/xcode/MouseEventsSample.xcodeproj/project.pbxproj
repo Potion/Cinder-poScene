@@ -16,6 +16,7 @@
 		077AB55B50E04956967A15E4 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4D541F79AF95474FAA626188 /* poShape.cpp */; };
 		158785FBB6DC47D49495A79B /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9A28330E05384D04A69EB847 /* poEventCenter.cpp */; };
 		3222EB531B274685005803F7 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3222EB511B274685005803F7 /* Square.cpp */; };
+		3222EB561B275987005803F7 /* Indicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3222EB541B275987005803F7 /* Indicator.cpp */; };
 		5017031EC53E4C3786A6702E /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BA35CA8FA96B4C79AC220889 /* poScene.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -46,6 +47,8 @@
 		2D881DE5C67A440BB5FE1BE7 /* poShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poShape.h; path = ../../../src/poScene/poShape.h; sourceTree = "<group>"; };
 		3222EB511B274685005803F7 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Square.cpp; path = ../src/Square.cpp; sourceTree = "<group>"; };
 		3222EB521B274685005803F7 /* Square.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Square.h; path = ../src/Square.h; sourceTree = "<group>"; };
+		3222EB541B275987005803F7 /* Indicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indicator.cpp; path = ../src/Indicator.cpp; sourceTree = "<group>"; };
+		3222EB551B275987005803F7 /* Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indicator.h; path = ../src/Indicator.h; sourceTree = "<group>"; };
 		349C01FEAFF042CF9F93FDBD /* MouseEventsSampleApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MouseEventsSampleApp.cpp; path = ../src/MouseEventsSampleApp.cpp; sourceTree = "<group>"; };
 		4D541F79AF95474FAA626188 /* poShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poShape.cpp; path = ../../../src/poScene/poShape.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
@@ -107,6 +110,8 @@
 				6A1D35D2A76541A3A5F430A5 /* MouseEventsSample.cpp */,
 				3222EB511B274685005803F7 /* Square.cpp */,
 				3222EB521B274685005803F7 /* Square.h */,
+				3222EB541B275987005803F7 /* Indicator.cpp */,
+				3222EB551B275987005803F7 /* Indicator.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -292,6 +297,7 @@
 			files = (
 				7E7DB5FD3D084BEE9B1F05F5 /* MouseEventsSampleApp.cpp in Sources */,
 				AECA0E7C6D534CBCB1534C21 /* MouseEventsSample.cpp in Sources */,
+				3222EB561B275987005803F7 /* Indicator.cpp in Sources */,
 				158785FBB6DC47D49495A79B /* poEventCenter.cpp in Sources */,
 				FB8AE165A26C47E2AEB13739 /* poEvents.cpp in Sources */,
 				3222EB531B274685005803F7 /* Square.cpp in Sources */,
