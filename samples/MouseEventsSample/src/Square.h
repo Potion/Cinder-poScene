@@ -16,9 +16,6 @@ public:
 	virtual ~Square();
 
 	virtual void setup();
-	
-	//	Show selected state
-	void showSelected();
 
 protected:
 	Square();
@@ -31,5 +28,19 @@ private:
 	//	Selected state
 	ShapeRef mSelected;
 	ci::Color mSelectedColor;
+	
+	bool mIsMouseDown;
+	
+	//	Mouse events
+	void onMouseEvent(MouseEvent &event);
+	
+	//	Set selected state
+	void setSelected(bool isSelected);
+	
+	//	Rotate the square on mouse up inside
+	void doRotate();
+	
+	//	Reset rotation and mouse down
+	void reset();
 	
 };

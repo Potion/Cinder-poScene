@@ -77,7 +77,7 @@ void MouseEventsSample::createSquares()
 		square->getSignal(MouseEvent::UP_INSIDE).connect(std::bind(&MouseEventsSample::onSquareMouseEvent, this, std::placeholders::_1, square));
 	}
 	
-	mSquareContainer->setPosition(ci::app::getWindowWidth() / 2 - mSquareContainer->getWidth() / 2, ci::app::getWindowHeight() / 2 - mSquareContainer->getHeight() / 2);
+	mSquareContainer->setPosition(ci::app::getWindowWidth() / 2 - mSquareContainer->getWidth() / 2 + 50, ci::app::getWindowHeight() / 2 - mSquareContainer->getHeight() / 2 + 50);
 }
 
 void MouseEventsSample::onSquareMouseEvent(po::scene::MouseEvent &event, SquareRef square)
@@ -89,7 +89,6 @@ void MouseEventsSample::onSquareMouseEvent(po::scene::MouseEvent &event, SquareR
 			break;
 		case po::scene::MouseEvent::DOWN_INSIDE:
 			showIndicator("DOWN_INSIDE");
-			square->showSelected();
 			break;
 		case po::scene::MouseEvent::UP_INSIDE:
 			showIndicator("UP_INSIDE");
