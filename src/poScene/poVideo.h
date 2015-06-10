@@ -46,7 +46,7 @@ namespace po { namespace scene {
 	
     template<class T>
     class Video
-    : public po::Node
+    : public Node
 	{
     private:
         typedef std::shared_ptr<T> GenericMovieRef;
