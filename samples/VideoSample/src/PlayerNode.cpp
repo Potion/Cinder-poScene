@@ -19,7 +19,7 @@ PlayerNodeRef PlayerNode::create()
 
 void PlayerNode::setup()
 {
-    ci::fs::path moviePath = ci::app::getAssetPath("catVideo_640x480.mov");
+    ci::fs::path moviePath = ci::app::getAssetPath("phoebe.mov");
     mVideoDisplayer = VideoGl::create();
     
     try {
