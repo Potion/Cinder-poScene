@@ -24,15 +24,13 @@ void AnimationSquare::setup(std::string name, ci::Color color)
 
     //  create and add the shape to the node container
     mBaseShape = Shape::createRect(100, 100);
-    mBaseShape->setAlignment(po::scene::Alignment::CENTER_CENTER);
     mBaseColor = color;
     mBaseShape->setFillColor(color);
     addChild(mBaseShape);
 
     //  create and add the label
     mIndicator = Indicator::create(name, color);
-    mIndicator->setAlignment(po::scene::Alignment::CENTER_CENTER);
-    mIndicator->setPosition(ci::Vec2f(0, 75));
+    mIndicator->setPosition(ci::Vec2f(0, 125));
     addChild(mIndicator);
     
     //  add a signal to all mouse clicks to activate label
@@ -71,10 +69,9 @@ void AnimationSquare::doRotationAnimation()
 
 void AnimationSquare::doOffsetAnimation()
 {
-    std::cout << "base shape offset: " << mBaseShape->getOffset() << std::endl;
-    ci::app::timeline().apply(&mBaseShape->getOffsetAnim(), ci::Vec2f(-25.0f, -25.0f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(-75.0f, -75.0f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(-50.0f, -50.0f), 0.5);
+    ci::app::timeline().apply(&mBaseShape->getOffsetAnim(), ci::Vec2f(25.0f, 25.0f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(-25.0f, -25.0f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(0.0f, 0.0f), 0.5);
 }
 
 void AnimationSquare::doColorAnimation()
@@ -85,6 +82,18 @@ void AnimationSquare::doColorAnimation()
     ci::app::timeline().apply(&mBaseShape->getFillColorAnim(), orange, 0.5);
     ci::app::timeline().appendTo(&mBaseShape->getFillColorAnim(), blue, 0.5);
     ci::app::timeline().appendTo(&mBaseShape->getFillColorAnim(), mBaseColor, 0.5);
+}
+
+void AnimationSquare::useBaseShapeCenter()
+{
+    mBaseShape->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mBaseShape->setPosition(50.f, 50.f);
+}
+
+void AnimationSquare::useBaseShapeTopLeft()
+{
+    mBaseShape->setAlignment(po::scene::Alignment::TOP_LEFT);
+    mBaseShape->setPosition(0.0f, 0.0f);
 }
 
 void AnimationSquare::showIndicator()
