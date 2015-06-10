@@ -42,6 +42,15 @@
 
 namespace po { namespace scene {
     
+    // Nodes are the base items in a scene. They are architected to have standardized
+    // methods for attributes (position, scale, rotation, etc.), Cinder animation variables that automatically
+    // apply to attributes when running, bounds, hit-testing, interaction event handling, updating and drawing,
+    // rendering to textures, rendering into an FBO, Masking, point-transformation and a number of other
+    // features.
+    //
+    // All items that are part of a scene should inherit from Node in some way.
+    // The Node base class is intended to be inherited-only, hence the private constructor.
+    
     enum class Alignment {
         NONE,
         TOP_LEFT,
@@ -298,7 +307,7 @@ namespace po { namespace scene {
         // but you can ignore it if doing something custom
         
         //! Set the fill color
-        Node &setFillColor(ci::Color color) { mFillColor = color; return *this; }
+        Node &setFillColor(ci::Color color);
         //! Get the fill color
         Node &setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); return *this; }
         //! Enable fill

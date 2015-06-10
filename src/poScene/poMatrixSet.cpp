@@ -73,7 +73,6 @@ namespace po { namespace scene {
 	//
 	ci::Vec3f MatrixSet::project(const ci::Vec3f &pt)
 	{
-		ci::Matrix44f a = mProjection * mModelview;
 		ci::Vec4f p(pt.x, pt.y, 0, 1.f);
 		p = mModelview * p;
 		p = mProjection * p;

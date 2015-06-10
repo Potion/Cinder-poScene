@@ -56,7 +56,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //  Scene
-		#pragma mark - Scene
 	//------------------------------------
     
     void NodeContainer::setScene(SceneRef scene)
@@ -78,12 +77,10 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Children
-		#pragma mark - Children
 	//------------------------------------
 	
 	//
     //  Add Children
-		#pragma mark - Add Children
 	//
 	
     void NodeContainer::addChild(NodeRef node)
@@ -130,7 +127,6 @@ namespace po { namespace scene {
 	
 	//
     //  Get Children
-		#pragma mark - Get Children
     //
 	
     std::deque<NodeRef> NodeContainer::getChildren()
@@ -204,7 +200,6 @@ namespace po { namespace scene {
     
     //
     //  Remove Children
-		#pragma mark - Remove Children
 	//
     
     void NodeContainer::removeChild(NodeRef node)
@@ -252,7 +247,6 @@ namespace po { namespace scene {
     
     //
     //  Move Children
-		#pragma mark - Move Children
 	//
     
     void NodeContainer::moveChildToFront(NodeRef node)
@@ -302,7 +296,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Update + Draw
-		#pragma mark - Update + Draw
 	//------------------------------------
 
     void NodeContainer::updateTree()
@@ -334,7 +327,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //  Dimensions
-		#pragma mark - Dimensions
 	//------------------------------------
 
     ci::Rectf NodeContainer::getBounds()
@@ -352,7 +344,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Interaction
-		#pragma mark - Interaction
 	//------------------------------------
 	
     bool NodeContainer::pointInside(const ci::Vec2f &windowPoint)
@@ -368,7 +359,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //  Matrices/Dimensions
-		#pragma mark - Matrices/Dimensions
 	//------------------------------------
     
     void NodeContainer::matrixTree() {

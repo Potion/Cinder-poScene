@@ -146,7 +146,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Texture
-		#pragma mark - Texture
 	//------------------------------------
     
     void Shape::setTexture(ci::gl::TextureRef texture, TextureFit::Type fit, Alignment alignment)
@@ -184,7 +183,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Rendering
-		#pragma mark - Rendering
 	//------------------------------------
 
     void Shape::render()
@@ -219,7 +217,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Dimensions
-		#pragma mark - Dimensions
 	//------------------------------------
     
     bool Shape::pointInside(const ci::Vec2f &point, bool localize)
