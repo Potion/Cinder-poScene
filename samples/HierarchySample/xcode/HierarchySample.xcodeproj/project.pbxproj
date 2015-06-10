@@ -16,7 +16,7 @@
 		0741D37D09544E309F6528BD /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 337364DB7FA74CBBBDD62732 /* poNodeContainer.cpp */; };
 		0998543E6EC04E8DBF724F9A /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 85A16CF7C1594BB19BD72C51 /* CinderApp.icns */; };
 		18E5FD56A74547A89D7B0E67 /* poNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1D029ED994D846DE83B63D60 /* poNode.cpp */; };
-		32C20B2E1B27972F00634060 /* SpiralGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C20B2C1B27972F00634060 /* SpiralGenerator.cpp */; };
+		32C20B311B28BD7F00634060 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C20B2F1B28BD7F00634060 /* Square.cpp */; };
 		3D780CA8025E476F9719B653 /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6B695B4F832494EB14C05FD /* poImage.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -43,8 +43,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2E7FD965C6AD4801BFDAC181 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		32C20B2C1B27972F00634060 /* SpiralGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SpiralGenerator.cpp; path = ../src/SpiralGenerator.cpp; sourceTree = "<group>"; };
-		32C20B2D1B27972F00634060 /* SpiralGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpiralGenerator.h; path = ../src/SpiralGenerator.h; sourceTree = "<group>"; };
+		32C20B2F1B28BD7F00634060 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Square.cpp; path = ../src/Square.cpp; sourceTree = "<group>"; };
+		32C20B301B28BD7F00634060 /* Square.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Square.h; path = ../src/Square.h; sourceTree = "<group>"; };
 		337364DB7FA74CBBBDD62732 /* poNodeContainer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poNodeContainer.cpp; path = ../../../src/poScene/poNodeContainer.cpp; sourceTree = "<group>"; };
 		36B1DB59526C4893950F64AE /* HierarchySample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = HierarchySample.cpp; path = ../src/HierarchySample.cpp; sourceTree = "<group>"; };
 		3B3EEB8DEC614A559EEA0844 /* poEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEvents.cpp; path = ../../../src/poScene/poEvents.cpp; sourceTree = "<group>"; };
@@ -105,8 +105,8 @@
 			children = (
 				8CFBA19730D546FEB6BC5DA7 /* HierarchySampleApp.cpp */,
 				36B1DB59526C4893950F64AE /* HierarchySample.cpp */,
-				32C20B2C1B27972F00634060 /* SpiralGenerator.cpp */,
-				32C20B2D1B27972F00634060 /* SpiralGenerator.h */,
+				32C20B2F1B28BD7F00634060 /* Square.cpp */,
+				32C20B301B28BD7F00634060 /* Square.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -292,6 +292,7 @@
 			files = (
 				029D1F3AD47D4E8C8E3EC71E /* HierarchySampleApp.cpp in Sources */,
 				69E50B24E9724FDAB3FA5825 /* HierarchySample.cpp in Sources */,
+				32C20B311B28BD7F00634060 /* Square.cpp in Sources */,
 				5DB1AD346409430781732320 /* poEventCenter.cpp in Sources */,
 				5738610571D8455CB6F023BD /* poEvents.cpp in Sources */,
 				3D780CA8025E476F9719B653 /* poImage.cpp in Sources */,
@@ -300,7 +301,6 @@
 				0741D37D09544E309F6528BD /* poNodeContainer.cpp in Sources */,
 				A978BB806E6E440B9C186851 /* poScene.cpp in Sources */,
 				57AD0447BC9A4050B6AEF284 /* poShape.cpp in Sources */,
-				32C20B2E1B27972F00634060 /* SpiralGenerator.cpp in Sources */,
 				AC4F50415BD540FB89CA19FB /* poTextBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

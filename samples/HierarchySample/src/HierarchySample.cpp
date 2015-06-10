@@ -1,7 +1,6 @@
 #include "HierarchySample.h"
 
 #include "poShape.h"
-#include "SpiralGenerator.h"
 
 HierarchySampleRef HierarchySample::create() 
 {
@@ -10,52 +9,37 @@ HierarchySampleRef HierarchySample::create()
     return node;
 }
 
+HierarchySample::HierarchySample()
+: mPreviousSquare(nullptr)
+{
+}
 
 void HierarchySample::setup() 
 {
-	int numSquares = 60;
-	float maxSize = 60.f;
+	//	Number of squares
+	int numSquares = 5;
 	
-	NodeContainerRef rootNode = NodeContainer::create();
-	addChild(rootNode);
+	//	Maximum square size
+	float maxSize = 300.f;
 	
-	NodeContainerRef previousNode = rootNode;
-	NodeContainerRef currentNode = rootNode;
+	//	Create the container
+	mContainer = NodeContainer::create();
+	addChild(mContainer);
+//	mContainer->setDrawBounds(true);
 	
-	SpiralGenerator::SpiralProperties properties;
-	properties.maxItems = numSquares;
-	properties.slope = 1;
-	properties.expansion = 30;
-	properties.r_min = 0.3f;
-	properties.r_max = 6.f;
-	properties.spiral_type = 9;
-	std::vector<SpiralGenerator::SpiralItemProperties> points = SpiralGenerator::getSpiralItemProperties(properties);
-	
-	for (int i = 5; i < numSquares; i++) {
-		previousNode = currentNode;
-		currentNode = NodeContainer::create();
-		
-		int size = (maxSize * (1 - points[i].scale.x));
-		float speed = (maxSize - size) * 2;
-		
-		ci::app::console() << points[i].scale << ", " << size << ", " << speed << std::endl;
-		
-		ShapeRef shape = Shape::createRect(size, size);
-		shape->setAlignment(po::scene::Alignment::CENTER_CENTER);
-		shape->setRotation(ci::toDegrees(points[i].angle));
-		shape->setPosition(points[i].position);
-		shape->setFillColor(ci::Color(150, 0, 0));
-		shape->setDrawBounds(true);
-		shape->setAlpha(0.5f);
-		
-		currentNode->addChild(shape);
-		
-		ci::app::timeline().apply(&shape->getRotationAnim(), 360.f, speed).loop();
-		
-		previousNode->addChild(currentNode);
+	//	Add the first square to the container
+	//	Add subsequent squares to the previous square
+	for (int i = 0; i < numSquares; i++) {
+		int size = maxSize - (i * (maxSize/numSquares));
+		SquareRef square = Square::create(size);
+		if (mPreviousSquare != nullptr) {
+			mPreviousSquare->addChild(square);
+		} else {
+			mContainer->addChild(square);
+		}
+		mPreviousSquare = square;
 	}
 	
-	rootNode->setPosition(ci::app::getWindowWidth() / 2, ci::app::getWindowHeight() / 2);
-	
-	ci::app::timeline().apply(&rootNode->getRotationAnim(), 360.f, 60.0f).loop();
+	//	Center everything
+	mContainer->setPosition(ci::app::getWindowWidth() / 2, ci::app::getWindowHeight() / 2);
 }
