@@ -40,8 +40,7 @@ namespace po { namespace scene {
     // as well as the orthographic camera (if enabled)
     //
     // Scenes also are responsible for tracking all Nodes currently
-    // in the root Node's hierarchy (in a flat structure)
-    // as well as providing them with their drawOrder every frame.
+    // in the root Node's hierarchy as well as providing them with their drawOrder every frame.
     //
     // The scene hands these NodeRefs every frame to the event center for processing
     // and distribution of events.
