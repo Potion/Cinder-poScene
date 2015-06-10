@@ -31,7 +31,7 @@ void AlignmentSample::setup()
     std::string legendText = "1: TOP_LEFT\t\t4: CENTER_LEFT\t\t7: BOTTOM_LEFT\n2: TOP_CENTER\t5: CENTER_CENTER\t8: BOTTOM_CENTER\n3: TOP_RIGHT\t\t6: CENTER_RIGHT\t\t9: BOTTOM_RIGHT\n0: NONE";
     ci::TextBox legend;
     legend.text(legendText)
-    .size(ci::Vec2f(400, ci::TextBox::GROW));
+        .size(ci::Vec2f(400, ci::TextBox::GROW));
     TextBoxRef tbLegend = TextBox::create(legend);
     tbLegend->setPosition(ci::Vec2f(200, 20));
     addChild(tbLegend);
