@@ -35,8 +35,8 @@ void VideoSample::setup()
     rightButton->setAlignment(po::scene::Alignment::CENTER_CENTER);
     leftButton->setAlignment(po::scene::Alignment::CENTER_CENTER);
     
-    rightButton->setPosition(ci::app::getWindowWidth() * 0.85, ci::app::getWindowHeight() / 2);
-    leftButton->setPosition(ci::app::getWindowWidth() * 0.15, ci::app::getWindowHeight() / 2);
+    rightButton->setPosition(ci::app::getWindowWidth() * 0.9f, ci::app::getWindowHeight() / 2);
+    leftButton->setPosition(ci::app::getWindowWidth() * 0.1f, ci::app::getWindowHeight() / 2);
     
     addChild(rightButton);
     addChild(leftButton);

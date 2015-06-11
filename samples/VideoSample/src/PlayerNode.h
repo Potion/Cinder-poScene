@@ -10,10 +10,11 @@
 
 #include "poNodeContainer.h"
 #include "poVideo.h"
+#include "poShape.h"
 
 // In order to use poVideo, you must link the QuickTime.framework.
-// You can add this under Targets < BuildPhases < Link Binary With Libraries.
-// Hit [+] at the bottom, and choose QuickTime.Framework from the list.
+// In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
+// Hit [+] at the bottom, and choose QuickTime.framework from the list.
 
 class PlayerNode;
 typedef std::shared_ptr<PlayerNode> PlayerNodeRef;
@@ -26,10 +27,16 @@ public:
     void setup();
     
 protected:
+    //  override virtual function from NodeContainer
     void update();
     
 private:
     po::scene::VideoGlRef mVideoDisplayer;
-    void onMouseClick();
+    po::scene::ShapeRef mSkipForward;
+    po::scene::ShapeRef mSkipBackward;
+    
+    void onClickVideo();
+    void onClickForward();
+    void onClickBackward();
     
 };
