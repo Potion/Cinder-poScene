@@ -25,7 +25,7 @@ void MaskingSample::setup()
 	ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("cat.jpg")));
 	
 	//	Create the image shape
-	mImage = Shape::create(texture);
+	mImage = Image::create(texture);
 	addChild(mImage);
 	
 	//	Set the image mask

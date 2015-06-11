@@ -2,6 +2,7 @@
 
 #include "poNodeContainer.h"
 #include "poShape.h"
+#include "poImage.h"
 
 using namespace po::scene;
 
@@ -21,12 +22,12 @@ protected:
 
 private:
 	//	Image
-	ShapeRef mImage;
+	ImageRef mImage;
 	
 	//	Mask shape
 	ShapeRef mMask;
 	
-	//	Mouse event handler
+	//	Mouse event handlers
 	void onMouseMove(MouseEvent &event);
 
 };
