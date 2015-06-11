@@ -22,7 +22,7 @@ void TextureSample::setup()
     ci::app::getWindow()->connectKeyDown(&TextureSample::keyDown, this);
     
     //  add text
-    std::string legend = "TextureFit\n0: NONE\n1: EXACT\n2: WIDTH\n3: HEIGHT\n4: INSIDE";
+    std::string legend = "TextureFit\n\n0: NONE\n1: EXACT\n2: WIDTH\n3: HEIGHT\n4: INSIDE";
     ci::TextBox ciTextbox = ci::TextBox();
     ciTextbox.text(legend);
     
@@ -72,22 +72,22 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
             
         case '1':
             labelText = "EXACT";
-            mTexShape->setTexture(mTexture, TextureFit::Type::EXACT, Alignment::CENTER_LEFT);
+            mTexShape->setTexture(mTexture, TextureFit::Type::EXACT, Alignment::TOP_LEFT);
             break;
             
         case '2':
             labelText = "WIDTH";
-            mTexShape->setTexture(mTexture, TextureFit::Type::WIDTH, Alignment::CENTER_LEFT);
+            mTexShape->setTexture(mTexture, TextureFit::Type::WIDTH, Alignment::TOP_LEFT);
             break;
             
         case '3':
             labelText = "HEIGHT";
-            mTexShape->setTexture(mTexture, TextureFit::Type::HEIGHT, Alignment::CENTER_LEFT);
+            mTexShape->setTexture(mTexture, TextureFit::Type::HEIGHT, Alignment::TOP_LEFT);
             break;
             
         case '4':
             labelText = "INSIDE";
-            mTexShape->setTexture(mTexture, TextureFit::Type::INSIDE, Alignment::CENTER_LEFT);
+            mTexShape->setTexture(mTexture, TextureFit::Type::INSIDE, Alignment::TOP_LEFT);
             break;
             
         default:
