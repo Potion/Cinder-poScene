@@ -33,6 +33,9 @@
 #include "cinder/gl/Texture.h"
 
 namespace po { namespace scene { namespace TextureFit {
+    
+    //  All methods within the TextureFit namespace are called through
+    //  the po::Shape setTexture method.
 		
 	enum class Type
 	{
