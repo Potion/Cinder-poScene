@@ -14,7 +14,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		0A995D8C2CAA483FAF2AFB18 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2512E801E0474E58A773E44E /* CinderApp.icns */; };
 		0B049B490CB04FACAA2FCAF6 /* BoundsSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C48D65ACF0C4971A8879773 /* BoundsSample.cpp */; };
-		0E6A9B1C1B2A0ADA000C4A1B /* BGNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0E6A9B1A1B2A0ADA000C4A1B /* BGNodeContainer.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		69E4ED2C201046D18335FB3B /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6ECBA88723234D9A87317D3F /* poEventCenter.cpp */; };
@@ -40,8 +39,6 @@
 		09D7A48C70C4482CA6216518 /* poShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poShape.h; path = ../blocks/poScene/src/poScene/poShape.h; sourceTree = "<group>"; };
 		0B028ECBC1344EA3B2F4B1A6 /* poEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEvents.cpp; path = ../blocks/poScene/src/poScene/poEvents.cpp; sourceTree = "<group>"; };
 		0D4C2E81FD614E8E8011A601 /* poTextBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poTextBox.h; path = ../blocks/poScene/src/poScene/poTextBox.h; sourceTree = "<group>"; };
-		0E6A9B1A1B2A0ADA000C4A1B /* BGNodeContainer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BGNodeContainer.cpp; path = ../src/BGNodeContainer.cpp; sourceTree = "<group>"; };
-		0E6A9B1B1B2A0ADA000C4A1B /* BGNodeContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BGNodeContainer.h; path = ../src/BGNodeContainer.h; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		147C52B88DA44E4C9FA172F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D2F7D10373F4FD78E373604 /* poNodeContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNodeContainer.h; path = ../blocks/poScene/src/poScene/poNodeContainer.h; sourceTree = "<group>"; };
@@ -106,8 +103,6 @@
 				AFD6B00CA25A41BDA08CEAEA /* BoundsSampleApp.cpp */,
 				B5946C1DAD4A44F99098381C /* BoundsSample.h */,
 				4C48D65ACF0C4971A8879773 /* BoundsSample.cpp */,
-				0E6A9B1A1B2A0ADA000C4A1B /* BGNodeContainer.cpp */,
-				0E6A9B1B1B2A0ADA000C4A1B /* BGNodeContainer.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -292,7 +287,6 @@
 			files = (
 				F6034923D8014CB18B213AAF /* BoundsSampleApp.cpp in Sources */,
 				0B049B490CB04FACAA2FCAF6 /* BoundsSample.cpp in Sources */,
-				0E6A9B1C1B2A0ADA000C4A1B /* BGNodeContainer.cpp in Sources */,
 				69E4ED2C201046D18335FB3B /* poEventCenter.cpp in Sources */,
 				FF1C6B3DEEC14D84B65B4DD7 /* poEvents.cpp in Sources */,
 				8BCB330C46B94C969EB35DDB /* poImage.cpp in Sources */,

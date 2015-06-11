@@ -161,11 +161,15 @@ namespace po { namespace scene {
         //! Return the bounds
         virtual ci::Rectf getBounds();
         //! Set the color that the bounds should be drawn in
-        Node &setBoundsColor(ci::Color color) { setBoundsColor(color); return *this; };
+        Node &setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
         //! Get the current bounds color
         ci::Color getBoundsColor() { return mBoundsColor; };
         //! Get the frame
         ci::Rectf getFrame();
+        //! Ignore in the bounds of parent, sometimes useful
+        Node &setParentShouldIgnoreInBounds(bool enable) { mParentShouldIgnoreInBounds = enable; return *this;}
+        //! Get parentShouldIgnoreInBounds
+        bool getParentShouldIgnoreInBounds() { return mParentShouldIgnoreInBounds; };
         
         //	Interaction
         //  Flag to enable/disable interaction of objects. If it is disabled
@@ -525,6 +529,7 @@ namespace po { namespace scene {
         void drawBounds();
         bool mDrawBounds;
         ci::Color mBoundsColor;
+        bool mParentShouldIgnoreInBounds;
         
         //	Unique identifiers
         uint32_t mDrawOrder;

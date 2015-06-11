@@ -335,7 +335,7 @@ namespace po { namespace scene {
 		ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
 		
         for (NodeRef &childNode : mChildren) {
-			if (childNode->mVisible) bounds.include(childNode->getFrame());
+			if (childNode->mVisible && !childNode->getParentShouldIgnoreInBounds()) bounds.include(childNode->getFrame());
 		}
             
         return bounds;

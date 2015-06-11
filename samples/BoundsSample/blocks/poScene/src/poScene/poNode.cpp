@@ -120,6 +120,7 @@ namespace po { namespace scene {
     , mUpdateFillColorFromAnim(false)
     , mDrawBounds(false)
     , mBoundsColor(1.f, 0, 0)
+    , mParentShouldIgnoreInBounds(false)
     , mBoundsDirty(true)
     , mFrameDirty(true)
     , mVisible(true)

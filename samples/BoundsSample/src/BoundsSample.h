@@ -1,12 +1,14 @@
 #pragma once
 
-#include "BGNodeContainer.h"
+#include "poNodeContainer.h"
+#include "poShape.h"
+#include "poTextBox.h"
 
 class BoundsSample;
 typedef std::shared_ptr<BoundsSample> BoundsSampleRef;
 
 class BoundsSample
-: public BGNodeContainer
+: public po::scene::NodeContainer
 {
 public:
     static BoundsSampleRef create();
@@ -17,10 +19,20 @@ protected:
     void update();
 	
 private:
+    ci::TextBox mInfoText;
+    po::scene::TextBoxRef mWindowTextBox;
+    
+    po::scene::ShapeRef mBG;
+    po::scene::TextBoxRef mTextBox;
+    
+    po::scene::NodeContainerRef mNodeContainer;
+    po::scene::ShapeRef mNodeContainerBG;
+    po::scene::TextBoxRef mNodeContainerTextBox;
+    
+    
     void nodeMouseOver(po::scene::MouseEvent &event);
     po::scene::NodeRef mSelectedNode;
     
-    po::scene::TextBoxRef mTextBox;
-    ci::TextBox mText;
+    std::string getNodeInfo(po::scene::NodeRef);
 
 };

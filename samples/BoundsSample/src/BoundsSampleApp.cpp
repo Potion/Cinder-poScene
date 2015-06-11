@@ -22,7 +22,8 @@ class BoundsSampleApp
 
 void BoundsSampleApp::setup()
 {
-    ci::gl::enableAlphaBlending();
+    setWindowSize(600, 600);
+    //ci::gl::enableAlphaBlending();
     scene = Scene::create(BoundsSample::create());
 }
 
@@ -34,7 +35,7 @@ void BoundsSampleApp::update()
 void BoundsSampleApp::draw()
 {
 	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) );
+	gl::clear( Color( 0.0, 0.0f, 0.0 ) );
     scene->draw();
 }
 
