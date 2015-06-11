@@ -1,10 +1,10 @@
 #pragma once
 
-/*	Created by bruce on 6/11/15.
- *	Copyright 2015 __MyCompanyName__. All rights reserved.
- */
-
 #include "poNodeContainer.h"
+#include "cinder/Text.h"
+#include "poTextBox.h"
+
+using namespace po::scene;
 
 class TextComponent;
 typedef std::shared_ptr<TextComponent> TextComponentRef;
@@ -22,5 +22,9 @@ protected:
 	TextComponent();
 
 private:
+	ci::TextBox mCiTextBox;
+	TextBoxRef mTextBox;
+	
+	std::string generateText();
  
 };
