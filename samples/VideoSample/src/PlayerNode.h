@@ -23,20 +23,27 @@ class PlayerNode
 : public po::scene::NodeContainer {
     
 public:
-    static PlayerNodeRef create();
-    void setup();
+    static PlayerNodeRef    create();
+    void                    setup();
     
 protected:
+    PlayerNode();
     //  override virtual function from NodeContainer
-    void update();
+    void                    update();
     
 private:
-    po::scene::VideoGlRef mVideoDisplayer;
-    po::scene::ShapeRef mSkipForward;
-    po::scene::ShapeRef mSkipBackward;
+    po::scene::VideoGlRef   mVideoDisplayer;
+    po::scene::ShapeRef     mForwardArrow;
+    po::scene::ShapeRef     mBackwardArrow;
+
+    bool                    mIsReversed;
+    ci::Color               mActiveArrowColor;
+
+    void                    onClickVideo();
+    void                    onClickForward();
+    void                    onClickBackward();
     
-    void onClickVideo();
-    void onClickForward();
-    void onClickBackward();
-    
+    void                    setColorsPlayingForward();
+    void                    setColorsPlayingBackward();
+    void                    setColorsNotPlaying();
 };

@@ -17,6 +17,11 @@ PlayerNodeRef PlayerNode::create()
     return node;
 }
 
+PlayerNode::PlayerNode()
+: mIsReversed(false)
+, mActiveArrowColor(ci::Color(122.f/255, 201.f/255, 67.f/255))
+{}
+
 void PlayerNode::setup()
 {
     //  create and add the video displayer
@@ -35,24 +40,24 @@ void PlayerNode::setup()
     addChild(mVideoDisplayer);
     
     //  load the image we'll use for both button nodes
-    ci::gl::TextureRef arrowTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("skipArrows.png")));
+    ci::gl::TextureRef arrowTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("playArrow.png")));
     
-    //  create and add the skip forward button
-    mSkipForward = Shape::create(arrowTex);
-    mSkipForward->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::onClickForward, this));
-    addChild(mSkipForward);
+    //  create and add the forward button
+    mForwardArrow = Shape::create(arrowTex);
+    mForwardArrow->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::onClickForward, this));
+    addChild(mForwardArrow);
     
-    //  create and add the skip reverse button
-    mSkipBackward = Shape::create(arrowTex);
-    mSkipBackward->setScale(-1, 1);
-    mSkipBackward->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::onClickBackward, this));
-    addChild(mSkipBackward);
+    //  create and add the reverse button
+    mBackwardArrow = Shape::create(arrowTex);
+    mBackwardArrow->setScale(-1, 1);
+    mBackwardArrow->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::onClickBackward, this));
+    addChild(mBackwardArrow);
     
     //  position all the elements within the node so they line up with each other correctly
     //  Note that each one has, by default, a top-left alignment
-    mSkipBackward->setPosition(ci::Vec2f(mSkipBackward->getWidth(), (mVideoDisplayer->getHeight() / 2) - mSkipBackward->getHeight() / 2 ) );
-    mVideoDisplayer->setPosition(mSkipBackward->getWidth(), 0);
-    mSkipForward->setPosition(ci::Vec2f(mSkipBackward->getWidth() + mVideoDisplayer->getWidth(), (mVideoDisplayer->getHeight() / 2) - mSkipForward->getHeight() / 2 ) );
+    mBackwardArrow->setPosition(ci::Vec2f(mBackwardArrow->getWidth(), (mVideoDisplayer->getHeight() / 2) - mBackwardArrow->getHeight() / 2 ) );
+    mVideoDisplayer->setPosition(mBackwardArrow->getWidth(), 0);
+    mForwardArrow->setPosition(ci::Vec2f(mBackwardArrow->getWidth() + mVideoDisplayer->getWidth(), (mVideoDisplayer->getHeight() / 2) - mForwardArrow->getHeight() / 2 ) );
     
     //  uncomment to see the boundaries of the entire video player node
     //setDrawBounds(true);
@@ -61,12 +66,15 @@ void PlayerNode::setup()
 void PlayerNode::update()
 {
     NodeContainer::update();
-    if (!mVideoDisplayer->getMovieRef()) return;
     
+    if (!mVideoDisplayer->getMovieRef()) return;
+
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
         if (mVideoDisplayer->getMovieRef()->isDone()) {
+            setColorsNotPlaying();
             mVideoDisplayer->getMovieRef()->stop();
             mVideoDisplayer->getMovieRef()->seekToStart();
+            mIsReversed = false;
         }
     }
 }
@@ -77,8 +85,14 @@ void PlayerNode::onClickVideo()
     
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
         mVideoDisplayer->getMovieRef()->stop();
+        setColorsNotPlaying();
     } else {
         mVideoDisplayer->getMovieRef()->play();
+        if (mIsReversed) {
+            setColorsPlayingBackward();
+        } else {
+            setColorsPlayingForward();
+        }
     }
 }
 
@@ -86,31 +100,43 @@ void PlayerNode::onClickForward()
 {
     if (!mVideoDisplayer->getMovieRef()) return;
     
-    float time = mVideoDisplayer->getMovieRef()->getCurrentTime();
-    time += 3.0f;
-    //  if we go fast-forward past the end of the movie, go to the beginning
-    if (time > mVideoDisplayer->getMovieRef()->getDuration()) {
-        //mVideoDisplayer->getMovieRef()->stop();
-        mVideoDisplayer->getMovieRef()->seekToStart();
-    } else {
-        mVideoDisplayer->getMovieRef()->seekToTime(time);
+    mIsReversed = false;
+    if (!mVideoDisplayer->getMovieRef()->isPlaying()) {
+        mVideoDisplayer->getMovieRef()->play();
     }
-    
-    
-    std::cout << "PlayerNode::onClickForward: Skipping forward" << std::endl;
+
+    mVideoDisplayer->getMovieRef()->setRate(1.f);
+    setColorsPlayingForward();
 }
 
 void PlayerNode::onClickBackward()
 {
     if (!mVideoDisplayer->getMovieRef()) return;
+    if (mVideoDisplayer->getMovieRef()->getCurrentTime() < 0.01f) return;
     
-    float time = mVideoDisplayer->getMovieRef()->getCurrentTime();
-    time -= 3.0f;
-    if (time < 0.f) {
-        mVideoDisplayer->getMovieRef()->seekToStart();
-    } else {
-        mVideoDisplayer->getMovieRef()->seekToTime(time);
+    mIsReversed = true;
+    if (!mVideoDisplayer->getMovieRef()->isPlaying()) {
+        mVideoDisplayer->getMovieRef()->play();
     }
     
-    std::cout << "PlayerNode::onClickBackward: Skipping backward" << std::endl;
+    mVideoDisplayer->getMovieRef()->setRate(-1.f);
+    setColorsPlayingBackward();
+}
+
+void PlayerNode::setColorsPlayingForward()
+{
+    mForwardArrow->setFillColor(mActiveArrowColor);
+    mBackwardArrow->setFillColor(ci::Color(1, 1, 1));
+}
+
+void PlayerNode::setColorsPlayingBackward()
+{
+    mForwardArrow->setFillColor(ci::Color(1, 1, 1));
+    mBackwardArrow->setFillColor(mActiveArrowColor);
+}
+
+void PlayerNode::setColorsNotPlaying()
+{
+    mForwardArrow->setFillColor(ci::Color(1, 1, 1));
+    mBackwardArrow->setFillColor(ci::Color(1, 1, 1));
 }

@@ -49,13 +49,17 @@ void VideoSample::rotateVideoPlayerClockwise()
     
     //  rotate half-circle
     float targetValue;
-    if (mVideoPlayer->getRotation() > 179.f) {
-        targetValue = 360.f;
-    } else {
+    float currentRot = mVideoPlayer->getRotation();
+    if (currentRot < 89.f) {
+        targetValue = 90.f;
+    } else if (currentRot < 179.f) {
         targetValue = 180.f;
+    } else if (currentRot < 269.f) {
+        targetValue = 270.f;
+    } else {
+        targetValue = 360.f;
     }
     
-    std::cout << "VideoSample: rotateClockwise: " << targetValue << std::endl;
     ci::app::timeline().apply(&mVideoPlayer->getRotationAnim(), targetValue, 1.0f);
 }
 
@@ -65,12 +69,18 @@ void VideoSample::rotateVideoPlayerCounterClockwise()
     
     //  rotate half-circle
     float targetValue;
-    if (mVideoPlayer->getRotation() > 179.f) {
+    float currentRot = mVideoPlayer->getRotation();
+    if (currentRot < 1.f) {
+        targetValue = -90.f;
+    } else if (currentRot < 91.f) {
         targetValue = 0.f;
+    } else if (currentRot < 181.f) {
+        targetValue = 90.f;
+    } else if (currentRot < 271.f) {
+        targetValue = 180.f;
     } else {
-        targetValue = -180.f;
+        targetValue = 270.f;
     }
-    std::cout << "VideoSample: rotateCounterClockwise: " << targetValue << std::endl;
     ci::app::timeline().apply(&mVideoPlayer->getRotationAnim(), targetValue, 1.0f);
 }
 
@@ -88,7 +98,5 @@ void VideoSample::simplifyVideoRotationValue()
             rtn += 360.f;
         }
     }
-    
     mVideoPlayer->setRotation(rtn);
-    std::cout << "VideoSample::simplify..: New, improved rotation: " << mVideoPlayer->getRotation() << std::endl;
 }
