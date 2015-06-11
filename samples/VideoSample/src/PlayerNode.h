@@ -2,13 +2,34 @@
 //  PlayerNode.h
 //  VideoSample
 //
-//  Created by Jennifer on 6/10/15.
+//  Created by Jennifer Presto on 6/10/15.
 //
 //
 
-#ifndef __VideoSample__PlayerNode__
-#define __VideoSample__PlayerNode__
+#pragma once
 
-#include <stdio.h>
+#include "poNodeContainer.h"
+#include "poVideo.h"
 
-#endif /* defined(__VideoSample__PlayerNode__) */
+// In order to use poVideo, you must link the QuickTime.framework.
+// You can add this under Targets < BuildPhases < Link Binary With Libraries.
+// Hit [+] at the bottom, and choose QuickTime.Framework from the list.
+
+class PlayerNode;
+typedef std::shared_ptr<PlayerNode> PlayerNodeRef;
+
+class PlayerNode
+: public po::scene::NodeContainer {
+    
+public:
+    static PlayerNodeRef create();
+    void setup();
+    
+protected:
+    void update();
+    
+private:
+    po::scene::VideoGlRef mVideoDisplayer;
+    void onMouseClick();
+    
+};
