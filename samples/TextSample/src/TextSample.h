@@ -18,13 +18,15 @@ public:
     void setup();
     
 protected:
+	void update();
 	
 private:
 	TextSample();
 	
+	//	Reference to the text component
 	TextComponentRef mTextComponent;
-	ScrollerRef mScroller;
 	
-	void onMouseDrag(MouseEvent &event);
+	//	Reference to the scroller
+	ScrollerRef mScroller;
 
 };
