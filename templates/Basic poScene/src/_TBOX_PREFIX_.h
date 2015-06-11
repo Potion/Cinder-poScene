@@ -14,7 +14,8 @@ public:
     void setup();
     
 protected:
-	
+	_TBOX_PREFIX_();
+
 private:
 
 };

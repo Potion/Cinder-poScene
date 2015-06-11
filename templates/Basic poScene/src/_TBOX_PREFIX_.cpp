@@ -7,6 +7,9 @@ _TBOX_PREFIX_Ref _TBOX_PREFIX_::create()
     return node;
 }
 
+_TBOX_PREFIX_::_TBOX_PREFIX_()
+{
+}
 
 void _TBOX_PREFIX_::setup() 
 {
