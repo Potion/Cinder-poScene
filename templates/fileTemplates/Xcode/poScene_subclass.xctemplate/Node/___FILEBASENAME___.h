@@ -1,9 +1,5 @@
 #pragma once
 
-/*	Created by ___FULLUSERNAME___ on ___DATE___.
- *	Copyright ___YEAR___ ___ORGANIZATIONNAME___. All rights reserved.
- */
-
 #include "poNode.h"
 
 class ___FILEBASENAME___;
@@ -20,7 +16,7 @@ public:
 
 protected:
 	___FILEBASENAME___();
-	
+
 	virtual void update();
     virtual void draw();
 
