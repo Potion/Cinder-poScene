@@ -1,11 +1,3 @@
-//
-//  PlayerNode.h
-//  VideoSample
-//
-//  Created by Jennifer Presto on 6/10/15.
-//
-//
-
 #pragma once
 
 #include "poNodeContainer.h"
