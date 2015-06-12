@@ -33,6 +33,8 @@ private:
     void nodeMouseOver(po::scene::MouseEvent &event);
     po::scene::NodeRef mSelectedNode;
     
+    void keyPressed(ci::app::KeyEvent &key);
+    
     std::string getNodeInfo(po::scene::NodeRef);
 
 };

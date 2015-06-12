@@ -22,7 +22,7 @@ class BoundsSampleApp
 
 void BoundsSampleApp::setup()
 {
-    setWindowSize(600, 600);
+    setWindowSize(800, 600);
     //ci::gl::enableAlphaBlending();
     scene = Scene::create(BoundsSample::create());
 }

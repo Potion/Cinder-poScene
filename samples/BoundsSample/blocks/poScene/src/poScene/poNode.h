@@ -52,7 +52,6 @@ namespace po { namespace scene {
     // The Node base class is intended to be inherited-only, hence the private constructor.
     
     enum class Alignment {
-        NONE,
         TOP_LEFT,
         TOP_CENTER,
         TOP_RIGHT,
@@ -61,7 +60,8 @@ namespace po { namespace scene {
         CENTER_RIGHT,
         BOTTOM_LEFT,
         BOTTOM_CENTER,
-        BOTTOM_RIGHT
+        BOTTOM_RIGHT,
+        NONE
     };
     
     enum class MatrixOrder {

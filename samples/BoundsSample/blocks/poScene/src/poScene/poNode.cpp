@@ -483,6 +483,11 @@ namespace po { namespace scene {
 	//
     Node &Node::setRotation(float rotation)
     {
+        if(rotation >= 360.0f) {
+            rotation = fmodf(rotation, 360.0f);
+            std::cout << rotation << std::endl;
+        }
+        
         mRotationAnim.stop();
         mUpdateRotationFromAnim = false;
         mRotation = rotation;
