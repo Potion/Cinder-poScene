@@ -1,11 +1,3 @@
-//
-//  PlayerNode.cpp
-//  VideoSample
-//
-//  Created by Jennifer Presto on 6/10/15.
-//
-//
-
 #include "PlayerNode.h"
 
 using namespace po::scene;

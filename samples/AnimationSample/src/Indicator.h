@@ -1,9 +1,5 @@
 #pragma once
 
-/*	Created by bruce on 6/9/15.
- *	Copyright 2015 __MyCompanyName__. All rights reserved.
- */
-
 #include "poNodeContainer.h"
 #include "poTextBox.h"
 #include "poShape.h"

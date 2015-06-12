@@ -1,11 +1,3 @@
-//
-//  AnimationSquare.h
-//  AnimationSample
-//
-//  Created by Jennifer Presto on 6/9/15.
-//
-//
-
 #pragma once
 
 #include "poNodeContainer.h"

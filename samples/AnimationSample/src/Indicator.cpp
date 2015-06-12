@@ -1,5 +1,4 @@
 #include "Indicator.h"
-//#include "cinder/Text.h"
 
 IndicatorRef Indicator::create(std::string name, ci::Color color)
 {
