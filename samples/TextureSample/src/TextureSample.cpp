@@ -78,7 +78,7 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
 
 void TextureSample::createIndicators()
 {
-    //  Indicator names same as event names
+    //  Indicator names same as TextureFit type names
     mIndicatorNames = {
         "NONE",
         "EXACT",

@@ -30,11 +30,9 @@ private:
     //  Container to hold the indicators
     NodeContainerRef        mIndicatorContainer;
     
-    //  Events mapped to indicators
+    //  TextureFit types mapped to indicators
     std::vector<std::string>                mIndicatorNames;
     std::map<std::string, IndicatorRef>     mIndicators;
-    
-    po::scene::TextBoxRef   mTexturefitLabel;
     
     void keyDown(ci::app::KeyEvent &event);
     
