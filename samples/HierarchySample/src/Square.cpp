@@ -99,7 +99,7 @@ void Square::highlightChildren(bool isHighlighted)
 	
 	if (isHighlighted) {
 		for (auto &child : children) {
-//			child->setBoundsColor(mBoundsColor);
+			child->setBoundsColor(mBoundsColor);
 			child->setDrawBounds(true);
 		}
 	} else {
