@@ -83,15 +83,17 @@ namespace po { namespace scene {
     //  Add Children
 	//
 	
-    void NodeContainer::addChild(NodeRef node)
+    NodeContainer &NodeContainer::addChild(NodeRef node)
     {
         setParentAndScene(node);
         mChildren.push_back(node);
         setAlignment(getAlignment());
         calculateMatrices();
+        
+        return *this;
     }
     
-    void NodeContainer::addChildren(std::vector<NodeRef> nodes) {
+    NodeContainer &NodeContainer::addChildren(std::vector<NodeRef> nodes) {
         for (auto &node : nodes) {
             setParentAndScene(node);
             mChildren.push_back(node);
@@ -99,30 +101,38 @@ namespace po { namespace scene {
         
         setAlignment(getAlignment());
         calculateMatrices();
+        
+        return *this;
     }
     
-    void NodeContainer::addChildAt(int index, NodeRef node)
+    NodeContainer &NodeContainer::addChildAt(int index, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + index, node);
         setAlignment(getAlignment());
         calculateMatrices();
+        
+        return *this;
     }
     
-    void NodeContainer::addChildBefore(NodeRef before, NodeRef node)
+    NodeContainer &NodeContainer::addChildBefore(NodeRef before, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(before), node);
         setAlignment(getAlignment());
         calculateMatrices();
+        
+        return *this;
     }
     
-    void NodeContainer::addChildAfter(NodeRef after, NodeRef node)
+    NodeContainer &NodeContainer::addChildAfter(NodeRef after, NodeRef node)
     {
         setParentAndScene(node);
         mChildren.insert(mChildren.begin() + getChildIndex(after) + 1, node);
         setAlignment(getAlignment());
         calculateMatrices();
+        
+        return *this;
     }
 	
 	//
@@ -202,7 +212,7 @@ namespace po { namespace scene {
     //  Remove Children
 	//
     
-    void NodeContainer::removeChild(NodeRef node)
+    NodeContainer &NodeContainer::removeChild(NodeRef node)
     {
         std::deque<NodeRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), node);
         if (iter != mChildren.end()) {
@@ -212,13 +222,15 @@ namespace po { namespace scene {
             mChildren.erase(iter);
             
             setAlignment(getAlignment());
+            
+            return *this;
         } else {
             NodeContainerInvalidChildException exc;
             throw(exc);
         }
     }
     
-    void NodeContainer::removeChildAt(int index)
+    NodeContainer &NodeContainer::removeChildAt(int index)
     {
         if ( index <= 0 || index >= mChildren.size() ) {
             NodeContainerInvalidChildException exc;
@@ -230,10 +242,12 @@ namespace po { namespace scene {
             mChildren.erase(mChildren.begin() + index);
             
             setAlignment(getAlignment());
+            
+            return *this;
         }
     }
     
-    void NodeContainer::removeAllChildren()
+    NodeContainer &NodeContainer::removeAllChildren()
     {
         for (NodeRef &node : mChildren) {
             node->removeParent();
@@ -243,44 +257,54 @@ namespace po { namespace scene {
         setAlignment(getAlignment());
         
         mChildren.clear();
+        
+        return *this;
     }
     
     //
     //  Move Children
 	//
     
-    void NodeContainer::moveChildToFront(NodeRef node)
+    NodeContainer &NodeContainer::moveChildToFront(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if (nodeIter != mChildren.end()) {
             mChildren.erase(nodeIter);
             mChildren.push_back(node);
         }
+        
+        return *this;
     }
     
-    void NodeContainer::moveChildForward(NodeRef node)
+    NodeContainer &NodeContainer::moveChildForward(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if ( nodeIter != mChildren.end() && *nodeIter != mChildren.back() ) {
             std::iter_swap(nodeIter, ++nodeIter);
         }
+        
+        return *this;
     }
     
-    void NodeContainer::moveChildToBack(NodeRef node)
+    NodeContainer &NodeContainer::moveChildToBack(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if (nodeIter != mChildren.end()) {
             mChildren.erase(nodeIter);
             mChildren.push_front(node);
         }
+        
+        return *this;
     }
     
-    void NodeContainer::moveChildBackward(NodeRef node)
+    NodeContainer &NodeContainer::moveChildBackward(NodeRef node)
     {
         auto nodeIter = std::find(mChildren.begin(), mChildren.end(), node);
         if ( nodeIter != mChildren.end() && *nodeIter != mChildren.front() ) {
             std::iter_swap(nodeIter, --nodeIter);
         }
+        
+        return *this;
     }
     
     void NodeContainer::setParentAndScene(NodeRef node)
@@ -335,7 +359,7 @@ namespace po { namespace scene {
 		ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
 		
         for (NodeRef &childNode : mChildren) {
-			if (childNode->mVisible) bounds.include(childNode->getFrame());
+			if (childNode->mVisible && !childNode->getParentShouldIgnoreInBounds()) bounds.include(childNode->getFrame());
 		}
             
         return bounds;

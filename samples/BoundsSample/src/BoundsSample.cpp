@@ -25,7 +25,6 @@ BoundsSampleRef BoundsSample::create()
 
 void BoundsSample::setup()
 {
-    
     // Set up our info text
     mInfoText.size(200, ci::TextBox::GROW)
     .color(ci::Color(1, 1, 1))
@@ -114,7 +113,6 @@ void BoundsSample::update()
     std::stringstream ss;
     ss << "Window Mouse Position: " << ci::app::App::get()->getMousePos()-ci::app::getWindow()->getPos();
     
-    
     if(mSelectedNode) {
         ss << "\n\n" << getNodeInfo(mSelectedNode)
         << "\n---------------------------------"
@@ -133,7 +131,6 @@ void BoundsSample::update()
 
 void BoundsSample::nodeMouseOver(po::scene::MouseEvent &event)
 {
-    
     if(mSelectedNode)
     {
         if(mSelectedNode == mNodeContainer) {

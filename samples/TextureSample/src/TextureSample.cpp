@@ -24,8 +24,21 @@ void TextureSample::setup()
     createIndicators();
     activateIndicator(0);
     
-    mTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("kitten.jpg")));
+    //  add shapes
+//    float shapeWidth = 400;
+//    float shapeHeight = 600;
+//    float centerX = (ci::app::getWindowWidth() - shapeWidth) / 2;
+//    float centerY = (ci::app::getWindowHeight() - shapeHeight) / 2;
+//    
+//    mPlainShape = Shape::createRect(400, 600);
+//    mPlainShape->setFillColor(ci::Color (122.f/255, 201.f/255, 67.f/255));
+//    mPlainShape->setPosition(ci::Vec2f(centerX, centerY));
+//    addChild(mPlainShape);
 
+    
+    mTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("kitten.jpg")));
+    mTexture->setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
+    
     float xInterval = ci::app::getWindowWidth() / 3.f;
     float shapeWidth = 340.f;
     float shapeHeight = 500.f;

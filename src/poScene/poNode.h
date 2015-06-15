@@ -52,7 +52,6 @@ namespace po { namespace scene {
     // The Node base class is intended to be inherited-only, hence the private constructor.
     
     enum class Alignment {
-        NONE,
         TOP_LEFT,
         TOP_CENTER,
         TOP_RIGHT,
@@ -61,7 +60,8 @@ namespace po { namespace scene {
         CENTER_RIGHT,
         BOTTOM_LEFT,
         BOTTOM_CENTER,
-        BOTTOM_RIGHT
+        BOTTOM_RIGHT,
+        NONE
     };
     
     enum class MatrixOrder {
@@ -161,11 +161,15 @@ namespace po { namespace scene {
         //! Return the bounds
         virtual ci::Rectf getBounds();
         //! Set the color that the bounds should be drawn in
-        Node &setBoundsColor(ci::Color color) { setBoundsColor(color); return *this; };
+        Node &setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
         //! Get the current bounds color
         ci::Color getBoundsColor() { return mBoundsColor; };
         //! Get the frame
         ci::Rectf getFrame();
+        //! Ignore in the bounds of parent, sometimes useful
+        Node &setParentShouldIgnoreInBounds(bool enable) { mParentShouldIgnoreInBounds = enable; return *this;}
+        //! Get parentShouldIgnoreInBounds
+        bool getParentShouldIgnoreInBounds() { return mParentShouldIgnoreInBounds; };
         
         //	Interaction
         //  Flag to enable/disable interaction of objects. If it is disabled
@@ -525,6 +529,7 @@ namespace po { namespace scene {
         void drawBounds();
         bool mDrawBounds;
         ci::Color mBoundsColor;
+        bool mParentShouldIgnoreInBounds;
         
         //	Unique identifiers
         uint32_t mDrawOrder;
