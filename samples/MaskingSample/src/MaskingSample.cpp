@@ -15,8 +15,10 @@ MaskingSample::MaskingSample()
 
 void MaskingSample::setup() 
 {
+	ci::app::getWindow()->connectKeyUp(&MaskingSample::keyUp, this);
+	
 	//	Load the mask texture
-	ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("mask.jpg")));
+	ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("circle_mask_blurred.jpg")));
 	
 	//	Create the mask shape
 	mMask = Shape::create(maskTexture);
@@ -42,4 +44,9 @@ void MaskingSample::onMouseMove(po::scene::MouseEvent &event)
 	
 	//	Set the mask position
 	mMask->setPosition(maskPos);
+}
+
+void MaskingSample::keyUp(ci::app::KeyEvent &event)
+{
+	ci::app::console() << event.getChar() << std::endl;
 }

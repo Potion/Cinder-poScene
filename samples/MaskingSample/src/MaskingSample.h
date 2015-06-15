@@ -29,5 +29,7 @@ private:
 	
 	//	Mouse event handlers
 	void onMouseMove(MouseEvent &event);
+	
+	void keyUp(ci::app::KeyEvent &event);
 
 };
