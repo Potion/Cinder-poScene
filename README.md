@@ -30,6 +30,10 @@ Using a tree metaphor, **po::scene** contains three main classes:
 
 Moving any branch of a tree will also move all of it's connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene::NodeContainer` will transform all of the child nodes within it.
 
+
+
+![Bounds example](images/Bounds.png)
+*Screenshot from the bounds example, describing the structure of a scene* 
 ## Nodes
 
 Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on it's own. To create a Node, extend this class and implement the following methods:
@@ -143,7 +147,6 @@ These events will fire on all subscribing node's, in order of the draw tree (bot
 `setInteractionEnabled(bool enabled)` sets a node to be ignored for events, but still render to the screen.
 
 To set a node to be considered for interactive events but not render to the screen (i.e. an invisible hit area), set the node's `alpha` to 0.
-
 
 ## Node Containers
 
