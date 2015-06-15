@@ -30,12 +30,13 @@ private:
 	//	Shape color and highlight color
 	ci::Color mColor;
 	ci::Color mHighlightColor;
+	ci::Color mBoundsColor;
 	
 	//	Keep track on pressed for dragging
 	bool mIsPressed;
 	
-	//	Keep track of the start and end position to use for dragging
-	ci::Vec2f mStartPos, mEndPos;
+	//	Keep track of the initial, start and end position to use for dragging
+	ci::Vec2f mStartPos, mEndPos, mInitialPos;
 	
 	//	Mouse down event handler
 	void onMouseDown(MouseEvent &event);
