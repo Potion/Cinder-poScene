@@ -20,7 +20,7 @@ Indicator::~Indicator()
 void Indicator::setup(std::string name)
 {
     //	Create and add the highlight shape
-    //	Set alpha to 0 so we can animate it later
+    //	Set alpha to 0 so we can highlight it later
     mHighlight = Shape::createRect(100, 20);
     mHighlight->setFillColor(mColor);
     addChild(mHighlight);
@@ -40,10 +40,6 @@ void Indicator::setup(std::string name)
 
 void Indicator::showHighlighted()
 {
-    //	Fade the highlight in and out
-    //ci::app::timeline().apply(&mHighlight->getAlphaAnim(), 1.0f, 0.2f);
-    //ci::app::timeline().appendTo(&mHighlight->getAlphaAnim(), 0.0f, 0.2f);
-    
     mHighlight->setAlpha(1.f);
 }
 
