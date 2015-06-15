@@ -13,8 +13,6 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		2EB9BB0A69EF407FAD0A7BB8 /* TextSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36C9A40C8F8446D2B9F5D600 /* TextSample.cpp */; };
-		32F8E0CC1B29DDFD0028ED33 /* TextComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E0CA1B29DDFD0028ED33 /* TextComponent.cpp */; };
-		32F8E0CF1B29EA5B0028ED33 /* Scroller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32F8E0CD1B29EA5B0028ED33 /* Scroller.cpp */; };
 		4B89FFFA5491444DA764A6B3 /* poTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D88344A3A04847E59D260E82 /* poTextBox.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -46,10 +44,6 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2C77D3005AEB4F909FF1EE9D /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		2E814DC421A3482D8EBCBF05 /* poEventCenter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEventCenter.cpp; path = ../../../src/poScene/poEventCenter.cpp; sourceTree = "<group>"; };
-		32F8E0CA1B29DDFD0028ED33 /* TextComponent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextComponent.cpp; path = ../src/TextComponent.cpp; sourceTree = "<group>"; };
-		32F8E0CB1B29DDFD0028ED33 /* TextComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextComponent.h; path = ../src/TextComponent.h; sourceTree = "<group>"; };
-		32F8E0CD1B29EA5B0028ED33 /* Scroller.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scroller.cpp; path = ../src/Scroller.cpp; sourceTree = "<group>"; };
-		32F8E0CE1B29EA5B0028ED33 /* Scroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scroller.h; path = ../src/Scroller.h; sourceTree = "<group>"; };
 		36C9A40C8F8446D2B9F5D600 /* TextSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = TextSample.cpp; path = ../src/TextSample.cpp; sourceTree = "<group>"; };
 		3B8E33E63D8C422195A1C7CD /* poImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poImage.h; path = ../../../src/poScene/poImage.h; sourceTree = "<group>"; };
 		48718EC213114DC4AFC6A11A /* poScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poScene.h; path = ../../../src/poScene/poScene.h; sourceTree = "<group>"; };
@@ -106,12 +100,9 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				5097F7574456449DB36B9DFE /* TextSampleApp.cpp */,
+				050DAA2C6F0748A9AA6FE99B /* TextSample.h */,
 				36C9A40C8F8446D2B9F5D600 /* TextSample.cpp */,
-				32F8E0CA1B29DDFD0028ED33 /* TextComponent.cpp */,
-				32F8E0CB1B29DDFD0028ED33 /* TextComponent.h */,
-				32F8E0CD1B29EA5B0028ED33 /* Scroller.cpp */,
-				32F8E0CE1B29EA5B0028ED33 /* Scroller.h */,
+				5097F7574456449DB36B9DFE /* TextSampleApp.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -193,7 +184,6 @@
 			children = (
 				2C77D3005AEB4F909FF1EE9D /* Resources.h */,
 				0373389BA34D446C905FD58C /* TextSample_Prefix.pch */,
-				050DAA2C6F0748A9AA6FE99B /* TextSample.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -301,12 +291,10 @@
 				936F3D0BE64143C694413E25 /* poEvents.cpp in Sources */,
 				F19F9CB7D1854AE7B79F6AB4 /* poImage.cpp in Sources */,
 				77546A8C791B4FF2BFAA8F02 /* poMatrixSet.cpp in Sources */,
-				32F8E0CC1B29DDFD0028ED33 /* TextComponent.cpp in Sources */,
 				ABFEE43EDC0342F39EB2AC90 /* poNode.cpp in Sources */,
 				E05D350023B042A6B4826997 /* poNodeContainer.cpp in Sources */,
 				A732328FD4D749D0B3AE31F2 /* poScene.cpp in Sources */,
 				CB6A5804473E49779720783A /* poShape.cpp in Sources */,
-				32F8E0CF1B29EA5B0028ED33 /* Scroller.cpp in Sources */,
 				4B89FFFA5491444DA764A6B3 /* poTextBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

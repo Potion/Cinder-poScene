@@ -1,8 +1,8 @@
 #pragma once
 
 #include "poNodeContainer.h"
-#include "TextComponent.h"
-#include "Scroller.h"
+#include "poTextBox.h"
+#include "poShape.h"
 
 using namespace po::scene;
 
@@ -18,15 +18,14 @@ public:
     void setup();
     
 protected:
-	void update();
 	
 private:
 	TextSample();
 	
-	//	Reference to the text component
-	TextComponentRef mTextComponent;
+	//	Scaling text box
+	TextBoxRef mScalingText;
 	
-	//	Reference to the scroller
-	ScrollerRef mScroller;
+	//	Scale text up and down in a loop
+	void animateScale();
 
 };
