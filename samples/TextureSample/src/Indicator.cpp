@@ -21,7 +21,7 @@ void Indicator::setup(std::string name)
 {
     //	Create and add the highlight shape
     //	Set alpha to 0 so we can highlight it later
-    mHighlight = Shape::createRect(100, 20);
+    mHighlight = Shape::createRect(135, 20);
     mHighlight->setFillColor(mColor);
     addChild(mHighlight);
     mHighlight->setAlpha(0);
@@ -30,7 +30,7 @@ void Indicator::setup(std::string name)
     ci::TextBox textbox = ci::TextBox();
     textbox.text(name);
     textbox.color(ci::Color(1, 1, 1));
-    textbox.size(100, 10);
+    textbox.size(125, 10);
     
     //	Add it to the text node
     mTextBox = TextBox::create(textbox);

@@ -21,8 +21,11 @@ void TextureSample::setup()
     //  Cinder method for key events
     ci::app::getWindow()->connectKeyDown(&TextureSample::keyDown, this);
     
-    createIndicators();
-    activateIndicator(0);
+    createFitIndicators();
+    activateFitIndicator(0);
+    
+    createAlignmentIndicators();
+    //activateAlignmentIndicator(0);
     
     mTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("cat.jpg")));
     mTexture->setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
@@ -64,7 +67,7 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
 {
     //  convert char to int
     int selectedInt = event.getChar() - '0';
-    if (selectedInt < 0 || selectedInt > mIndicatorNames.size()-1)
+    if (selectedInt < 0 || selectedInt > mFitIndicatorNames.size()-1)
     {
         return;
     }
@@ -73,13 +76,13 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
     mRectShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
     mEllipseShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
     mTriangleShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
-    activateIndicator(selectedInt);
+    activateFitIndicator(selectedInt);
 }
 
-void TextureSample::createIndicators()
+void TextureSample::createFitIndicators()
 {
     //  Indicator names same as TextureFit type names
-    mIndicatorNames = {
+    mFitIndicatorNames = {
         "NONE",
         "EXACT",
         "WIDTH",
@@ -88,28 +91,78 @@ void TextureSample::createIndicators()
     };
     
     //  Create a container to hold the indicators
-    mIndicatorContainer = NodeContainer::create();
-    addChild(mIndicatorContainer);
-    mIndicatorContainer->setPosition(10, 10);
+    mFitIndicatorContainer = NodeContainer::create();
+    addChild(mFitIndicatorContainer);
+    mFitIndicatorContainer->setPosition(10, 10);
     
     //  Create and add indicators to the container
     //  Add them to a map to reference later
-    for (int i = 0; i < mIndicatorNames.size(); i++) {
-        std::string indicatorText = std::to_string(i) + ": " + mIndicatorNames[i];
+    for (int i = 0; i < mFitIndicatorNames.size(); i++) {
+        std::string indicatorText = std::to_string(i) + ": " + mFitIndicatorNames[i];
         IndicatorRef indicator = Indicator::create(indicatorText);
-        mIndicatorContainer->addChild(indicator);
+        mFitIndicatorContainer->addChild(indicator);
         indicator->setPosition(0, i * (indicator->getHeight() + 5));
-        mIndicators[mIndicatorNames[i]] = indicator;
+        mIndicators[mFitIndicatorNames[i]] = indicator;
     }
 }
 
-void TextureSample::activateIndicator(int fit)
+void TextureSample::createAlignmentIndicators()
 {
-    for (int i = 0; i < mIndicatorNames.size(); i++) {
-        if (i == fit) {
-            mIndicators[mIndicatorNames[i]]->showHighlighted();
+    mAlignIndicatorNames = {
+        "O: NONE",
+        "Q: TOP_LEFT",
+        "A: CENTER_LEFT",
+        "Z: BOTTOM_LEFT",
+        "W: TOP_CENTER",
+        "S: CENTER_CENTER",
+        "X: BOTTOM_CENTER",
+        "E: TOP_RIGHT",
+        "F: CENTER_RIGHT",
+        "C: BOTTOM_RIGHT"
+    };
+
+    //  Create a container to hold the indicators
+    mAlignIndicatorContainer = NodeContainer::create();
+    addChild(mAlignIndicatorContainer);
+    mAlignIndicatorContainer->setPosition(200, 10);
+    
+    //  Create and add indicators to the container
+    //  Add them to a map to reference later
+    for (int i = 0; i < mAlignIndicatorNames.size(); i++) {
+        std::string indicatorText = mAlignIndicatorNames[i];
+        IndicatorRef indicator = Indicator::create(indicatorText);
+        mAlignIndicatorContainer->addChild(indicator);
+        if (i == 0) {
+            indicator->setPosition(indicator->getWidth() * 3, i * (indicator->getHeight() + 5));
+        } else if (i < 4) {
+            indicator->setPosition(0, (i-1) * (indicator->getHeight() + 5));
+        } else if (i < 7) {
+            indicator->setPosition(indicator->getWidth(), (i-4) * (indicator->getHeight() + 5));
         } else {
-            mIndicators[mIndicatorNames[i]]->hideHighlighted();
+            indicator->setPosition(indicator->getWidth() * 2, (i-7) * (indicator->getHeight() + 5));
+        }
+        
+        mAlignIndicators[mAlignIndicatorNames[i]] = indicator;
+    }
+}
+
+void TextureSample::activateFitIndicator(int num)
+{
+    for (int i = 0; i < mFitIndicatorNames.size(); i++) {
+        if (i == num) {
+            mIndicators[mFitIndicatorNames[i]]->showHighlighted();
+        } else {
+            mIndicators[mFitIndicatorNames[i]]->hideHighlighted();
         }
     }
+}
+
+void TextureSample::setFitAllImages()
+{
+    
+}
+
+void TextureSample::setAlignmentAllImages()
+{
+    
 }

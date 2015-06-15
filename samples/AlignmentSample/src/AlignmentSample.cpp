@@ -96,7 +96,7 @@ void AlignmentSample::keyDown(ci::app::KeyEvent &event)
 
 void AlignmentSample::createIndicators()
 {
-    //  Indicator names same as TextureFit type names
+    //  Indicator names same as Alignment type names
     mIndicatorNames = {
         "NONE",
         "TOP_LEFT",
@@ -144,5 +144,4 @@ void AlignmentSample::activateIndicator(int num)
             mIndicators[mIndicatorNames[i]]->hideHighlighted();
         }
     }
-
 }

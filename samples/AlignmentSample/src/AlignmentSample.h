@@ -28,7 +28,7 @@ private:
     //  Container to hold the indicators
     po::scene::NodeContainerRef             mIndicatorContainer;
     
-    //  TextureFit types mapped to indicators
+    //  Alignment types mapped to indicators
     std::vector<std::string>                mIndicatorNames;
     std::map<std::string, IndicatorRef>     mIndicators;
     

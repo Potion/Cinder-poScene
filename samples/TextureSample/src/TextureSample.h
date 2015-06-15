@@ -29,13 +29,28 @@ private:
     
     //  Container to hold the indicators
     NodeContainerRef        mIndicatorContainer;
+    NodeContainerRef        mFitIndicatorContainer;
+    NodeContainerRef        mAlignIndicatorContainer;
     
     //  TextureFit types mapped to indicators
-    std::vector<std::string>                mIndicatorNames;
+    std::vector<std::string>                mFitIndicatorNames;
+    std::vector<std::string>                mAlignIndicatorNames;
     std::map<std::string, IndicatorRef>     mIndicators;
+    std::map<std::string, IndicatorRef>     mFitIndicators;
+    std::map<std::string, IndicatorRef>     mAlignIndicators;
+    
+    TextureFit::Type                        mCurrentFitType;
+    Alignment                               mCurrentAlignment;
     
     void keyDown(ci::app::KeyEvent &event);
     
-    void createIndicators();
-    void activateIndicator(int fit);
+    void createFitIndicators();
+    void createAlignmentIndicators();
+    
+//    void activateIndicator(int fit);
+    void activateFitIndicator(int num);
+    void activateAlignmentIndicator();
+    
+    void setFitAllImages();
+    void setAlignmentAllImages();
 };
