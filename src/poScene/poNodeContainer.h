@@ -66,18 +66,18 @@ namespace po { namespace scene {
         // Add Children
         
         //! Add a Node to this NodeContainer
-        void addChild(NodeRef node);
+        NodeContainer &addChild(NodeRef node);
         //! Add multiple children to this NodeContainer
         /** This method should be preferred when adding a large amount of children at the same time. 
             The node container needs to recalculate it's matrices every time we add a child (to update bounds)
             so using this only causes that to happen once vs n times**/
-		void addChildren(std::vector<NodeRef> nodes);
+		NodeContainer &addChildren(std::vector<NodeRef> nodes);
         //! Add a child at an index
-		void addChildAt(int index, NodeRef node);
+		NodeContainer &addChildAt(int index, NodeRef node);
         //! Add a child before (below) another node
-		void addChildBefore(NodeRef before, NodeRef node);
+		NodeContainer &addChildBefore(NodeRef before, NodeRef node);
         //! Add a child after (above) another node
-        void addChildAfter(NodeRef after, NodeRef node);
+        NodeContainer &addChildAfter(NodeRef after, NodeRef node);
         
         // Get Children
         
@@ -105,26 +105,26 @@ namespace po { namespace scene {
         // Remove children
         
         //! Remove a child by node reference
-		void removeChild(NodeRef node);
+		NodeContainer &removeChild(NodeRef node);
         //! Remove a child at a specific index
-		void removeChildAt(int index);
+		NodeContainer &removeChildAt(int index);
         //! Remove all the children from this NodeContainer.
-		void removeAllChildren();
+		NodeContainer &removeAllChildren();
         
         // Move Child nodes
         
         //! Move a child to the front (top)
-		void moveChildToFront(NodeRef node);
+		NodeContainer &moveChildToFront(NodeRef node);
         //! Move a child forward one index
-		void moveChildForward( NodeRef node);
+		NodeContainer &moveChildForward( NodeRef node);
         //! Move a child to after (in front of) a node
-		void moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
+		NodeContainer &moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
         //! Move a child to back (bottom)
-		void moveChildToBack(NodeRef node);
+		NodeContainer &moveChildToBack(NodeRef node);
         //! Move a child backward one index
-		void moveChildBackward(NodeRef node);
+		NodeContainer &moveChildBackward(NodeRef node);
         //! Move a child to before (behind) another node
-		void moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
+		NodeContainer &moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
 		
 		//	Bounds
         
