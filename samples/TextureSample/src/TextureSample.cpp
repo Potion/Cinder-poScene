@@ -21,23 +21,8 @@ void TextureSample::setup()
     //  Cinder method for key events
     ci::app::getWindow()->connectKeyDown(&TextureSample::keyDown, this);
     
-    //  add text
-    std::string legend = "TextureFit\n\n0: NONE\n1: EXACT\n2: WIDTH\n3: HEIGHT\n4: INSIDE";
-    ci::TextBox ciTextbox = ci::TextBox();
-    ciTextbox.text(legend);
-    
-    TextBoxRef poTextBox = TextBox::create(ciTextbox);
-    poTextBox->setPosition(20, 20);
-    addChild(poTextBox);
-
-    std::string label = "Current TextureFit: NONE";
-    ci::TextBox ciTextbox2 = ci::TextBox();
-    ciTextbox2.text(label);
-
-    mTexturefitLabel = TextBox::create(ciTextbox2);
-    mTexturefitLabel->setPosition(20, 700);
-    addChild(mTexturefitLabel);
-    
+    createIndicators();
+    activateIndicator(0);
     
     //  add shapes
     float shapeWidth = 400;
@@ -60,45 +45,75 @@ void TextureSample::setup()
 
 void TextureSample::keyDown(ci::app::KeyEvent &event)
 {
-    std::cout << "Key event: " << event.getChar() << std::endl;
+    //  convert char to int
+    int selectedInt = event.getChar() - '0';
+    if (selectedInt < 0 || selectedInt > mIndicatorNames.size()-1)
+    {
+        return;
+    }
     
-    std::string labelText = "";
-    
-    switch (event.getChar()) {
-        case '0':
-            labelText = "NONE";
+    switch (selectedInt) {
+        case 0:
             mTexShape->setTexture(mTexture, TextureFit::Type::NONE, Alignment::NONE);
             break;
             
-        case '1':
-            labelText = "EXACT";
+        case 1:
             mTexShape->setTexture(mTexture, TextureFit::Type::EXACT, Alignment::TOP_LEFT);
             break;
             
-        case '2':
-            labelText = "WIDTH";
+        case 2:
             mTexShape->setTexture(mTexture, TextureFit::Type::WIDTH, Alignment::TOP_LEFT);
             break;
             
-        case '3':
-            labelText = "HEIGHT";
+        case 3:
             mTexShape->setTexture(mTexture, TextureFit::Type::HEIGHT, Alignment::TOP_LEFT);
             break;
             
-        case '4':
-            labelText = "INSIDE";
+        case 4:
             mTexShape->setTexture(mTexture, TextureFit::Type::INSIDE, Alignment::TOP_LEFT);
             break;
             
         default:
             break;
     }
+
+    activateIndicator(selectedInt);
+}
+
+void TextureSample::createIndicators()
+{
+    //  Indicator names same as event names
+    mIndicatorNames = {
+        "NONE",
+        "EXACT",
+        "WIDTH",
+        "HEIGHT",
+        "INSIDE"
+    };
     
-    if (labelText != "") {
-        ci::TextBox textBox = mTexturefitLabel->getCiTextBoxCopy();
-        textBox.text("Current TextureFit: " + labelText);
-        mTexturefitLabel->setCiTextBox(textBox);
+    //  Create a container to hold the indicators
+    mIndicatorContainer = NodeContainer::create();
+    addChild(mIndicatorContainer);
+    mIndicatorContainer->setPosition(20, 20);
+    
+    //  Create and add indicators to the container
+    //  Add them to a map to reference later
+    for (int i = 0; i < mIndicatorNames.size(); i++) {
+        std::string indicatorText = std::to_string(i) + ": " + mIndicatorNames[i];
+        IndicatorRef indicator = Indicator::create(indicatorText);
+        mIndicatorContainer->addChild(indicator);
+        indicator->setPosition(0, i * (indicator->getHeight() + 5));
+        mIndicators[mIndicatorNames[i]] = indicator;
     }
-    
-    
+}
+
+void TextureSample::activateIndicator(int fit)
+{
+    for (int i = 0; i < mIndicatorNames.size(); i++) {
+        if (i == fit) {
+            mIndicators[mIndicatorNames[i]]->showHighlighted();
+        } else {
+            mIndicators[mIndicatorNames[i]]->hideHighlighted();
+        }
+    }
 }
