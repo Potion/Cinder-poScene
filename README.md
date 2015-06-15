@@ -26,9 +26,138 @@ Using a tree metaphor, **po::scene** contains three main classes:
 
 + `po::scene::Scene` is the root system of the tree. It contains the trunk of the tree (the root node), which in turn contains all branches and leaves.
 + `po::scene::NodeContainer` represents a branch. It can contain any number of other branches, as well as leaves.
-+ `po::Scene::Node` represents a leaf, or an end point in the scene-graph.
++ `po::Scene::Node` represents a leaf, or an end point in the scene-graph. These nodes are usually the point for any gl drawing.
 
 Moving any branch of a tree will also move all of it's connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene::NodeContainer` will transform all of the child nodes within it.
+
+
+
+![Bounds example](images/Bounds.png)
+*Screenshot from the bounds example, describing the structure of a scene* 
+## Nodes
+
+Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on it's own. To create a Node, extend this class and implement the following methods:
+
++ `update()` Called every frame, do any general code updates here before drawing.
++ `draw()` This draws the Node. Override this method and do any OpenGL drawing here. When this method is called all transforms have been applied to the node (i.e. position, scale, rotation), so everything is relative to the Node's 0,0 origin
++ `getBounds()` This is necessary for any hit-testing of an object. Return a ci::Rectf with the Top Left and Bottom Right of the content drawn (or a wider area if you'd like to expand the hit area). For example, the po::scene::Image class returns the top left as 0,0 (relative to the node's origin) and the width and height of the associated `ci::gl::TextureRef`.
+
+		ci::Rectf Image::getBounds()
+		{
+			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
+		}
+		
+		IMAGE EXPLAINING BOUNDS HERE?
+		
+###Attributes
+Nodes have a number of built in attributes that relate to how they appear in the scene:
+
++ `position` The position within the Node's parent (containing) node
++ `rotation` The rotation of the node along the z-axis (2d rotation). Expressed in degrees.
++ `scale` The x and y scale of the node
++ `fillColor` The color that is used for drawing the node. This color is used differently depending on the type of drawing the node does. Expressed as a ci::Color
++ `alpha` The transparency of the node. This is applied through the node tree, i.e. if a parent node has an alpha of 0.5 and the child has an alpha of 1.0, the child will draw at 0.5 alpha. Items with an alpha of 0.0 will not render but they will be considered for events.
++ `offset` The offset (relative to the node's 0,0 origin) that the node's content will be drawn at
++ `alignment` Built-in enums used to set the node's offset automatically, relative to it's bounds. I.E. CENTER_CENTER will set the node's offset to `getBounds().getSize() * - 0.5`
+
+These attributes use setters and getters that allow the node to internally keep track of things.
+	
+	using namespace po::scene;
+	SomeNodeClassRef node = SomeNodeClass::create();
+	node->setPosition(ci::Vec2f(25.0f, 25.0f)
+	node->setFillColor(ci::Color(1.0f, 0.0f, 0.0f);
+	node->setAlpha(0.5f);
+	node->setRotation(45.0f);
+	node->setAlignment(Alignment::CENTER_CENTER);
+	
+###Chaining
+All node attributes should return by reference, allowing for easy chaining when setting several parameters at once. Here is a more convenient way to write the above example:
+	
+	using namespace po::scene;
+	SomeNodeClassRef node = SomeNodeClass::create();
+	node->setPosition(ci::Vec2f(25.0f, 25.0f)
+	.setFillColor(ci::Color(1.0f, 0.0f, 0.0f)
+	.setAlpha(0.5f)
+	.setRotation(45.0f)
+	.setAlignment(Alignment::CENTER_CENTER);
+
+	
+
+###Animations
+All node attributes have corresponding ci::Anim objects. These animations can be set and they will be automatically applied to the node's internal attributes. 
+
+	// Animate a node from 0,0 to 50,50
+	ci::app::timeline().apply(&node->getPositionAnim(), ci::Vec2f(50.0f, 50.0f), 1.0f);
+	
+Setting a node attribute at any time during an animation will cancel that animation.
+
+###Transformations
+Every `po::scene::node` has it's own coordinate space. All `po::scene::Node` members contain functions for translating back and forth between various coordinate spaces. The three main spaces are:
+
++ `window` The origin of the application's window, as used by Cinder for all screen-based events.
++ `scene` The origin and transformation of a node's Scene (as specified by the Scene's Root Node)
++ `local` The origin and transformation of the node.
+
+There are several node functions that can be used to translate between coordinate spaces:
+
++ `windowToLocal`/`localToWindow` Translate from/to window space
++ `sceneToLocal`/`localToScene` Translate from/to scene space
++ `nodeToLocal`/`localToNode` Translate from one node's space into another node's space. Equivalent to `node1->windowToLocal(node2->localToWindow(...))`
+
+###Events
+All nodes can respond to mouse and touch interaction events. These events come through as `po::scene::MouseEvent` and `po::scene::TouchEvent` class members. 
+
+These events inherit from `po::scene::Event`, which in turn wraps Cinder's built-in `ci::app::Event` events while adding po::scene specific information.
+
+All `po::scene` events have the following information:
+
++ `ciEvent` A copy of the raw Cinder event that this event wraps
++ `source` The node that is subscribing to the event
++ `propagationEnabled` Controls whether or not this even should continue through the draw tree if it is handled by the source node
++ `windowPos` The position of the event in the window space
++ `scenePos` The position of the event in the source node's scene
++ `localPos` The position of the event within the source node
+
+#####Cinder Events
+`po::scene` wraps the following built-in global (window) Cinder events for convenience and consistency:
+
++ Mouse Down, Mouse Move, Mouse Drag, Mouse Up
++ Touch Began, Touch Moved, Touch Ended. *Note: Cinder responds with a group of TouchEvents, po::scene responds with individual TouchEvents*
+
+These events will fire on all subscribing node's, in order of the draw tree (bottom-up), regardless of the node's bounds.
+
+#####Node Events
+`po::scene` adds additional events that add interativity to all nodes. These events are fired on the top-most node first, and will only pass through nodes if the `propagationEnabled` variable is set to `true`.
+
++ Mouse Down Inside, Mouse Move Inside, Mouse Drag Inside, Mouse Up Inside
++ Touch Began Inside, Touch Moved Inside, Touch Ended Inside
+
+####Subscribing to events
+`po::scene::node` events are signal-based, and can be retrieved using the `getSignal(SignalType)` syntax.
+	
+	using namespace po::scene;
+	SomeNodeClassRef node = SomeNodeClass::create();
+	// Connect node's Mouse Down Inside event to a member function of this class
+	node->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&ThisClass::mouseHandler, this, std::placeholders::_1);
+	
+	
+###Visibility/Interaction
+`po::scene::Node` contains two variables that affect interactivity. The `setVisible(bool enabled)` method allows the node to stay in the node hierarchy, but it will not render and it will not be considered in interaction events. It is a quick way to turn a node on/off without having to add and remove it. 
+
+`setInteractionEnabled(bool enabled)` sets a node to be ignored for events, but still render to the screen.
+
+To set a node to be considered for interactive events but not render to the screen (i.e. an invisible hit area), set the node's `alpha` to 0.
+
+## Node Containers
+
+Node Containers inherit from the Node class and can contain any number of Nodes or other Node Containers. These are the branches of the scene, and they allow for hierarchy, grouping, complex layouts. 
+
+Adjusting any attributes of a node container also effects every node that it contains.
+
+A node container's bounds are determined by it's child nodes.
+
+Node container events are based on any of the container's child nodes being eligible for an event. 
+
 
 ## Scene
 
@@ -36,10 +165,15 @@ The `po::scene::Scene` class represents the main entry point for a scene-graph. 
 
 The Scene class requires a Root Node, which inherits from `po::scene::NodeContainer`. This node represents the beginning of the draw tree, and is the origin for the scene.
 
-To create a scene, you can either start with an empty root node
+To create a scene, you can either start with an empty (auto-created) root node
 
 	using namespace po::scene;
 	SceneRef myScene = Scene::create();
+	
+You could then add child nodes to this root node using the `getRootNode()` function of `po::scene::NodeContainer`.
+	
+	NodeRef myRootNode = MyRootNodeClass::create();
+	myScene->getRootNode()->addChild(myRootNode);
 	
  or (more common) extend `po::scene::NodeContainer` and provide that as the root node.
  
@@ -59,51 +193,8 @@ The Scene's `update()` and `draw()` functions need to be called each frame from 
 	}
 	
 
-This in turn will traverse the Node Tree, automatically triggering the `update()` and `draw()` trees of every node in the scene.
+This in turn will traverse the Node Tree, automatically triggering the `update()` and `draw()` trees of every visible node in the scene.
 
-## Nodes
-
-Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on it's own. To create a Node, extend this class and implement the following methods:
-
-+ `update()` Called every frame, do any general code updates here before drawing.
-+ `draw()` This draws the Node. Override this method and do any OpenGL drawing here. When this method is called all transforms have been applied to the node (i.e. position, scale, rotation), so everything is relative to the Node's 0,0 origin
-+ `getBounds()` This is necessary for any hit-testing of an object. Return a ci::Rectf with the Top Left and Bottom Right of the content drawn (or a wider area if you'd like to expand the hit area). For example, the po::scene::Image class returns the top left as 0,0 (relative to the node's origin) and the width and height of the associated `ci::gl::TextureRef`.
-
-		ci::Rectf Image::getBounds()
-		{
-			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
-		}
-		
-		IMAGE EXPLAINING BOUNDS HERE?
-
-## Node Containers
-
-Node Containers inherit from the Node class and can contain any number of Nodes or other Node Containers. These are the branches of the scene, and they allow for hierarchy, grouping, complex layouts. 
-
-Adjusting any attributes of a node container also effects every node that it contains.
-
-**IMAGE EXPLAINING NODE TRANSFORMATIONS HERE?**
-
-## Interaction
-
-**IMAGE EXPLAINING EVENTS HERE**
-
-+ Mouse Events 
-	+ Down
-	+ Down Inside
-	+ Up
-	+ Up Inside
-	+ Move
-	+ Move Inside
-	+ Drag
-	+ Drag Inside 
-+ Touch Events
-	+ Began
-	+ Began Inside
-	+ Moved
-	+ Moved Inside
-	+ Ended
-	+ Ended Inside 
 
 ## Cinder Nodes
 
