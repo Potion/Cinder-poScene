@@ -14,6 +14,8 @@ Square::Square()
 , mIsPressed(false)
 , mStartPos(ci::Vec2f::zero())
 , mEndPos(ci::Vec2f::zero())
+, mInitialPos(ci::Vec2f::zero())
+, mBoundsColor(ci::Color(1.0f, 1.0f, 1.0f))
 {
 }
 
@@ -49,7 +51,8 @@ void Square::onMouseDown(po::scene::MouseEvent &event)
 	if (!mIsPressed) {
 		mIsPressed = true;
 		
-		//	Set the start and end positions to the window position in the parent
+		//	Set the initial, start and end positions to the window position in the parent
+		mInitialPos = getPosition();
 		mStartPos = getParent()->windowToLocal(event.getWindowPos());
 		mEndPos = getParent()->windowToLocal(event.getWindowPos());
 		
@@ -65,7 +68,8 @@ void Square::onMouseDragged(po::scene::MouseEvent &event)
 		mEndPos = getParent()->windowToLocal(event.getWindowPos());
 		
 		//	Set the nodes position
-		setPosition(mEndPos - mStartPos);
+		ci::Vec2f newPosition = mInitialPos + (mEndPos - mStartPos);
+		setPosition(newPosition);
 	}
 }
 
@@ -73,9 +77,6 @@ void Square::onMouseUp(po::scene::MouseEvent &event)
 {
 	if (mIsPressed) {
 		mIsPressed = false;
-		
-		//	Reset the nodes position
-		setPosition(ci::Vec2f::zero());
 		
 		highlight(false);
 		highlightChildren(false);
@@ -98,7 +99,7 @@ void Square::highlightChildren(bool isHighlighted)
 	
 	if (isHighlighted) {
 		for (auto &child : children) {
-//			child->setBoundsColor(ci::Color(1.f, 1.f, 1.f));
+//			child->setBoundsColor(mBoundsColor);
 			child->setDrawBounds(true);
 		}
 	} else {
