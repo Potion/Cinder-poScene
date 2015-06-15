@@ -22,9 +22,10 @@ protected:
 	TextureSample();
 
 private:
-    po::scene::ShapeRef     mPlainShape;    // plain rectangle for reference
-    po::scene::ShapeRef     mTexShape;      // ellipse that will have texture
-    ci::gl::TextureRef      mTexture;       // image texture
+    po::scene::ShapeRef     mRectShape;     // rectangle for reference
+    po::scene::ShapeRef     mEllipseShape;  // ellipse that will have texture
+    po::scene::ShapeRef     mTriangleShape; // custom cinder shape
+    ci::gl::TextureRef          mTexture;       // cinder texture
     
     //  Container to hold the indicators
     NodeContainerRef        mIndicatorContainer;

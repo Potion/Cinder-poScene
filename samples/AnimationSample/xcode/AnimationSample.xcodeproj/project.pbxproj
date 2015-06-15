@@ -107,11 +107,12 @@
 			isa = PBXGroup;
 			children = (
 				C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */,
+				2E7C7B78674344E2BE57995B /* AnimationSample.h */,
 				19E3B5BA36654CEFB41EE233 /* AnimationSample.cpp */,
-				38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */,
 				38C58DF11B27642B00ECFAAC /* AnimationSquare.h */,
-				386DC1901B278EF5004A2B24 /* Indicator.cpp */,
+				38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */,
 				386DC1911B278EF5004A2B24 /* Indicator.h */,
+				386DC1901B278EF5004A2B24 /* Indicator.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -166,7 +167,6 @@
 			children = (
 				2A0D8C60ED3B438FBEF9DD22 /* Resources.h */,
 				6B8B908B6F31413E84DA9F79 /* AnimationSample_Prefix.pch */,
-				2E7C7B78674344E2BE57995B /* AnimationSample.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";

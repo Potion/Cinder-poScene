@@ -24,23 +24,39 @@ void TextureSample::setup()
     createIndicators();
     activateIndicator(0);
     
-    //  add shapes
-    float shapeWidth = 400;
-    float shapeHeight = 600;
-    float centerX = (ci::app::getWindowWidth() - shapeWidth) / 2;
-    float centerY = (ci::app::getWindowHeight() - shapeHeight) / 2;
-    
-    mPlainShape = Shape::createRect(400, 600);
-    mPlainShape->setFillColor(ci::Color (122.f/255, 201.f/255, 67.f/255));
-    mPlainShape->setPosition(ci::Vec2f(centerX, centerY));
-    addChild(mPlainShape);
-
     mTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("kitten.jpg")));
 
-    mTexShape = Shape::createEllipse(400, 600);
-    mTexShape->setPosition(ci::Vec2f(centerX, centerY));
-    mTexShape->setTexture(mTexture);
-    addChild(mTexShape);
+    float xInterval = ci::app::getWindowWidth() / 3.f;
+    float shapeWidth = 340.f;
+    float shapeHeight = 500.f;
+    float xOffset = (xInterval - shapeWidth) / 2;
+    float yOffset = ((ci::app::getWindowHeight() - shapeHeight) / 2);
+    
+    //  create and add shapes
+    mRectShape = Shape::createRect(shapeWidth, shapeHeight);
+    mRectShape->setPosition(xOffset, yOffset);
+    mRectShape->setTexture(mTexture);
+    mRectShape->setDrawBounds(true);
+    addChild(mRectShape);
+
+    mEllipseShape = Shape::createEllipse(shapeWidth, shapeHeight);
+    mEllipseShape->setPosition(ci::Vec2f(xInterval + xOffset, yOffset));
+    mEllipseShape->setTexture(mTexture);
+    mEllipseShape->setDrawBounds(true);
+    addChild(mEllipseShape);
+    
+    ci::Shape2d customShape;
+    customShape.moveTo (shapeWidth / 2.f, 0);
+    customShape.lineTo(shapeWidth, shapeHeight);
+    customShape.lineTo(0, shapeHeight);
+    customShape.close();
+    
+    mTriangleShape = Shape::create();
+    mTriangleShape->setCiShape2d(customShape);
+    mTriangleShape->setPosition(ci::Vec2f((xInterval * 2) + xOffset, yOffset));
+    mTriangleShape->setTexture(mTexture);
+    mTriangleShape->setDrawBounds(true);
+    addChild(mTriangleShape);
 }
 
 void TextureSample::keyDown(ci::app::KeyEvent &event)
@@ -52,31 +68,10 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
         return;
     }
     
-    switch (selectedInt) {
-        case 0:
-            mTexShape->setTexture(mTexture, TextureFit::Type::NONE, Alignment::NONE);
-            break;
-            
-        case 1:
-            mTexShape->setTexture(mTexture, TextureFit::Type::EXACT, Alignment::TOP_LEFT);
-            break;
-            
-        case 2:
-            mTexShape->setTexture(mTexture, TextureFit::Type::WIDTH, Alignment::TOP_LEFT);
-            break;
-            
-        case 3:
-            mTexShape->setTexture(mTexture, TextureFit::Type::HEIGHT, Alignment::TOP_LEFT);
-            break;
-            
-        case 4:
-            mTexShape->setTexture(mTexture, TextureFit::Type::INSIDE, Alignment::TOP_LEFT);
-            break;
-            
-        default:
-            break;
-    }
-
+    TextureFit::Type selectedFit = static_cast<TextureFit::Type>(selectedInt);
+    mRectShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
+    mEllipseShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
+    mTriangleShape->setTexture(mTexture, selectedFit, Alignment::TOP_LEFT);
     activateIndicator(selectedInt);
 }
 
@@ -94,7 +89,7 @@ void TextureSample::createIndicators()
     //  Create a container to hold the indicators
     mIndicatorContainer = NodeContainer::create();
     addChild(mIndicatorContainer);
-    mIndicatorContainer->setPosition(20, 20);
+    mIndicatorContainer->setPosition(10, 10);
     
     //  Create and add indicators to the container
     //  Add them to a map to reference later
