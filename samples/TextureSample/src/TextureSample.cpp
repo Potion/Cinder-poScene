@@ -50,8 +50,10 @@ void TextureSample::setup()
     mPlainShape->setPosition(ci::Vec2f(centerX, centerY));
     addChild(mPlainShape);
 
+    
     mTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("kitten.jpg")));
-
+    mTexture->setWrap(GL_CLAMP_TO_BORDER, GL_CLAMP_TO_BORDER);
+    
     mTexShape = Shape::createEllipse(400, 600);
     mTexShape->setPosition(ci::Vec2f(centerX, centerY));
     mTexShape->setTexture(mTexture);
