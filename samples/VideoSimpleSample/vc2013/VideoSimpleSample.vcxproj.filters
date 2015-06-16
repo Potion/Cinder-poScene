@@ -13,32 +13,32 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{26F76812-333C-4A32-8111-FC2F51E3442E}</UniqueIdentifier>
+      <UniqueIdentifier>{D46B9277-14DF-4E30-B5DE-FB64C45CA1A6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene">
-      <UniqueIdentifier>{D66D372A-5310-4217-BFB7-A7FDCAC61B8B}</UniqueIdentifier>
+      <UniqueIdentifier>{9869A764-8094-4D04-A8F4-BE61C0F40CF0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src">
-      <UniqueIdentifier>{0423BF88-ACDD-446D-B768-649C0E804016}</UniqueIdentifier>
+      <UniqueIdentifier>{602C75A8-0312-4989-BAAA-C15A79047C97}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src\poScene">
-      <UniqueIdentifier>{69A29A6E-AB95-48A7-BE75-5BB95A4F9183}</UniqueIdentifier>
+      <UniqueIdentifier>{BA18038B-2B77-478E-B783-DD73A1406882}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\VideoSampleApp.cpp">
+    <ClCompile Include="..\src\VideoSimpleSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\VideoSampleApp.cpp">
+    <ClCompile Include="..\src\VideoSimpleSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="..\src\VideoSample.h">
+    <ClInclude Include="..\src\VideoSimpleSample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\VideoSample.cpp">
+    <ClCompile Include="..\src\VideoSimpleSample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\src\poScene\poEventCenter.h">

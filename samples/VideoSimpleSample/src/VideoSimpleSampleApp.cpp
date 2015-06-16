@@ -2,14 +2,14 @@
 #include "cinder/gl/gl.h"
 
 #include "poScene.h"
-#include "VideoSample.h"
+#include "VideoSimpleSample.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace po::scene;
 
-class VideoSampleApp
+class VideoSimpleSampleApp
 : public AppNative 
 {
   public:
@@ -20,22 +20,22 @@ class VideoSampleApp
     SceneRef scene;
 };
 
-void VideoSampleApp::setup()
+void VideoSimpleSampleApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(VideoSample::create());
+    scene = Scene::create(VideoSimpleSample::create());
 }
 
-void VideoSampleApp::update()
+void VideoSimpleSampleApp::update()
 {
     scene->update();
 }
 
-void VideoSampleApp::draw()
+void VideoSimpleSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
     scene->draw();
 }
 
-CINDER_APP_NATIVE( VideoSampleApp, RendererGl )
+CINDER_APP_NATIVE( VideoSimpleSampleApp, RendererGl )
