@@ -235,7 +235,7 @@ void TextureSample::createAlignmentIndicators()
         "S: CENTER_CENTER",
         "X: BOTTOM_CENTER",
         "E: TOP_RIGHT",
-        "F: CENTER_RIGHT",
+        "D: CENTER_RIGHT",
         "C: BOTTOM_RIGHT"
     };
 
