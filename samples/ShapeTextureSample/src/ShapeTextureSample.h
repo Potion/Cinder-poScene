@@ -6,20 +6,19 @@
 
 #include "Indicator.h"
 
+class ShapeTextureSample;
+typedef std::shared_ptr<ShapeTextureSample> ShapeTextureSampleRef;
 
-class TextureSample;
-typedef std::shared_ptr<TextureSample> TextureSampleRef;
-
-class TextureSample
+class ShapeTextureSample
 : public po::scene::NodeContainer
 {
 public:
-    static TextureSampleRef create();
+    static ShapeTextureSampleRef create();
     
     void setup();
     
 protected:
-	TextureSample();
+	ShapeTextureSample();
 
 private:
     po::scene::ShapeRef     mRectShape;     // rectangle for reference
@@ -47,4 +46,5 @@ private:
     
     void activateFitIndicator(int num);
     void activateAlignmentIndicator(int num);
+
 };

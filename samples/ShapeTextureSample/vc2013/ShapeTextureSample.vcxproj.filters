@@ -13,32 +13,32 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{13C340D4-FA58-4872-9F3B-E5A1512A0827}</UniqueIdentifier>
+      <UniqueIdentifier>{EA582BA5-D749-4C0C-B959-AEA02864B35B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene">
-      <UniqueIdentifier>{30F07448-3BE9-4EB3-AB6E-D5FE503E4FD3}</UniqueIdentifier>
+      <UniqueIdentifier>{D68B4622-CAD3-489C-9256-B6A40FD4912D}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src">
-      <UniqueIdentifier>{A0C66167-E97D-4590-BB63-01CC15EDF7C7}</UniqueIdentifier>
+      <UniqueIdentifier>{45F962E2-58C7-4EF6-90BB-2D8091880888}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\poScene\src\poScene">
-      <UniqueIdentifier>{23B9C67D-80DD-45A1-BD6D-8335D9B1F686}</UniqueIdentifier>
+      <UniqueIdentifier>{DF50D6C3-BB91-4C90-94F6-CE50BB6D8EA9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\TextureSampleApp.cpp">
+    <ClCompile Include="..\src\ShapeTextureSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\TextureSampleApp.cpp">
+    <ClCompile Include="..\src\ShapeTextureSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="..\src\TextureSample.h">
+    <ClInclude Include="..\src\ShapeTextureSample.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\TextureSample.cpp">
+    <ClCompile Include="..\src\ShapeTextureSample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClInclude Include="..\..\..\src\poScene\poEventCenter.h">
