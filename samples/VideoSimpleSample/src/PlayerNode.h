@@ -16,9 +16,6 @@ class PlayerNode
 public:
     static PlayerNodeRef    create();
     void                    setup();
-
-    void                    play();
-    void                    pause();
     
 protected:
     PlayerNode();
