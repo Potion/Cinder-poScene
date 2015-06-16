@@ -1,27 +1,22 @@
-#include "TextureSample.h"
+#include "ShapeTextureSample.h"
 
-//	photo credit: <a href="https://www.flickr.com/photos/adavey/3506006424/">Lucy the Cat</a> via <a href="https://www.flickr.com/photos/adavey/">Alan</a> on Flickr <a href="https://creativecommons.org/licenses/by/2.0/">(license)</a>
-
-
-using namespace po::scene;
-
-TextureSampleRef TextureSample::create() 
+ShapeTextureSampleRef ShapeTextureSample::create() 
 {
-    TextureSampleRef node(new TextureSample());
+    ShapeTextureSampleRef node(new ShapeTextureSample());
     node->setup();
     return node;
 }
 
-TextureSample::TextureSample()
+ShapeTextureSample::ShapeTextureSample()
 : mCurrentFitType(TextureFit::Type::NONE)
 , mCurrentAlignment(Alignment::NONE)
 {
 }
 
-void TextureSample::setup() 
+void ShapeTextureSample::setup() 
 {
     //  Cinder method for key events
-    ci::app::getWindow()->connectKeyDown(&TextureSample::keyDown, this);
+    ci::app::getWindow()->connectKeyDown(&ShapeTextureSample::keyDown, this);
     
     createFitIndicators();
     activateFitIndicator(0);
@@ -44,7 +39,7 @@ void TextureSample::setup()
     mRectShape->setTexture(mTexture);
     mRectShape->setDrawBounds(true);
     addChild(mRectShape);
-
+    
     mEllipseShape = Shape::createEllipse(shapeWidth, shapeHeight);
     mEllipseShape->setPosition(ci::Vec2f(xInterval + xOffset, yOffset));
     mEllipseShape->setTexture(mTexture);
@@ -65,113 +60,100 @@ void TextureSample::setup()
     addChild(mTriangleShape);
 }
 
-void TextureSample::keyDown(ci::app::KeyEvent &event)
+void ShapeTextureSample::keyDown(ci::app::KeyEvent &event)
 {
     std::cout << "TextureSample::keyDown: " << event.getChar() << std::endl;
     
-//    //  convert char to int
-//    int selectedInt = event.getChar() - '0';
-//    
-//    //  if keypress is 0-4, set current TextureFit type
-//    if (selectedInt >= 0 || selectedInt <= mFitIndicatorNames.size())
-//    {
-//        mCurrentFitType = static_cast<TextureFit::Type>(selectedInt);
-//        activateFitIndicator(selectedInt);
-//    }
-//    
-//    //  if keypress is letter on the grid, set current alignment
-//    else {
-        switch (event.getChar()) {
-            case '0':
-                mCurrentFitType = TextureFit::Type::NONE;
-                activateFitIndicator(0);
-                break;
-                
-            case '1':
-                mCurrentFitType = TextureFit::Type::EXACT;
-                activateFitIndicator(1);
-                break;
-                
-            case '2':
-                mCurrentFitType = TextureFit::Type::WIDTH;
-                activateFitIndicator(2);
-                break;
-                
-            case '3':
-                mCurrentFitType = TextureFit::Type::HEIGHT;
-                activateFitIndicator(3);
-                break;
-                
-             case '4':
-                mCurrentFitType = TextureFit::Type::INSIDE;
-                activateFitIndicator(4);
-                break;
-                
-            case 'O':
-            case 'o':
-                mCurrentAlignment = Alignment::NONE;
-                activateAlignmentIndicator(0);
-                break;
-                
-            case 'Q':
-            case 'q':
-                mCurrentAlignment = Alignment::TOP_LEFT;
-                activateAlignmentIndicator(1);
-                break;
-
-            case 'A':
-            case 'a':
-                mCurrentAlignment = Alignment::CENTER_LEFT;
-                activateAlignmentIndicator(2);
-                break;
-
-            case 'Z':
-            case 'z':
-                mCurrentAlignment = Alignment::BOTTOM_LEFT;
-                activateAlignmentIndicator(3);
-                break;
-
-            case 'W':
-            case 'w':
-                mCurrentAlignment = Alignment::TOP_CENTER;
-                activateAlignmentIndicator(4);
-                break;
-
-            case 'S':
-            case 's':
-                mCurrentAlignment = Alignment::CENTER_CENTER;
-                activateAlignmentIndicator(5);
-                break;
-
-            case 'X':
-            case 'x':
-                mCurrentAlignment = Alignment::BOTTOM_CENTER;
-                activateAlignmentIndicator(6);
-                break;
-
-            case 'E':
-            case 'e':
-                mCurrentAlignment = Alignment::TOP_RIGHT;
-                activateAlignmentIndicator(7);
-                break;
-
-            case 'D':
-            case 'd':
-                mCurrentAlignment = Alignment::CENTER_RIGHT;
-                activateAlignmentIndicator(8);
-                break;
-
-            case 'C':
-            case 'c':
-                mCurrentAlignment = Alignment::BOTTOM_RIGHT;
-                activateAlignmentIndicator(9);
-                break;
-
-            default:
-                break;
-        }
-//    }
-
+    switch (event.getChar()) {
+        case '0':
+            mCurrentFitType = TextureFit::Type::NONE;
+            activateFitIndicator(0);
+            break;
+            
+        case '1':
+            mCurrentFitType = TextureFit::Type::EXACT;
+            activateFitIndicator(1);
+            break;
+            
+        case '2':
+            mCurrentFitType = TextureFit::Type::WIDTH;
+            activateFitIndicator(2);
+            break;
+            
+        case '3':
+            mCurrentFitType = TextureFit::Type::HEIGHT;
+            activateFitIndicator(3);
+            break;
+            
+        case '4':
+            mCurrentFitType = TextureFit::Type::INSIDE;
+            activateFitIndicator(4);
+            break;
+            
+        case 'O':
+        case 'o':
+            mCurrentAlignment = Alignment::NONE;
+            activateAlignmentIndicator(0);
+            break;
+            
+        case 'Q':
+        case 'q':
+            mCurrentAlignment = Alignment::TOP_LEFT;
+            activateAlignmentIndicator(1);
+            break;
+            
+        case 'A':
+        case 'a':
+            mCurrentAlignment = Alignment::CENTER_LEFT;
+            activateAlignmentIndicator(2);
+            break;
+            
+        case 'Z':
+        case 'z':
+            mCurrentAlignment = Alignment::BOTTOM_LEFT;
+            activateAlignmentIndicator(3);
+            break;
+            
+        case 'W':
+        case 'w':
+            mCurrentAlignment = Alignment::TOP_CENTER;
+            activateAlignmentIndicator(4);
+            break;
+            
+        case 'S':
+        case 's':
+            mCurrentAlignment = Alignment::CENTER_CENTER;
+            activateAlignmentIndicator(5);
+            break;
+            
+        case 'X':
+        case 'x':
+            mCurrentAlignment = Alignment::BOTTOM_CENTER;
+            activateAlignmentIndicator(6);
+            break;
+            
+        case 'E':
+        case 'e':
+            mCurrentAlignment = Alignment::TOP_RIGHT;
+            activateAlignmentIndicator(7);
+            break;
+            
+        case 'D':
+        case 'd':
+            mCurrentAlignment = Alignment::CENTER_RIGHT;
+            activateAlignmentIndicator(8);
+            break;
+            
+        case 'C':
+        case 'c':
+            mCurrentAlignment = Alignment::BOTTOM_RIGHT;
+            activateAlignmentIndicator(9);
+            break;
+            
+        default:
+            break;
+    }
+    
     //  reset all the shapes
     mRectShape->setTexture(mTexture, mCurrentFitType, mCurrentAlignment);
     mEllipseShape->setTexture(mTexture, mCurrentFitType, mCurrentAlignment);
@@ -179,7 +161,7 @@ void TextureSample::keyDown(ci::app::KeyEvent &event)
     
 }
 
-void TextureSample::createFitIndicators()
+void ShapeTextureSample::createFitIndicators()
 {
     ci::TextBox labelText;
     labelText.text("Press 0-4 to change TextureFit:");
@@ -215,7 +197,7 @@ void TextureSample::createFitIndicators()
     }
 }
 
-void TextureSample::createAlignmentIndicators()
+void ShapeTextureSample::createAlignmentIndicators()
 {
     ci::TextBox labelText;
     labelText.text("Press letter grid to change Alignment:");
@@ -235,10 +217,10 @@ void TextureSample::createAlignmentIndicators()
         "S: CENTER_CENTER",
         "X: BOTTOM_CENTER",
         "E: TOP_RIGHT",
-        "F: CENTER_RIGHT",
+        "D: CENTER_RIGHT",
         "C: BOTTOM_RIGHT"
     };
-
+    
     //  Create a container to hold the indicators
     mAlignIndicatorContainer = NodeContainer::create();
     addChild(mAlignIndicatorContainer);
@@ -264,7 +246,7 @@ void TextureSample::createAlignmentIndicators()
     }
 }
 
-void TextureSample::activateFitIndicator(int num)
+void ShapeTextureSample::activateFitIndicator(int num)
 {
     for (int i = 0; i < mFitIndicatorNames.size(); i++) {
         if (i == num) {
@@ -275,7 +257,7 @@ void TextureSample::activateFitIndicator(int num)
     }
 }
 
-void TextureSample::activateAlignmentIndicator(int num)
+void ShapeTextureSample::activateAlignmentIndicator(int num)
 {
     for (int i = 0; i < mAlignIndicatorNames.size(); i++) {
         if (i == num) {

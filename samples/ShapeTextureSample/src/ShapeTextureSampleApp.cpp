@@ -2,14 +2,14 @@
 #include "cinder/gl/gl.h"
 
 #include "poScene.h"
-#include "TextureSample.h"
+#include "ShapeTextureSample.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 using namespace po::scene;
 
-class TextureSampleApp
+class ShapeTextureSampleApp
 : public AppNative 
 {
   public:
@@ -20,22 +20,22 @@ class TextureSampleApp
     SceneRef scene;
 };
 
-void TextureSampleApp::setup()
+void ShapeTextureSampleApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(TextureSample::create());
+    scene = Scene::create(ShapeTextureSample::create());
 }
 
-void TextureSampleApp::update()
+void ShapeTextureSampleApp::update()
 {
     scene->update();
 }
 
-void TextureSampleApp::draw()
+void ShapeTextureSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
     scene->draw();
 }
 
-CINDER_APP_NATIVE( TextureSampleApp, RendererGl )
+CINDER_APP_NATIVE( ShapeTextureSampleApp, RendererGl )
