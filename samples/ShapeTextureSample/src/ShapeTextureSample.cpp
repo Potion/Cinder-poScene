@@ -62,8 +62,6 @@ void ShapeTextureSample::setup()
 
 void ShapeTextureSample::keyDown(ci::app::KeyEvent &event)
 {
-    std::cout << "TextureSample::keyDown: " << event.getChar() << std::endl;
-    
     switch (event.getChar()) {
         case '0':
             mCurrentFitType = TextureFit::Type::NONE;
