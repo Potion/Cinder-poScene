@@ -25,17 +25,15 @@ private:
     po::scene::ShapeRef     mRectShape;     // rectangle for reference
     po::scene::ShapeRef     mEllipseShape;  // ellipse that will have texture
     po::scene::ShapeRef     mTriangleShape; // custom cinder shape
-    ci::gl::TextureRef          mTexture;       // cinder texture
+    ci::gl::TextureRef      mTexture;       // cinder texture
     
     //  Container to hold the indicators
-    NodeContainerRef        mIndicatorContainer;
     NodeContainerRef        mFitIndicatorContainer;
     NodeContainerRef        mAlignIndicatorContainer;
     
     //  TextureFit types mapped to indicators
     std::vector<std::string>                mFitIndicatorNames;
     std::vector<std::string>                mAlignIndicatorNames;
-    std::map<std::string, IndicatorRef>     mIndicators;
     std::map<std::string, IndicatorRef>     mFitIndicators;
     std::map<std::string, IndicatorRef>     mAlignIndicators;
     
@@ -47,10 +45,6 @@ private:
     void createFitIndicators();
     void createAlignmentIndicators();
     
-//    void activateIndicator(int fit);
     void activateFitIndicator(int num);
-    void activateAlignmentIndicator();
-    
-    void setFitAllImages();
-    void setAlignmentAllImages();
+    void activateAlignmentIndicator(int num);
 };
