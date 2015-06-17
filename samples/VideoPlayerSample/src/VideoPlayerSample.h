@@ -31,6 +31,6 @@ private:
     const int               mNumMovies;
     void                    setUpMovieThumbnails();
     
-    void                    onThumbnailClick(po::scene::MouseEvent event);
+    void                    onThumbnailClick(po::scene::MouseEvent &event);
 
 };

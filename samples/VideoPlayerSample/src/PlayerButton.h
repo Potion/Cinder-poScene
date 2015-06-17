@@ -21,11 +21,11 @@ protected:
     PlayerButton();
     
 private:
-    bool                mPressed;
+    bool                mIsPressed;
     std::string         mName;
     po::scene::ShapeRef mShape;
     
-    void                onMouseEvent(po::scene::MouseEvent event);
+    void                onMouseEvent(po::scene::MouseEvent &event);
     void                doAction();
     
     ButtonSignal        mButtonSignal;

@@ -12,6 +12,7 @@ PlayerNodeRef PlayerNode::create()
 
 PlayerNode::PlayerNode()
 : mIsPlaying(false)
+, mCurrentDuration(0.f)
 {}
 
 void PlayerNode::setup()
@@ -44,6 +45,12 @@ void PlayerNode::setup()
     mPlayButton->getButtonSignal().connect(std::bind(&PlayerNode::getPlaySignal, this));
     mPauseButton->getButtonSignal().connect(std::bind(&PlayerNode::getPauseSignal, this));
     
+    //  create and add the scrubber
+    mScrubber = Scrubber::create();
+    mScrubber->setVisible(false);
+    mScrubber->getScrubberSignal().connect(std::bind(&PlayerNode::getScrubberSignal, this, std::placeholders::_1));
+    addChild(mScrubber);
+    
     setDrawBounds(true);
     
 }
@@ -56,26 +63,36 @@ void PlayerNode::update()
     
     //  when movie finishes, stop and go back to the beginning
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
+        //  send signal to scrubber
+        float currentTime = mVideoDisplayer->getMovieRef()->getCurrentTime();
+        float currentPct = currentTime / mCurrentDuration;
+        
+        mScrubber->setHandlePosition(currentPct);
+        
         if (mVideoDisplayer->getMovieRef()->isDone()) {
             mVideoDisplayer->getMovieRef()->stop();
             mVideoDisplayer->getMovieRef()->seekToStart();
+            mScrubber->setHandlePosition(0.f);
         }
     }
 }
 
 void PlayerNode::setPrimaryMovie(po::scene::VideoGlRef video)
 {
-    //  stop video if one's already there
+    //  stop the current video if one's already there
     if (mVideoDisplayer->getMovieRef()) {
         if (mVideoDisplayer->getMovieRef() != video->getMovieRef()) {
             mVideoDisplayer->getMovieRef()->stop();
         }
     }
     mVideoDisplayer->setMovieRef(video->getMovieRef());
+    mCurrentDuration = video->getMovieRef()->getDuration();
     mPlayButton->setVisible(true);
     mPauseButton->setVisible(true);
+    mScrubber->setVisible(true);
     mPlayButton->setPosition(getWidth() / 2 - getWidth() * 0.05, mVideoDisplayer->getHeight() + 50);
     mPauseButton->setPosition(getWidth() / 2 + getWidth() * 0.05, mVideoDisplayer->getHeight() + 50);
+    mScrubber->setPosition(0.f, mPlayButton->getPosition().y + 50);
 }
 
 void PlayerNode::getPlaySignal()
@@ -92,4 +109,11 @@ void PlayerNode::getPauseSignal()
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
         mVideoDisplayer->getMovieRef()->stop();
     }
+}
+
+void PlayerNode::getScrubberSignal(float pct)
+{
+    if (!mVideoDisplayer->getMovieRef()) return;
+    float scrubPoint = pct * mCurrentDuration;
+    mVideoDisplayer->getMovieRef()->seekToTime(scrubPoint);
 }

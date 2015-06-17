@@ -62,12 +62,11 @@ void VideoPlayerSample::setUpMovieThumbnails()
     }
 }
 
-void VideoPlayerSample::onThumbnailClick(MouseEvent event)
+void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
 {
     NodeRef node = event.getSource();
     VideoGlRef video = std::static_pointer_cast<VideoGl>(node);
     mPlayer->setPrimaryMovie(video);
-    std::cout << "VideoPlayerSample::onThumbnailClick: mPlayer width: " << mPlayer->getWidth() << std::endl;
     
     float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
     
