@@ -51,8 +51,6 @@ void PlayerNode::setup()
     mScrubber->getScrubberSignal().connect(std::bind(&PlayerNode::getScrubberSignal, this, std::placeholders::_1));
     addChild(mScrubber);
     
-    setDrawBounds(true);
-    
 }
 
 void PlayerNode::update()
@@ -63,10 +61,10 @@ void PlayerNode::update()
     
     //  when movie finishes, stop and go back to the beginning
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
+
         //  send signal to scrubber
         float currentTime = mVideoDisplayer->getMovieRef()->getCurrentTime();
         float currentPct = currentTime / mCurrentDuration;
-        
         mScrubber->setHandlePosition(currentPct);
         
         if (mVideoDisplayer->getMovieRef()->isDone()) {
@@ -93,6 +91,12 @@ void PlayerNode::setPrimaryMovie(po::scene::VideoGlRef video)
     mPlayButton->setPosition(getWidth() / 2 - getWidth() * 0.05, mVideoDisplayer->getHeight() + 50);
     mPauseButton->setPosition(getWidth() / 2 + getWidth() * 0.05, mVideoDisplayer->getHeight() + 50);
     mScrubber->setPosition(0.f, mPlayButton->getPosition().y + 50);
+    
+    //  send signal to scrubber
+    float currentTime = mVideoDisplayer->getMovieRef()->getCurrentTime();
+    float currentPct = currentTime / mCurrentDuration;
+    mScrubber->setHandlePosition(currentPct);
+    
 }
 
 void PlayerNode::getPlaySignal()

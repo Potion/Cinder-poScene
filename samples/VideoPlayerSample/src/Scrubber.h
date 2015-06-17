@@ -36,7 +36,9 @@ private:
     ci::Vec2f mInitialPos;
     
     //	Mouse event handlers
-    void onMouseDown(po::scene::MouseEvent &event);
+//    void onMouseDown(po::scene::MouseEvent &event);
+    void onMouseDownHandle(po::scene::MouseEvent &event);
+    void onMouseDownTrack(po::scene::MouseEvent &event);
     void onMouseDrag(po::scene::MouseEvent & event);
     void onMouseUp(po::scene::MouseEvent &event);
     

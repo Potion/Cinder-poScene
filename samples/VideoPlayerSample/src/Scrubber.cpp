@@ -22,18 +22,23 @@ void Scrubber::setup()
     mTrack = Shape::createRect(640, 10);
     mTrack->setFillColor(1, 1, 1);
     mTrack->setAlpha(0.2f);
+    mTrack->setName("track");
     addChild(mTrack);
     
     //  create and add the scrub handle
     mHandle = Shape::createRect(50, 10);
     mHandle->setFillColor(1, 1, 1);
     mHandle->setAlpha(0.8f);
+    mHandle->setName("handle");
     addChild(mHandle);
     
     mFullLength = mTrack->getWidth() - mHandle->getWidth();
     
     //  connect the mouse events
-    getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&Scrubber::onMouseDown, this, std::placeholders::_1));
+    //getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&Scrubber::onMouseDown, this, std::placeholders::_1));
+    mTrack->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&Scrubber::onMouseDownTrack, this, std::placeholders::_1));
+    mHandle->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&Scrubber::onMouseDownHandle, this, std::placeholders::_1));
+    
     getSignal(MouseEvent::DRAG).connect(std::bind(&Scrubber::onMouseDrag, this, std::placeholders::_1));
     getSignal(MouseEvent::UP_INSIDE).connect(std::bind(&Scrubber::onMouseUp, this, std::placeholders::_1));
     getSignal(MouseEvent::UP).connect(std::bind(&Scrubber::onMouseUp, this, std::placeholders::_1));
@@ -41,11 +46,27 @@ void Scrubber::setup()
 
 void Scrubber::setHandlePosition(float pct)
 {
-    std::cout << "Scrubber::setHandlePosition: full length: "<< mFullLength << ", pct: " << pct << std::endl;
     mHandle->setPosition(mFullLength * pct, mInitialPos.y);
 }
 
-void Scrubber::onMouseDown(MouseEvent &event)
+//void Scrubber::onMouseDown(MouseEvent &event)
+//{
+//    if (!mIsPressed) {
+//        
+//        std::cout << "Scrubber::onMouseDown: source: " << event.getSource()->getWidth() << std::endl;
+//        mIsPressed = true;
+//        
+//        //	Store the initial positions
+//        mInitialPos = mHandle->getPosition();
+//        mStartPos = getParent()->windowToLocal(event.getWindowPos());
+//        mEndPos = getParent()->windowToLocal(event.getWindowPos());
+//        
+//        //	Highlight the scroll thumb
+//        mHandle->setAlpha(1.0);
+//    }
+//}
+
+void Scrubber::onMouseDownHandle(MouseEvent &event)
 {
     if (!mIsPressed) {
         mIsPressed = true;
@@ -58,7 +79,36 @@ void Scrubber::onMouseDown(MouseEvent &event)
         //	Highlight the scroll thumb
         mHandle->setAlpha(1.0);
     }
+}
 
+void Scrubber::onMouseDownTrack(MouseEvent &event)
+{
+    if (!mIsPressed) {
+        mIsPressed = true;
+        
+        ci::Vec2f clickPos = getParent()->windowToLocal(event.getWindowPos());
+        
+        float newXPos = clickPos.x - mHandle->getWidth() / 2;
+        if (newXPos < 0) {
+            newXPos = 0;
+        } else if (newXPos > mTrack->getWidth() - mHandle->getWidth()) {
+            newXPos = mTrack->getWidth() - mHandle->getWidth();
+        }
+
+        mHandle->setPosition(newXPos, 0);
+        
+        //  Determine percentage
+        float pct = newXPos / mFullLength;
+        mScrubberSignal(pct);
+        
+        //	With repositioned hadle, store the initial positions
+        mInitialPos = mHandle->getPosition();
+        mStartPos = getParent()->windowToLocal(event.getWindowPos());
+        mEndPos = getParent()->windowToLocal(event.getWindowPos());
+        
+        //	Highlight the scroll thumb
+        mHandle->setAlpha(1.0);
+    }
 }
 
 void Scrubber::onMouseDrag(MouseEvent &event)
@@ -84,7 +134,6 @@ void Scrubber::onMouseDrag(MouseEvent &event)
         
         //  Determine percentage
         float pct = newPosition.x / mFullLength;
-        std::cout << "Scrubber::onMouseDrag: pct: " << pct << std::endl;
         mScrubberSignal(pct);
     }
 }
