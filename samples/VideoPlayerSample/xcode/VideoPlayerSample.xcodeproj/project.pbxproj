@@ -13,6 +13,7 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		020A1F5E6A03461E92553459 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F00BF3BF55D8404AA064859E /* poShape.cpp */; };
+		38AF5CF91B31E58C006E3CAE /* PlayerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38AF5CF71B31E58C006E3CAE /* PlayerButton.cpp */; };
 		38E0AB611B30CF2600BF0B36 /* PlayerNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38E0AB5F1B30CF2600BF0B36 /* PlayerNode.cpp */; };
 		38E0AB631B30D16300BF0B36 /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38E0AB621B30D16300BF0B36 /* QuickTime.framework */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -47,6 +48,8 @@
 		28DDFC244537422F8AFFE684 /* poImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poImage.cpp; path = ../../../src/poScene/poImage.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		38AF5CF71B31E58C006E3CAE /* PlayerButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerButton.cpp; path = ../src/PlayerButton.cpp; sourceTree = "<group>"; };
+		38AF5CF81B31E58C006E3CAE /* PlayerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerButton.h; path = ../src/PlayerButton.h; sourceTree = "<group>"; };
 		38E0AB5F1B30CF2600BF0B36 /* PlayerNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerNode.cpp; path = ../src/PlayerNode.cpp; sourceTree = "<group>"; };
 		38E0AB601B30CF2600BF0B36 /* PlayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerNode.h; path = ../src/PlayerNode.h; sourceTree = "<group>"; };
 		38E0AB621B30D16300BF0B36 /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
@@ -111,6 +114,8 @@
 				921B39E3C1244F38935796CB /* VideoPlayerSample.cpp */,
 				38E0AB601B30CF2600BF0B36 /* PlayerNode.h */,
 				38E0AB5F1B30CF2600BF0B36 /* PlayerNode.cpp */,
+				38AF5CF81B31E58C006E3CAE /* PlayerButton.h */,
+				38AF5CF71B31E58C006E3CAE /* PlayerButton.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -302,6 +307,7 @@
 				9D7D8D5AED8740029570C4D3 /* poImage.cpp in Sources */,
 				B00F723DAA4548AE8C082A92 /* poMatrixSet.cpp in Sources */,
 				A8E33AEAB7324A03953388D3 /* poNode.cpp in Sources */,
+				38AF5CF91B31E58C006E3CAE /* PlayerButton.cpp in Sources */,
 				7B12379A26BC4A6E8E836BCE /* poNodeContainer.cpp in Sources */,
 				9B669BB195BF4598AEF6DF64 /* poScene.cpp in Sources */,
 				020A1F5E6A03461E92553459 /* poShape.cpp in Sources */,
