@@ -1,9 +1,10 @@
 #pragma once
 
 #include "poNodeContainer.h"
-#include "poVideo.h"
-#include "PlayerNode.h"
 #include "poShape.h"
+#include "poVideo.h"
+#include "PlayerController.h"
+#include "MovieThumb.h"
 
 // In order to use poVideo, you must link the QuickTime.framework.
 // In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
@@ -25,12 +26,12 @@ protected:
 
 private:
     
-    PlayerNodeRef           mPlayer;
-    
-    po::scene::VideoGlRef   mMovies[3];
+    PlayerControllerRef     mPlayer;
+    MovieThumbRef           mMovies[3];
+
     const int               mNumMovies;
     void                    setUpMovieThumbnails();
-    
     void                    onThumbnailClick(po::scene::MouseEvent &event);
+    void                    onAnimationComplete(MovieThumbRef thumbnail);
 
 };

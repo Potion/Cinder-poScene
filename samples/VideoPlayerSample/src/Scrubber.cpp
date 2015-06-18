@@ -49,23 +49,6 @@ void Scrubber::setHandlePosition(float pct)
     mHandle->setPosition(mFullLength * pct, mInitialPos.y);
 }
 
-//void Scrubber::onMouseDown(MouseEvent &event)
-//{
-//    if (!mIsPressed) {
-//        
-//        std::cout << "Scrubber::onMouseDown: source: " << event.getSource()->getWidth() << std::endl;
-//        mIsPressed = true;
-//        
-//        //	Store the initial positions
-//        mInitialPos = mHandle->getPosition();
-//        mStartPos = getParent()->windowToLocal(event.getWindowPos());
-//        mEndPos = getParent()->windowToLocal(event.getWindowPos());
-//        
-//        //	Highlight the scroll thumb
-//        mHandle->setAlpha(1.0);
-//    }
-//}
-
 void Scrubber::onMouseDownHandle(MouseEvent &event)
 {
     if (!mIsPressed) {

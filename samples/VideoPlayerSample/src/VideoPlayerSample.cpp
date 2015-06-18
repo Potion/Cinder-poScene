@@ -17,59 +17,77 @@ VideoPlayerSample::VideoPlayerSample()
 void VideoPlayerSample::setup() 
 {
     //  create and add the main player
-    mPlayer = PlayerNode::create();
+    mPlayer = PlayerController::create();
+    float xOffset = (ci::app::getWindowWidth() - 640) / 2; // player will be 640px wide
+    mPlayer->setPosition(xOffset, 50);
     addChild(mPlayer);
-    
-    //  load the movies and create the thumbnails
-    for (int i = 0; i < mNumMovies; i++) {
-        mMovies[i] = VideoGl::create();
-    }
-    
-    //  load the three videos
-    ci::fs::path moviePath1 = ci::app::getAssetPath("Placeholder_Video-RH3i7qONrT4.mp4");
-    ci::fs::path moviePath2 = ci::app::getAssetPath("Placeholder_Video-ScMzIvxBSi4.mp4");
-    ci::fs::path moviePath3 = ci::app::getAssetPath("Video-lBP2Ij86Ua4.mp4");
-    
+
     try {
-        ci::qtime::MovieGlRef movie0 = ci::qtime::MovieGl::create(moviePath1);
-        ci::qtime::MovieGlRef movie1 = ci::qtime::MovieGl::create(moviePath2);
-        ci::qtime::MovieGlRef movie2 = ci::qtime::MovieGl::create(moviePath3);
+        //  load the three videos
+        ci::fs::path moviePath[3];
+        moviePath[0] = ci::app::getAssetPath("Placeholder_Video-RH3i7qONrT4.mp4");
+        moviePath[1] = ci::app::getAssetPath("Placeholder_Video-ScMzIvxBSi4.mp4");
+        moviePath[2] = ci::app::getAssetPath("Video-lBP2Ij86Ua4.mp4");
         
-        mMovies[0]->setMovieRef(movie0);
-        mMovies[1]->setMovieRef(movie1);
-        mMovies[2]->setMovieRef(movie2);
+        ci::qtime::MovieGlRef qtMovie[3];
+ 
+        //  load the movies, create po::scene movie references, then create MovieThumb objects
+        for (int i = 0; i < mNumMovies; i++) {
+            qtMovie[i] = ci::qtime::MovieGl::create(moviePath[i]);
+            VideoGlRef poMovie = VideoGl::create();
+            poMovie->setMovieRef(qtMovie[i]);
+            mMovies[i] = MovieThumb::create(poMovie);
+            
+            //  set scale of movie so it plays at width of 640 px
+            float actualWidth = qtMovie[i]->getWidth();
+            float scale = 640.f / actualWidth;
+            mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
+            addChild(mMovies[i]);
+        }
         
         setUpMovieThumbnails();
         
     } catch (...) {
-        std::cout << "Video did not load successfully";
+        std::cout << "Videos did not load successfully";
     }
 }
 
 void VideoPlayerSample::setUpMovieThumbnails()
 {
-    ci::Vec2f thumbnailScale = ci::Vec2f(0.2f, 0.2f);
+    float thumbnailScale = 0.2f;
     float screenInterval = ci::app::getWindowWidth() / mNumMovies;
-    float thumbWidth = mMovies[0]->getWidth() * thumbnailScale.x; // all movies are same size
+    float thumbWidth = mMovies[0]->getWidth() * thumbnailScale; // all movies are same size
     float xOffset = (screenInterval - thumbWidth) / 2;
     
     for (int i = 0; i < mNumMovies; i++) {
-        mMovies[i]->setScale(thumbnailScale);
+        mMovies[i]->setScale(mMovies[i]->getPlayerScale() * thumbnailScale);
         float xPos = (screenInterval * i) + xOffset;
         mMovies[i]->setPosition(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
-        addChild(mMovies[i]);
+        mMovies[i]->setHomePos(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
         mMovies[i]->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoPlayerSample::onThumbnailClick, this, std::placeholders::_1));
+        mMovies[i]->getSignalAnimationComplete().connect(std::bind(&VideoPlayerSample::onAnimationComplete, this, std::placeholders::_1));
     }
 }
 
 void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
 {
+    //mPlayer->setShowVideoDisplayer(false);
+    
     NodeRef node = event.getSource();
-    VideoGlRef video = std::static_pointer_cast<VideoGl>(node);
-    mPlayer->setPrimaryMovie(video);
+    MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(node);
+
+    for (int i = 0; i < mNumMovies; i++) {
+        if (mMovies[i] == thumbnail) {
+            mMovies[i]->animateToPlayer(mPlayer->getPosition());
+        } else if (!mMovies[i]->getIsHome()) {
+            mMovies[i]->animateToHomePosition();
+        }
+    }
     
-    float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
-    
-    mPlayer->setPosition(xOffset, 50);
-    
+}
+
+void VideoPlayerSample::onAnimationComplete(MovieThumbRef thumbnail)
+{
+    mPlayer->setPrimaryMovie(thumbnail->getUnderlyingMovie());
+//    mPlayer->setShowVideoDisplayer(true);
 }

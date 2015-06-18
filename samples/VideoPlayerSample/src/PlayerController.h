@@ -9,24 +9,24 @@
 // In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
 // Hit [+] at the bottom, and choose QuickTime.framework from the list.
 
-class PlayerNode;
-typedef std::shared_ptr<PlayerNode> PlayerNodeRef;
+class PlayerController;
+typedef std::shared_ptr<PlayerController> PlayerControllerRef;
 
-class PlayerNode
+class PlayerController
 : public po::scene::NodeContainer {
     
 public:
-    static PlayerNodeRef    create();
-    void                    setup();
-    void                    setPrimaryMovie(po::scene::VideoGlRef video);
+    static PlayerControllerRef  create();
+    void                        setup();
+    void                        setPrimaryMovie(po::scene::VideoGlRef video);
     
 protected:
-    PlayerNode();
+    PlayerController();
     //  override virtual function from NodeContainer
     void                    update();
     
 private:
-    po::scene::VideoGlRef   mVideoDisplayer;
+    po::scene::VideoGlRef   mVideoReference;
     float                   mCurrentDuration;
 
     bool                    mIsPlaying;
