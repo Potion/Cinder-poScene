@@ -1,6 +1,7 @@
 #include "HierarchySample.h"
 
 #include "poShape.h"
+#include "poTextBox.h"
 
 HierarchySampleRef HierarchySample::create() 
 {
@@ -25,7 +26,6 @@ void HierarchySample::setup()
 	//	Create the container
 	mContainer = NodeContainer::create();
 	addChild(mContainer);
-//	mContainer->setDrawBounds(true);
 	
 	//	Add the first square to the container
 	//	Add subsequent squares to the previous square
@@ -42,4 +42,15 @@ void HierarchySample::setup()
 	
 	//	Center everything
 	mContainer->setPosition(ci::app::getWindowWidth() / 2, ci::app::getWindowHeight() / 2);
+	
+	
+	ci::TextBox ciTextBox = ci::TextBox();
+	ciTextBox.text("Click and drag the squares to highlight child nodes and alter their position within the hierarchy.");
+	ciTextBox.size(200, 200);
+	ciTextBox.font(ci::Font("Arial", 12.f));
+	ciTextBox.color(ci::Color(1, 1, 1));
+	
+	TextBoxRef textBox = TextBox::create(ciTextBox);
+	textBox->setPosition(20, 20);
+	addChild(textBox);
 }
