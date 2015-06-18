@@ -43,7 +43,7 @@ void HierarchySample::setup()
 	//	Center everything
 	mContainer->setPosition(ci::app::getWindowWidth() / 2, ci::app::getWindowHeight() / 2);
 	
-	
+	//	Text box with instructions
 	ci::TextBox ciTextBox = ci::TextBox();
 	ciTextBox.text("Click and drag the squares to highlight child nodes and alter their position within the hierarchy.");
 	ciTextBox.size(200, 200);
