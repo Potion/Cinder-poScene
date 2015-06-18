@@ -47,13 +47,13 @@ namespace po { namespace scene { namespace TextureFit {
 	{
 		ci::Vec2f offset;
 		switch(align) {
-			case Alignment::TOP_LEFT:
+			case Alignment::BOTTOM_LEFT:
 				offset.set(0.f, max.y - 1.f);
 				break;
-			case Alignment::TOP_CENTER:
+			case Alignment::BOTTOM_CENTER:
 				offset.set((max.x - 1.f) / 2.f, max.y - 1.f);
 				break;
-			case Alignment::TOP_RIGHT:
+			case Alignment::BOTTOM_RIGHT:
 				offset.set(max.x - 1.f, max.y - 1.f);
 				break;
 			case Alignment::CENTER_LEFT:
@@ -65,13 +65,13 @@ namespace po { namespace scene { namespace TextureFit {
 			case Alignment::CENTER_RIGHT:
 				offset.set(max.x - 1.f, (max.y - 1.f) / 2.f);
 				break;
-			case Alignment::BOTTOM_LEFT:
+			case Alignment::TOP_LEFT:
 				offset.set(0.f, 0.f);
 				break;
-			case Alignment::BOTTOM_CENTER:
+			case Alignment::TOP_CENTER:
 				offset.set((max.x - 1.f) / 2.f, 0.f);
 				break;
-			case Alignment::BOTTOM_RIGHT:
+			case Alignment::TOP_RIGHT:
 				offset.set(max.x - 1.f, 0.f);
 				break;
 			case Alignment::NONE:
