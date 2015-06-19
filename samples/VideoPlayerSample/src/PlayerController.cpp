@@ -30,15 +30,11 @@ void PlayerController::setup()
     mPlayButton = PlayerButton::create(playShape);
     mPauseButton = PlayerButton::create(pauseShape);
     
-    //  set positions so won't affect width of node when later resize for movies
-    mPlayButton->setPosition(20, 20);
-    mPauseButton->setPosition(20, 20);
-
-    mPlayButton->setAlignment(Alignment::CENTER_CENTER);
-    mPauseButton->setAlignment(Alignment::CENTER_CENTER);
-
-    mPlayButton->setVisible(false);
-    mPauseButton->setVisible(false);
+    //  the width of player (and movies) when playing will be 640px
+    //  place buttons with that in mind
+    
+    mPlayButton->setPosition((640 / 2) - 50 - mPlayButton->getWidth(), 0);
+    mPauseButton->setPosition((640 / 2) + 50, 0);
     
     addChild(mPlayButton);
     addChild(mPauseButton);
@@ -48,18 +44,19 @@ void PlayerController::setup()
     
     //  create and add the scrubber
     mScrubber = Scrubber::create();
-    mScrubber->setVisible(false);
     mScrubber->getScrubberSignal().connect(std::bind(&PlayerController::getScrubberSignal, this, std::placeholders::_1));
+    mScrubber->setPosition(0, mPlayButton->getHeight() + 25);
     addChild(mScrubber);
-    
 }
 
 void PlayerController::update()
 {
     NodeContainer::update();
     
+    //  if we don't have a movie reference, stop
     if (!mVideoReference->getMovieRef()) return;
-    
+
+    //  while movie is playing, update the scrubber
     //  when movie finishes, stop and go back to the beginning
     if (mVideoReference->getMovieRef()->isPlaying()) {
 
@@ -84,16 +81,12 @@ void PlayerController::setPrimaryMovie(po::scene::VideoGlRef video)
             mVideoReference->getMovieRef()->stop();
         }
     }
+    
+    //  change the movie reference
     mVideoReference->setMovieRef(video->getMovieRef());
     mCurrentDuration = video->getMovieRef()->getDuration();
-    mPlayButton->setVisible(true);
-    mPauseButton->setVisible(true);
-    mScrubber->setVisible(true);
-    mPlayButton->setPosition((mVideoReference->getWidth() / 2) - 50.f, mVideoReference->getHeight() + 50);
-    mPauseButton->setPosition((mVideoReference->getWidth() / 2) + 50.f, mVideoReference->getHeight() + 50);
-    mScrubber->setPosition(0.f, mPlayButton->getPosition().y + 50);
     
-    //  send signal to scrubber
+    //  update scrubber
     float currentTime = mVideoReference->getMovieRef()->getCurrentTime();
     float currentPct = currentTime / mCurrentDuration;
     mScrubber->setHandlePosition(currentPct);

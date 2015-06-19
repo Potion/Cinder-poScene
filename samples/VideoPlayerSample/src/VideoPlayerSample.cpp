@@ -16,12 +16,17 @@ VideoPlayerSample::VideoPlayerSample()
 
 void VideoPlayerSample::setup() 
 {
+    
     //  create and add the main player
     mPlayer = PlayerController::create();
-    float xOffset = (ci::app::getWindowWidth() - 640) / 2; // player will be 640px wide
+    float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
     mPlayer->setPosition(xOffset, 50);
+    mPlayer->setAlpha(0.f);
     addChild(mPlayer);
 
+    //  set location for primary display at same position
+    mPrimaryDisplayerPosition = ci::Vec2f(xOffset, 50);
+    
     try {
         //  load the three videos
         ci::fs::path moviePath[3];
@@ -38,9 +43,9 @@ void VideoPlayerSample::setup()
             poMovie->setMovieRef(qtMovie[i]);
             mMovies[i] = MovieThumb::create(poMovie);
             
-            //  set scale of movie so it plays at width of 640 px
+            //  set scale of movie so it plays at width of 640 px (same as controller width)
             float actualWidth = qtMovie[i]->getWidth();
-            float scale = 640.f / actualWidth;
+            float scale = mPlayer->getWidth() / actualWidth;
             mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
             addChild(mMovies[i]);
         }
@@ -71,23 +76,38 @@ void VideoPlayerSample::setUpMovieThumbnails()
 
 void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
 {
-    //mPlayer->setShowVideoDisplayer(false);
-    
     NodeRef node = event.getSource();
     MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(node);
 
     for (int i = 0; i < mNumMovies; i++) {
         if (mMovies[i] == thumbnail) {
-            mMovies[i]->animateToPlayer(mPlayer->getPosition());
+            mMovies[i]->animateToPlayer(mPrimaryDisplayerPosition);
+            animateControllerToPos(mMovies[i]);
         } else if (!mMovies[i]->getIsHome()) {
             mMovies[i]->animateToHomePosition();
         }
     }
-    
 }
 
 void VideoPlayerSample::onAnimationComplete(MovieThumbRef thumbnail)
 {
     mPlayer->setPrimaryMovie(thumbnail->getUnderlyingMovie());
-//    mPlayer->setShowVideoDisplayer(true);
+}
+
+void VideoPlayerSample::animateControllerToPos(MovieThumbRef movie)
+{
+    //  animate player controller to 50 px below the movie
+    
+    float x = mPlayer->getPosition().x;
+    //  find the height of the new movie when fully expanded
+    float movieHeight = movie->getUnderlyingMovie()->getHeight() * movie->getPlayerScale().y;
+    //  push the controller to 50 px below that
+    float y = mPrimaryDisplayerPosition.y + movieHeight + 50 ;
+    ci::Vec2f newPos(x, y);
+    ci::app::timeline().apply(&mPlayer->getPositionAnim(), newPos, 2.f);
+    
+    //  fade player in if it's transparent
+    if (mPlayer->getAlpha() < 1.f) {
+        ci::app::timeline().apply(&mPlayer->getAlphaAnim(), 1.f, 2.f);
+    }
 }

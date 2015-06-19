@@ -33,5 +33,7 @@ private:
     void                    setUpMovieThumbnails();
     void                    onThumbnailClick(po::scene::MouseEvent &event);
     void                    onAnimationComplete(MovieThumbRef thumbnail);
-
+    void                    animateControllerToPos(MovieThumbRef movie);
+    
+    ci::Vec2f               mPrimaryDisplayerPosition;
 };
