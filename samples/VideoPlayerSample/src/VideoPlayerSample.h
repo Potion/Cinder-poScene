@@ -30,7 +30,7 @@ private:
     MovieThumbRef           mMovies[3];
 
     const int               mNumMovies;
-    void                    setUpMovieThumbnails();
+    void                    setUpMovies();
     void                    onThumbnailClick(po::scene::MouseEvent &event);
     void                    onAnimationComplete(MovieThumbRef thumbnail);
     void                    animateControllerToPos(MovieThumbRef movie);

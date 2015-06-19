@@ -29,8 +29,6 @@ private:
     po::scene::VideoGlRef   mVideoReference;
     float                   mCurrentDuration;
 
-    bool                    mIsPlaying;
-    
     void                    getPlaySignal();
     void                    getPauseSignal();
     void                    getScrubberSignal(float pct);

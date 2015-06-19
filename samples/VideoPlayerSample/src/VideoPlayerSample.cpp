@@ -19,13 +19,14 @@ void VideoPlayerSample::setup()
     
     //  create and add the main player
     mPlayer = PlayerController::create();
-    float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
-    mPlayer->setPosition(xOffset, 50);
+    mPlayer->setAlignment(po::scene::Alignment::TOP_CENTER);
+    //float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
+    mPlayer->setPosition(ci::app::getWindowWidth() / 2, -mPlayer->getHeight() / 2); // centered, just above screen
     mPlayer->setAlpha(0.f);
     addChild(mPlayer);
 
-    //  set location for primary display at same position
-    mPrimaryDisplayerPosition = ci::Vec2f(xOffset, 50);
+    //  set location for top/center of primary display
+    mPrimaryDisplayerPosition = ci::Vec2f(ci::app::getWindowWidth() / 2, 50);
     
     try {
         //  load the three videos
@@ -42,33 +43,47 @@ void VideoPlayerSample::setup()
             VideoGlRef poMovie = VideoGl::create();
             poMovie->setMovieRef(qtMovie[i]);
             mMovies[i] = MovieThumb::create(poMovie);
-            
-            //  set scale of movie so it plays at width of 640 px (same as controller width)
-            float actualWidth = qtMovie[i]->getWidth();
-            float scale = mPlayer->getWidth() / actualWidth;
-            mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
             addChild(mMovies[i]);
         }
         
-        setUpMovieThumbnails();
+        setUpMovies();
         
     } catch (...) {
         std::cout << "Videos did not load successfully";
     }
 }
 
-void VideoPlayerSample::setUpMovieThumbnails()
+void VideoPlayerSample::setUpMovies()
 {
     float thumbnailScale = 0.2f;
-    float screenInterval = ci::app::getWindowWidth() / mNumMovies;
-    float thumbWidth = mMovies[0]->getWidth() * thumbnailScale; // all movies are same size
-    float xOffset = (screenInterval - thumbWidth) / 2;
+    float screenInterval = ci::app::getWindowWidth() / (mNumMovies * 2);
     
     for (int i = 0; i < mNumMovies; i++) {
-        mMovies[i]->setScale(mMovies[i]->getPlayerScale() * thumbnailScale);
-        float xPos = (screenInterval * i) + xOffset;
-        mMovies[i]->setPosition(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
-        mMovies[i]->setHomePos(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
+
+        mMovies[i]->setAlignment(po::scene::Alignment::CENTER_CENTER);
+
+        //  set scale and position of movie when it's the main one being displayed
+        
+        //  set scale of movie so it plays at width of 640 px (same as mPlayer width)
+        float actualWidth = mMovies[i]->getUnderlyingMovie()->getWidth();
+        float scale = mPlayer->getWidth() / actualWidth;
+        mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
+
+        //  set position based on its height
+        float yOffsetForPlayer = (mMovies[i]->getUnderlyingMovie()->getHeight() * scale) * 0.5;
+        ci::Vec2f playerPosition(mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer);
+        mMovies[i]->setPlayerPos(playerPosition);
+        
+        //  calculate the thumbnail scale, then set it to that
+        mMovies[i]->setThumbnailScale(mMovies[i]->getPlayerScale() * thumbnailScale);
+        mMovies[i]->setScale(mMovies[i]->getThumbnailScale());
+        
+        //  calculate the thumbnail position, then set it to that
+        float xPos = ((i * 2) + 1) * screenInterval;
+        mMovies[i]->setThumbnailPos(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
+        mMovies[i]->setPosition(mMovies[i]->getThumbnailPos());
+        
+        //  add listeners
         mMovies[i]->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoPlayerSample::onThumbnailClick, this, std::placeholders::_1));
         mMovies[i]->getSignalAnimationComplete().connect(std::bind(&VideoPlayerSample::onAnimationComplete, this, std::placeholders::_1));
     }
@@ -81,10 +96,11 @@ void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
 
     for (int i = 0; i < mNumMovies; i++) {
         if (mMovies[i] == thumbnail) {
-            mMovies[i]->animateToPlayer(mPrimaryDisplayerPosition);
+            //  move to primary displayer position, adjusted for center alignment
+            mMovies[i]->animateToPlayer();
             animateControllerToPos(mMovies[i]);
         } else if (!mMovies[i]->getIsHome()) {
-            mMovies[i]->animateToHomePosition();
+            mMovies[i]->animateOutOfPlayerPosition();
         }
     }
 }

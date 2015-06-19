@@ -19,23 +19,39 @@ void MovieThumb::setup(po::scene::VideoGlRef movie)
     addChild(mMovie);
 }
 
-void MovieThumb::animateToPlayer(ci::Vec2f pos)
+void MovieThumb::animateToPlayer()
 {
     mIsAtHome = false;
-    ci::app::timeline().apply(&getPositionAnim(), pos, 2.f);
+    ci::app::timeline().apply(&getPositionAnim(), mPlayerPos, 2.f);
     ci::app::timeline().apply(&getScaleAnim(), mPlayerScale, 2.f).finishFn(std::bind(&MovieThumb::finishAnimationToPlayer, this));
 }
 
-void MovieThumb::animateToHomePosition()
+void MovieThumb::animateOutOfPlayerPosition()
 {
-    ci::app::timeline().apply(&getPositionAnim(), mHomePos, 2.f);
-    ci::app::timeline().apply(&getScaleAnim(), mPlayerScale * 0.2f, 2.f).finishFn(std::bind(&MovieThumb::finishAnimationToHome, this));
+    float yPos = getUnderlyingMovie()->getHeight() / 2;
+    yPos *= mThumbnailScale.y * -1;
+    ci::Vec2f aboveScreen( getPosition().x, yPos );
+    ci::app::timeline().apply(&getPositionAnim(), aboveScreen, 1.5f, ci::EaseInExpo()).finishFn(std::bind(&MovieThumb::slideUpToHomePosition, this));
+    ci::app::timeline().apply(&getScaleAnim(), mThumbnailScale, 1.5f).easeFn(ci::EaseOutBack(2.f));
 }
 
 void MovieThumb::finishAnimationToPlayer()
 {
     //  when arrive at player, send signal with a reference to itself
     mAnimationCompleteSignal(std::static_pointer_cast<MovieThumb>(shared_from_this()));
+}
+
+void MovieThumb::slideUpToHomePosition()
+{
+    float yPos = getUnderlyingMovie()->getHeight() / 2;
+    yPos *= (mThumbnailScale.y) ;
+    yPos += ci::app::getWindowHeight();
+    ci::Vec2f belowScreen(getPosition().x, yPos);
+    setPosition(belowScreen);
+
+    setScale(0.0f, 0.0f);
+    ci::app::timeline().apply(&getScaleAnim(), mThumbnailScale, 0.5f, ci::EaseOutBack());
+    ci::app::timeline().apply(&getPositionAnim(), mThumbnailPos, 0.5f, ci::EaseOutBack()).finishFn(std::bind(&MovieThumb::finishAnimationToHome, this));
 }
 
 void MovieThumb::finishAnimationToHome()

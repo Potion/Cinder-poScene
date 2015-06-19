@@ -11,13 +11,12 @@ PlayerControllerRef PlayerController::create()
 }
 
 PlayerController::PlayerController()
-: mIsPlaying(false)
-, mCurrentDuration(0.f)
+: mCurrentDuration(0.f)
 {}
 
 void PlayerController::setup()
 {
-    //  create video player without adding video
+    //  create reference to video
     //  because will actually be playing thumbnails, don't need to add as a child,
     //  but still need a reference to the videos themselves
     mVideoReference = VideoGl::create();
