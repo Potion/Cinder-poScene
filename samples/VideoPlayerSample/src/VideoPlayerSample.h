@@ -36,4 +36,6 @@ private:
     void                    animateControllerToPos(MovieThumbRef movie);
     
     ci::Vec2f               mPrimaryDisplayerPosition;
+    
+    bool                    mIsControllerInPosition;
 };

@@ -11,6 +11,7 @@ VideoPlayerSampleRef VideoPlayerSample::create()
 
 VideoPlayerSample::VideoPlayerSample()
 : mNumMovies(3)
+, mIsControllerInPosition(false)
 {
 }
 
@@ -20,7 +21,6 @@ void VideoPlayerSample::setup()
     //  create and add the main player
     mPlayer = PlayerController::create();
     mPlayer->setAlignment(po::scene::Alignment::TOP_CENTER);
-    //float xOffset = (ci::app::getWindowWidth() - mPlayer->getWidth()) / 2;
     mPlayer->setPosition(ci::app::getWindowWidth() / 2, -mPlayer->getHeight() / 2); // centered, just above screen
     mPlayer->setAlpha(0.f);
     addChild(mPlayer);
@@ -74,11 +74,11 @@ void VideoPlayerSample::setUpMovies()
         ci::Vec2f playerPosition(mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer);
         mMovies[i]->setPlayerPos(playerPosition);
         
-        //  calculate the thumbnail scale, then set it to that
+        //  calculate the thumbnail scale, then set appropriate variable in mMovie object
         mMovies[i]->setThumbnailScale(mMovies[i]->getPlayerScale() * thumbnailScale);
         mMovies[i]->setScale(mMovies[i]->getThumbnailScale());
         
-        //  calculate the thumbnail position, then set it to that
+        //  calculate the thumbnail position, then set appropriate variable in mMovie object
         float xPos = ((i * 2) + 1) * screenInterval;
         mMovies[i]->setThumbnailPos(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
         mMovies[i]->setPosition(mMovies[i]->getThumbnailPos());
@@ -93,13 +93,20 @@ void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
 {
     NodeRef node = event.getSource();
     MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(node);
-
+    
     for (int i = 0; i < mNumMovies; i++) {
+
         if (mMovies[i] == thumbnail) {
-            //  move to primary displayer position, adjusted for center alignment
+
+            //  begin animation to primary displayer position, adjusted for center alignment
             mMovies[i]->animateToPlayer();
             animateControllerToPos(mMovies[i]);
+
+            //  move primary movie to top position
+            moveChildToFront(mMovies[i]);
         } else if (!mMovies[i]->getIsHome()) {
+
+            //  move other movies back if they're not in their home positions
             mMovies[i]->animateOutOfPlayerPosition();
         }
     }
@@ -120,10 +127,15 @@ void VideoPlayerSample::animateControllerToPos(MovieThumbRef movie)
     //  push the controller to 50 px below that
     float y = mPrimaryDisplayerPosition.y + movieHeight + 50 ;
     ci::Vec2f newPos(x, y);
-    ci::app::timeline().apply(&mPlayer->getPositionAnim(), newPos, 2.f);
+    if (!mIsControllerInPosition) {
+        ci::app::timeline().apply(&mPlayer->getPositionAnim(), newPos, 2.f, ci::EaseOutBounce());
+    } else {
+        ci::app::timeline().apply(&mPlayer->getPositionAnim(), newPos, 2.f);
+    }
     
     //  fade player in if it's transparent
-    if (mPlayer->getAlpha() < 1.f) {
+    if (!mIsControllerInPosition) {
         ci::app::timeline().apply(&mPlayer->getAlphaAnim(), 1.f, 2.f);
+        mIsControllerInPosition = true;
     }
 }

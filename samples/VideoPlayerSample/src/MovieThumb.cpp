@@ -22,8 +22,8 @@ void MovieThumb::setup(po::scene::VideoGlRef movie)
 void MovieThumb::animateToPlayer()
 {
     mIsAtHome = false;
-    ci::app::timeline().apply(&getPositionAnim(), mPlayerPos, 2.f);
-    ci::app::timeline().apply(&getScaleAnim(), mPlayerScale, 2.f).finishFn(std::bind(&MovieThumb::finishAnimationToPlayer, this));
+    ci::app::timeline().apply(&getPositionAnim(), mPlayerPos, 1.5f, ci::EaseOutBack());
+    ci::app::timeline().apply(&getScaleAnim(), mPlayerScale, 1.5f, ci::EaseInExpo()).finishFn(std::bind(&MovieThumb::finishAnimationToPlayer, this));
 }
 
 void MovieThumb::animateOutOfPlayerPosition()
@@ -32,7 +32,7 @@ void MovieThumb::animateOutOfPlayerPosition()
     yPos *= mThumbnailScale.y * -1;
     ci::Vec2f aboveScreen( getPosition().x, yPos );
     ci::app::timeline().apply(&getPositionAnim(), aboveScreen, 1.5f, ci::EaseInExpo()).finishFn(std::bind(&MovieThumb::slideUpToHomePosition, this));
-    ci::app::timeline().apply(&getScaleAnim(), mThumbnailScale, 1.5f).easeFn(ci::EaseOutBack(2.f));
+    ci::app::timeline().apply(&getScaleAnim(), mThumbnailScale, 1.5f, ci::EaseOutBack(2.f));
 }
 
 void MovieThumb::finishAnimationToPlayer()
