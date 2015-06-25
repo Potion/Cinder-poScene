@@ -36,18 +36,7 @@ Moving any branch of a tree will also move all of its connected branches and lea
 *Screenshot from the bounds example, describing the structure of a scene* 
 ## Nodes
 
-Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on its own. To create a Node, extend this class and implement the following methods:
-
-+ `update()` Called every frame, do any general code updates here before drawing.
-+ `draw()` This draws the Node. Override this method and do any OpenGL drawing here. When this method is called all transforms have been applied to the Node (i.e. position, scale, rotation), so everything is relative to the Node's (0,0) origin.
-+ `getBounds()` This is necessary for any hit-testing of an object. Return a ci::Rectf with the Top Left and Bottom Right of the content drawn (or a wider area if you'd like to expand the hit area). For example, the po::scene::Image class returns the top left as 0,0 (relative to the Node's origin) and the width and height of the associated `ci::gl::TextureRef`.
-
-		ci::Rectf Image::getBounds()
-		{
-			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
-		}
-		
-		IMAGE EXPLAINING BOUNDS HERE?
+Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on its own, but is instead extended by a variety of inheriting classes that make up po::scene.
 		
 ###Attributes
 Nodes have a number of built in attributes that relate to how they appear in the scene:
@@ -230,15 +219,34 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 
 ### po::scene::TextBox
 
+## Custom Nodes
+Custom nodes should be made for anything that needs to draw into the scene graph and be considered for hit-testing/interaction.
+
+To create a Node, extend this class and implement the following methods:
+
++ `update()` Called every frame, do any general code updates here before drawing.
++ `draw()` This draws the Node. Override this method and do any OpenGL drawing here. When this method is called all transforms have been applied to the Node (i.e. position, scale, rotation), so everything is relative to the Node's (0,0) origin.
++ `getBounds()` This is necessary for any hit-testing of an object. Return a ci::Rectf with the Top Left and Bottom Right of the content drawn (or a wider area if you'd like to expand the hit area). For example, the po::scene::Image class returns the top left as 0,0 (relative to the Node's origin) and the width and height of the associated `ci::gl::TextureRef`.
+
+		ci::Rectf Image::getBounds()
+		{
+			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
+		}
+		
+		IMAGE EXPLAINING BOUNDS HERE?
+		
+
+Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so none of the above methods are necessary.
+
 ## History
 
 [Potion](http://www.potiondesign.com) is an interactive design and development studio based in New York City. [Potion](http://www.potiondesign.com) was founded in 2005 with the idea of bringing interaction beyond the desktop and into the real world. At the time the tools for doing this type of work were few and far between, and most of our work involved writing many things from scratch. Examples include Vision Systems, custom touchscreens, and numerous OpenGL implementations.
 
 As Potion began to grow, our OpenGL work slowly started to evolve into our internal framework [poCode](http://www.pocode.org/). We executed many projects and improved [poCode](http://www.pocode.org/) over the course of nearly 6 years, but supporting the basic infrastructure for a growing number of platforms, library updates and devices soon became a larger task than we could handle. 
 
-Around 2010 a number of open-source C++ frameworks had began to emerge that covered a lot of the basic functionality (and beyond) of [poCode](http://www.pocode.org/), and they also began to amass a large base of users. At the same time, the core feature of [poCode](http://www.pocode.org/) that we used for every project was the scene graph, and there did not seem to be a clear implementation of this in any other frameworks.
+Around 2010 a number of open-source C++ frameworks had began to emerge that covered a lot of the basic functionality (and beyond) of [poCode](http://www.pocode.org/), and they also began to amass a large base of users. At the same time, the core feature of [poCode](http://www.pocode.org/) that we used for every project was the scene graph, and there did not seem to be a clearly superior implementation of this in any other frameworks.
 
-[Potion](http://www.potiondesign.com) made the decision in 2014 to move to [Cinder](http://libcinder.org/), and at the same time rewrite our scene graph to work on top of all of the great work that the [Cinder](http://libcinder.org/) team had done and continues to do. Since then we have planned, written, tested, re-planned, and rewritten our scene graph while using it to complete 2 large-scale interactive installations.
+[Potion](http://www.potiondesign.com) made the decision in 2014 to move to [Cinder](http://libcinder.org/), and at the same time rewrite our scene graph to work on top of all of the great work that the [Cinder](http://libcinder.org/) team had done (and continue to do). Since then we have planned, written, tested, re-planned, and rewritten our scene graph while using it to complete several large-scale interactive installations.
 
 We now feel ready to release po::scene, a 2D scene graph built on top of [Cinder](http://libcinder.org/). It is a tool that we find extremely useful, and we're hoping others do as well. It is not right for every project, but we are hopeful that there are enough people out there doing similar work so that it will help save a few people from rewriting scene graphs from scratch for each project. We would love it if others gave it a try and let us know what they think. We're happy to answer any questions (within reason) and respond to pull requests, address bugs, etc.
 
