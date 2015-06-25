@@ -16,6 +16,8 @@ float saturation = 0.5f;
 
 ci::Color boundsColor(1.0f, 1.0f, 1.0f);
 
+float scaleIncrease = 0.1f;
+
 BoundsSampleRef BoundsSample::create()
 {
     BoundsSampleRef ref(new BoundsSample());
@@ -90,6 +92,9 @@ void BoundsSample::setup()
     .setBoundsColor(boundsColor);
     
     ci::app::getWindow()->connectKeyDown(&BoundsSample::keyPressed, this);
+    
+    ShapeRef rect = Shape::createRect(400,400);
+    setMask(rect);
 }
 
 void BoundsSample::update()
@@ -117,7 +122,8 @@ void BoundsSample::update()
         ss << "\n\n" << getNodeInfo(mSelectedNode)
         << "\n---------------------------------"
         << "\n To rotate press 'r'"
-        << "\n To adjust alignment press 'a'";
+        << "\n To adjust alignment press 'a'"
+        << "\n To adjust scale press +/-";
     } else {
         ss << "\n\n Click a node to select\nand view/change attributes...";
     }
@@ -166,12 +172,19 @@ void BoundsSample::keyPressed(ci::app::KeyEvent &key)
             
             mSelectedNode->setAlignment(static_cast<po::scene::Alignment>(curAlignment));
         }
+            
+        case '+':
+            mSelectedNode->setScale(mSelectedNode->getScale() + ci::Vec2f(scaleIncrease, scaleIncrease));
             break;
+        
+        case '-':
+            mSelectedNode->setScale(mSelectedNode->getScale() - ci::Vec2f(scaleIncrease, scaleIncrease));
+            break;
+            
+            
         default:
             break;
     }
-    
-    std::cout << getHeight() << std::endl;
 }
 
 

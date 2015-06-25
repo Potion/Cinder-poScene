@@ -54,16 +54,15 @@ namespace po { namespace scene {
     static uint32_t OBJECT_UID		= 0;
     static const int ORIGIN_SIZE	= 2;
     
+    
+    // Masking Shader
     static ci::gl::GlslProgRef mMaskShader = nullptr;
     
     static const char *maskVertShader = GLSL(
-        uniform vec2 maskPosition;
-
         void main()
         {
-            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;	//	* vec4(1, -1, 1, 1);
+            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;
             gl_TexCoord[0]  = gl_MultiTexCoord0;
-            gl_TexCoord[1]  = gl_MultiTexCoord1;
         }
     );
     
@@ -71,22 +70,17 @@ namespace po { namespace scene {
         uniform sampler2D tex;
         uniform sampler2D mask;
 
-        uniform vec2 contentScale;
-        uniform vec2 maskPosition;
-
         void main(void)
         {
             vec2 c0 = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t);
-            vec2 c1 = (gl_TexCoord[0].st - maskPosition) * contentScale;
             
             vec4 rgbValue       = texture2D(tex, c0);
-            vec4 alphaValue     = texture2D(mask, c1);
+            vec4 alphaValue     = texture2D(mask, c0);
+            
             gl_FragColor.rgb    = rgbValue.rgb;
-            if ( c1.x > 0.0 && c1.x < 1.0 && c1.y > 0.0 && c1.y < 1.0 ) {
-                gl_FragColor.a = alphaValue.r * rgbValue.a;
-            } else {
-                gl_FragColor.a = 0.0;
-            }
+            gl_FragColor.a = alphaValue.a;
+            
+            //gl_FragColor = alphaValue;
         }
     );
 
@@ -125,11 +119,10 @@ namespace po { namespace scene {
     , mFrameDirty(true)
     , mVisible(true)
     , mInteractionEnabled(true)
-    , mCacheToFbo(false)
-    , mIsCapturingFbo(false)
-    , mIsMasked(false)
     , mHasScene(false)
     , mHasParent(false)
+    , mIsMasked(false)
+    , mMask(nullptr)
     {
         //	Initialize our animations
         initAttrAnimations();
@@ -138,7 +131,6 @@ namespace po { namespace scene {
     Node::~Node()
 	{
 		//	Make sure to clear the fbo w/Cinder bug fix
-        resetFbo();
         removeParent();
         removeScene();
         disconnectAllSignals();
@@ -180,22 +172,18 @@ namespace po { namespace scene {
     void Node::drawTree()
     {
         if (mVisible) {
-            //  Capture FBO if we need to
-            if (mCacheToFbo) captureFbo();
             
             //  Draw
             beginDrawTree();
             
-            if (!mCacheToFbo) {
+            if (!mIsMasked) {
                 draw();
+                finishDrawTree();
             } else {
-                //  This messes up a lot of stuff, needs to be looked into
-                //calculateMatrices();
-                matrixTree();
-                drawFbo();
+                captureMasked();
+                finishDrawTree();
+                drawMasked();
             }
-            
-            finishDrawTree();
         }
     }
 	
@@ -216,187 +204,108 @@ namespace po { namespace scene {
     
     
     //------------------------------------
-    //	Caching
+    //	Fbo Drawing
 	//------------------------------------
     
-    Node &Node::setCacheToFboEnabled(bool enabled, int width, int height) {
-        mCacheToFbo = enabled;
-        
-        if (mCacheToFbo) {
-            createFbo(width, height);
-        } else {
-            //	Clear the fbo
-			resetFbo();
-        }
-        
-        return *this;
-    }
     
-    
-    //	Generate a new fbo
-    bool Node::createFbo(int width, int height)
+    void Node::captureMasked()
     {
-        if (mFbo) resetFbo();
-
-        try {
-            //	Create the FBO
-            ci::gl::Fbo::Format format;
-            format.setSamples(1);
-            format.setColorInternalFormat(GL_RGBA);
-            format.enableDepthBuffer(false);
-            mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(width, height, format));
-        } catch (ci::gl::FboException) {
-            //	The main reason for failure is too big of a buffer
-            ci::app::console() << "po::Scene: Couldn't create FBO, please provide valid dimensions for your graphics card." << std::endl;
-            mCacheToFbo = false;
-            return false;
-        }
-        
-        mCacheToFbo = true;
-        return true;
-    }
-    
-    //
-    //	Bind the FBO and draw our heirarchy into it
-	//
-    void Node::captureFbo()
-    {
-        //	Save the window buffer
         ci::gl::SaveFramebufferBinding binding;
+        //	Save the window buffer
+        {
+            
+            //  Draw ourself into FBO
+            getScene()->getWindowFbo()->bindFramebuffer();
+            ci::gl::clear();
+            draw();
+        }
         
-        //	Save our matrix
-        ci::Area v = ci::gl::getViewport();
+        {
+            //  Draw mask into Masking FBO (replace with stencil buffer in GLNext)
+            getScene()->getStencilFbo()->bindFramebuffer();
+            ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
+            ci::gl::pushModelView();
+            //ci::gl::translate(-getPosition());
+            mMask->drawTree();
+            ci::gl::popModelView();
+        }
+    }
+    
+    void Node::drawMasked()
+    {
+        ci::gl::enableAlphaBlending();
         
-        //	We have to be visible, so if we aren't temporarily turn it on
-        bool visible = mVisible;
-        setVisible(true);
+        getScene()->getWindowFbo()->getTexture().setFlipped(true);
+        getScene()->getStencilFbo()->getTexture().setFlipped(true);
         
-        //	Set the viewport
-        ci::gl::setViewport(mFbo->getBounds());
+        //ci::gl::draw(getScene()->getWindowFbo()->getTexture());
+//        ci::gl::draw(getScene()->getStencilFbo()->getTexture());
+//        return;
         
-        //	Bind the FBO
-        mFbo->bindFramebuffer();
-        
-        //	Set Ortho camera to fbo bounds, save matrices and push camera
-        ci::gl::pushMatrices();
-		ci::gl::setMatricesWindow(mFbo->getSize(), true);
-       
-        //	Clear the FBO
-        ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
-        
-        //	Draw into the FBO
-		mIsCapturingFbo = true;
-        
-        draw();
+        // Bind FBO textures
+        getScene()->getWindowFbo()->getTexture().bind(0);
+        getScene()->getStencilFbo()->getTexture().bind(1);
 
-        mIsCapturingFbo = false;
-        
-        //	Set the camera up for the window
-        ci::gl::popMatrices();
-        
-        //	Return the viewport
-		ci::gl::setViewport(v);
-        
-        //	Return to previous visibility
-        setVisible(visible);
+        //	Bind Shader
+        mMaskShader->bind();
+
+        //	Set uniforms
+        mMaskShader->uniform("tex", 0);
+        mMaskShader->uniform("mask", 1);
+//        mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
+//        //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
+//        mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
+
+        //	Draw
+        ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
+
+        //	Restore everything
+        getScene()->getWindowFbo()->getTexture().unbind();
+        getScene()->getStencilFbo()->getTexture().unbind();
+        mMaskShader->unbind();
     }
     
     //
     //	Draw the fbo
 	//
-    void Node::drawFbo()
-    {
-        //	The fbo has premultiplied alpha, so we draw at full color
-        ci::gl::enableAlphaBlending();
-        ci::gl::color(ci::ColorAf::white());
-        
-        //	Flip the FBO texture since it's coords are reversed
-        ci::gl::Texture tex = mFbo->getTexture();
-        tex.setFlipped(true);
-        
-        if (mIsMasked) {
-            //	Use masking shader to draw FBO with mask
-            //	Bind the fbo and mask texture
-            tex.bind(0);
-            mMask->getTexture()->bind(1);
-            
-            //	Bind Shader
-            mMaskShader->bind();
-            
-            //	Set uniforms
-            mMaskShader->uniform("tex", 0);
-            mMaskShader->uniform("mask", 1);
-            mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
-            //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-            mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
-            
-            //	Draw
-            ci::gl::drawSolidRect(mFbo->getBounds());
-            
-            //	Restore everything
-            tex.unbind();
-            mMask->getTexture()->unbind();
-            mMaskShader->unbind();
-        } else {
-            //	Just draw the fbo
-            ci::gl::draw(tex, mFbo->getBounds());
-        }
-    }
-    
-    //
-    //	Cache to FBO and return the texture
-	//
-    ci::gl::TextureRef Node::createTexture()
-    {
-        //	Save caching state
-        bool alreadyCaching = mCacheToFbo;
-        
-        //	If we're not already caching, generate texture with FBO
-        if (!alreadyCaching) createFbo(getWidth(), getHeight());
-        
-        //	Check to make sure we could create the fbo
-        if (!mFbo) return nullptr;
-        
-        //	Capture the fbo
-        ci::gl::clear();
-        captureFbo();
-        
-        //	Save a ref to the texture
-        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(mFbo->getTexture()));
-        
-        //	Return caching state
-        mCacheToFbo = alreadyCaching;
-        
-        //	Clean up if we're not caching
-		if (!mCacheToFbo) resetFbo();
-        
-        //	Return the texture
-        return tex;
-    }
-    
-	//
-	//	Reset the FBO with Cinder bug fix
-	//	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
-    //
-    void Node::resetFbo()
-	{
-        GLuint depthTextureId = 0;
-        
-        //  Get the id of depth texture
-		if ( mCacheToFbo && mFbo != nullptr ) {
-			if (mFbo->getDepthTexture()) {
-				depthTextureId = mFbo->getDepthTexture().getId();
-			}
-        }
-		
-        //  Reset the FBO
-        mFbo.reset();
-        
-        //  Delete the depth texture (if necessary)
-        if (depthTextureId > 0) {
-            glDeleteTextures(1, &depthTextureId);
-        }
-	}
+//    void Node::drawFbo()
+//    {
+//        //	The fbo has premultiplied alpha, so we draw at full color
+//        ci::gl::enableAlphaBlending();
+//        ci::gl::color(ci::ColorAf::white());
+//        
+//        //	Flip the FBO texture since it's coords are reversed
+//        ci::gl::Texture tex = mFbo->getTexture();
+//        tex.setFlipped(true);
+//        
+//        if (mIsMasked) {
+//            //	Use masking shader to draw FBO with mask
+//            //	Bind the fbo and mask texture
+//            tex.bind(0);
+//            mMask->getTexture()->bind(1);
+//            
+//            //	Bind Shader
+//            mMaskShader->bind();
+//            
+//            //	Set uniforms
+//            mMaskShader->uniform("tex", 0);
+//            mMaskShader->uniform("mask", 1);
+//            mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
+//            //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
+//            mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
+//            
+//            //	Draw
+//            ci::gl::drawSolidRect(mFbo->getBounds());
+//            
+//            //	Restore everything
+//            tex.unbind();
+//            mMask->getTexture()->unbind();
+//            mMaskShader->unbind();
+//        } else {
+//            //	Just draw the fbo
+//            ci::gl::draw(tex, mFbo->getBounds());
+//        }
+//    }
 	
 	
     //------------------------------------
@@ -408,40 +317,29 @@ namespace po { namespace scene {
 	//
     void Node::setMask(ShapeRef mask)
     {
-        //	Try to cache to FBO
-        setCacheToFboEnabled(true, mask->getWidth(), mask->getHeight());
-        
-        if (mFbo) {
-            //	If successful, try to build the shader
-            if (!mMaskShader) {
-                try {
-                    mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
-                } catch (ci::gl::GlslProgCompileExc e) {
-                    ci::app::console() << "Could not load shader: " << e.what() << std::endl;
-                    return;
-                }
+        //	If successful, try to build the shader
+        if (!mMaskShader) {
+            try {
+                mMaskShader = ci::gl::GlslProg::create( maskVertShader, maskFragShader);
+            } catch (ci::gl::GlslProgCompileExc e) {
+                ci::app::console() << "Could not load shader: " << e.what() << std::endl;
+                return;
             }
-            
-            //	Set our vars
-            mMask       = mask;
-            mIsMasked   = true;
-            mCacheToFbo = true;
         }
+        
+        //	Set our vars
+        mMask       = mask;
+        mIsMasked   = true;
     }
 	
 	//
     //	Remove the mask, and stop caching to FBO unless requested
 	//
-    ShapeRef Node::removeMask(bool andStopCaching)
+    NodeRef Node::removeMask()
     {
         mIsMasked = false;
         
-        if (andStopCaching) {
-            mCacheToFbo = false;
-			resetFbo();
-        }
-        
-        ShapeRef mask = mMask;
+        NodeRef mask = mMask;
         mMask.reset();
         return mask;
     }
@@ -485,7 +383,6 @@ namespace po { namespace scene {
     {
         if(rotation >= 360.0f) {
             rotation = fmodf(rotation, 360.0f);
-            std::cout << rotation << std::endl;
         }
         
         mRotationAnim.stop();

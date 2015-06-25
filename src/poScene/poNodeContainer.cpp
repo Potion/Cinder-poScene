@@ -342,11 +342,6 @@ namespace po { namespace scene {
             childNode->drawTree();
         }
     }
-    
-    void NodeContainer::drawFbo()
-    {
-        Node::drawFbo();
-    }
 
 	
     //------------------------------------

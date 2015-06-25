@@ -34,7 +34,7 @@ void MaskingSampleApp::update()
 void MaskingSampleApp::draw()
 {
 	// clear out the window with black
-	gl::clear( Color( 0, 0, 0 ) );
+	gl::clear( Color( 1, 0, 0 ) );
     scene->draw();
 }
 

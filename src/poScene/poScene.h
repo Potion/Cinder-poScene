@@ -105,6 +105,10 @@ namespace po { namespace scene {
         void untrackChildNode(NodeRef node);
         std::vector<NodeRef> allChildren;
         
+        // Fbo's for use by nodes
+        std::shared_ptr<ci::gl::Fbo> getWindowFbo() { return mFbo; };
+        std::shared_ptr<ci::gl::Fbo> getStencilFbo() { return mStencilFbo; };
+        
     private:
 		//
         //	Each object gets its own draw order every frame.
@@ -122,6 +126,17 @@ namespace po { namespace scene {
 		//
         void processTrackingQueue();
         std::map<NodeRef, bool> mTrackingQueue;
+        
+        
+        
+        //
+        //  FBOs for caching + masking
+        void createFbos();
+        void resetFbos();
+        std::shared_ptr<ci::gl::Fbo> mFbo;
+        std::shared_ptr<ci::gl::Fbo> mStencilFbo;
+        
+        
 		
     };
 	

@@ -346,10 +346,7 @@ namespace po { namespace scene {
         // This is useful when the layout is complex but does not update regularly as an optimization, or to map the scene
         // as a texture.
         
-        //! Set FBO enabled
-        Node &setCacheToFboEnabled(bool enabled, int width, int height);
-        //! Get FBO enabled
-        bool getCachToFboEnabled() { return mCacheToFbo; };
+  
         //! Create an FBO, draw this node (and it's entire hierarchy if applicable) into it, and return the texture
         ci::gl::TextureRef createTexture();
         
@@ -361,11 +358,11 @@ namespace po { namespace scene {
         //! Set the mask
         void setMask(ShapeRef mask);
         //! Remove the mask
-        ShapeRef removeMask(bool andStopCaching = true);
+        NodeRef removeMask();
         //! Find if we have a mask or not
         bool hasMask() { if (!mMask) return false; return true; };
         //! Get the mask object
-        ShapeRef getMask() { return mMask; };
+        NodeRef getMask() { return mMask; };
         
         // Identifiers (Assigned from Scene)
         // Used by the scene to identifier the objects
@@ -442,23 +439,29 @@ namespace po { namespace scene {
         bool mBoundsDirty, mFrameDirty;
         
         //	Caching/FBO
-        //! Generate an FBO to draw into
-        bool createFbo(int width, int height);
-        //! Render our drawTree into the FBO
-        void captureFbo();
-        //! Clear our FBO and reset it (using Cinder hack with depth buffer to avoid memory leak)
-		void resetFbo();
-        //! Draw our FBO
-        virtual void drawFbo();
-        bool mIsCapturingFbo;
-        bool mCacheToFbo;
-        std::shared_ptr<ci::gl::Fbo> mFbo;
-        
-        // Masking
-        //! Draw with mask applied to FBO
+        void captureMasked();
         void drawMasked();
-        ShapeRef mMask;
+        po::scene::NodeRef mMask;
         bool mIsMasked;
+        
+        
+//        //! Generate an FBO to draw into
+//        bool createFbo();
+//        //! Render our drawTree into the FBO
+//        void captureFbo();
+//        //! Clear our FBO and reset it (using Cinder hack with depth buffer to avoid memory leak)
+//		void resetFbos();
+//        
+//        //! Draw our FBO
+//        virtual void drawFbo();
+//        bool mIsCapturingFbo;
+//        bool mCacheToFbo;
+//        
+//        // Masking
+//        //! Draw with mask applied to FBO
+//        void drawMasked();
+//        ShapeRef mMask;
+//        bool mIsMasked;
         
     private:
         // Private attributes

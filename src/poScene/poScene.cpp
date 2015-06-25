@@ -33,7 +33,7 @@
 #include "poNodeContainer.h"
 
 namespace po { namespace scene {
-	
+
     SceneRef Scene::create()
     {
         return create(NodeContainer::create());
@@ -50,13 +50,18 @@ namespace po { namespace scene {
     : mRootNode(rootNode)
     , mAutoCam(true)
     , eventCenter(EventCenter::create())
+    , mFbo(nullptr)
+    , mStencilFbo(nullptr)
     {
+        createFbos();
+        ci::app::getWindow()->getSignalResize().connect(std::bind(&Scene::createFbos, this));
     }
     
     Scene::~Scene()
     {
         mRootNode->removeAllChildren();
         mRootNode = nullptr;
+        resetFbos();
     }
     
     void Scene::update()
@@ -132,5 +137,63 @@ namespace po { namespace scene {
         
         mTrackingQueue.clear();
     }
+    
+    
+    
+    //------------------------------------
+    //	Fbos
+    //------------------------------------
+    
+    void Scene::createFbos()
+    {
+        if(mFbo) {
+            resetFbos();
+        }
+        
+        //	Create the FBO
+        ci::gl::Fbo::Format format;
+        format.setSamples(1);
+        format.setColorInternalFormat(GL_RGBA);
+        format.enableDepthBuffer(false);
+        
+        mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
+        mStencilFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
+    }
+    
+    
+    //
+    //	Reset the FBO with Cinder bug fix
+    //	see https://forum.libcinder.org/topic/constantly-changing-fbo-s-size-without-leak
+    //
+    void Scene::resetFbos()
+    {
+        GLuint fboDepthTextureId = 0;
+        GLuint stencilFboDepthTextureId = 0;
+        
+        // Get the id of depth texture
+        if (mFbo->getDepthTexture()) {
+            fboDepthTextureId = mFbo->getDepthTexture().getId();
+        }
+        
+        if(mStencilFbo->getDepthTexture()) {
+            stencilFboDepthTextureId = mStencilFbo->getDepthTexture().getId();
+        }
+        
+        // Reset the FBO
+        mFbo.reset();
+        mStencilFbo.reset();
+        
+        //  Delete the depth texture (if necessary)
+        if (fboDepthTextureId > 0) {
+            glDeleteTextures(1, &fboDepthTextureId);
+        }
+        
+        if (stencilFboDepthTextureId > 0) {
+            glDeleteTextures(1, &stencilFboDepthTextureId);
+        }
+
+    }
+    
+    
 	
 } } //  namespace po::scene

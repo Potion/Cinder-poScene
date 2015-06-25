@@ -21,8 +21,14 @@ void MaskingSample::setup()
 	ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("circle_mask_blurred.jpg")));
 	
 	//	Create the mask shape
-	mMask = Shape::create(maskTexture);
-	
+	//mMask = Shape::create(maskTexture);
+    mMask = Shape::createRect(100, 100);
+    mMask->setAlignment(Alignment::CENTER_CENTER);
+    mMask->setPosition(ci::app::getWindowWidth()/2, ci::app::getWindowHeight()/2);
+    ci::app::timeline().apply(&mMask->getRotationAnim(), 0.0f, 360.0f, 1.0f).loop();
+    ci::app::timeline().apply(&mMask->getScaleAnim(), ci::Vec2f(1.0f, 1.0f), ci::Vec2f(4.0f, 4.0f), 1.0f).loop().pingPong();
+    ci::app::timeline().apply(&mMask->getAlphaAnim(), 0.5f, 1.0f, 5.0f).loop().pingPong();
+    
 	//	Load the image texture
 	ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("cat.jpg")));
 	
@@ -31,19 +37,21 @@ void MaskingSample::setup()
 	addChild(mImage);
 	
 	//	Set the image mask
-	mImage->setMask(mMask);
+	setMask(mMask);
 	
 	//	Connect mouse event
-	getSignal(MouseEvent::MOVE_INSIDE).connect(std::bind(&MaskingSample::onMouseMove, this, std::placeholders::_1));
+	getSignal(MouseEvent::MOVE).connect(std::bind(&MaskingSample::onMouseMove, this, std::placeholders::_1));
 }
 
 void MaskingSample::onMouseMove(po::scene::MouseEvent &event)
 {
 	// Calculate the mask position based on the mouse
-	ci::Vec2f maskPos = ci::Vec2f(event.getWindowPos().x - (mMask->getWidth()/2), event.getWindowPos().y - (mMask->getHeight()/2));
+	ci::Vec2f maskPos = event.getWindowPos();
 	
 	//	Set the mask position
-	mMask->setPosition(maskPos);
+	//mMask->setPosition(maskPos);
+    
+    std::cout << maskPos << std::endl;
 }
 
 void MaskingSample::keyUp(ci::app::KeyEvent &event)
