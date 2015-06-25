@@ -1,21 +1,21 @@
-#include "VideoPlayerSample.h"
+#include "VideoSampleAdvanced.h"
 
 using namespace po::scene;
 
-VideoPlayerSampleRef VideoPlayerSample::create() 
+VideoSampleAdvancedRef VideoSampleAdvanced::create()
 {
-    VideoPlayerSampleRef node(new VideoPlayerSample());
+    VideoSampleAdvancedRef node(new VideoSampleAdvanced());
     node->setup();
     return node;
 }
 
-VideoPlayerSample::VideoPlayerSample()
+VideoSampleAdvanced::VideoSampleAdvanced()
 : mNumMovies(3)
 , mIsControllerInPosition(false)
 {
 }
 
-void VideoPlayerSample::setup() 
+void VideoSampleAdvanced::setup()
 {
     
     //  create and add the main player
@@ -24,7 +24,7 @@ void VideoPlayerSample::setup()
     mPlayer->setPosition(ci::app::getWindowWidth() / 2, -mPlayer->getHeight() / 2); // centered, just above screen
     mPlayer->setAlpha(0.f);
     addChild(mPlayer);
-
+    
     //  set location for top/center of primary display
     mPrimaryDisplayerPosition = ci::Vec2f(ci::app::getWindowWidth() / 2, 50);
     
@@ -36,7 +36,7 @@ void VideoPlayerSample::setup()
         moviePath[2] = ci::app::getAssetPath("Video-lBP2Ij86Ua4.mp4");
         
         ci::qtime::MovieGlRef qtMovie[3];
- 
+        
         //  load the movies, create po::scene movie references, then create MovieThumb objects
         for (int i = 0; i < mNumMovies; i++) {
             qtMovie[i] = ci::qtime::MovieGl::create(moviePath[i]);
@@ -53,22 +53,22 @@ void VideoPlayerSample::setup()
     }
 }
 
-void VideoPlayerSample::setUpMovies()
+void VideoSampleAdvanced::setUpMovies()
 {
     float thumbnailScale = 0.2f;
     float screenInterval = ci::app::getWindowWidth() / (mNumMovies * 2);
     
     for (int i = 0; i < mNumMovies; i++) {
-
+        
         mMovies[i]->setAlignment(po::scene::Alignment::CENTER_CENTER);
-
+        
         //  set scale and position of movie when it's the main one being displayed
         
         //  set scale of movie so it plays at width of 640 px (same as mPlayer width)
         float actualWidth = mMovies[i]->getUnderlyingMovie()->getWidth();
         float scale = mPlayer->getWidth() / actualWidth;
         mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
-
+        
         //  set position based on its height
         float yOffsetForPlayer = (mMovies[i]->getUnderlyingMovie()->getHeight() * scale) * 0.5;
         ci::Vec2f playerPosition(mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer);
@@ -84,40 +84,40 @@ void VideoPlayerSample::setUpMovies()
         mMovies[i]->setPosition(mMovies[i]->getThumbnailPos());
         
         //  add listeners
-        mMovies[i]->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoPlayerSample::onThumbnailClick, this, std::placeholders::_1));
-        mMovies[i]->getSignalAnimationComplete().connect(std::bind(&VideoPlayerSample::onAnimationComplete, this, std::placeholders::_1));
+        mMovies[i]->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoSampleAdvanced::onThumbnailClick, this, std::placeholders::_1));
+        mMovies[i]->getSignalAnimationComplete().connect(std::bind(&VideoSampleAdvanced::onAnimationComplete, this, std::placeholders::_1));
     }
 }
 
-void VideoPlayerSample::onThumbnailClick(MouseEvent &event)
+void VideoSampleAdvanced::onThumbnailClick(MouseEvent &event)
 {
     NodeRef node = event.getSource();
     MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(node);
     
     for (int i = 0; i < mNumMovies; i++) {
-
+        
         if (mMovies[i] == thumbnail) {
-
+            
             //  begin animation to primary displayer position, adjusted for center alignment
             mMovies[i]->animateToPlayer();
             animateControllerToPos(mMovies[i]);
-
+            
             //  move primary movie to top position
             moveChildToFront(mMovies[i]);
         } else if (!mMovies[i]->getIsHome()) {
-
+            
             //  move other movies back if they're not in their home positions
             mMovies[i]->animateOutOfPlayerPosition();
         }
     }
 }
 
-void VideoPlayerSample::onAnimationComplete(MovieThumbRef thumbnail)
+void VideoSampleAdvanced::onAnimationComplete(MovieThumbRef thumbnail)
 {
     mPlayer->setPrimaryMovie(thumbnail->getUnderlyingMovie());
 }
 
-void VideoPlayerSample::animateControllerToPos(MovieThumbRef movie)
+void VideoSampleAdvanced::animateControllerToPos(MovieThumbRef movie)
 {
     //  animate player controller to 50 px below the movie
     

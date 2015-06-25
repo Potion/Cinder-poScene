@@ -12,7 +12,7 @@ typedef std::shared_ptr<PlayerNode> PlayerNodeRef;
 
 class PlayerNode
 : public po::scene::NodeContainer {
-
+    
 public:
     static PlayerNodeRef    create();
     void                    setup();

@@ -10,25 +10,25 @@
 // In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
 // Hit [+] at the bottom, and choose QuickTime.framework from the list.
 
-class VideoPlayerSample;
-typedef std::shared_ptr<VideoPlayerSample> VideoPlayerSampleRef;
+class VideoSampleAdvanced;
+typedef std::shared_ptr<VideoSampleAdvanced> VideoSampleAdvancedRef;
 
-class VideoPlayerSample
+class VideoSampleAdvanced
 : public po::scene::NodeContainer
 {
 public:
-    static VideoPlayerSampleRef create();
+    static VideoSampleAdvancedRef create();
     
     void setup();
     
 protected:
-	VideoPlayerSample();
-
+    VideoSampleAdvanced();
+    
 private:
     
     PlayerControllerRef     mPlayer;
     MovieThumbRef           mMovies[3];
-
+    
     const int               mNumMovies;
     void                    setUpMovies();
     void                    onThumbnailClick(po::scene::MouseEvent &event);

@@ -8,22 +8,22 @@
 // Hit [+] at the bottom, and choose QuickTime.framework from the list.
 
 
-class VideoSimpleSample;
-typedef std::shared_ptr<VideoSimpleSample> VideoSimpleSampleRef;
+class VideoSample;
+typedef std::shared_ptr<VideoSample> VideoSampleRef;
 
-class VideoSimpleSample
+class VideoSample
 : public po::scene::NodeContainer
 {
 public:
-    static VideoSimpleSampleRef create();
+    static VideoSampleRef create();
     
     void setup();
     
 protected:
-	VideoSimpleSample();
-
+    VideoSample();
+    
 private:
     PlayerNodeRef               mPlayer;
     void                        spinPlayer();
-
+    
 };

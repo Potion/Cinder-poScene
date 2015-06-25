@@ -10,8 +10,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C096B5AD-3CB0-4FFE-AE9F-6022E3CE3AA9}</ProjectGuid>
-    <RootNamespace>VideoPlayerSample</RootNamespace>
+    <ProjectGuid>{7707B0FE-E083-45BA-84D7-25664AEAAC62}</ProjectGuid>
+    <RootNamespace>VideoSampleAdvanced</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -107,7 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\VideoPlayerSample.h" />
+    <ClInclude Include="..\src\VideoSampleAdvanced.h" />
     <ClInclude Include="..\..\..\src\poScene\poEventCenter.h" />
     <ClInclude Include="..\..\..\src\poScene\poEvents.h" />
     <ClInclude Include="..\..\..\src\poScene\poImage.h" />
@@ -121,8 +121,8 @@
     <ClInclude Include="..\..\..\src\poScene\poVideo.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\VideoPlayerSampleApp.cpp" />
-    <ClCompile Include="..\src\VideoPlayerSample.cpp" />
+    <ClCompile Include="..\src\VideoSampleAdvancedApp.cpp" />
+    <ClCompile Include="..\src\VideoSampleAdvanced.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poEvents.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poImage.cpp" />

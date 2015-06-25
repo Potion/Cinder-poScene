@@ -1,20 +1,20 @@
-#include "VideoSimpleSample.h"
+#include "VideoSample.h"
 #include "poShape.h"
 
 using namespace po::scene;
 
-VideoSimpleSampleRef VideoSimpleSample::create() 
+VideoSampleRef VideoSample::create()
 {
-    VideoSimpleSampleRef node(new VideoSimpleSample());
+    VideoSampleRef node(new VideoSample());
     node->setup();
     return node;
 }
 
-VideoSimpleSample::VideoSimpleSample()
+VideoSample::VideoSample()
 {
 }
 
-void VideoSimpleSample::setup() 
+void VideoSample::setup()
 {
     //  We've built very simple play/stop commands into the player itself, so we just create and add it
     mPlayer = PlayerNode::create();
@@ -27,11 +27,11 @@ void VideoSimpleSample::setup()
     ShapeRef spinner = Shape::create(spinnerTex);
     spinner->setAlignment(po::scene::Alignment::CENTER_CENTER);
     spinner->setPosition(ci::app::getWindowWidth() * 0.15, ci::app::getWindowHeight() / 2);
-    spinner->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoSimpleSample::spinPlayer, this));
+    spinner->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoSample::spinPlayer, this));
     addChild(spinner);
 }
 
-void VideoSimpleSample::spinPlayer()
+void VideoSample::spinPlayer()
 {
     float currentRot = mPlayer->getRotation();
     if (currentRot > 359.0) {
