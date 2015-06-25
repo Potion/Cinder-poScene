@@ -27,7 +27,6 @@ void MaskingSample::setup()
     mMask->setPosition(ci::app::getWindowWidth()/2, ci::app::getWindowHeight()/2);
     ci::app::timeline().apply(&mMask->getRotationAnim(), 0.0f, 360.0f, 1.0f).loop();
     ci::app::timeline().apply(&mMask->getScaleAnim(), ci::Vec2f(1.0f, 1.0f), ci::Vec2f(4.0f, 4.0f), 1.0f).loop().pingPong();
-    ci::app::timeline().apply(&mMask->getAlphaAnim(), 0.5f, 1.0f, 5.0f).loop().pingPong();
     
 	//	Load the image texture
 	ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("cat.jpg")));
@@ -49,7 +48,7 @@ void MaskingSample::onMouseMove(po::scene::MouseEvent &event)
 	ci::Vec2f maskPos = event.getWindowPos();
 	
 	//	Set the mask position
-	//mMask->setPosition(maskPos);
+	mMask->setPosition(maskPos);
     
     std::cout << maskPos << std::endl;
 }
