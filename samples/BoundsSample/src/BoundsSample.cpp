@@ -1,5 +1,6 @@
 #include "BoundsSample.h"
 #include "poShape.h"
+#include "poImage.h"
 
 using namespace po::scene;
 
@@ -70,7 +71,6 @@ void BoundsSample::setup()
     .addChild(mNodeContainerTextBox)
     .getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&BoundsSample::nodeMouseOver, this, std::placeholders::_1));
     
-    addChild(mNodeContainer);
     
     // Add some shapes
     int yPos = 175;
@@ -85,6 +85,8 @@ void BoundsSample::setup()
         mNodeContainer->addChild(s);
     }
     
+    addChild(mNodeContainer);
+    
     // Setup Scene (this class is the root node)
     setName("Scene (Scene Root Node)")
     .setPosition(ci::Vec2f(250, 50))
@@ -93,8 +95,8 @@ void BoundsSample::setup()
     
     ci::app::getWindow()->connectKeyDown(&BoundsSample::keyPressed, this);
     
-    ShapeRef rect = Shape::createRect(400,400);
-    setMask(rect);
+//    ShapeRef rect = Shape::createRect(400,400);
+//    setMask(rect);
 }
 
 void BoundsSample::update()

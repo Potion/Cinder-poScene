@@ -207,7 +207,6 @@ namespace po { namespace scene {
     //	Fbo Drawing
 	//------------------------------------
     
-    
     void Node::captureMasked()
     {
         ci::gl::SaveFramebufferBinding binding;
@@ -235,13 +234,6 @@ namespace po { namespace scene {
     {
         ci::gl::enableAlphaBlending();
         
-        getScene()->getWindowFbo()->getTexture().setFlipped(true);
-        getScene()->getStencilFbo()->getTexture().setFlipped(true);
-        
-        //ci::gl::draw(getScene()->getWindowFbo()->getTexture());
-//        ci::gl::draw(getScene()->getStencilFbo()->getTexture());
-//        return;
-        
         // Bind FBO textures
         getScene()->getWindowFbo()->getTexture().bind(0);
         getScene()->getStencilFbo()->getTexture().bind(1);
@@ -252,9 +244,6 @@ namespace po { namespace scene {
         //	Set uniforms
         mMaskShader->uniform("tex", 0);
         mMaskShader->uniform("mask", 1);
-//        mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
-//        //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-//        mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
 
         //	Draw
         ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
@@ -264,48 +253,6 @@ namespace po { namespace scene {
         getScene()->getStencilFbo()->getTexture().unbind();
         mMaskShader->unbind();
     }
-    
-    //
-    //	Draw the fbo
-	//
-//    void Node::drawFbo()
-//    {
-//        //	The fbo has premultiplied alpha, so we draw at full color
-//        ci::gl::enableAlphaBlending();
-//        ci::gl::color(ci::ColorAf::white());
-//        
-//        //	Flip the FBO texture since it's coords are reversed
-//        ci::gl::Texture tex = mFbo->getTexture();
-//        tex.setFlipped(true);
-//        
-//        if (mIsMasked) {
-//            //	Use masking shader to draw FBO with mask
-//            //	Bind the fbo and mask texture
-//            tex.bind(0);
-//            mMask->getTexture()->bind(1);
-//            
-//            //	Bind Shader
-//            mMaskShader->bind();
-//            
-//            //	Set uniforms
-//            mMaskShader->uniform("tex", 0);
-//            mMaskShader->uniform("mask", 1);
-//            mMaskShader->uniform ( "contentScale", ci::Vec2f((float)tex.getWidth() / (float)mMask->getWidth(), (float)tex.getHeight() / (float)mMask->getHeight() ) );
-//            //mMaskShader.uniform ( "maskPosition", ci::Vec2f(0.f, 0.f));
-//            mMaskShader->uniform ( "maskPosition", mMask->getPosition()/ci::Vec2f(mFbo->getWidth(), mFbo->getHeight()) );
-//            
-//            //	Draw
-//            ci::gl::drawSolidRect(mFbo->getBounds());
-//            
-//            //	Restore everything
-//            tex.unbind();
-//            mMask->getTexture()->unbind();
-//            mMaskShader->unbind();
-//        } else {
-//            //	Just draw the fbo
-//            ci::gl::draw(tex, mFbo->getBounds());
-//        }
-//    }
 	
 	
     //------------------------------------
@@ -342,6 +289,61 @@ namespace po { namespace scene {
         NodeRef mask = mMask;
         mMask.reset();
         return mask;
+    }
+    
+    
+    //------------------------------------
+    //	Texture Caching
+    //------------------------------------
+    
+    ci::gl::TextureRef Node::createTexture()
+    {
+        //	Save the window buffer
+        ci::gl::SaveFramebufferBinding binding;
+        
+        //	Save our matrix
+        ci::Area v = ci::gl::getViewport();
+        
+        //	We have to be visible, so if we aren't temporarily turn it on
+        bool visible = mVisible;
+        setVisible(true);
+        
+        // Create an FBO to draw into
+        ci::gl::Fbo::Format format;
+        format.setSamples(1);
+        format.setColorInternalFormat(GL_RGBA);
+        format.enableDepthBuffer(false);
+        
+        ci::gl::Fbo fbo(getWidth(), getHeight(), format);
+        
+        //	Set the viewport
+        ci::gl::setViewport(fbo.getBounds());
+        
+        //	Bind the FBO
+        fbo.bindFramebuffer();
+        
+        //	Set Ortho camera to fbo bounds, save matrices and push camera
+        ci::gl::pushMatrices();
+        ci::gl::setMatricesWindow(fbo.getSize(), true);
+        
+        //	Clear the FBO
+        ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
+        
+        //	Draw into the FBO
+        draw();
+        
+        //	Set the camera up for the window
+        ci::gl::popMatrices();
+        
+        //	Return the viewport
+        ci::gl::setViewport(v);
+        
+        //	Return to previous visibility
+        setVisible(visible);
+        
+        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(fbo.getTexture()));
+        tex->setFlipped(true);
+        return tex;
     }
 
     

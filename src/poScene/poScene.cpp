@@ -158,6 +158,9 @@ namespace po { namespace scene {
         
         mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
         mStencilFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
+        
+        mFbo->getTexture().setFlipped(true);
+        mStencilFbo->getTexture().setFlipped(true);
     }
     
     
