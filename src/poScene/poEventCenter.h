@@ -123,7 +123,8 @@ namespace po { namespace scene {
         {
             void notifyCallbacks(std::vector<NodeRef> &nodes, MouseEvent event)
             {
-                MouseEvent::Type callbackType;
+                
+                MouseEvent::Type callbackType = MouseEvent::Type::UNKOWN;
                 switch (event.getType()) {
                     case MouseEvent::Type::DOWN:
                         callbackType = MouseEvent::Type::DOWN_INSIDE;
@@ -137,6 +138,12 @@ namespace po { namespace scene {
                     case MouseEvent::Type::UP:
                         callbackType = MouseEvent::Type::UP_INSIDE;
 						break;
+                }
+                
+                // If we didnt' handle it (i.e. wheel event) just return
+                if(callbackType == MouseEvent::Type::UNKOWN)
+                {
+                    return;
                 }
                 
                 event.setType(callbackType);
@@ -176,7 +183,7 @@ namespace po { namespace scene {
             void notifyCallbacks(std::vector<NodeRef> &nodes, TouchEvent event)
             {
                 //	Set the callback type
-                TouchEvent::Type callbackType;
+                TouchEvent::Type callbackType = TouchEvent::Type::UNKOWN;
                 switch (event.getType()) {
                     case TouchEvent::Type::BEGAN:
                         callbackType = TouchEvent::Type::BEGAN_INSIDE;
@@ -187,6 +194,12 @@ namespace po { namespace scene {
                     case TouchEvent::Type::ENDED:
                         callbackType = TouchEvent::Type::ENDED_INSIDE;
 						break;
+                }
+                
+                // If we didnt' handle it just return
+                if(callbackType == TouchEvent::Type::UNKOWN)
+                {
+                    return;
                 }
                 
                 event.setType(callbackType);

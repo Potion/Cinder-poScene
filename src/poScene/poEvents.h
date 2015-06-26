@@ -115,7 +115,8 @@ namespace po { namespace scene {
             DRAG_INSIDE,
             UP,
             UP_INSIDE,
-            WHEEL
+            WHEEL,
+            UNKOWN
         };
         
         MouseEvent(ci::app::MouseEvent event, Type type);
@@ -149,7 +150,8 @@ namespace po { namespace scene {
             MOVED,
             MOVED_INSIDE,
             ENDED,
-            ENDED_INSIDE
+            ENDED_INSIDE,
+            UNKOWN
         };
         
         TouchEvent(ci::app::TouchEvent::Touch event, Type type);
