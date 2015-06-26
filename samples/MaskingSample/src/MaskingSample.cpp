@@ -1,4 +1,5 @@
 #include "MaskingSample.h"
+#include "cinder/imageIo.h"
 
 //	photo credit: <a href="http://www.flickr.com/photos/37539977@N00/600757415">slowly getting into the box</a> via <a href="http://photopin.com">photopin</a> <a href="https://creativecommons.org/licenses/by/2.0/">(license)</a>
 

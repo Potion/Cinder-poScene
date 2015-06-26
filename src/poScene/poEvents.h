@@ -96,7 +96,6 @@ namespace po { namespace scene {
     
     //------------------------------------
     //	Mouse Event
-		#pragma mark - Mouse Event
 	//------------------------------------
     
     class MouseEvent
@@ -135,7 +134,6 @@ namespace po { namespace scene {
 	
     //------------------------------------
     //	Touch Event
-		#pragma mark - Touch Event
 	//------------------------------------
     
     class TouchEvent

@@ -244,7 +244,7 @@ namespace po { namespace scene {
         // Scales around the origin of the node
         
         //! Set the scale with a ci::Vec2f
-        Node &setScale(ci::Vec2f scale) { setScale(scale.x, scale.y); };
+        Node &setScale(ci::Vec2f scale) { return setScale(scale.x, scale.y); };
         //! Set the scale, convenience method
         Node &setScale(float x, float y);
         //! Get the scale

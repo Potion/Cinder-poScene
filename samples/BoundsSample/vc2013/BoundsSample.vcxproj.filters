@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -41,70 +42,70 @@
     <ClCompile Include="..\src\BoundsSample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poEventCenter.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poEvents.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poImage.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poMatrixSet.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poNode.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poNodeContainer.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poScene.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poShape.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poTextBox.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poTextureFit.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\blocks\poScene\src\poScene\poVideo.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poEventCenter.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poEvents.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poEvents.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poImage.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poImage.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poMatrixSet.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poMatrixSet.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poNode.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poNode.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poNodeContainer.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poNodeContainer.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poScene.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poScene.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poShape.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poShape.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\blocks\poScene\src\poScene\poTextBox.cpp">
+    <ClCompile Include="..\..\..\src\poScene\poTextBox.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poEventCenter.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poEvents.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poImage.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poMatrixSet.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poNode.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poNodeContainer.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poScene.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poShape.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poTextBox.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poTextureFit.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\poVideo.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

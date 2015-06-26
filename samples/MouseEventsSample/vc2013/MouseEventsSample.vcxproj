@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Indicator.h" />
     <ClInclude Include="..\src\MouseEventsSample.h" />
     <ClInclude Include="..\..\..\src\poScene\poEventCenter.h" />
     <ClInclude Include="..\..\..\src\poScene\poEvents.h" />
@@ -119,8 +121,10 @@
     <ClInclude Include="..\..\..\src\poScene\poTextBox.h" />
     <ClInclude Include="..\..\..\src\poScene\poTextureFit.h" />
     <ClInclude Include="..\..\..\src\poScene\poVideo.h" />
+    <ClInclude Include="..\src\Square.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Indicator.cpp" />
     <ClCompile Include="..\src\MouseEventsSampleApp.cpp" />
     <ClCompile Include="..\src\MouseEventsSample.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp" />
@@ -132,6 +136,7 @@
     <ClCompile Include="..\..\..\src\poScene\poScene.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poShape.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poTextBox.cpp" />
+    <ClCompile Include="..\src\Square.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

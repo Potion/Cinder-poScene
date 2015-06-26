@@ -1,5 +1,6 @@
 #include "PlayerController.h"
 #include "poShape.h"
+#include "cinder/imageIo.h"
 
 using namespace po::scene;
 

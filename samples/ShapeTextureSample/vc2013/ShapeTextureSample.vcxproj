@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Indicator.h" />
     <ClInclude Include="..\src\ShapeTextureSample.h" />
     <ClInclude Include="..\..\..\src\poScene\poEventCenter.h" />
     <ClInclude Include="..\..\..\src\poScene\poEvents.h" />
@@ -121,6 +123,7 @@
     <ClInclude Include="..\..\..\src\poScene\poVideo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\Indicator.cpp" />
     <ClCompile Include="..\src\ShapeTextureSampleApp.cpp" />
     <ClCompile Include="..\src\ShapeTextureSample.cpp" />
     <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp" />

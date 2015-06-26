@@ -1,5 +1,5 @@
 #include "TextSample.h"
-
+#include "cinder\ImageIo.h"
 TextSampleRef TextSample::create() 
 {
     TextSampleRef node(new TextSample());

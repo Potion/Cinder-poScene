@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -49,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\..\..\\include";"..\..\..\..\..\\boost";..\..\..\..\Box2D\src;..\blocks\poScene\src\poScene</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\..\..\src\poScene</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -106,6 +107,17 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\poScene\poEventCenter.h" />
+    <ClInclude Include="..\..\..\src\poScene\poEvents.h" />
+    <ClInclude Include="..\..\..\src\poScene\poImage.h" />
+    <ClInclude Include="..\..\..\src\poScene\poMatrixSet.h" />
+    <ClInclude Include="..\..\..\src\poScene\poNode.h" />
+    <ClInclude Include="..\..\..\src\poScene\poNodeContainer.h" />
+    <ClInclude Include="..\..\..\src\poScene\poScene.h" />
+    <ClInclude Include="..\..\..\src\poScene\poShape.h" />
+    <ClInclude Include="..\..\..\src\poScene\poTextBox.h" />
+    <ClInclude Include="..\..\..\src\poScene\poTextureFit.h" />
+    <ClInclude Include="..\..\..\src\poScene\poVideo.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\AnimationSample.h" />
     <ClInclude Include="..\..\..\..\Box2D\src\Box2D\Collision\b2BroadPhase.h" />
@@ -154,19 +166,19 @@
     <ClInclude Include="..\..\..\..\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\..\..\..\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\..\..\..\Box2D\src\Box2D\Box2d.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poEventCenter.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poEvents.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poImage.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poMatrixSet.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poNode.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poNodeContainer.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poScene.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poShape.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poTextBox.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poTextureFit.h" />
-    <ClInclude Include="..\blocks\poScene\src\poScene\poVideo.h" />
+    <ClInclude Include="..\src\AnimationSquare.h" />
+    <ClInclude Include="..\src\Indicator.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poEvents.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poImage.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poMatrixSet.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poNode.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poNodeContainer.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poScene.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poShape.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\poTextBox.cpp" />
     <ClCompile Include="..\src\AnimationSampleApp.cpp" />
     <ClCompile Include="..\src\AnimationSample.cpp" />
     <ClCompile Include="..\..\..\..\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
@@ -214,15 +226,8 @@
     <ClCompile Include="..\..\..\..\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\..\..\..\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\..\..\..\Box2D\src\Box2D\Rope\b2Rope.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poEventCenter.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poEvents.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poImage.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poMatrixSet.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poNode.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poNodeContainer.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poScene.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poShape.cpp" />
-    <ClCompile Include="..\blocks\poScene\src\poScene\poTextBox.cpp" />
+    <ClCompile Include="..\src\AnimationSquare.cpp" />
+    <ClCompile Include="..\src\Indicator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
