@@ -8,6 +8,7 @@ VideoSampleRef VideoSample::create()
 {
     VideoSampleRef node(new VideoSample());
     node->setup();
+	node->setDrawBounds(true);
     return node;
 }
 
@@ -34,7 +35,8 @@ void VideoSample::setup()
 
 void VideoSample::spinPlayer()
 {
-    float currentRot = mPlayer->getRotation();
+	ci::app::console() << "PlayerNode::spinning" << std::endl;
+	float currentRot = mPlayer->getRotation();
     if (currentRot > 359.0) {
         mPlayer->setRotation(0.f);
     }

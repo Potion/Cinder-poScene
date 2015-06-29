@@ -50,7 +50,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\..\..\\include";"..\..\..\..\..\\boost";..\..\..\src\poScene</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\src\poScene;..\..\..\blocks\QuickTime\include\msw;..\..\..\blocks\QuickTime\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -64,14 +64,14 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies);..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
       <DataExecutionPrevention />
       <TargetMachine>MachineX86</TargetMachine>
-      <IgnoreSpecificDefaultLibraries>LIBCMT;LIBCPMT</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,7 +91,7 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies);..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>"..\..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>

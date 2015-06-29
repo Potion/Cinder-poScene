@@ -23,6 +23,8 @@ void PlayerNode::setup()
         movieRef = ci::qtime::MovieGl::create(moviePath);
         mVideoDisplayer->setMovieRef(movieRef);
         mVideoDisplayer->getMovieRef()->play();
+		//mVideoDisplayer->drawBounds = true;
+		//ci::app::console() << "PlayerNode::setup: Movie loaded" << std::endl;
     } catch (...) {
         ci::app::console() << "PlayerNode::setup: Failed to load movie" << std::endl;
     }
