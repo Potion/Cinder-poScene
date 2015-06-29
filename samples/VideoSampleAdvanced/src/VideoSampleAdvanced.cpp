@@ -43,6 +43,7 @@ void VideoSampleAdvanced::setup()
             VideoGlRef poMovie = VideoGl::create();
             poMovie->setMovieRef(qtMovie[i]);
             mMovies[i] = MovieThumb::create(poMovie);
+			//mMovies[i]->setDrawBounds(true);
             addChild(mMovies[i]);
         }
         

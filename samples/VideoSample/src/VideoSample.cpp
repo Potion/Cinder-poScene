@@ -8,7 +8,6 @@ VideoSampleRef VideoSample::create()
 {
     VideoSampleRef node(new VideoSample());
     node->setup();
-	node->setDrawBounds(true);
     return node;
 }
 

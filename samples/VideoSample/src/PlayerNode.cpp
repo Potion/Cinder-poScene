@@ -15,20 +15,21 @@ PlayerNode::PlayerNode()
 void PlayerNode::setup()
 {
     //  create and add the video displayer
-    ci::fs::path moviePath = ci::app::getAssetPath("phoebe.mp4");
-    mVideoDisplayer = VideoGl::create();
+    //ci::fs::path moviePath = ci::app::getAssetPath("phoebe.mp4");
+	ci::fs::path moviePath = ci::app::getAssetPath("test.mp4");
+	mVideoDisplayer = VideoGl::create();
     
     try {
         ci::qtime::MovieGlRef movieRef;
         movieRef = ci::qtime::MovieGl::create(moviePath);
         mVideoDisplayer->setMovieRef(movieRef);
         mVideoDisplayer->getMovieRef()->play();
-		//mVideoDisplayer->drawBounds = true;
-		//ci::app::console() << "PlayerNode::setup: Movie loaded" << std::endl;
+
     } catch (...) {
         ci::app::console() << "PlayerNode::setup: Failed to load movie" << std::endl;
     }
-    
+	mTexture.reset();
+
     getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::clickVideo, this));
     addChild(mVideoDisplayer);
 }
@@ -37,8 +38,12 @@ void PlayerNode::update()
 {
     NodeContainer::update();
     
-    if (!mVideoDisplayer->getMovieRef()) return;
-    
+	if (!mVideoDisplayer->getMovieRef())
+	{
+		ci::app::console() << "PlayerNode::Failed to get movie ref" << std::endl;
+		return;
+	}
+	
     //  when movie finishes, stop and go back to the beginning
     if (mVideoDisplayer->getMovieRef()->isPlaying()) {
         if (mVideoDisplayer->getMovieRef()->isDone()) {
