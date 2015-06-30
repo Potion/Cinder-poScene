@@ -14,11 +14,11 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		02956DC6C00D43F5B90AC12D /* VideoSampleAdvanced.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */; };
 		243A4C1F585C41A6A36E652E /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DE2A12860464C298A97F424 /* poShape.cpp */; };
-		3832AA0F1B3CA371002AA5DA /* MovieThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3832AA071B3CA371002AA5DA /* MovieThumb.cpp */; };
-		3832AA101B3CA371002AA5DA /* PlayerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3832AA091B3CA371002AA5DA /* PlayerButton.cpp */; };
-		3832AA111B3CA371002AA5DA /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3832AA0B1B3CA371002AA5DA /* PlayerController.cpp */; };
-		3832AA121B3CA371002AA5DA /* Scrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3832AA0D1B3CA371002AA5DA /* Scrubber.cpp */; };
 		3832AA141B3CA39A002AA5DA /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3832AA131B3CA399002AA5DA /* QuickTime.framework */; };
+		38D2EAC31B430B7000BFE3F3 /* MovieThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */; };
+		38D2EAC41B430B7000BFE3F3 /* PlayerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABD1B430B7000BFE3F3 /* PlayerButton.cpp */; };
+		38D2EAC51B430B7000BFE3F3 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABF1B430B7000BFE3F3 /* PlayerController.cpp */; };
+		38D2EAC61B430B7000BFE3F3 /* Scrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */; };
 		413165F1C1BD4FE3B81D1777 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40DE80E0EBFD49DCB5B31D0F /* poEvents.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -46,15 +46,15 @@
 		250C7832E5FF4F969DD67EF9 /* poNodeContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNodeContainer.h; path = ../../../src/poScene/poNodeContainer.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		3832AA071B3CA371002AA5DA /* MovieThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovieThumb.cpp; sourceTree = "<group>"; };
-		3832AA081B3CA371002AA5DA /* MovieThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MovieThumb.h; sourceTree = "<group>"; };
-		3832AA091B3CA371002AA5DA /* PlayerButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerButton.cpp; sourceTree = "<group>"; };
-		3832AA0A1B3CA371002AA5DA /* PlayerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerButton.h; sourceTree = "<group>"; };
-		3832AA0B1B3CA371002AA5DA /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerController.cpp; sourceTree = "<group>"; };
-		3832AA0C1B3CA371002AA5DA /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerController.h; sourceTree = "<group>"; };
-		3832AA0D1B3CA371002AA5DA /* Scrubber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scrubber.cpp; sourceTree = "<group>"; };
-		3832AA0E1B3CA371002AA5DA /* Scrubber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scrubber.h; sourceTree = "<group>"; };
 		3832AA131B3CA399002AA5DA /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
+		38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovieThumb.cpp; path = ../src/MovieThumb.cpp; sourceTree = "<group>"; };
+		38D2EABC1B430B7000BFE3F3 /* MovieThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieThumb.h; path = ../src/MovieThumb.h; sourceTree = "<group>"; };
+		38D2EABD1B430B7000BFE3F3 /* PlayerButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerButton.cpp; path = ../src/PlayerButton.cpp; sourceTree = "<group>"; };
+		38D2EABE1B430B7000BFE3F3 /* PlayerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerButton.h; path = ../src/PlayerButton.h; sourceTree = "<group>"; };
+		38D2EABF1B430B7000BFE3F3 /* PlayerController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerController.cpp; path = ../src/PlayerController.cpp; sourceTree = "<group>"; };
+		38D2EAC01B430B7000BFE3F3 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerController.h; path = ../src/PlayerController.h; sourceTree = "<group>"; };
+		38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scrubber.cpp; path = ../src/Scrubber.cpp; sourceTree = "<group>"; };
+		38D2EAC21B430B7000BFE3F3 /* Scrubber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scrubber.h; path = ../src/Scrubber.h; sourceTree = "<group>"; };
 		40DE80E0EBFD49DCB5B31D0F /* poEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEvents.cpp; path = ../../../src/poScene/poEvents.cpp; sourceTree = "<group>"; };
 		4C7B31F3F4EF423EB02A3DA5 /* poVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poVideo.h; path = ../../../src/poScene/poVideo.h; sourceTree = "<group>"; };
 		4EF8033602B64B299629DE35 /* VideoSampleAdvanced.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VideoSampleAdvanced.h; path = ../src/VideoSampleAdvanced.h; sourceTree = "<group>"; };
@@ -115,17 +115,17 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */,
+				38D2EABC1B430B7000BFE3F3 /* MovieThumb.h */,
+				38D2EABD1B430B7000BFE3F3 /* PlayerButton.cpp */,
+				38D2EABE1B430B7000BFE3F3 /* PlayerButton.h */,
+				38D2EABF1B430B7000BFE3F3 /* PlayerController.cpp */,
+				38D2EAC01B430B7000BFE3F3 /* PlayerController.h */,
+				38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */,
+				38D2EAC21B430B7000BFE3F3 /* Scrubber.h */,
 				5E00733A727C48BC8D95A15A /* VideoSampleAdvancedApp.cpp */,
 				4EF8033602B64B299629DE35 /* VideoSampleAdvanced.h */,
 				92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */,
-				3832AA081B3CA371002AA5DA /* MovieThumb.h */,
-				3832AA071B3CA371002AA5DA /* MovieThumb.cpp */,
-				3832AA0C1B3CA371002AA5DA /* PlayerController.h */,
-				3832AA0B1B3CA371002AA5DA /* PlayerController.cpp */,
-				3832AA0A1B3CA371002AA5DA /* PlayerButton.h */,
-				3832AA091B3CA371002AA5DA /* PlayerButton.cpp */,
-				3832AA0E1B3CA371002AA5DA /* Scrubber.h */,
-				3832AA0D1B3CA371002AA5DA /* Scrubber.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -313,17 +313,17 @@
 				02956DC6C00D43F5B90AC12D /* VideoSampleAdvanced.cpp in Sources */,
 				D49D42866A3E4C1EB44C92B7 /* poEventCenter.cpp in Sources */,
 				413165F1C1BD4FE3B81D1777 /* poEvents.cpp in Sources */,
-				3832AA111B3CA371002AA5DA /* PlayerController.cpp in Sources */,
-				3832AA121B3CA371002AA5DA /* Scrubber.cpp in Sources */,
+				38D2EAC41B430B7000BFE3F3 /* PlayerButton.cpp in Sources */,
 				9AF36CAEA39E4B90B293B11C /* poImage.cpp in Sources */,
 				B20DA383B063415DBCC3EAC3 /* poMatrixSet.cpp in Sources */,
 				5A6A04D71AA54E8FA842A41A /* poNode.cpp in Sources */,
-				3832AA0F1B3CA371002AA5DA /* MovieThumb.cpp in Sources */,
+				38D2EAC61B430B7000BFE3F3 /* Scrubber.cpp in Sources */,
+				38D2EAC51B430B7000BFE3F3 /* PlayerController.cpp in Sources */,
 				888373FF2BDF414CA459A486 /* poNodeContainer.cpp in Sources */,
-				3832AA101B3CA371002AA5DA /* PlayerButton.cpp in Sources */,
 				A53CB98B907C4A1D9BFEE9D0 /* poScene.cpp in Sources */,
 				243A4C1F585C41A6A36E652E /* poShape.cpp in Sources */,
 				F534DFB0C6754A319B206B03 /* poTextBox.cpp in Sources */,
+				38D2EAC31B430B7000BFE3F3 /* MovieThumb.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
