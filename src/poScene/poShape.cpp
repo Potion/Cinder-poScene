@@ -135,9 +135,10 @@ namespace po { namespace scene {
         if (getFillEnabled()) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if (mTexture) mTexture->enableAndBind();
+            if (mTexture)
+                ci::gl::ScopedTextureBind texBind(mTexture);
+
             ci::gl::draw(mVboMesh);
-            if (mTexture) mTexture->disable();
         }
         
         //	TODO: Draw stroke
@@ -166,7 +167,7 @@ namespace po { namespace scene {
         render();
     }
     
-    void Shape::setTextureOffset(ci::Vec2f offset)
+    void Shape::setTextureOffset(ci::vec2 offset)
     {
         mTextureOffset = offset;
         render();
@@ -192,14 +193,14 @@ namespace po { namespace scene {
         
         if (mTexture) {
             //	Get the texture coords
-            std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
+            std::vector<ci::vec2> texCoords(mesh.getVertices().size());
             TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
             
             //	Check to see if texture is flipped, common if coming from FBO
             if (mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
             
-            if (mTextureOffset != ci::Vec2f(0, 0)) {
-                ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
+            if (mTextureOffset != ci::vec2(0, 0)) {
+                ci::vec2 normalizedOffset = mTextureOffset/ci::vec2((float)mTexture->getWidth(), (float)mTexture->getHeight());
                 ci::app::console() << normalizedOffset << std::endl;
                 for (auto &coord : texCoords) {
                     coord -= normalizedOffset;
@@ -219,9 +220,9 @@ namespace po { namespace scene {
     //	Dimensions
 	//------------------------------------
     
-    bool Shape::pointInside(const ci::Vec2f &point, bool localize)
+    bool Shape::pointInside(const ci::vec2 &point, bool localize)
     {
-        ci::Vec2f pos = localize ? windowToLocal(point) : point;
+        ci::vec2 pos = localize ? windowToLocal(point) : point;
         return mCiShape2d.contains(pos);
     }
     

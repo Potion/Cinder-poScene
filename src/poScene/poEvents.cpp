@@ -44,7 +44,7 @@ namespace po { namespace scene {
     {
     }
     
-    ci::Vec2f Event::getScenePos()
+    ci::vec2 Event::getScenePos()
     {
         NodeRef source = getSource();
         if (source) {
@@ -54,7 +54,7 @@ namespace po { namespace scene {
         return getWindowPos();
     }
     
-    ci::Vec2f Event::getLocalPos()
+    ci::vec2 Event::getLocalPos()
     {
         NodeRef source = getSource();
         if (source) {

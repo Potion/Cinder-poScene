@@ -94,10 +94,10 @@ namespace po { namespace scene {
     , mOffset(0.f,0.f)
     , mAlpha(1.f)
     , mAppliedAlpha(1.f)
-    , mPositionAnim(ci::Vec2f(0.f, 0.f))
-    , mScaleAnim(ci::Vec2f(1.f, 1.f))
+    , mPositionAnim(ci::vec2(0.f, 0.f))
+    , mScaleAnim(ci::vec2(1.f, 1.f))
     , mRotationAnim(0)
-    , mOffsetAnim(ci::Vec2f(0.f, 0.f))
+    , mOffsetAnim(ci::vec2(0.f, 0.f))
     , mAlphaAnim(1.f)
     , mAlignment(Alignment::TOP_LEFT)
     , mMatrixOrder(MatrixOrder::TRS)
@@ -566,59 +566,59 @@ namespace po { namespace scene {
     }
     
 
-    ci::Vec2f Node::nodeToLocal(const ci::Vec2f &point, NodeRef node) {
+    ci::vec2 Node::nodeToLocal(const ci::vec2 &point, NodeRef node) {
 		return windowToLocal(node->localToWindow(point));
 	}
     
-    ci::Vec2f Node::localToNode(const ci::Vec2f &point, NodeRef node) {
+    ci::vec2 Node::localToNode(const ci::vec2 &point, NodeRef node) {
 		return node->windowToLocal(localToWindow(point));
 	}
 	
-    ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
+    ci::vec2 Node::sceneToLocal(const ci::vec2 &scenePoint)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
-        return ci::Vec2f();
+        return ci::vec2();
     }
     
-    ci::Vec2f Node::localToScene(const ci::Vec2f &point)
+    ci::vec2 Node::localToScene(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return localToNode(point, scene->getRootNode());
-		return ci::Vec2f();
+		return ci::vec2();
     }
     
-    ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
+    ci::vec2 Node::sceneToWindow(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->localToWindow(point);
         return point;
     }
     
-    ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
+    ci::vec2 Node::windowToScene(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->windowToLocal(point);
-        return ci::Vec2f();
+        return ci::vec2();
     }
 	
-    ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint) {
+    ci::vec2 Node::windowToLocal(const ci::vec2 &windowPoint) {
 		return mMatrix.globalToLocal(windowPoint);
 	}
 	
-    ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
+    ci::vec2 Node::localToWindow(const ci::vec2 &scenePoint)
     {
         if (mHasScene) return mMatrix.localToGlobal(scenePoint);
-        return ci::Vec2f();
+        return ci::vec2();
     }
     
     //
     //  This is used for hit-testing all Nodes
     //  Override this function to do any type of custom
     //
-    bool Node::pointInside(const ci::Vec2f &point)
+    bool Node::pointInside(const ci::vec2 &point)
     {
-        ci::Vec2f pos = windowToLocal(point);
+        ci::vec2 pos = windowToLocal(point);
         return getBounds().contains(pos);
     }
 
@@ -684,7 +684,7 @@ namespace po { namespace scene {
         //	Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
-        ci::gl::scale(ci::Vec2f(1.f, 1.f) / mScale);
+        ci::gl::scale(ci::vec2(1.f, 1.f) / mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }

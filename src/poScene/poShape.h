@@ -85,7 +85,7 @@ namespace po { namespace scene {
 		virtual ci::Rectf getBounds();
 		
 		//! Determine if a point is inside the shape by localizing it and checking if it intersects
-		bool pointInside(const ci::Vec2f &point, bool localize = true);
+		bool pointInside(const ci::vec2 &point, bool localize = true);
 		
 		//	Caching to VBO
         //! Triangulate the ci::Shape2d and push to a VBOMesh with correct texture coords
@@ -96,7 +96,7 @@ namespace po { namespace scene {
         //! Set the texture with fit and alignment
         void setTexture(ci::gl::TextureRef texture, TextureFit::Type fit = TextureFit::Type::NONE, Alignment alignment = Alignment::TOP_LEFT);
         //! Set an offset for the texture
-		void setTextureOffset(ci::Vec2f offset);
+		void setTextureOffset(ci::vec2 offset);
         //! Get the texture
 		ci::gl::TextureRef getTexture() { return mTexture; }
         //! Remove the texture and return to using fill color to render
@@ -121,7 +121,7 @@ namespace po { namespace scene {
 		ci::gl::TextureRef mTexture;
 		TextureFit::Type mTextureFitType;
 		Alignment mTextureAlignment;
-		ci::Vec2f mTextureOffset;
+		ci::vec2 mTextureOffset;
 		
 		int mPrecision;
 
