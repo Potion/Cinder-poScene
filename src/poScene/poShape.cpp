@@ -133,12 +133,16 @@ namespace po { namespace scene {
     {
         //Draw fill
         if (getFillEnabled()) {
+            ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if (mTexture)
+            
+            if (mTexture) {
                 ci::gl::ScopedTextureBind texBind(mTexture);
-
-            ci::gl::draw(mVboMesh);
+                ci::gl::draw(mVboMesh);
+            } else {
+                ci::gl::draw(mVboMesh);
+            }
         }
         
         //	TODO: Draw stroke
@@ -188,31 +192,52 @@ namespace po { namespace scene {
 
     void Shape::render()
     {
-        //	Create Mesh
-        ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
+        //Create a TriMesh from our shape
+        ci::TriMesh::Format format = ci::TriMesh::Format();
+        format.mTexCoords0Dims      = 2;
+        format.mPositionsDims       = 2;
+        format.mNormalsDims         = 3;
+        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
         
-        if (mTexture) {
-            //	Get the texture coords
-            std::vector<ci::vec2> texCoords(mesh.getVertices().size());
-            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+        if( mTexture )
+        {
+            //  Allocate
+            std::vector< ci::vec2 > texCoords(triMesh->getNumVertices());
+            std::vector< ci::vec2 > vertices;
             
-            //	Check to see if texture is flipped, common if coming from FBO
-            if (mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
+            //  Grab the pointer to the mesh vertices
+            const ci::vec2* meshVertices = triMesh->getPositions<2>();
             
-            if (mTextureOffset != ci::vec2(0, 0)) {
+            //  Grab the actual vertices
+            for ( int i=0; i<triMesh->getNumVertices(); i++ )  {
+                vertices.push_back( meshVertices[i] );
+            }
+            
+            //  Calculate the texture coords
+            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, vertices, texCoords);
+            
+            //  Check to see if texture is flipped, common if coming from FBO
+            if(!mTexture->isTopDown()) {
+                for(auto &coord : texCoords) {
+                    coord.y = 1 - coord.y;
+                }
+            }
+            
+            //  Set the offset
+            if(mTextureOffset != ci::vec2(0,0)) {
                 ci::vec2 normalizedOffset = mTextureOffset/ci::vec2((float)mTexture->getWidth(), (float)mTexture->getHeight());
-                ci::app::console() << normalizedOffset << std::endl;
-                for (auto &coord : texCoords) {
+                for(auto &coord : texCoords) {
                     coord -= normalizedOffset;
                 }
             }
             
-            //	Add coords to TriMesh
-            mesh.appendTexCoords(&texCoords[0], texCoords.size());
+            // appending texture coordinates to the mesh ref
+            triMesh->appendTexCoords0(&texCoords[0], texCoords.size());
         }
         
-        //	Create VBO Mesh
-        mVboMesh = ci::gl::VboMesh::create(mesh);
+        
+        //Create VBO mesh
+        mVboMesh = ci::gl::VboMesh::create(*triMesh);
     }
     
     

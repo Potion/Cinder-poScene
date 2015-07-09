@@ -14,6 +14,10 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		0A995D8C2CAA483FAF2AFB18 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2512E801E0474E58A773E44E /* CinderApp.icns */; };
 		0B049B490CB04FACAA2FCAF6 /* BoundsSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C48D65ACF0C4971A8879773 /* BoundsSample.cpp */; };
+		0E44A4D41B4B27CD009D9DFF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4D31B4B27CD009D9DFF /* AVFoundation.framework */; };
+		0E44A4D61B4B288E009D9DFF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4D51B4B288E009D9DFF /* CoreMedia.framework */; };
+		0E44A4D81B4B28B5009D9DFF /* CoreMediaIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4D71B4B28B5009D9DFF /* CoreMediaIO.framework */; };
+		0E44A4DA1B4B28D7009D9DFF /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4D91B4B28D7009D9DFF /* IOKit.framework */; };
 		0EB577291B2F45C40099EAF2 /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB577151B2F45C40099EAF2 /* poEventCenter.cpp */; };
 		0EB5772A1B2F45C40099EAF2 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB577171B2F45C40099EAF2 /* poEvents.cpp */; };
 		0EB5772B1B2F45C40099EAF2 /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0EB577191B2F45C40099EAF2 /* poImage.cpp */; };
@@ -35,6 +39,10 @@
 		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		0E44A4D31B4B27CD009D9DFF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0E44A4D51B4B288E009D9DFF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0E44A4D71B4B28B5009D9DFF /* CoreMediaIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMediaIO.framework; path = System/Library/Frameworks/CoreMediaIO.framework; sourceTree = SDKROOT; };
+		0E44A4D91B4B28D7009D9DFF /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		0EB577151B2F45C40099EAF2 /* poEventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = poEventCenter.cpp; path = ../../../src/poScene/poEventCenter.cpp; sourceTree = "<group>"; };
 		0EB577161B2F45C40099EAF2 /* poEventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
 		0EB577171B2F45C40099EAF2 /* poEvents.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = poEvents.cpp; path = ../../../src/poScene/poEvents.cpp; sourceTree = "<group>"; };
@@ -75,6 +83,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E44A4DA1B4B28D7009D9DFF /* IOKit.framework in Frameworks */,
+				0E44A4D81B4B28B5009D9DFF /* CoreMediaIO.framework in Frameworks */,
+				0E44A4D61B4B288E009D9DFF /* CoreMedia.framework in Frameworks */,
+				0E44A4D41B4B27CD009D9DFF /* AVFoundation.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -173,6 +185,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E44A4D91B4B28D7009D9DFF /* IOKit.framework */,
+				0E44A4D71B4B28B5009D9DFF /* CoreMediaIO.framework */,
+				0E44A4D51B4B288E009D9DFF /* CoreMedia.framework */,
+				0E44A4D31B4B27CD009D9DFF /* AVFoundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -307,6 +323,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
 				PRODUCT_NAME = BoundsSample;
 				SYMROOT = ./build;
@@ -336,6 +353,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
 				PRODUCT_NAME = BoundsSample;
 				STRIP_INSTALLED_PRODUCT = YES;

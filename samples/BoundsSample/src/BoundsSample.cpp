@@ -93,7 +93,7 @@ void BoundsSample::setup()
     .setDrawBounds(true)
     .setBoundsColor(boundsColor);
     
-    ci::app::getWindow()->connectKeyDown(&BoundsSample::keyPressed, this);
+    ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&BoundsSample::keyPressed, this, std::placeholders::_1));
     
 //    ShapeRef rect = Shape::createRect(400,400);
 //    setMask(rect);
@@ -163,7 +163,7 @@ void BoundsSample::keyPressed(ci::app::KeyEvent &key)
     
     switch (key.getChar()) {
         case 'r':
-            mSelectedNode->setRotation(mSelectedNode->getRotation() + 30.0f);
+            mSelectedNode->setRotation(mSelectedNode->getRotation() + M_PI / 4.0f);
             break;
         case 'a': {
             int curAlignment = static_cast<int>(mSelectedNode->getAlignment());

@@ -42,16 +42,16 @@ namespace po { namespace scene {
 	EventCenter::EventCenter()
 	{
 		//	Connect mouse events
-		ci::app::getWindow()->connectMouseDown(&EventCenter::mouseDown, this);
-		ci::app::getWindow()->connectMouseMove(&EventCenter::mouseMove, this);
-		ci::app::getWindow()->connectMouseDrag(&EventCenter::mouseDrag, this);
-		ci::app::getWindow()->connectMouseUp(&EventCenter::mouseUp, this);
-		ci::app::getWindow()->connectMouseWheel(&EventCenter::mouseWheel, this);
+        ci::app::getWindow()->getSignalMouseDown().connect(std::bind(&EventCenter::mouseDown, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalMouseMove().connect(std::bind(&EventCenter::mouseMove, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalMouseDrag().connect(std::bind(&EventCenter::mouseDrag, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalMouseUp().connect(std::bind(&EventCenter::mouseUp, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalMouseWheel().connect(std::bind(&EventCenter::mouseWheel, this, std::placeholders::_1));
 		
-		//	Connect touch events
-		ci::app::getWindow()->connectTouchesBegan(&EventCenter::touchesBegan, this);
-		ci::app::getWindow()->connectTouchesMoved(&EventCenter::touchesMoved, this);
-		ci::app::getWindow()->connectTouchesEnded(&EventCenter::touchesEnded, this);
+        //	Connect touch events
+        ci::app::getWindow()->getSignalTouchesBegan().connect(std::bind(&EventCenter::touchesBegan, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalTouchesMoved().connect(std::bind(&EventCenter::touchesMoved, this, std::placeholders::_1));
+        ci::app::getWindow()->getSignalTouchesEnded().connect(std::bind(&EventCenter::touchesEnded, this, std::placeholders::_1));
 	}
 	
 	//	Process all the event queues for this scene
