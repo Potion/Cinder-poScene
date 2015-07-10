@@ -66,8 +66,8 @@ namespace po { namespace scene {
         
         void main()
         {
+            TexCoord        = ciTexCoord0.st;
             gl_Position     = ciModelViewProjection * ciPosition;
-            TexCoord  = ciTexCoord0;
         }
     );
     
@@ -81,17 +81,13 @@ namespace po { namespace scene {
 
         void main(void)
         {
-            vec2 c0 = vec2(TexCoord.s, 1.0 - TexCoord.t);
+            vec2 c0 = vec2(TexCoord.s, TexCoord.t);
             
             vec4 rgbValue       = texture(tex, c0);
             vec4 alphaValue     = texture(mask, c0);
             
-            color = vec4(TexCoord.s, TexCoord.t, 1.0, 1.0);
-//            color.rgb     = rgbValue.rgb;
-//            color.a       = alphaValue.a;
-//            color.a = 1.0;
-//            
-            color = rgbValue;
+            color.rgb     = rgbValue.rgb;
+            color.a       = alphaValue.a;
         }
     );
 
@@ -224,14 +220,14 @@ namespace po { namespace scene {
         {
             
             //  Draw ourself into FBO
-            ci::gl::ScopedFramebuffer(getScene()->getWindowFbo());
+            ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
             ci::gl::clear();
             draw();
         }
         
         {
-            //  Draw mask into Masking FBO (replace with stencil buffer in GLNext)
-            ci::gl::ScopedFramebuffer(getScene()->getStencilFbo());
+            //  Draw mask into Masking FBO (replace with Mask buffer in GLNext)
+            ci::gl::ScopedFramebuffer buffer(getScene()->getMaskFbo());
             ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
             ci::gl::pushModelView();
             //ci::gl::translate(-getPosition());
@@ -245,8 +241,8 @@ namespace po { namespace scene {
         ci::gl::enableAlphaBlending();
         
         // Bind FBO textures
-        ci::gl::ScopedTextureBind(getScene()->getWindowFbo()->getColorTexture(), 0);
-        ci::gl::ScopedTextureBind(getScene()->getStencilFbo()->getColorTexture(), 1);
+        ci::gl::ScopedTextureBind fboBind(getScene()->getWindowFbo()->getColorTexture(), 0);
+        ci::gl::ScopedTextureBind maskBind(getScene()->getMaskFbo()->getColorTexture(), 1);
         
         //	Bind Shader
         mMaskShader->bind();

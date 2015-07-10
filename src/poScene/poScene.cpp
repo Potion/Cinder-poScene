@@ -51,7 +51,7 @@ namespace po { namespace scene {
     , mAutoCam(true)
     , eventCenter(EventCenter::create())
     , mFbo(nullptr)
-    , mStencilFbo(nullptr)
+    , mMaskFbo(nullptr)
     {
         createFbos();
         ci::app::getWindow()->getSignalResize().connect(std::bind(&Scene::createFbos, this));
@@ -152,11 +152,11 @@ namespace po { namespace scene {
         format.enableDepthBuffer(false);
         
         mFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
-        mStencilFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
+        mMaskFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
         
 //        mFbo->getT
 //        mFbo->getColorTexture().setFlipped(true);
-//        mStencilFbo->getColorTexture().setFlipped(true);
+//        mMaskFbo->getColorTexture().setFlipped(true);
     }
     
     
@@ -168,7 +168,7 @@ namespace po { namespace scene {
     {
         // Reset the FBO
         mFbo.reset();
-        mStencilFbo.reset();
+        mMaskFbo.reset();
 
     }
     
