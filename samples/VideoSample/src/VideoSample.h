@@ -25,4 +25,5 @@ protected:
 private:
     po::scene::VideoGlRef       mVideo;
     void                        spinPlayer();
+    void                        resetPlayerRotation();
 };

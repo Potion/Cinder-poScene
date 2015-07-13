@@ -46,10 +46,10 @@ void VideoSample::setup()
 
 void VideoSample::spinPlayer()
 {
-	float currentRot = mVideo->getRotation();
-    if (currentRot > 359.0) {
-        mVideo->setRotation(0.f);
-    }
-    
-    ci::app::timeline().apply(&mVideo->getRotationAnim(), 360.f, 2.0f);
+    ci::app::timeline().apply(&mVideo->getRotationAnim(), 360.f, 2.0f).finishFn(std::bind(&VideoSample::resetPlayerRotation, this));
+}
+
+void VideoSample::resetPlayerRotation()
+{
+    mVideo->setRotation(0.0f);
 }
