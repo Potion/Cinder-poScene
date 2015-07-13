@@ -133,14 +133,15 @@ namespace po { namespace scene {
     {
         //Draw fill
         if (getFillEnabled()) {
-            ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             
             if (mTexture) {
+                ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));
                 ci::gl::ScopedTextureBind texBind(mTexture);
                 ci::gl::draw(mVboMesh);
             } else {
+                ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().color()));
                 ci::gl::draw(mVboMesh);
             }
         }
