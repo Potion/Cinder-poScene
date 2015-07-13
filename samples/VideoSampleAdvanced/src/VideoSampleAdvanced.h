@@ -6,10 +6,6 @@
 #include "PlayerController.h"
 #include "MovieThumb.h"
 
-// In order to use poVideo, you must link the QuickTime.framework.
-// In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
-// Hit [+] at the bottom, and choose QuickTime.framework from the list.
-
 class VideoSampleAdvanced;
 typedef std::shared_ptr<VideoSampleAdvanced> VideoSampleAdvancedRef;
 
@@ -35,7 +31,7 @@ private:
     void                    onAnimationComplete(MovieThumbRef thumbnail);
     void                    animateControllerToPos(MovieThumbRef movie);
     
-    ci::Vec2f               mPrimaryDisplayerPosition;
+    ci::vec2                mPrimaryDisplayerPosition;
     
     bool                    mIsControllerInPosition;
 };

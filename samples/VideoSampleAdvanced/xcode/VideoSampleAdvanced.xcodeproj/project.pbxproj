@@ -14,11 +14,14 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		02956DC6C00D43F5B90AC12D /* VideoSampleAdvanced.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */; };
 		243A4C1F585C41A6A36E652E /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9DE2A12860464C298A97F424 /* poShape.cpp */; };
-		3832AA141B3CA39A002AA5DA /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3832AA131B3CA399002AA5DA /* QuickTime.framework */; };
 		38D2EAC31B430B7000BFE3F3 /* MovieThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */; };
 		38D2EAC41B430B7000BFE3F3 /* PlayerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABD1B430B7000BFE3F3 /* PlayerButton.cpp */; };
 		38D2EAC51B430B7000BFE3F3 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABF1B430B7000BFE3F3 /* PlayerController.cpp */; };
 		38D2EAC61B430B7000BFE3F3 /* Scrubber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */; };
+		38F6C73E1B54671200233296 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F6C73D1B54671200233296 /* AVFoundation.framework */; };
+		38F6C7401B54671E00233296 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F6C73F1B54671E00233296 /* CoreMedia.framework */; };
+		38F6C7421B54673200233296 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F6C7411B54673200233296 /* IOKit.framework */; };
+		38F6C7441B54673C00233296 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38F6C7431B54673C00233296 /* IOSurface.framework */; };
 		413165F1C1BD4FE3B81D1777 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40DE80E0EBFD49DCB5B31D0F /* poEvents.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -55,6 +58,10 @@
 		38D2EAC01B430B7000BFE3F3 /* PlayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerController.h; path = ../src/PlayerController.h; sourceTree = "<group>"; };
 		38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scrubber.cpp; path = ../src/Scrubber.cpp; sourceTree = "<group>"; };
 		38D2EAC21B430B7000BFE3F3 /* Scrubber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scrubber.h; path = ../src/Scrubber.h; sourceTree = "<group>"; };
+		38F6C73D1B54671200233296 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		38F6C73F1B54671E00233296 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		38F6C7411B54673200233296 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		38F6C7431B54673C00233296 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
 		40DE80E0EBFD49DCB5B31D0F /* poEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEvents.cpp; path = ../../../src/poScene/poEvents.cpp; sourceTree = "<group>"; };
 		4C7B31F3F4EF423EB02A3DA5 /* poVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poVideo.h; path = ../../../src/poScene/poVideo.h; sourceTree = "<group>"; };
 		4EF8033602B64B299629DE35 /* VideoSampleAdvanced.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VideoSampleAdvanced.h; path = ../src/VideoSampleAdvanced.h; sourceTree = "<group>"; };
@@ -89,7 +96,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3832AA141B3CA39A002AA5DA /* QuickTime.framework in Frameworks */,
+				38F6C7441B54673C00233296 /* IOSurface.framework in Frameworks */,
+				38F6C7421B54673200233296 /* IOKit.framework in Frameworks */,
+				38F6C7401B54671E00233296 /* CoreMedia.framework in Frameworks */,
+				38F6C73E1B54671200233296 /* AVFoundation.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -196,6 +206,10 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				38F6C7431B54673C00233296 /* IOSurface.framework */,
+				38F6C7411B54673200233296 /* IOKit.framework */,
+				38F6C73F1B54671E00233296 /* CoreMedia.framework */,
+				38F6C73D1B54671200233296 /* AVFoundation.framework */,
 				3832AA131B3CA399002AA5DA /* QuickTime.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
@@ -385,14 +399,14 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";
@@ -402,14 +416,14 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";
