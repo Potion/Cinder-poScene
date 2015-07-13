@@ -11,7 +11,7 @@ using namespace std;
 using namespace po::scene;
 
 class VideoSampleApp
-: public AppNative
+: public App
 {
 public:
     void setup();

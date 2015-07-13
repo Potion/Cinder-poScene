@@ -25,5 +25,4 @@ protected:
 private:
     po::scene::VideoGlRef   mVideoDisplayer;
     void                    clickVideo();
-	ci::gl::Texture mTexture;
 };

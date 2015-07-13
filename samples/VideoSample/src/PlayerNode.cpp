@@ -23,12 +23,12 @@ void PlayerNode::setup()
         ci::qtime::MovieGlRef movieRef;
         movieRef = ci::qtime::MovieGl::create(moviePath);
         mVideoDisplayer->setMovieRef(movieRef);
+        mVideoDisplayer->getMovieRef()->setLoop();
         mVideoDisplayer->getMovieRef()->play();
 
     } catch (...) {
         ci::app::console() << "PlayerNode::setup: Failed to load movie" << std::endl;
     }
-	mTexture.reset();
 
     getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerNode::clickVideo, this));
     addChild(mVideoDisplayer);
