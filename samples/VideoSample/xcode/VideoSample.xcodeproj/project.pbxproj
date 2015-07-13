@@ -14,7 +14,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		0257193D2BBF41DDB1C24B8B /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C75CEC53744DBA2809686 /* poScene.cpp */; };
 		0EF0368B1B54279F007C4F99 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF0368A1B54279F007C4F99 /* IOSurface.framework */; };
-		3832A9FA1B3CA258002AA5DA /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3832A9F91B3CA258002AA5DA /* QuickTime.framework */; };
 		3DBA0F18A41245BD903F5E40 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7EAAA0C198942E6B0474280 /* poNodeContainer.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -89,7 +88,6 @@
 				AA547ABB1B541D74005BEC40 /* IOKit.framework in Frameworks */,
 				AA547AB91B541D6D005BEC40 /* CoreMedia.framework in Frameworks */,
 				AA547AB71B541D66005BEC40 /* AVFoundation.framework in Frameworks */,
-				3832A9FA1B3CA258002AA5DA /* QuickTime.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
