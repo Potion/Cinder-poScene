@@ -1,6 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
-
+#include "cinder/app/RendererGl.h"
 #include "poScene.h"
 #include "MouseEventsSample.h"
 
@@ -10,7 +10,7 @@ using namespace std;
 using namespace po::scene;
 
 class MouseEventsSampleApp
-: public AppNative 
+: public App
 {
   public:
 	void setup();
@@ -37,4 +37,4 @@ void MouseEventsSampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( MouseEventsSampleApp, RendererGl )
+CINDER_APP( MouseEventsSampleApp, RendererGl )

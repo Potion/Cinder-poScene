@@ -21,7 +21,7 @@ void AnimationSquare::setup(std::string name, ci::Color color)
 
     //  create and add the label
     mIndicator = Indicator::create(name, color);
-    mIndicator->setPosition(ci::Vec2f(0, 125));
+    mIndicator->setPosition(ci::vec2(0, 125));
     addChild(mIndicator);
     
     //  add a signal to all mouse clicks to activate label
@@ -31,19 +31,19 @@ void AnimationSquare::setup(std::string name, ci::Color color)
 
 void AnimationSquare::doPositionAnimation()
 {
-    ci::Vec2f topPos = ci::Vec2f(0.0f, - 100.f);
-    ci::Vec2f bottomPos = ci::Vec2f(0.0f, 100.f);
+    ci::vec2 topPos = ci::vec2(0.0f, - 100.f);
+    ci::vec2 bottomPos = ci::vec2(0.0f, 100.f);
     
     ci::app::timeline().apply(&mBaseShape->getPositionAnim(), topPos, 0.5);
     ci::app::timeline().appendTo(&mBaseShape->getPositionAnim(), bottomPos, 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getPositionAnim(), ci::Vec2f(0.0f, 0.0f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getPositionAnim(), ci::vec2(0.0f, 0.0f), 0.5);
 }
 
 void AnimationSquare::doScaleAnimation()
 {
-    ci::app::timeline().apply(&mBaseShape->getScaleAnim(), ci::Vec2f(1.5f, 1.5f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getScaleAnim(), ci::Vec2f(0.5f, 0.5f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getScaleAnim(), ci::Vec2f(1.0f, 1.0f), 0.5);
+    ci::app::timeline().apply(&mBaseShape->getScaleAnim(), ci::vec2(1.5f, 1.5f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getScaleAnim(), ci::vec2(0.5f, 0.5f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getScaleAnim(), ci::vec2(1.0f, 1.0f), 0.5);
 }
 
 void AnimationSquare::doAlphaAnimation()
@@ -60,9 +60,9 @@ void AnimationSquare::doRotationAnimation()
 
 void AnimationSquare::doOffsetAnimation()
 {
-    ci::app::timeline().apply(&mBaseShape->getOffsetAnim(), ci::Vec2f(25.0f, 25.0f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(-25.0f, -25.0f), 0.5);
-    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::Vec2f(0.0f, 0.0f), 0.5);
+    ci::app::timeline().apply(&mBaseShape->getOffsetAnim(), ci::vec2(25.0f, 25.0f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::vec2(-25.0f, -25.0f), 0.5);
+    ci::app::timeline().appendTo(&mBaseShape->getOffsetAnim(), ci::vec2(0.0f, 0.0f), 0.5);
 }
 
 void AnimationSquare::doColorAnimation()
