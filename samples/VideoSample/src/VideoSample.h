@@ -1,7 +1,7 @@
 #pragma once
 
 #include "poNodeContainer.h"
-#include "PlayerNode.h"
+#include "poVideo.h"
 
 // In order to use poVideo, you must link the QuickTime.framework.
 // In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
@@ -23,7 +23,8 @@ protected:
     VideoSample();
     
 private:
-    PlayerNodeRef               mPlayer;
+    po::scene::VideoGlRef       mVideo;
     void                        spinPlayer();
+    void                        resetPlayerRotation();
     
 };

@@ -14,7 +14,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		0257193D2BBF41DDB1C24B8B /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2D7C75CEC53744DBA2809686 /* poScene.cpp */; };
 		0EF0368B1B54279F007C4F99 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF0368A1B54279F007C4F99 /* IOSurface.framework */; };
-		3832A9F81B3CA1E5002AA5DA /* PlayerNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3832A9F61B3CA1E5002AA5DA /* PlayerNode.cpp */; };
 		3832A9FA1B3CA258002AA5DA /* QuickTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3832A9F91B3CA258002AA5DA /* QuickTime.framework */; };
 		3DBA0F18A41245BD903F5E40 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E7EAAA0C198942E6B0474280 /* poNodeContainer.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -49,8 +48,6 @@
 		2D7C75CEC53744DBA2809686 /* poScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poScene.cpp; path = ../../../src/poScene/poScene.cpp; sourceTree = "<group>"; };
 		2ECAD2DEDF2A4BC2AC2BC8FC /* poEventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
 		31EA13237FD9435A939934F0 /* poNodeContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNodeContainer.h; path = ../../../src/poScene/poNodeContainer.h; sourceTree = "<group>"; };
-		3832A9F61B3CA1E5002AA5DA /* PlayerNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlayerNode.cpp; path = ../src/PlayerNode.cpp; sourceTree = "<group>"; };
-		3832A9F71B3CA1E5002AA5DA /* PlayerNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayerNode.h; path = ../src/PlayerNode.h; sourceTree = "<group>"; };
 		3832A9F91B3CA258002AA5DA /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		3C6007AD6E7B404A9B5982F1 /* poMatrixSet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poMatrixSet.cpp; path = ../../../src/poScene/poMatrixSet.cpp; sourceTree = "<group>"; };
 		3EA50736ACEB48CC843E9761 /* poEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEvents.h; path = ../../../src/poScene/poEvents.h; sourceTree = "<group>"; };
@@ -121,8 +118,6 @@
 				B144E4BE240D4ED4A285747D /* VideoSampleApp.cpp */,
 				5CC9C5DEF7564A959A9D9659 /* VideoSample.h */,
 				F1DF2F40A4384922A820E97D /* VideoSample.cpp */,
-				3832A9F71B3CA1E5002AA5DA /* PlayerNode.h */,
-				3832A9F61B3CA1E5002AA5DA /* PlayerNode.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -312,7 +307,6 @@
 			files = (
 				D11B516C65834C708CFC993C /* VideoSampleApp.cpp in Sources */,
 				B21B69FC6EB749088FFAD5F8 /* VideoSample.cpp in Sources */,
-				3832A9F81B3CA1E5002AA5DA /* PlayerNode.cpp in Sources */,
 				F9A8FE26627947F7821754B2 /* poEventCenter.cpp in Sources */,
 				B839662AFD3C4082A5C7FBB7 /* poEvents.cpp in Sources */,
 				6E7A5E9489314FD38769B29A /* poImage.cpp in Sources */,

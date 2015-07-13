@@ -2,6 +2,8 @@
 #include "poShape.h"
 #include "cinder/imageIo.h"
 
+#include "cinder/Utilities.h"
+
 using namespace po::scene;
 
 VideoSampleRef VideoSample::create()
@@ -17,28 +19,39 @@ VideoSample::VideoSample()
 
 void VideoSample::setup()
 {
-    //  We've built very simple play/stop commands into the player itself, so we just create and add it
-    mPlayer = PlayerNode::create();
-    mPlayer->setAlignment(po::scene::Alignment::CENTER_CENTER);
-    mPlayer->setPosition(ci::app::getWindowCenter());
-    addChild(mPlayer);
+    //  create a player that loops video
+    mVideo = VideoGl::create();
+    ci::fs::path moviePath = ci::app::getAssetPath("test.mp4");
     
-    //  For the spinner, in contrast, we connect the mouse signal from here
+    try {
+        ci::qtime::MovieGlRef movieRef;
+        movieRef = ci::qtime::MovieGl::create(moviePath);
+        mVideo->setMovieRef(movieRef);
+        mVideo->getMovieRef()->setLoop(true);
+        mVideo->getMovieRef()->play();
+    } catch (...) {
+        ci::app::console() << "PlayerNode::setup: Failed to load movie" << std::endl;
+    }
+    
+    mVideo->setAlignment(po::scene::Alignment::CENTER_CENTER);
+    mVideo->setPosition(ci::app::getWindowCenter());
+    addChild(mVideo);
+
+    //  create the spin button, and connect the mouse signal
     ci::gl::TextureRef spinnerTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("spinArrows.png")));
     ShapeRef spinner = Shape::create(spinnerTex);
     spinner->setAlignment(po::scene::Alignment::CENTER_CENTER);
-    spinner->setPosition(ci::app::getWindowWidth() * 0.15, ci::app::getWindowHeight() / 2);
+    spinner->setPosition(ci::app::getWindowWidth() * 0.5, ci::app::getWindowHeight() * 0.85);
     spinner->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoSample::spinPlayer, this));
     addChild(spinner);
 }
 
 void VideoSample::spinPlayer()
 {
-	ci::app::console() << "PlayerNode::spinning" << std::endl;
-//	float currentRot = mPlayer->getRotation();
-//    if (currentRot > 359.0) {
-//        mPlayer->setRotation(0.f);
-//    }
-    
-    ci::app::timeline().apply(&mPlayer->getRotationAnim(), (float)M_2_PI, 2.0f);
+    ci::app::timeline().apply(&mVideo->getRotationAnim(), (float)M_PI * 2.0f, 2.0f).finishFn(std::bind(&VideoSample::resetPlayerRotation, this));
+}
+
+void VideoSample::resetPlayerRotation()
+{
+    mVideo->setRotation(0.0f);
 }
