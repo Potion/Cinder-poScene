@@ -30,9 +30,14 @@
 
 #pragma once
 
+#include "cinder/qtime/QuickTime.h"
+#include "cinder/qtime/QuickTimeGlImplAvf.h"
+#include "cinder/qtime/QuickTimeGl.h"
+#include "cinder/gl/wrapper.h"
+
 #include "poNode.h"
 #include "boost/any.hpp"
-#include "cinder/app/AppBasic.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/qtime/QuickTime.h"
 

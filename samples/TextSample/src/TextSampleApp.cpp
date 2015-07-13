@@ -1,5 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
+#include "cinder/app/RendererGl.h"
 
 #include "poScene.h"
 #include "TextSample.h"
@@ -10,7 +11,7 @@ using namespace std;
 using namespace po::scene;
 
 class TextSampleApp
-: public AppNative 
+: public App
 {
   public:
 	void setup();
@@ -37,4 +38,4 @@ void TextSampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( TextSampleApp, RendererGl )
+CINDER_APP( TextSampleApp, RendererGl )
