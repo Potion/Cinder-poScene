@@ -26,7 +26,7 @@ void MaskingSample::setup()
     mMask = Shape::createRect(100, 100);
     mMask->setAlignment(Alignment::CENTER_CENTER);
     mMask->setPosition(ci::app::getWindowWidth()/2, ci::app::getWindowHeight()/2);
-    ci::app::timeline().apply(&mMask->getRotationAnim(), 0.0f, 360.0f, 1.0f).loop();
+    ci::app::timeline().apply(&mMask->getRotationAnim(), 0.0f, ci::toRadians(360.0f), 1.0f).loop();
     ci::app::timeline().apply(&mMask->getScaleAnim(), ci::vec2(1.0f, 1.0f), ci::vec2(4.0f, 4.0f), 1.0f).loop().pingPong();
     
 	//	Load the image texture

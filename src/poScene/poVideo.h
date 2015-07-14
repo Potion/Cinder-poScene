@@ -31,10 +31,10 @@
 #pragma once
 
 #include "cinder/qtime/QuickTime.h"
-#include "cinder/qtime/QuickTimeGlImplAvf.h"
+//#include "cinder/qtime/QuickTimeGlImplAvf.h"
 #include "cinder/qtime/QuickTimeGl.h"
 #include "cinder/gl/wrapper.h"
-
+#include "cinder/gl/draw.h"
 #include "poNode.h"
 #include "boost/any.hpp"
 #include "cinder/app/App.h"

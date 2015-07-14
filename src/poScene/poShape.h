@@ -30,10 +30,14 @@
 
 #pragma once
 
-#include "cinder/Shape2d.h"
-#include "cinder/gl/Vbo.h"
 #include "poNode.h"
 #include "poTextureFit.h"
+#include "cinder/Shape2d.h"
+#include "cinder/gl/Vbo.h"
+#include "cinder/gl/VboMesh.h"
+#include "cinder/gl/draw.h"
+#include "cinder/gl/shader.h"
+#include "cinder/gl/scoped.h"
 
 namespace po { namespace scene {
     // Shape2d is a class that converts any Cinder Shape2d to a VBO Mesh

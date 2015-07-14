@@ -1,7 +1,7 @@
+#include "cinder/qtime/QuickTimeGL.h"
 #include "VideoSample.h"
 #include "poShape.h"
 #include "cinder/imageIo.h"
-
 #include "cinder/Utilities.h"
 
 using namespace po::scene;
@@ -20,11 +20,14 @@ VideoSample::VideoSample()
 void VideoSample::setup()
 {
     //  create a player that loops video
-    mVideo = VideoGl::create();
+	
+	mVideo = VideoGl::create();
     ci::fs::path moviePath = ci::app::getAssetPath("test.mp4");
     
     try {
         ci::qtime::MovieGlRef movieRef;
+
+
         movieRef = ci::qtime::MovieGl::create(moviePath);
         mVideo->setMovieRef(movieRef);
         mVideo->getMovieRef()->setLoop(true);
@@ -36,7 +39,7 @@ void VideoSample::setup()
     mVideo->setAlignment(po::scene::Alignment::CENTER_CENTER);
     mVideo->setPosition(ci::app::getWindowCenter());
     addChild(mVideo);
-
+	
     //  create the spin button, and connect the mouse signal
     ci::gl::TextureRef spinnerTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("spinArrows.png")));
     ShapeRef spinner = Shape::create(spinnerTex);

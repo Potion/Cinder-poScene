@@ -28,7 +28,7 @@ void TextSample::setup()
 	rotatingText->setAlignment(po::scene::Alignment::CENTER_CENTER)
 	.setPosition(150, 150);
 	addChild(rotatingText);
-	ci::app::timeline().apply(&rotatingText->getRotationAnim(), 360.f, 10.0f).loop();
+	ci::app::timeline().apply(&rotatingText->getRotationAnim(), ci::toRadians(360.f), 10.0f).loop();
 	
 	//	Create a text box that scales up and down
 	mScalingText = TextBox::create(ciTextBox);

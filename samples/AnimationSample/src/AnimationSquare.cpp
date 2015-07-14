@@ -55,7 +55,7 @@ void AnimationSquare::doAlphaAnimation()
 void AnimationSquare::doRotationAnimation()
 {
     mBaseShape->setRotation(0.0f);
-    ci::app::timeline().apply(&mBaseShape->getRotationAnim(), 360.f, 1.5);
+	ci::app::timeline().apply(&mBaseShape->getRotationAnim(), ci::toRadians(360.f), 1.5);
 }
 
 void AnimationSquare::doOffsetAnimation()
