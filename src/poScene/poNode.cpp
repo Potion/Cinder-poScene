@@ -140,7 +140,6 @@ namespace po { namespace scene {
 		//	Make sure to clear the fbo w/Cinder bug fix
         removeParent();
         removeScene();
-        disconnectAllSignals();
     }
     
     
@@ -710,17 +709,6 @@ namespace po { namespace scene {
         if ( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
         return true;
     }
-    
-    void Node::disconnectAllSignals()
-    {
-        for (auto &signal : mMouseEventSignals) {
-            signal.second.disconnect_all_slots();
-        }
-        
-        for (auto &signal : mTouchEventSignals) {
-            signal.second.disconnect_all_slots();
-        }
-    }
 	
 	
 	//------------------------------------
@@ -732,7 +720,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if ((mMouseEventSignals.count(type) && mMouseEventSignals[type].num_slots() != 0)) {
+        if ((mMouseEventSignals.count(type) && mMouseEventSignals[type].getNumSlots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         return false;
@@ -744,7 +732,7 @@ namespace po { namespace scene {
     void Node::emitEvent(MouseEvent &event)
     {
         event.setSource(shared_from_this());
-        mMouseEventSignals[event.getType()](event);
+        mMouseEventSignals[event.getType()].emit(event);
     }
     
 	
@@ -758,7 +746,7 @@ namespace po { namespace scene {
     void Node::emitEvent(TouchEvent &event)
     {
         event.setSource(shared_from_this());
-        mTouchEventSignals[event.getType()](event);
+        mTouchEventSignals[event.getType()].emit(event);
     }
 	
 	//
@@ -766,7 +754,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].num_slots() != 0)) {
+        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].getNumSlots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         return false;

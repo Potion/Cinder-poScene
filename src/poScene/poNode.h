@@ -87,8 +87,8 @@ namespace po { namespace scene {
     typedef std::shared_ptr<EventCenter> EventCenterRef;
     
     //	Signals
-    typedef boost::signals2::signal<void(MouseEvent&)> MouseEventSignal;
-    typedef boost::signals2::signal<void(TouchEvent&)> TouchEventSignal;
+    typedef ci::signals::Signal<void(MouseEvent&)> MouseEventSignal;
+    typedef ci::signals::Signal<void(TouchEvent&)> TouchEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -544,8 +544,6 @@ namespace po { namespace scene {
         //  Interaction Events
         //------------------------------------
 		
-        //! Disconnect all of our event signals
-        void disconnectAllSignals();
         //! Determine if this node is visible, has a scene and parent, etc.
         bool isEligibleForInteractionEvents();
         
