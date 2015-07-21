@@ -1,7 +1,7 @@
 !["po::Scene"](images/logo.jpg)
 
 
-**po::scene** is [Potion's](http://www.potiondesign.com) 2D Scene graph block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
+**po::scene** is [Potion's](http://www.potiondesign.com) 2D [Scene Graph](#scenegraph) block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
 The main philosophy behind po::scene is to avoid replacing any of the built-in Cinder functionality at all costs and keep the library as simple as possible.
 
@@ -20,6 +20,13 @@ Some of the key features include:
 + Rendering to FBO/Texture for post-processing or caching
 + Smart-pointer based syntax with TypeDefs for built-in classes
 + Simple inheritance for custom nodes: just define update(),draw() and getBounds()
+
+<a name="scenegraph"></a>
+## What is a Scene Graph
+
+[Wikipedia](http://en.wikipedia.org/wiki/Scene_graph) is probably the best place for a definition that is far more succinct than we can offer.
+
+> A scene graph is a collection of nodes in a graph or tree structure. A tree node (in the overall tree structure of the scene graph) may have many children but often only a single parent, with the effect of a parent applied to all its child nodes; an operation performed on a group automatically propagates its effect to all of its members. In many programs, associating a geometrical transformation matrix (see also transformation and matrix) at each group level and concatenating such matrices together is an efficient and natural way to process such operations. A common feature, for instance, is the ability to group related shapes/objects into a compound object that can then be moved, transformed, selected, etc. as easily as a single object.
  
 ## Usage
 
