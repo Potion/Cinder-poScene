@@ -1,4 +1,5 @@
-# po::scene
+!["po::Scene"](images/logo.jpg)
+
 
 **po::scene** is [Potion's](http://www.potiondesign.com) 2D Scene graph block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
