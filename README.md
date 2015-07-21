@@ -49,7 +49,7 @@ Nodes are the basic building blocks of a scene. The po::scene::Node class is a b
 ###Attributes
 Nodes have a number of built in attributes that relate to how they appear in the scene:
 
-+ `position` The position within the Node's parent (containing) Node.
++ `position` The coordinate of the Node's origin within it's parent or the scene. This is where 0,0 will be within the node's own coordinate space.
 + `rotation` The rotation of the Node along the z-axis (2d rotation). Expressed in degrees.
 + `scale` The x and y scale of the Node.
 + `fillColor` The color that is used for drawing the Node. This color is used differently depending on the type of drawing the Node does. Expressed as a ci::Color.
@@ -86,7 +86,10 @@ All Node attributes have corresponding ci::Anim objects. These animations can be
 	// Animate a node from 0,0 to 50,50
 	ci::app::timeline().apply(&node->getPositionAnim(), ci::Vec2f(50.0f, 50.0f), 1.0f);
 	
-Setting a Node attribute at any time during an animation will cancel that animation.
+Setting any Node attributes at any time during an animation will cancel the animation for that attribute.
+
+	//Stop animation and retain current position
+	node->setPosition(node->getPosition());
 
 ###Transformations
 Every `po::scene::Node` has its own coordinate space. All `po::scene::Node` members contain functions for translating back and forth between various coordinate spaces. There are three main spaces:
@@ -153,7 +156,7 @@ Adjusting any attributes of a NodeContainer also affects every Node that it cont
 
 A NodeContainer's bounds are determined by its child Nodes.
 
-NodeContainer Events are based on any of the container's child Nodes being eligible for an Event. 
+NodeContainer Events are based on all of the container's child Nodes. For example, if a NodeContainer subscribes to the `MouseEvent::Type::DOWN_INSIDE` event and the mouse is pressed, all of it's child nodes will be checked. If the mouse is down inside any of them, the event will fire.
 
 
 ## Scene
