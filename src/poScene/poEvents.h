@@ -76,17 +76,17 @@ namespace po { namespace scene {
         bool getPropagationEnabled() { return mPropagationEnabled; };
         
         //! Get the position of the event in window Coords
-        ci::Vec2f getWindowPos() { return mWindowPos; }
+        ci::vec2 getWindowPos() { return mWindowPos; }
         //! Get the position of the event in coords local to the source node
-        ci::Vec2f getLocalPos();
+        ci::vec2 getLocalPos();
         //! Get the position of the event in coords local to the Scene root node
-        ci::Vec2f getScenePos();
+        ci::vec2 getScenePos();
         //! Get the source of the event
         NodeRef getSource() { return mSource.lock(); };
         
     protected:
         void setSource(NodeRef source) { mSource = source; };
-        ci::Vec2f mWindowPos;
+        ci::vec2 mWindowPos;
         
     private:
         bool mPropagationEnabled;

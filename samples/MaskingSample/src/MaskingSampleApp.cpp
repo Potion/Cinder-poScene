@@ -1,6 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
-
+#include "cinder/app/RendererGl.h"
 #include "poScene.h"
 #include "MaskingSample.h"
 
@@ -10,7 +10,7 @@ using namespace std;
 using namespace po::scene;
 
 class MaskingSampleApp
-: public AppNative 
+: public App
 {
   public:
 	void setup();
@@ -38,4 +38,4 @@ void MaskingSampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( MaskingSampleApp, RendererGl )
+CINDER_APP( MaskingSampleApp, RendererGl )

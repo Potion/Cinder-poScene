@@ -71,7 +71,7 @@ void Square::setSelected(bool isSelected)
 
 void Square::doRotate()
 {
-	ci::app::timeline().apply(&getRotationAnim(), 360.f, 0.5f)
+	ci::app::timeline().apply(&getRotationAnim(), (float)M_PI*2, 0.5f)
 	.finishFn(std::bind(&Square::reset, this));
 }
 

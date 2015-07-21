@@ -58,29 +58,36 @@ namespace po { namespace scene {
     // Masking Shader
     static ci::gl::GlslProgRef mMaskShader = nullptr;
     
-    static const char *maskVertShader = GLSL(
+    static const char *maskVertShader = CI_GLSL(150,
+        uniform mat4 ciModelViewProjection;
+        in vec4 ciPosition;
+        in vec2 ciTexCoord0;
+        out highp vec2 TexCoord;
+        
         void main()
         {
-            gl_Position     = gl_ModelViewProjectionMatrix * gl_Vertex;
-            gl_TexCoord[0]  = gl_MultiTexCoord0;
+            TexCoord        = ciTexCoord0.st;
+            gl_Position     = ciModelViewProjection * ciPosition;
         }
     );
     
-    static const char *maskFragShader = GLSL(
+    static const char *maskFragShader = CI_GLSL(150,
+        in highp vec2 TexCoord;
+        
         uniform sampler2D tex;
         uniform sampler2D mask;
+                                                
+        out vec4 color;
 
         void main(void)
         {
-            vec2 c0 = vec2(gl_TexCoord[0].s, 1.0 - gl_TexCoord[0].t);
+            vec2 c0 = vec2(TexCoord.s, TexCoord.t);
             
-            vec4 rgbValue       = texture2D(tex, c0);
-            vec4 alphaValue     = texture2D(mask, c0);
+            vec4 rgbValue       = texture(tex, c0);
+            vec4 alphaValue     = texture(mask, c0);
             
-            gl_FragColor.rgb    = rgbValue.rgb;
-            gl_FragColor.a = alphaValue.a;
-            
-            //gl_FragColor = alphaValue;
+            color.rgb     = rgbValue.rgb;
+            color.a       = alphaValue.a;
         }
     );
 
@@ -94,10 +101,10 @@ namespace po { namespace scene {
     , mOffset(0.f,0.f)
     , mAlpha(1.f)
     , mAppliedAlpha(1.f)
-    , mPositionAnim(ci::Vec2f(0.f, 0.f))
-    , mScaleAnim(ci::Vec2f(1.f, 1.f))
+    , mPositionAnim(ci::vec2(0.f, 0.f))
+    , mScaleAnim(ci::vec2(1.f, 1.f))
     , mRotationAnim(0)
-    , mOffsetAnim(ci::Vec2f(0.f, 0.f))
+    , mOffsetAnim(ci::vec2(0.f, 0.f))
     , mAlphaAnim(1.f)
     , mAlignment(Alignment::TOP_LEFT)
     , mMatrixOrder(MatrixOrder::TRS)
@@ -133,7 +140,6 @@ namespace po { namespace scene {
 		//	Make sure to clear the fbo w/Cinder bug fix
         removeParent();
         removeScene();
-        disconnectAllSignals();
     }
     
     
@@ -209,19 +215,18 @@ namespace po { namespace scene {
     
     void Node::captureMasked()
     {
-        ci::gl::SaveFramebufferBinding binding;
         //	Save the window buffer
         {
             
             //  Draw ourself into FBO
-            getScene()->getWindowFbo()->bindFramebuffer();
+            ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
             ci::gl::clear();
             draw();
         }
         
         {
-            //  Draw mask into Masking FBO (replace with stencil buffer in GLNext)
-            getScene()->getStencilFbo()->bindFramebuffer();
+            //  Draw mask into Masking FBO (replace with Mask buffer in GLNext)
+            ci::gl::ScopedFramebuffer buffer(getScene()->getMaskFbo());
             ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
             ci::gl::pushModelView();
             //ci::gl::translate(-getPosition());
@@ -235,9 +240,9 @@ namespace po { namespace scene {
         ci::gl::enableAlphaBlending();
         
         // Bind FBO textures
-        getScene()->getWindowFbo()->getTexture().bind(0);
-        getScene()->getStencilFbo()->getTexture().bind(1);
-
+        ci::gl::ScopedTextureBind fboBind(getScene()->getWindowFbo()->getColorTexture(), 0);
+        ci::gl::ScopedTextureBind maskBind(getScene()->getMaskFbo()->getColorTexture(), 1);
+        
         //	Bind Shader
         mMaskShader->bind();
 
@@ -247,11 +252,6 @@ namespace po { namespace scene {
 
         //	Draw
         ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
-
-        //	Restore everything
-        getScene()->getWindowFbo()->getTexture().unbind();
-        getScene()->getStencilFbo()->getTexture().unbind();
-        mMaskShader->unbind();
     }
 	
 	
@@ -298,12 +298,6 @@ namespace po { namespace scene {
     
     ci::gl::TextureRef Node::createTexture()
     {
-        //	Save the window buffer
-        ci::gl::SaveFramebufferBinding binding;
-        
-        //	Save our matrix
-        ci::Area v = ci::gl::getViewport();
-        
         //	We have to be visible, so if we aren't temporarily turn it on
         bool visible = mVisible;
         setVisible(true);
@@ -311,20 +305,18 @@ namespace po { namespace scene {
         // Create an FBO to draw into
         ci::gl::Fbo::Format format;
         format.setSamples(1);
-        format.setColorInternalFormat(GL_RGBA);
         format.enableDepthBuffer(false);
         
-        ci::gl::Fbo fbo(getWidth(), getHeight(), format);
+        //	Create and Bind the FBO
+        ci::gl::FboRef fbo = ci::gl::Fbo::create(getWidth(), getHeight(), format);
+        ci::gl::ScopedFramebuffer fboBind(fbo);
         
         //	Set the viewport
-        ci::gl::setViewport(fbo.getBounds());
-        
-        //	Bind the FBO
-        fbo.bindFramebuffer();
-        
+        ci::gl::ScopedViewport vp(ci::ivec2(0), fbo->getSize());
+    
         //	Set Ortho camera to fbo bounds, save matrices and push camera
         ci::gl::pushMatrices();
-        ci::gl::setMatricesWindow(fbo.getSize(), true);
+        ci::gl::setMatricesWindow(fbo->getWidth(), fbo->getHeight());
         
         //	Clear the FBO
         ci::gl::clear(ci::ColorA(1.f, 1.f, 1.f, 0.f));
@@ -335,14 +327,10 @@ namespace po { namespace scene {
         //	Set the camera up for the window
         ci::gl::popMatrices();
         
-        //	Return the viewport
-        ci::gl::setViewport(v);
-        
         //	Return to previous visibility
         setVisible(visible);
         
-        ci::gl::TextureRef tex = ci::gl::TextureRef(new ci::gl::Texture(fbo.getTexture()));
-        tex->setFlipped(true);
+        ci::gl::TextureRef tex = fbo->getColorTexture();
         return tex;
     }
 
@@ -358,8 +346,8 @@ namespace po { namespace scene {
     {
         mPositionAnim.stop();
         mUpdatePositionFromAnim = false;
-        mPosition.set(x, y);
-        mPositionAnim.ptr()->set(mPosition);
+        mPosition = ci::vec2(x, y);
+        mPositionAnim = ci::vec2(x,y);
         mFrameDirty = true;
         return *this;
     }
@@ -371,8 +359,8 @@ namespace po { namespace scene {
     {
         mScaleAnim.stop();
         mUpdateScaleFromAnim = false;
-        mScale.set(x, y);
-        mScaleAnim.ptr()->set(mScale);
+        mScale = ci::vec2(x, y);
+        mScaleAnim = ci::vec2(x,y);
         mFrameDirty = true;
         mBoundsDirty = true;
         return *this;
@@ -383,8 +371,9 @@ namespace po { namespace scene {
 	//
     Node &Node::setRotation(float rotation)
     {
-        if(rotation >= 360.0f) {
-            rotation = fmodf(rotation, 360.0f);
+        
+        if(rotation >= M_PI * 2 || rotation <= -M_PI * 2) {
+            rotation = fmodf(rotation, M_PI * 2);
         }
         
         mRotationAnim.stop();
@@ -413,7 +402,7 @@ namespace po { namespace scene {
     Node &Node::setFillColor(ci::Color color)
     {
         mFillColor = color;
-        mFillColorAnim.ptr()->set(mFillColor);
+        mFillColorAnim = mFillColor;
         return *this;
     }
     
@@ -423,8 +412,8 @@ namespace po { namespace scene {
     Node &Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
-        mOffset.set(x, y);
-        mOffsetAnim.ptr()->set(mOffset);
+        mOffset - ci::vec2(x, y);
+        mOffsetAnim = mOffset;
         mFrameDirty = true;
         
 		//	If we are manually setting the offset, we can't have alignment
@@ -500,7 +489,7 @@ namespace po { namespace scene {
         
         if (mAlignment == Alignment::NONE) return *this;
         if (mAlignment == Alignment::TOP_LEFT)  {
-            mOffset.set(0, 0);
+            mOffset = ci::vec2(0, 0);
             return *this;
         }
         
@@ -511,32 +500,32 @@ namespace po { namespace scene {
             case Alignment::TOP_LEFT:
                 break;
             case Alignment::TOP_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f, 0);
+                mOffset = ci::vec2(-bounds.getWidth() / 2.f, 0);
 				break;
             case Alignment::TOP_RIGHT:
-                mOffset.set(-bounds.getWidth(), 0);
+                mOffset = ci::vec2(-bounds.getWidth(), 0);
 				break;
             case Alignment::CENTER_LEFT:
-                mOffset.set(0, -bounds.getHeight() / 2.f);
+                mOffset = ci::vec2(0, -bounds.getHeight() / 2.f);
 				break;
             case Alignment::CENTER_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f, -bounds.getHeight() / 2.f);
+                mOffset = ci::vec2(-bounds.getWidth() / 2.f, -bounds.getHeight() / 2.f);
 				break;
             case Alignment::CENTER_RIGHT:
-                mOffset.set(-bounds.getWidth(), -bounds.getHeight() / 2.f);
+                mOffset = ci::vec2(-bounds.getWidth(), -bounds.getHeight() / 2.f);
 				break;
             case Alignment::BOTTOM_LEFT:
-                mOffset.set(0, -bounds.getHeight());
+                mOffset = ci::vec2(0, -bounds.getHeight());
 				break;
             case Alignment::BOTTOM_CENTER:
-                mOffset.set(-bounds.getWidth() / 2.f, -bounds.getHeight());
+                mOffset = ci::vec2(-bounds.getWidth() / 2.f, -bounds.getHeight());
 				break;
             case Alignment::BOTTOM_RIGHT:
-                mOffset.set(-bounds.getWidth(), -bounds.getHeight());
+                mOffset = ci::vec2(-bounds.getWidth(), -bounds.getHeight());
 				break;
         }
         
-        mOffsetAnim.ptr()->set(mOffset);
+        mOffsetAnim = mOffset;
         
         return *this;
     }
@@ -562,63 +551,63 @@ namespace po { namespace scene {
         }
         
         ci::gl::translate(mOffset);
-        mMatrix.set(ci::gl::getModelView(), ci::gl::getProjection(), ci::gl::getViewport());
+        mMatrix.set(ci::gl::getModelMatrix(), ci::gl::getProjectionMatrix(), ci::Area(ci::gl::getViewport().first, ci::gl::getViewport().second));
     }
     
 
-    ci::Vec2f Node::nodeToLocal(const ci::Vec2f &point, NodeRef node) {
+    ci::vec2 Node::nodeToLocal(const ci::vec2 &point, NodeRef node) {
 		return windowToLocal(node->localToWindow(point));
 	}
     
-    ci::Vec2f Node::localToNode(const ci::Vec2f &point, NodeRef node) {
+    ci::vec2 Node::localToNode(const ci::vec2 &point, NodeRef node) {
 		return node->windowToLocal(localToWindow(point));
 	}
 	
-    ci::Vec2f Node::sceneToLocal(const ci::Vec2f &scenePoint)
+    ci::vec2 Node::sceneToLocal(const ci::vec2 &scenePoint)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->localToNode(scenePoint, shared_from_this());
-        return ci::Vec2f();
+        return ci::vec2();
     }
     
-    ci::Vec2f Node::localToScene(const ci::Vec2f &point)
+    ci::vec2 Node::localToScene(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return localToNode(point, scene->getRootNode());
-		return ci::Vec2f();
+		return ci::vec2();
     }
     
-    ci::Vec2f Node::sceneToWindow(const ci::Vec2f &point)
+    ci::vec2 Node::sceneToWindow(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->localToWindow(point);
         return point;
     }
     
-    ci::Vec2f Node::windowToScene(const ci::Vec2f &point)
+    ci::vec2 Node::windowToScene(const ci::vec2 &point)
     {
         SceneRef scene = getScene();
         if (scene != nullptr) return scene->getRootNode()->windowToLocal(point);
-        return ci::Vec2f();
+        return ci::vec2();
     }
 	
-    ci::Vec2f Node::windowToLocal(const ci::Vec2f &windowPoint) {
+    ci::vec2 Node::windowToLocal(const ci::vec2 &windowPoint) {
 		return mMatrix.globalToLocal(windowPoint);
 	}
 	
-    ci::Vec2f Node::localToWindow(const ci::Vec2f &scenePoint)
+    ci::vec2 Node::localToWindow(const ci::vec2 &scenePoint)
     {
         if (mHasScene) return mMatrix.localToGlobal(scenePoint);
-        return ci::Vec2f();
+        return ci::vec2();
     }
     
     //
     //  This is used for hit-testing all Nodes
     //  Override this function to do any type of custom
     //
-    bool Node::pointInside(const ci::Vec2f &point)
+    bool Node::pointInside(const ci::vec2 &point)
     {
-        ci::Vec2f pos = windowToLocal(point);
+        ci::vec2 pos = windowToLocal(point);
         return getBounds().contains(pos);
     }
 
@@ -684,25 +673,25 @@ namespace po { namespace scene {
         //	Draw origin
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
-        ci::gl::scale(ci::Vec2f(1.f, 1.f) / mScale);
+        ci::gl::scale(ci::vec2(1.f, 1.f) / mScale);
         ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
         ci::gl::popModelView();
     }
 	
     ci::Rectf Node::getFrame()
     {
-//        if (bFrameDirty) {
+        //        if(bFrameDirty) {
             ci::Rectf r = getBounds();
             
-            ci::MatrixAffine2f m;
-            m.translate(mPosition);
-            m.rotate(ci::toRadians(getRotation()));
-            m.scale(mScale);
-            m.translate(mOffset);
+            ci::mat3 m;
+            m = glm::translate(m, mPosition);
+            m = glm::rotate(m, getRotation());
+            m = glm::scale(m, mScale);
+            m = glm::translate(m, mOffset);
             
-            mFrame = r.transformCopy(m);
+            mFrame = r.transformed(m);
             mFrameDirty = false;
-//        }
+        //        }
         return mFrame;
     }
 	
@@ -720,17 +709,6 @@ namespace po { namespace scene {
         if ( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
         return true;
     }
-    
-    void Node::disconnectAllSignals()
-    {
-        for (auto &signal : mMouseEventSignals) {
-            signal.second.disconnect_all_slots();
-        }
-        
-        for (auto &signal : mTouchEventSignals) {
-            signal.second.disconnect_all_slots();
-        }
-    }
 	
 	
 	//------------------------------------
@@ -742,7 +720,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const MouseEvent::Type &type)
     {
-        if ((mMouseEventSignals.count(type) && mMouseEventSignals[type].num_slots() != 0)) {
+        if ((mMouseEventSignals.count(type) && mMouseEventSignals[type].getNumSlots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         return false;
@@ -754,7 +732,7 @@ namespace po { namespace scene {
     void Node::emitEvent(MouseEvent &event)
     {
         event.setSource(shared_from_this());
-        mMouseEventSignals[event.getType()](event);
+        mMouseEventSignals[event.getType()].emit(event);
     }
     
 	
@@ -768,7 +746,7 @@ namespace po { namespace scene {
     void Node::emitEvent(TouchEvent &event)
     {
         event.setSource(shared_from_this());
-        mTouchEventSignals[event.getType()](event);
+        mTouchEventSignals[event.getType()].emit(event);
     }
 	
 	//
@@ -776,7 +754,7 @@ namespace po { namespace scene {
 	//
     bool Node::isEligibleForInteractionEvent(const TouchEvent::Type &type)
     {
-        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].num_slots() != 0)) {
+        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].getNumSlots() != 0)) {
             return isEligibleForInteractionEvents();
         }
         return false;

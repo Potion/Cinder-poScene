@@ -34,7 +34,7 @@ protected:
 
 private:
     po::scene::ShapeRef mBaseShape;
-    ci::Vec2f           mBasePosition;
+    ci::vec2           mBasePosition;
     ci::Color           mBaseColor;
     
     IndicatorRef        mIndicator;

@@ -18,7 +18,7 @@ public:
 	virtual void setup();
 	
 	//	Get the thumb position for text positioning
-	ci::Vec2f getThumbPosition() { return mThumb->getPosition(); }
+	ci::vec2 getThumbPosition() { return mThumb->getPosition(); }
 
 protected:
 	Scroller();
@@ -32,8 +32,8 @@ private:
 	
 	//	Keep track of mouse position for dragging
 	bool mIsPressed;
-	ci::Vec2f mStartPos, mEndPos;
-	ci::Vec2f mInitialPos;
+	ci::vec2 mStartPos, mEndPos;
+	ci::vec2 mInitialPos;
 	
 	//	Mouse event handlers
 	void onMouseDown(MouseEvent &event);

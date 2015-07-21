@@ -33,7 +33,7 @@ void MovieThumb::animateOutOfPlayerPosition()
 {
     float yPos = getUnderlyingMovie()->getHeight() / 2;
     yPos *= mThumbnailScale.y * -1;
-    ci::Vec2f aboveScreen( getPosition().x, yPos );
+    ci::vec2 aboveScreen( getPosition().x, yPos );
     ci::app::timeline().apply(&getPositionAnim(), aboveScreen, 1.5f, ci::EaseInExpo()).finishFn(std::bind(&MovieThumb::slideUpToHomePosition, this));
     ci::app::timeline().apply(&getScaleAnim(), mThumbnailScale, 1.5f, ci::EaseOutBack(2.f));
 }
@@ -49,7 +49,7 @@ void MovieThumb::slideUpToHomePosition()
     float yPos = getUnderlyingMovie()->getHeight() / 2;
     yPos *= (mThumbnailScale.y) ;
     yPos += ci::app::getWindowHeight();
-    ci::Vec2f belowScreen(getPosition().x, yPos);
+    ci::vec2 belowScreen(getPosition().x, yPos);
     setPosition(belowScreen);
 
     setScale(0.0f, 0.0f);

@@ -22,6 +22,9 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		936F3D0BE64143C694413E25 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CCB5EAC4CEEE48B8BD1A0A9D /* poEvents.cpp */; };
 		A732328FD4D749D0B3AE31F2 /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B79AA438979E496B92690963 /* poScene.cpp */; };
+		AA547AAB1B541BCF005BEC40 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AAA1B541BCF005BEC40 /* CoreMedia.framework */; };
+		AA547AAD1B541BD6005BEC40 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AAC1B541BD6005BEC40 /* AVFoundation.framework */; };
+		AA547AAF1B541BDE005BEC40 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AAE1B541BDE005BEC40 /* IOKit.framework */; };
 		ABFEE43EDC0342F39EB2AC90 /* poNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CD98AEEDA364A97A754B763 /* poNode.cpp */; };
 		CB6A5804473E49779720783A /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 299452AB804F4DA48DC6F178 /* poShape.cpp */; };
 		D41BF401D39C472AB076F9F2 /* TextSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5097F7574456449DB36B9DFE /* TextSampleApp.cpp */; };
@@ -60,6 +63,9 @@
 		83646EB79F404C87A7AF6DDC /* poVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poVideo.h; path = ../../../src/poScene/poVideo.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* TextSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		94373ADC9C62419D8DBD2A30 /* poEventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
+		AA547AAA1B541BCF005BEC40 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AA547AAC1B541BD6005BEC40 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AA547AAE1B541BDE005BEC40 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		AE955D33F1A74B28BF1D9538 /* poMatrixSet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poMatrixSet.cpp; path = ../../../src/poScene/poMatrixSet.cpp; sourceTree = "<group>"; };
 		B79AA438979E496B92690963 /* poScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poScene.cpp; path = ../../../src/poScene/poScene.cpp; sourceTree = "<group>"; };
 		BD6D1B617B574A749F4B1E94 /* poNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNode.h; path = ../../../src/poScene/poNode.h; sourceTree = "<group>"; };
@@ -75,6 +81,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA547AAF1B541BDE005BEC40 /* IOKit.framework in Frameworks */,
+				AA547AAD1B541BD6005BEC40 /* AVFoundation.framework in Frameworks */,
+				AA547AAB1B541BCF005BEC40 /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -200,6 +209,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA547AAE1B541BDE005BEC40 /* IOKit.framework */,
+				AA547AAC1B541BD6005BEC40 /* AVFoundation.framework */,
+				AA547AAA1B541BCF005BEC40 /* CoreMedia.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -357,14 +369,14 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";
@@ -374,14 +386,14 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
+				HEADER_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";

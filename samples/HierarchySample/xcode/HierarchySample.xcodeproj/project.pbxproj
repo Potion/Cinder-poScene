@@ -26,6 +26,9 @@
 		69E50B24E9724FDAB3FA5825 /* HierarchySample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36B1DB59526C4893950F64AE /* HierarchySample.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A978BB806E6E440B9C186851 /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8A661BC112C42DF84D4C455 /* poScene.cpp */; };
+		AA547AA51B54199F005BEC40 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA41B54199F005BEC40 /* AVFoundation.framework */; };
+		AA547AA71B5419A6005BEC40 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA61B5419A6005BEC40 /* CoreMedia.framework */; };
+		AA547AA91B5419AD005BEC40 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA81B5419AD005BEC40 /* IOKit.framework */; };
 		AC4F50415BD540FB89CA19FB /* poTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E796A63F32744D70B3FF7660 /* poTextBox.cpp */; };
 		C162901959A74C65B9246066 /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A12D75EF91DC4FAC84374CA2 /* poMatrixSet.cpp */; };
 /* End PBXBuildFile section */
@@ -60,6 +63,9 @@
 		A12D75EF91DC4FAC84374CA2 /* poMatrixSet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poMatrixSet.cpp; path = ../../../src/poScene/poMatrixSet.cpp; sourceTree = "<group>"; };
 		A20DF5516D6848A4BA967F84 /* poImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poImage.h; path = ../../../src/poScene/poImage.h; sourceTree = "<group>"; };
 		A252AEE399AA4D9ABBEBD07D /* poEventCenter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEventCenter.cpp; path = ../../../src/poScene/poEventCenter.cpp; sourceTree = "<group>"; };
+		AA547AA41B54199F005BEC40 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AA547AA61B5419A6005BEC40 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AA547AA81B5419AD005BEC40 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		B560E9B9DC504994A4E49476 /* poTextBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poTextBox.h; path = ../../../src/poScene/poTextBox.h; sourceTree = "<group>"; };
 		B86C32D9FD29417A99C432CB /* poEventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
 		BEE50A40F7E84146BDFA4F9D /* poScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poScene.h; path = ../../../src/poScene/poScene.h; sourceTree = "<group>"; };
@@ -78,6 +84,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA547AA91B5419AD005BEC40 /* IOKit.framework in Frameworks */,
+				AA547AA71B5419A6005BEC40 /* CoreMedia.framework in Frameworks */,
+				AA547AA51B54199F005BEC40 /* AVFoundation.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -178,6 +187,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA547AA81B5419AD005BEC40 /* IOKit.framework */,
+				AA547AA61B5419A6005BEC40 /* CoreMedia.framework */,
+				AA547AA41B54199F005BEC40 /* AVFoundation.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -363,8 +375,8 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -380,8 +392,8 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";

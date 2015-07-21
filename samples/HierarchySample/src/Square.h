@@ -36,7 +36,7 @@ private:
 	bool mIsPressed;
 	
 	//	Keep track of the initial, start and end position to use for dragging
-	ci::Vec2f mStartPos, mEndPos, mInitialPos;
+	ci::vec2 mStartPos, mEndPos, mInitialPos;
 	
 	//	Mouse down event handler
 	void onMouseDown(MouseEvent &event);

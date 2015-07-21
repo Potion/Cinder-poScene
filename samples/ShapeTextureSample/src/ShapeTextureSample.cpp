@@ -1,5 +1,6 @@
 #include "ShapeTextureSample.h"
 #include "cinder/imageIo.h"
+
 ShapeTextureSampleRef ShapeTextureSample::create() 
 {
     ShapeTextureSampleRef node(new ShapeTextureSample());
@@ -16,7 +17,7 @@ ShapeTextureSample::ShapeTextureSample()
 void ShapeTextureSample::setup() 
 {
     //  Cinder method for key events
-    ci::app::getWindow()->connectKeyDown(&ShapeTextureSample::keyDown, this);
+    ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&ShapeTextureSample::keyDown, this, std::placeholders::_1));
     
     createFitIndicators();
     activateFitIndicator(0);
@@ -41,7 +42,7 @@ void ShapeTextureSample::setup()
     addChild(mRectShape);
     
     mEllipseShape = Shape::createEllipse(shapeWidth, shapeHeight);
-    mEllipseShape->setPosition(ci::Vec2f(xInterval + xOffset, yOffset));
+    mEllipseShape->setPosition(ci::vec2(xInterval + xOffset, yOffset));
     mEllipseShape->setTexture(mTexture);
     mEllipseShape->setDrawBounds(true);
     addChild(mEllipseShape);
@@ -54,7 +55,7 @@ void ShapeTextureSample::setup()
     
     mTriangleShape = Shape::create();
     mTriangleShape->setCiShape2d(customShape);
-    mTriangleShape->setPosition(ci::Vec2f((xInterval * 2) + xOffset, yOffset));
+    mTriangleShape->setPosition(ci::vec2((xInterval * 2) + xOffset, yOffset));
     mTriangleShape->setTexture(mTexture);
     mTriangleShape->setDrawBounds(true);
     addChild(mTriangleShape);

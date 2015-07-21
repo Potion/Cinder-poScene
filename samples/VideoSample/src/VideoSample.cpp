@@ -1,6 +1,8 @@
+#include "cinder/qtime/QuickTimeGl.h"
 #include "VideoSample.h"
 #include "poShape.h"
 #include "cinder/imageIo.h"
+#include "cinder/Utilities.h"
 
 using namespace po::scene;
 
@@ -18,11 +20,12 @@ VideoSample::VideoSample()
 void VideoSample::setup()
 {
     //  create a player that loops video
-    mVideo = VideoGl::create();
+    mVideo = po::scene::VideoGl::create();
     ci::fs::path moviePath = ci::app::getAssetPath("test.mp4");
     
     try {
         ci::qtime::MovieGlRef movieRef;
+        
         movieRef = ci::qtime::MovieGl::create(moviePath);
         mVideo->setMovieRef(movieRef);
         mVideo->getMovieRef()->setLoop(true);
@@ -46,7 +49,7 @@ void VideoSample::setup()
 
 void VideoSample::spinPlayer()
 {
-    ci::app::timeline().apply(&mVideo->getRotationAnim(), 360.f, 2.0f).finishFn(std::bind(&VideoSample::resetPlayerRotation, this));
+    ci::app::timeline().apply(&mVideo->getRotationAnim(), (float)M_PI * 2.0f, 2.0f).finishFn(std::bind(&VideoSample::resetPlayerRotation, this));
 }
 
 void VideoSample::resetPlayerRotation()

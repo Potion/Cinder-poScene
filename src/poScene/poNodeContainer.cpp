@@ -365,7 +365,7 @@ namespace po { namespace scene {
     //  Interaction
 	//------------------------------------
 	
-    bool NodeContainer::pointInside(const ci::Vec2f &windowPoint)
+    bool NodeContainer::pointInside(const ci::vec2 &windowPoint)
     {
         for (const NodeRef &node : mChildren) {
             if (!node->mVisible) continue;

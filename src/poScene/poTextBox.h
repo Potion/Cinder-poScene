@@ -32,6 +32,7 @@
 
 #include "cinder/Text.h"
 #include "cinder/gl/Texture.h"
+#include "cinder/gl/draw.h"
 #include "poNode.h"
 
 namespace po { namespace scene {

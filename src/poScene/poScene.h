@@ -107,7 +107,7 @@ namespace po { namespace scene {
         
         // Fbo's for use by nodes
         std::shared_ptr<ci::gl::Fbo> getWindowFbo() { return mFbo; };
-        std::shared_ptr<ci::gl::Fbo> getStencilFbo() { return mStencilFbo; };
+        std::shared_ptr<ci::gl::Fbo> getMaskFbo() { return mMaskFbo; };
         
     private:
 		//
@@ -133,8 +133,8 @@ namespace po { namespace scene {
         //  FBOs for caching + masking
         void createFbos();
         void resetFbos();
-        std::shared_ptr<ci::gl::Fbo> mFbo;
-        std::shared_ptr<ci::gl::Fbo> mStencilFbo;
+        ci::gl::FboRef mFbo;
+        ci::gl::FboRef mMaskFbo;
         
         
 		

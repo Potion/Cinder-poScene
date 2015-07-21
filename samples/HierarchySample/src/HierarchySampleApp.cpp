@@ -1,6 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
-
+#include "cinder/app/RendererGl.h"
 #include "poScene.h"
 #include "HierarchySample.h"
 
@@ -10,7 +10,7 @@ using namespace std;
 using namespace po::scene;
 
 class HierarchySampleApp
-: public AppNative 
+: public App
 {
   public:
 	void setup();
@@ -37,4 +37,4 @@ void HierarchySampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( HierarchySampleApp, RendererGl )
+CINDER_APP( HierarchySampleApp, RendererGl )

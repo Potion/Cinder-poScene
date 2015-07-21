@@ -133,7 +133,7 @@ namespace po { namespace scene {
 
 		//  Interaction
         //! Determine if a point is inside of any of this NodeContainer's children
-		virtual bool pointInside(const ci::Vec2f &windowPoint);
+		virtual bool pointInside(const ci::vec2 &windowPoint);
 		
 	protected:
 		virtual void draw();

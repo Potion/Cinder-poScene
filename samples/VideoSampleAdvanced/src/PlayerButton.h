@@ -29,6 +29,6 @@ private:
     void                doAction();
     
     ButtonSignal        mButtonSignal;
-    ci::Vec2f           mPressPosition;
+    ci::vec2            mPressPosition;
     
 };

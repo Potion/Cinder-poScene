@@ -26,6 +26,9 @@
 		5FFC72C34F19446FADA009B4 /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08BB9AF98EC048179BDAB12F /* poMatrixSet.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		99AE871BED4C43919DEB588F /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6083A578968645B7A4C3CD91 /* poEvents.cpp */; };
+		AA547A9F1B54171B005BEC40 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547A9E1B54171B005BEC40 /* CoreMedia.framework */; };
+		AA547AA11B541722005BEC40 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA01B541722005BEC40 /* AVFoundation.framework */; };
+		AA547AA31B541732005BEC40 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA21B541732005BEC40 /* IOKit.framework */; };
 		CC09CEF4F4374AFE8E2E3D42 /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1CFA9CEAF7E54A728911D7EF /* poScene.cpp */; };
 		DE81EB9C745C453491C8282A /* poTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 929855FB41B64FE59C3D0E06 /* poTextBox.cpp */; };
 		E8B276BD8F6340E78615AD5D /* AnimationSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E3B5BA36654CEFB41EE233 /* AnimationSample.cpp */; };
@@ -67,6 +70,9 @@
 		929855FB41B64FE59C3D0E06 /* poTextBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = poTextBox.cpp; sourceTree = "<group>"; };
 		9FFE04FCE0B44C978D924F0E /* poNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = poNode.h; sourceTree = "<group>"; };
 		A798EDC459ED4EE78687AF05 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		AA547A9E1B54171B005BEC40 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AA547AA01B541722005BEC40 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AA547AA21B541732005BEC40 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		AE19F450A6CB4901A50AC770 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B56C1D7825B94E548C2157E0 /* poMatrixSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = poMatrixSet.h; sourceTree = "<group>"; };
 		C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = AnimationSampleApp.cpp; path = ../src/AnimationSampleApp.cpp; sourceTree = "<group>"; };
@@ -81,6 +87,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA547AA31B541732005BEC40 /* IOKit.framework in Frameworks */,
+				AA547AA11B541722005BEC40 /* AVFoundation.framework in Frameworks */,
+				AA547A9F1B54171B005BEC40 /* CoreMedia.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -183,6 +192,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA547AA21B541732005BEC40 /* IOKit.framework */,
+				AA547AA01B541722005BEC40 /* AVFoundation.framework */,
+				AA547A9E1B54171B005BEC40 /* CoreMedia.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -371,8 +383,8 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -391,8 +403,8 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";

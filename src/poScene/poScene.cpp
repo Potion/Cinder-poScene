@@ -51,7 +51,7 @@ namespace po { namespace scene {
     , mAutoCam(true)
     , eventCenter(EventCenter::create())
     , mFbo(nullptr)
-    , mStencilFbo(nullptr)
+    , mMaskFbo(nullptr)
     {
         createFbos();
         ci::app::getWindow()->getSignalResize().connect(std::bind(&Scene::createFbos, this));
@@ -146,21 +146,17 @@ namespace po { namespace scene {
     
     void Scene::createFbos()
     {
-        if(mFbo) {
-            resetFbos();
-        }
-        
         //	Create the FBO
         ci::gl::Fbo::Format format;
         format.setSamples(1);
-        format.setColorInternalFormat(GL_RGBA);
         format.enableDepthBuffer(false);
         
-        mFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
-        mStencilFbo = std::shared_ptr<ci::gl::Fbo>(new ci::gl::Fbo(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format));
+        mFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
+        mMaskFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
         
-        mFbo->getTexture().setFlipped(true);
-        mStencilFbo->getTexture().setFlipped(true);
+//        mFbo->getT
+//        mFbo->getColorTexture().setFlipped(true);
+//        mMaskFbo->getColorTexture().setFlipped(true);
     }
     
     
@@ -170,30 +166,9 @@ namespace po { namespace scene {
     //
     void Scene::resetFbos()
     {
-        GLuint fboDepthTextureId = 0;
-        GLuint stencilFboDepthTextureId = 0;
-        
-        // Get the id of depth texture
-        if (mFbo->getDepthTexture()) {
-            fboDepthTextureId = mFbo->getDepthTexture().getId();
-        }
-        
-        if(mStencilFbo->getDepthTexture()) {
-            stencilFboDepthTextureId = mStencilFbo->getDepthTexture().getId();
-        }
-        
         // Reset the FBO
         mFbo.reset();
-        mStencilFbo.reset();
-        
-        //  Delete the depth texture (if necessary)
-        if (fboDepthTextureId > 0) {
-            glDeleteTextures(1, &fboDepthTextureId);
-        }
-        
-        if (stencilFboDepthTextureId > 0) {
-            glDeleteTextures(1, &stencilFboDepthTextureId);
-        }
+        mMaskFbo.reset();
 
     }
     

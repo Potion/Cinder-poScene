@@ -11,9 +11,9 @@ ScrubberRef Scrubber::create()
 
 Scrubber::Scrubber()
 : mIsPressed(false)
-, mStartPos(ci::Vec2f::zero())
-, mEndPos(ci::Vec2f::zero())
-, mInitialPos(ci::Vec2f::zero())
+, mStartPos(glm::zero<ci::vec2>())
+, mEndPos(glm::zero<ci::vec2>())
+, mInitialPos(glm::zero<ci::vec2>())
 {}
 
 void Scrubber::setup()
@@ -69,7 +69,7 @@ void Scrubber::onMouseDownTrack(MouseEvent &event)
     if (!mIsPressed) {
         mIsPressed = true;
         
-        ci::Vec2f clickPos = getParent()->windowToLocal(event.getWindowPos());
+        ci::vec2 clickPos = getParent()->windowToLocal(event.getWindowPos());
         
         float newXPos = clickPos.x - mHandle->getWidth() / 2;
         if (newXPos < 0) {
@@ -101,15 +101,15 @@ void Scrubber::onMouseDrag(MouseEvent &event)
         mEndPos = getParent()->windowToLocal(event.getWindowPos());
         
         //	Calculate the new position
-        ci::Vec2f newPosition = ci::Vec2f(mInitialPos.x + (mEndPos.x - mStartPos.x), mInitialPos.y);
+        ci::vec2 newPosition = ci::vec2(mInitialPos.x + (mEndPos.x - mStartPos.x), mInitialPos.y);
         
         if (newPosition.x < 0) {
-            newPosition = ci::Vec2f(0, mInitialPos.y);
+            newPosition = ci::vec2(0, mInitialPos.y);
         }
         
         if (newPosition.x > (mTrack->getWidth() - mHandle->getWidth())) {
-            newPosition = ci::Vec2f(mInitialPos.x, mTrack->getHeight() - mHandle->getHeight());
-            newPosition = ci::Vec2f(mTrack->getWidth() - mHandle->getWidth(), mInitialPos.y);
+            newPosition = ci::vec2(mInitialPos.x, mTrack->getHeight() - mHandle->getHeight());
+            newPosition = ci::vec2(mTrack->getWidth() - mHandle->getWidth(), mInitialPos.y);
         }
         
         //	Set the new position
