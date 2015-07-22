@@ -216,7 +216,10 @@ The first way to use a `po::scene::Shape` is as a solid-filled shape. `po::scene
 	ShapeRef myEllipse = Shape::createEllipse(100,200);
 	ShapeRef myCircle = Shape::createCircle(100);
 	
-**EXAMPLE PICTURE OF THIS**
+
+![Shapes example](images/exampleShapes.png)<br>
+*Examples of the above shapes drawn on a 300x300 app window* 
+
 
 These create and set the backing `ci::Shape2d`. This can be replaced at any time by the user.
 
@@ -224,7 +227,9 @@ This shape will be drawn using the `po::scene::Node` fillColor attribute, and hi
 
 In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Shape` and mapped using a number of alignments.
 
-**EXAMPLE OF TEXTURES AND ALIGNMENTS**
+
+![Texture example](images/exampleTextureShape.png)<br>
+*Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
 ### po::scene::Video
 
@@ -245,13 +250,7 @@ To create a Node, extend this class and implement the following methods:
 		}
 		
 
-The below image shows a custom Node. It draws a texture much like the po::scene::Image class, but the bounds are defined to be both taller and thinner than the texture's bounds. 
-
-![Custom bounds example](images/boundsExImg.png)
-
-*Custom Node with custom-defined bounds* 
-
-Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so none of the above methods are necessary.
+Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so it is not necessary to override any of the above methods.
 
 ## History
 
