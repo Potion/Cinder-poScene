@@ -244,8 +244,12 @@ To create a Node, extend this class and implement the following methods:
 			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
 		}
 		
-		IMAGE EXPLAINING BOUNDS HERE?
-		
+
+The below image shows a custom Node. It draws a texture much like the po::scene::Image class, but the bounds are defined to be both taller and thinner than the texture's bounds. 
+
+![Custom bounds example](images/boundsExImg.png)
+
+*Custom Node with custom-defined bounds* 
 
 Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so none of the above methods are necessary.
 
