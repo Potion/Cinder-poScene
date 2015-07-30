@@ -232,7 +232,7 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 *Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
 ### po::scene::Video
-`po::scene::Video` provides a Node that wraps a Cinder movie player. Because there are numerous Cinder video players, it is a generic wrapper that provides a `po::scene::VideoGl` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
+`po::scene::Video` provides a Node that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoGl` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
 
 	po::scene::VideoGLRef poVideo = po::scene::VideoGl::create();
 	 
@@ -249,7 +249,11 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 
 `po::scene::TextBox` wraps the `ci::TextBox` class.
 
-To set the `ci::TextBox member` of the `po::scene::TextBox`, call the `setCiTextBox` method. This automatically renders the Cinder TextBox and creates a new texture reference. The bounds of a `po::scene::TextBox` Node are the bounds of that texture or, if no texture has been created, `getBounds()` returns a new `ci::Rectf`.
+You can create a `po::scene::TextBox` with an preexisting `ci::TextBox`; alternatively, `po::scene::TextBox::create()` will return a `po::scene::TextBox` wrapping a newly created `ci::TextBox`.
+
+To set the `ci::TextBox` member of the `po::scene::TextBox`, call the `setCiTextBox` method. This automatically renders the Cinder TextBox and creates a new texture reference.
+
+The bounds of a `po::scene::TextBox` Node are the bounds of that texture or, if no texture has been created, `getBounds()` returns a new `ci::Rectf`.
 
 To manipulate the underlying `ci::TextBox`, call `getCiTextBoxCopy()`.
 
