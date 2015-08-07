@@ -36,10 +36,12 @@ Using a tree metaphor, **po::scene** contains three main classes:
 + `po::scene::NodeContainer` represents a branch. It can contain any number of other branches, as well as leaves.
 + `po::Scene::Node` represents a leaf, or an end point in the scene-graph. These Nodes are usually the point for any gl drawing.
 
+![Structure diagram](images/diagram.jpg)
+
+*Diagram of po::Scene structure*
+
+
 Moving any branch of a tree will also move all of its connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene::NodeContainer` will transform all of the child Nodes within it.
-
-
-
 ![Bounds example](images/Bounds.png)
 *Screenshot from the bounds example, describing the structure of a scene* 
 ## Nodes
