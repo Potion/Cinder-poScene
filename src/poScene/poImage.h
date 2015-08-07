@@ -31,7 +31,7 @@
 #pragma once
 
 #include "poNode.h"
-
+#include "cinder/gl/draw.h"
 namespace po { namespace scene {
 	// Images are simple wrappers that draw a ci::gl::Texture to a
     // quad at their actual size.

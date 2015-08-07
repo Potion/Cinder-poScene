@@ -1,5 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
+#include "cinder/app/RendererGl.h"
 
 #include "poScene.h"
 #include "BoundsSample.h"
@@ -10,7 +11,7 @@ using namespace std;
 using namespace po::scene;
 
 class BoundsSampleApp
-: public AppNative 
+: public App
 {
   public:
 	void setup();
@@ -39,4 +40,4 @@ void BoundsSampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( BoundsSampleApp, RendererGl )
+CINDER_APP( BoundsSampleApp, RendererGl )

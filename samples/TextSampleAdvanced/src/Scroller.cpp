@@ -9,9 +9,9 @@ ScrollerRef Scroller::create()
 
 Scroller::Scroller()
 : mIsPressed(false)
-, mStartPos(ci::Vec2f::zero())
-, mEndPos(ci::Vec2f::zero())
-, mInitialPos(ci::Vec2f::zero())
+, mStartPos(ci::vec2())
+, mEndPos(ci::vec2())
+, mInitialPos(ci::vec2())
 {
 }
 
@@ -62,14 +62,14 @@ void Scroller::onMouseDrag(po::scene::MouseEvent &event)
 		mEndPos = getParent()->windowToLocal(event.getWindowPos());
 		
 		//	Calculate the new position
-		ci::Vec2f newPosition = ci::Vec2f(mInitialPos.x, mInitialPos.y + (mEndPos.y - mStartPos.y));
+		ci::vec2 newPosition = ci::vec2(mInitialPos.x, mInitialPos.y + (mEndPos.y - mStartPos.y));
 		
 		if (newPosition.y < 0) {
-			newPosition = ci::Vec2f(mInitialPos.x, 0);
+			newPosition = ci::vec2(mInitialPos.x, 0);
 		}
 		
 		if (newPosition.y > (mTrack->getHeight() - mThumb->getHeight())) {
-			newPosition = ci::Vec2f(mInitialPos.x, mTrack->getHeight() - mThumb->getHeight());
+			newPosition = ci::vec2(mInitialPos.x, mTrack->getHeight() - mThumb->getHeight());
 		}
 		
 		//	Set the new position

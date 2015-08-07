@@ -1,5 +1,6 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
+#include "cinder/app/RendererGl.h"
 
 #include "poScene.h"
 #include "VideoSample.h"
@@ -10,7 +11,7 @@ using namespace std;
 using namespace po::scene;
 
 class VideoSampleApp
-: public AppNative
+: public App
 {
 public:
     void setup();
@@ -38,4 +39,4 @@ void VideoSampleApp::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( VideoSampleApp, RendererGl )
+CINDER_APP( VideoSampleApp, RendererGl )

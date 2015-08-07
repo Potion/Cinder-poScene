@@ -5,10 +5,6 @@
 #include "PlayerButton.h"
 #include "Scrubber.h"
 
-// In order to use poVideo, you must link the QuickTime.framework.
-// In Xcode, you can add this under Targets -> BuildPhases -> Link Binary With Libraries.
-// Hit [+] at the bottom, and choose QuickTime.framework from the list.
-
 class PlayerController;
 typedef std::shared_ptr<PlayerController> PlayerControllerRef;
 

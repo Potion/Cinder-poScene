@@ -89,11 +89,11 @@ void BoundsSample::setup()
     
     // Setup Scene (this class is the root node)
     setName("Scene (Scene Root Node)")
-    .setPosition(ci::Vec2f(250, 50))
+    .setPosition(ci::vec2(250, 50))
     .setDrawBounds(true)
     .setBoundsColor(boundsColor);
     
-    ci::app::getWindow()->connectKeyDown(&BoundsSample::keyPressed, this);
+    ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&BoundsSample::keyPressed, this, std::placeholders::_1));
     
 //    ShapeRef rect = Shape::createRect(400,400);
 //    setMask(rect);
@@ -148,7 +148,7 @@ void BoundsSample::nodeMouseOver(po::scene::MouseEvent &event)
         }
     }
     
-    mSelectedNode       = event.getSource();
+    mSelectedNode = event.getSource();
     if(mSelectedNode == mNodeContainer) {
         mNodeContainerBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, selectedBrightness));
     } else {
@@ -163,7 +163,7 @@ void BoundsSample::keyPressed(ci::app::KeyEvent &key)
     
     switch (key.getChar()) {
         case 'r':
-            mSelectedNode->setRotation(mSelectedNode->getRotation() + 30.0f);
+            mSelectedNode->setRotation(mSelectedNode->getRotation() + M_PI / 4.0f);
             break;
         case 'a': {
             int curAlignment = static_cast<int>(mSelectedNode->getAlignment());
@@ -176,11 +176,11 @@ void BoundsSample::keyPressed(ci::app::KeyEvent &key)
         }
             
         case '+':
-            mSelectedNode->setScale(mSelectedNode->getScale() + ci::Vec2f(scaleIncrease, scaleIncrease));
+            mSelectedNode->setScale(mSelectedNode->getScale() + ci::vec2(scaleIncrease, scaleIncrease));
             break;
         
         case '-':
-            mSelectedNode->setScale(mSelectedNode->getScale() - ci::Vec2f(scaleIncrease, scaleIncrease));
+            mSelectedNode->setScale(mSelectedNode->getScale() - ci::vec2(scaleIncrease, scaleIncrease));
             break;
             
             
@@ -195,8 +195,8 @@ std::string BoundsSample::getNodeInfo(po::scene::NodeRef node)
     std::stringstream ss;
     ss << node->getName()
     << "\n---------------------------------"
-    << "\nWindow Pos " << node->localToWindow(ci::Vec2f(0,0))
-    << "\nScene Pos: " << node->localToScene(ci::Vec2f(0,0))
+    << "\nWindow Pos " << node->localToWindow(ci::vec2(0,0))
+    << "\nScene Pos: " << node->localToScene(ci::vec2(0,0))
     << "\nPosition: " << node->getPosition()
     << "\nLocal Mouse Position: " << node->windowToLocal(ci::app::App::get()->getMousePos()-ci::app::getWindow()->getPos())
     << "\nBounds: " << node->getBounds()

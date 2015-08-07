@@ -33,5 +33,5 @@ void TextSampleAdvanced::update()
 	float textPos = ci::lmap<float>(mScroller->getThumbPosition().y, 0, 340, -20, mTextComponent->getHeight() - ci::app::getWindowHeight() + 20);
 	
 	//	Animate text component to the new position
-	ci::app::timeline().apply(&mTextComponent->getPositionAnim(), ci::Vec2f(mTextComponent->getPosition().x, -textPos), 0.2f);
+	ci::app::timeline().apply(&mTextComponent->getPositionAnim(), ci::vec2(mTextComponent->getPosition().x, -textPos), 0.2f);
 }

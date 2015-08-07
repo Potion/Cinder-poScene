@@ -11,7 +11,7 @@ PlayerButtonRef PlayerButton::create(po::scene::ShapeRef shape)
 
 PlayerButton::PlayerButton()
 : mIsPressed(false)
-, mPressPosition(ci::Vec2f(0.f, 0.f))
+, mPressPosition(ci::vec2(0.f, 0.f))
 {}
 
 void PlayerButton::setup(po::scene::ShapeRef shape)
@@ -44,8 +44,8 @@ void PlayerButton::onMouseEvent(MouseEvent &event)
         case MouseEvent::Type::MOVE:
         case MouseEvent::Type::DRAG:
             if (mIsPressed) {
-                ci::Vec2f dragVec = mPressPosition - event.getLocalPos();
-                float dragDist = dragVec.length();
+                ci::vec2 dragVec = mPressPosition - event.getLocalPos();
+                float dragDist = length(dragVec);
                 if (dragDist > 10.f) {
                     mShape->setFillColor(1, 1, 1);
                     mIsPressed = false;

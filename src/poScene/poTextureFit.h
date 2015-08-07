@@ -43,36 +43,36 @@ namespace po { namespace scene { namespace TextureFit {
 		INSIDE
 	};
 	
-	static ci::Vec2f alignInRect(ci::Vec2f max, ci::Rectf rect, Alignment align)
+	static ci::vec2 alignInRect(ci::vec2 max, ci::Rectf rect, Alignment align)
 	{
-		ci::Vec2f offset;
+		ci::vec2 offset;
 		switch(align) {
 			case Alignment::BOTTOM_LEFT:
-				offset.set(0.f, max.y - 1.f);
+                offset = ci::vec2(0.f, max.y - 1.f);
 				break;
 			case Alignment::BOTTOM_CENTER:
-				offset.set((max.x - 1.f) / 2.f, max.y - 1.f);
+				offset = ci::vec2((max.x - 1.f) / 2.f, max.y - 1.f);
 				break;
 			case Alignment::BOTTOM_RIGHT:
-				offset.set(max.x - 1.f, max.y - 1.f);
+				offset = ci::vec2(max.x - 1.f, max.y - 1.f);
 				break;
 			case Alignment::CENTER_LEFT:
-				offset.set(0.f, (max.y - 1.f) / 2.f);
+				offset = ci::vec2(0.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::CENTER_CENTER:
-				offset.set((max.x - 1.f) / 2.f, (max.y - 1.f) / 2.f);
+				offset = ci::vec2((max.x - 1.f) / 2.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::CENTER_RIGHT:
-				offset.set(max.x - 1.f, (max.y - 1.f) / 2.f);
+				offset = ci::vec2(max.x - 1.f, (max.y - 1.f) / 2.f);
 				break;
 			case Alignment::TOP_LEFT:
-				offset.set(0.f, 0.f);
+				offset = ci::vec2(0.f, 0.f);
 				break;
 			case Alignment::TOP_CENTER:
-				offset.set((max.x - 1.f) / 2.f, 0.f);
+				offset = ci::vec2((max.x - 1.f) / 2.f, 0.f);
 				break;
 			case Alignment::TOP_RIGHT:
-				offset.set(max.x - 1.f, 0.f);
+				offset = ci::vec2(max.x - 1.f, 0.f);
 				break;
 			case Alignment::NONE:
 				break;
@@ -80,79 +80,79 @@ namespace po { namespace scene { namespace TextureFit {
 		return offset;
 	}
 	
-	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
+	static void textureFitExact(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::vec2> &points, std::vector<ci::vec2> &coords)
 	{
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / rect.getWidth();
 			float t = (points[i].y - rect.getY1()) / rect.getHeight();
-			coords[i].set(s, t);
+			coords[i] = ci::vec2(s, t);
 		}
 	}
 	
-	static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords)
+	static void textureFitNone(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::vec2> &points, std::vector<ci::vec2> &coords)
 	{
-		ci::Vec2f max(FLT_MIN, FLT_MIN);
+		ci::vec2 max(FLT_MIN, FLT_MIN);
 		
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / tex->getWidth();
 			float t = (points[i].y - rect.getY1()) / tex->getHeight();
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			coords[i].set(s, t);
+			coords[i] = ci::vec2(s, t);
 		}
 		
-		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
+		ci::vec2 offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
 		for (uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
 	
-	static void textureFitHorizontal(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
+	static void textureFitHorizontal(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::vec2> &points, std::vector<ci::vec2> &coords )
 	{
 		float new_w = rect.getWidth();
 		float new_h = new_w / (tex->getWidth() / (float)tex->getHeight());
 		
-		ci::Vec2f max(FLT_MIN, FLT_MIN);
+		ci::vec2 max(FLT_MIN, FLT_MIN);
 		
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / rect.getWidth();
 			float t = (points[i].y - rect.getY1()) / new_h;
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			coords[i].set(s,t);
+			coords[i] = ci::vec2(s,t);
 		}
 		
-		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
+		ci::vec2 offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
 		for (uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
 	
-	static void textureFitVertical(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
+	static void textureFitVertical(ci::Rectf rect, ci::gl::TextureRef tex, Alignment align, const std::vector<ci::vec2> &points, std::vector<ci::vec2> &coords )
 	{
 		float new_h = rect.getHeight();
 		float new_w = new_h / (tex->getHeight() / (float)tex->getWidth());
 		
-		ci::Vec2f max(FLT_MIN, FLT_MIN);
+		ci::vec2 max(FLT_MIN, FLT_MIN);
 		
 		for (uint32_t i = 0; i < points.size(); i++) {
 			float s = (points[i].x - rect.getX1()) / new_w;
 			float t = (points[i].y - rect.getY1()) / rect.getHeight();
 			max.x = std::max(s, max.x);
 			max.y = std::max(t, max.y);
-			coords[i].set(s, t);
+			coords[i] = ci::vec2(s, t);
 		}
 		
-		ci::Vec2f offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
+		ci::vec2 offset = alignInRect(max, ci::Rectf(0, 0, 1, 1), align);
 		
 		for (uint32_t i = 0; i < coords.size(); i++) {
 			coords[i] -= offset;
 		}
 	}
 	
-	static void fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align, const std::vector<ci::Vec2f> &points, std::vector<ci::Vec2f> &coords )
+	static void fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align, const std::vector<ci::vec2> &points, std::vector<ci::vec2> &coords )
 	{
 		switch(fit) {
 			case Type::NONE:
@@ -182,10 +182,10 @@ namespace po { namespace scene { namespace TextureFit {
 		}
 	}
 	
-	static std::vector<ci::Vec2f> fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align)
+	static std::vector<ci::vec2> fitTexture(ci::Rectf rect, ci::gl::TextureRef tex, Type fit, Alignment align)
 	{
-		std::vector<ci::Vec2f> coords(4);
-		std::vector<ci::Vec2f> points;
+		std::vector<ci::vec2> coords(4);
+		std::vector<ci::vec2> points;
 		points.push_back(rect.getUpperLeft());
 		points.push_back(rect.getUpperRight());
 		points.push_back(rect.getLowerRight());

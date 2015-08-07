@@ -12,9 +12,9 @@ Square::Square()
 , mColor(ci::Color(ci::CM_HSV, 1, 1, 0.8))
 , mHighlightColor(ci::Color(ci::CM_HSV, 1, 1, 1))
 , mIsPressed(false)
-, mStartPos(ci::Vec2f::zero())
-, mEndPos(ci::Vec2f::zero())
-, mInitialPos(ci::Vec2f::zero())
+, mStartPos(ci::vec2())
+, mEndPos(ci::vec2())
+, mInitialPos(ci::vec2())
 , mBoundsColor(ci::Color(1.0f, 1.0f, 1.0f))
 {
 }
@@ -68,7 +68,7 @@ void Square::onMouseDragged(po::scene::MouseEvent &event)
 		mEndPos = getParent()->windowToLocal(event.getWindowPos());
 		
 		//	Set the nodes position
-		ci::Vec2f newPosition = mInitialPos + (mEndPos - mStartPos);
+		ci::vec2 newPosition = mInitialPos + (mEndPos - mStartPos);
 		setPosition(newPosition);
 	}
 }

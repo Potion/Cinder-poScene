@@ -43,19 +43,19 @@ namespace po { namespace scene {
 	{
 	public:
         //! Set the matrix set
-		void set(ci::Matrix44f modelview, ci::Matrix44f projection, ci::Area viewport);
+        void set(glm::mat4x4 modelview, glm::mat4x4 projection, ci::Area viewport);
 		
         //! Convert a point from window space to local space
-		ci::Vec2f globalToLocal(const ci::Vec2f &point);
+		ci::vec2 globalToLocal(const ci::vec2 &point);
         //! Convert a point from local space back to window space
-		ci::Vec2f localToGlobal(const ci::Vec2f &point);
+		ci::vec2 localToGlobal(const ci::vec2 &point);
 		
 	private:
-		ci::Matrix44f mModelview, mProjection;
+		glm::mat4x4 mModelview, mProjection;
 		ci::Area mViewport;
 		
-		ci::Vec3f project(const ci::Vec3f &point);
-		ci::Vec3f unproject(const ci::Vec3f &point);
+		ci::vec3 project(const ci::vec3 &point);
+		ci::vec3 unproject(const ci::vec3 &point);
 		
 	};
 		

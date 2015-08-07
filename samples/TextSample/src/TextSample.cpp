@@ -28,7 +28,7 @@ void TextSample::setup()
 	rotatingText->setAlignment(po::scene::Alignment::CENTER_CENTER)
 	.setPosition(150, 150);
 	addChild(rotatingText);
-	ci::app::timeline().apply(&rotatingText->getRotationAnim(), 360.f, 10.0f).loop();
+	ci::app::timeline().apply(&rotatingText->getRotationAnim(), ci::toRadians(360.f), 10.0f).loop();
 	
 	//	Create a text box that scales up and down
 	mScalingText = TextBox::create(ciTextBox);
@@ -41,7 +41,7 @@ void TextSample::setup()
 	TextBoxRef movingText = TextBox::create(ciTextBox);
 	movingText->setPosition(400, ci::app::getWindowHeight());
 	addChild(movingText);
-	ci::app::timeline().apply(&movingText->getPositionAnim(), ci::Vec2f(movingText->getPosition().x, -movingText->getHeight()), 10.f)
+	ci::app::timeline().apply(&movingText->getPositionAnim(), ci::vec2(movingText->getPosition().x, -movingText->getHeight()), 10.f)
 	.easeFn(ci::EaseInSine())
 	.loop();
 	
@@ -62,14 +62,14 @@ void TextSample::setup()
 	textNode->setMask(mask);
 	
 	//	Animate the mask from left to right
-	ci::app::timeline().apply(&mask->getPositionAnim(), ci::Vec2f(-textNode->getWidth(), -textNode->getHeight()), ci::Vec2f(textNode->getWidth(), 0), 3.0f).loop();
+	ci::app::timeline().apply(&mask->getPositionAnim(), ci::vec2(-textNode->getWidth(), -textNode->getHeight()), ci::vec2(textNode->getWidth(), 0), 3.0f).loop();
 }
 
 //	Scale down and up
 void TextSample::animateScale()
 {
-	ci::app::timeline().apply(&mScalingText->getScaleAnim(), ci::Vec2f(0.6f, 0.6f), 1.f);
-	ci::app::timeline().appendTo(&mScalingText->getScaleAnim(), ci::Vec2f(1.2f, 1.2f), 1.f)
+	ci::app::timeline().apply(&mScalingText->getScaleAnim(), ci::vec2(0.6f, 0.6f), 1.f);
+	ci::app::timeline().appendTo(&mScalingText->getScaleAnim(), ci::vec2(1.2f, 1.2f), 1.f)
 	.easeFn(ci::EaseInSine())
 	.finishFn(std::bind(&TextSample::animateScale, this));
 }

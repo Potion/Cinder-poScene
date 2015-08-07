@@ -14,11 +14,11 @@ AlignmentSampleRef AlignmentSample::create()
 void AlignmentSample::setup() 
 {
     //  Cinder method for key events
-    ci::app::getWindow()->connectKeyDown(&AlignmentSample::keyDown, this);
+	ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&AlignmentSample::keyDown, this, std::placeholders::_1));
     
     createIndicators();
     
-    ci::Vec2f center(320, 240);
+    ci::vec2 center(320, 240);
     
     //  create and add the shape
     mShapeNode = Shape::createRect(200, 100);

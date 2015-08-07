@@ -21,17 +21,17 @@ public:
     void slideUpToHomePosition();
     
 
-    void setPlayerPos(ci::Vec2f pos) { mPlayerPos = pos; };
-    ci::Vec2f &getPlayerPos() { return mPlayerPos; };
+    void setPlayerPos(ci::vec2 pos) { mPlayerPos = pos; };
+    ci::vec2 &getPlayerPos() { return mPlayerPos; };
     
-    void setThumbnailPos(ci::Vec2f pos) { mThumbnailPos = pos; };
-    ci::Vec2f &getThumbnailPos() { return mThumbnailPos; };
+    void setThumbnailPos(ci::vec2 pos) { mThumbnailPos = pos; };
+    ci::vec2 &getThumbnailPos() { return mThumbnailPos; };
 
-    void setPlayerScale (ci::Vec2f scale) { mPlayerScale = scale; };
-    ci::Vec2f &getPlayerScale() { return mPlayerScale; };
+    void setPlayerScale (ci::vec2 scale) { mPlayerScale = scale; };
+    ci::vec2 &getPlayerScale() { return mPlayerScale; };
     
-    void setThumbnailScale (ci::Vec2f scale) { mThumbnailScale = scale; };
-    ci::Vec2f &getThumbnailScale() { return mThumbnailScale; };
+    void setThumbnailScale (ci::vec2 scale) { mThumbnailScale = scale; };
+    ci::vec2 &getThumbnailScale() { return mThumbnailScale; };
     
     bool getIsHome() { return mIsAtHome; };
     
@@ -45,10 +45,10 @@ protected:
     MovieThumb();
     
 private:
-    ci::Vec2f               mPlayerPos;
-    ci::Vec2f               mThumbnailPos;
-    ci::Vec2f               mPlayerScale;
-    ci::Vec2f               mThumbnailScale;
+    ci::vec2                mPlayerPos;
+    ci::vec2                mThumbnailPos;
+    ci::vec2                mPlayerScale;
+    ci::vec2                mThumbnailScale;
     
     po::scene::VideoGlRef   mMovie;
     bool                    mIsAtHome;

@@ -16,7 +16,7 @@ public:
     void setup();
     
     //	Get the thumb position for text positioning
-    ci::Vec2f getHandlePosition() { return mHandle->getPosition(); }
+    ci::vec2 getHandlePosition() { return mHandle->getPosition(); }
     void setHandlePosition(float pct);
     ScrubberSignal &getScrubberSignal() { return mScrubberSignal; };
     
@@ -32,8 +32,8 @@ private:
     
     //	Keep track of mouse position for dragging
     bool mIsPressed;
-    ci::Vec2f mStartPos, mEndPos;
-    ci::Vec2f mInitialPos;
+    ci::vec2 mStartPos, mEndPos;
+    ci::vec2 mInitialPos;
     
     //	Mouse event handlers
     void onMouseDownHandle(po::scene::MouseEvent &event);

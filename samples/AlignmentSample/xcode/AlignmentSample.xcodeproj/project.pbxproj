@@ -22,6 +22,9 @@
 		890A3C0EB9064146850568C8 /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BBFC7E4DF818453B8E9B0CDA /* poShape.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		8D80C2D2C03E48A6BD28257B /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1B7C8F3C125F48EBB4B7868A /* poImage.cpp */; };
+		AAED15D21B5410B100A52CFB /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAED15D11B5410B100A52CFB /* IOKit.framework */; };
+		AAED15D41B5410B900A52CFB /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAED15D31B5410B900A52CFB /* CoreMedia.framework */; };
+		AAED15D61B5410C100A52CFB /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAED15D51B5410C100A52CFB /* AVFoundation.framework */; };
 		B1DB724875B14B7787F6D818 /* poNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 41DC99EC9A1C4F9E86B4DD85 /* poNode.cpp */; };
 		B366DF62229349C898E9B3C8 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BDF4BB39DC064E818DC0BAA0 /* poNodeContainer.cpp */; };
 		B7074D2E3729489CBA83C431 /* poTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 03BE1820A4434055BBC90387 /* poTextBox.cpp */; };
@@ -66,6 +69,9 @@
 		99A30CAE4B814609B2965D63 /* poNodeContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNodeContainer.h; path = ../../../src/poScene/poNodeContainer.h; sourceTree = "<group>"; };
 		9CBE8ED1CD004E5D9B9EE362 /* AlignmentSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = AlignmentSample.cpp; path = ../src/AlignmentSample.cpp; sourceTree = "<group>"; };
 		9F9D3353878643E4A91B33CF /* poTextureFit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poTextureFit.h; path = ../../../src/poScene/poTextureFit.h; sourceTree = "<group>"; };
+		AAED15D11B5410B100A52CFB /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		AAED15D31B5410B900A52CFB /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AAED15D51B5410C100A52CFB /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		B20D995ED13C49BBB015E41A /* poEventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
 		BBFC7E4DF818453B8E9B0CDA /* poShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poShape.cpp; path = ../../../src/poScene/poShape.cpp; sourceTree = "<group>"; };
 		BDF4BB39DC064E818DC0BAA0 /* poNodeContainer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poNodeContainer.cpp; path = ../../../src/poScene/poNodeContainer.cpp; sourceTree = "<group>"; };
@@ -78,6 +84,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAED15D61B5410C100A52CFB /* AVFoundation.framework in Frameworks */,
+				AAED15D41B5410B900A52CFB /* CoreMedia.framework in Frameworks */,
+				AAED15D21B5410B100A52CFB /* IOKit.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
 				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
@@ -186,6 +195,9 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AAED15D51B5410C100A52CFB /* AVFoundation.framework */,
+				AAED15D31B5410B900A52CFB /* CoreMedia.framework */,
+				AAED15D11B5410B100A52CFB /* IOKit.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
@@ -311,6 +323,8 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
@@ -336,6 +350,8 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ARCHS = "$(ARCHS_STANDARD)";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -363,7 +379,7 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = i386;
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
@@ -380,7 +396,7 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				ARCHS = i386;
 				CINDER_PATH = ../../../../..;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";

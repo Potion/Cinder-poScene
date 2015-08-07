@@ -87,8 +87,8 @@ namespace po { namespace scene {
     typedef std::shared_ptr<EventCenter> EventCenterRef;
     
     //	Signals
-    typedef boost::signals2::signal<void(MouseEvent&)> MouseEventSignal;
-    typedef boost::signals2::signal<void(TouchEvent&)> TouchEventSignal;
+    typedef ci::signals::Signal<void(MouseEvent&)> MouseEventSignal;
+    typedef ci::signals::Signal<void(TouchEvent&)> TouchEventSignal;
     
     class Node
     : public std::enable_shared_from_this<Node>
@@ -96,8 +96,7 @@ namespace po { namespace scene {
         friend class Scene;
         friend class NodeContainer;
         friend class EventCenter;
-        friend class ci::gl::Texture;
-        
+
     public:
         ~Node();
 		
@@ -140,13 +139,13 @@ namespace po { namespace scene {
         //  or a fixed size
         
         //! Get the width + height
-        ci::Vec2f getSize() { return getBounds().getSize(); }
+        ci::vec2 getSize() { return getBounds().getSize(); }
         //! Get the absolute (unscaled) width of the node
         float getWidth() { return getBounds().getWidth(); };
         //! Get the absolute (unscaled) height of the node
         float getHeight() { return getBounds().getHeight(); };
         //! Get the size with scaling applied
-        ci::Vec2f getScaledSize() { return getSize() * getScale(); }
+        ci::vec2 getScaledSize() { return getSize() * getScale(); }
         //! Get the width with scaling applied
         float getScaledWidth() { return getWidth() * getScale().x; };
         //! Get the height with scaling applied
@@ -180,29 +179,29 @@ namespace po { namespace scene {
         //	Hit Testing & Transformation
         //! Main function for determining hit testings
         /** Inheriting classes should override this function in order to do hit testing outside of bounds, i.e. alpha test, ray casting, etc.**/
-        virtual bool pointInside(const ci::Vec2f &windowPoint);
+        virtual bool pointInside(const ci::vec2 &windowPoint);
         
         //! Transform a point from another node's local space into this node's local space
-        ci::Vec2f nodeToLocal(const ci::Vec2f &point, NodeRef node);
+        ci::vec2 nodeToLocal(const ci::vec2 &point, NodeRef node);
         //! Transform a point from this node's local space into another node's local space
-        ci::Vec2f localToNode(const ci::Vec2f &point, NodeRef node);
+        ci::vec2 localToNode(const ci::vec2 &point, NodeRef node);
         //! Transform a point from window space to this node's local space
-        ci::Vec2f windowToLocal(const ci::Vec2f &point);
+        ci::vec2 windowToLocal(const ci::vec2 &point);
         //! Transform a point from this node's local space to window space
-        ci::Vec2f localToWindow(const ci::Vec2f &point);
+        ci::vec2 localToWindow(const ci::vec2 &point);
         
         // Scene Transforms
         // These are convenience functions that could also be accomplished
-        // using getScene()->getRootNode()->nodeToLocal(ci::Vec2f(0,0), shared_from_this), windowToLocal(ci::Vec2f(0,0), etc.
+        // using getScene()->getRootNode()->nodeToLocal(ci::vec2(0,0), shared_from_this), windowToLocal(ci::vec2(0,0), etc.
         
         //! Transform a point from the scene's root node's local space to this node's local space. Return (0,0) if this node does not have a scene
-        ci::Vec2f sceneToLocal(const ci::Vec2f &point);
+        ci::vec2 sceneToLocal(const ci::vec2 &point);
         //! Transform a point from this node's local space to this node's scene's local space.
-        ci::Vec2f localToScene(const ci::Vec2f &point);
+        ci::vec2 localToScene(const ci::vec2 &point);
         //! Transform a point from this node's scene's local space to window space
-        ci::Vec2f sceneToWindow(const ci::Vec2f &point);
+        ci::vec2 sceneToWindow(const ci::vec2 &point);
         //! Transform a point from window space to this node's scene's local space
-        ci::Vec2f windowToScene(const ci::Vec2f &point);
+        ci::vec2 windowToScene(const ci::vec2 &point);
         
         //	Visibility
         //  Nodes that are not visible are not drawn and ignored for events. To have a node that remains in the scene (i.e. for a hit area)
@@ -233,22 +232,22 @@ namespace po { namespace scene {
         
         // Position
         // The position that the origin is at within the parent node
-        //! Set the position of the node with a ci::Vec2f
-        Node &setPosition(ci::Vec2f position) { return setPosition(position.x, position.y); };
+        //! Set the position of the node with a ci::vec2
+        Node &setPosition(ci::vec2 position) { return setPosition(position.x, position.y); };
         //! Set the position of the node, convenience method
         Node &setPosition(float x, float y);
         //! Get the position of the node
-        ci::Vec2f getPosition() { return mPosition; };
+        ci::vec2 getPosition() { return mPosition; };
         
         // Scale
         // Scales around the origin of the node
         
-        //! Set the scale with a ci::Vec2f
-        Node &setScale(ci::Vec2f scale) { return setScale(scale.x, scale.y); };
+        //! Set the scale with a ci::vec2
+        Node &setScale(ci::vec2 scale) { return setScale(scale.x, scale.y); };
         //! Set the scale, convenience method
         Node &setScale(float x, float y);
         //! Get the scale
-        ci::Vec2f getScale() { return mScale; };
+        ci::vec2 getScale() { return mScale; };
         
         // Rotation
         // Rotates around the origin of the node
@@ -281,12 +280,12 @@ namespace po { namespace scene {
         // This can be set either by using one of the built in alignments,
         // or manually by using one of the below methods
         
-        //! Set the offset using a ci::Vec2f
-        Node &setOffset(ci::Vec2f offset) { return setOffset(offset.x, offset.y); };
+        //! Set the offset using a ci::vec2
+        Node &setOffset(ci::vec2 offset) { return setOffset(offset.x, offset.y); };
         //! Set the offset (convenience method)
         Node &setOffset(float x, float y);
         //! Get the offset
-        ci::Vec2f getOffset() { return mOffset; };
+        ci::vec2 getOffset() { return mOffset; };
         
         //	Alignment
         //  Alignments set automatic offset based on the bounds of the node
@@ -313,7 +312,7 @@ namespace po { namespace scene {
         //! Set the fill color
         Node &setFillColor(ci::Color color);
         //! Get the fill color
-        Node &setFillColor(float r, float g, float b) { mFillColor.set(r, g, b); return *this; }
+        Node &setFillColor(float r, float g, float b) { mFillColor = ci::Color(r, g, b); return *this; }
         //! Enable fill
         Node &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
         //! Disable fill
@@ -330,7 +329,7 @@ namespace po { namespace scene {
         //! Set the stroke color with a ci::Color
         Node &setStrokeColor(ci::Color color) { mStrokeColor = color; return *this; }
         //! Set the stroke color (convenience method)
-        Node &setStrokeColor(float r, float g, float b) { mStrokeColor.set(r, g, b); return *this;}
+        Node &setStrokeColor(float r, float g, float b) { mStrokeColor = ci::Color(r, g, b); return *this;}
         //! Enable or disable the stroke
         Node &setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; return *this; };
         //! Get stroke enabled
@@ -379,13 +378,13 @@ namespace po { namespace scene {
         // of the underlying values, i.e. setPosition() cancels the position animation
         
         //! Get the position animation
-        ci::Anim<ci::Vec2f> &getPositionAnim() { return mPositionAnim; };
+        ci::Anim<ci::vec2> &getPositionAnim() { return mPositionAnim; };
         //! Get the scale animation
-        ci::Anim<ci::Vec2f> &getScaleAnim() { return mScaleAnim; };
+        ci::Anim<ci::vec2> &getScaleAnim() { return mScaleAnim; };
         //! Get the rotation animation
         ci::Anim<float> &getRotationAnim() { return mRotationAnim; };
         //! Get the offset animation
-        ci::Anim<ci::Vec2f> &getOffsetAnim() { return mOffsetAnim; };
+        ci::Anim<ci::vec2> &getOffsetAnim() { return mOffsetAnim; };
         //! Get the fill color animation
         ci::Anim<ci::Color> &getFillColorAnim() { return mFillColorAnim; };
         //! Get the alpha animation
@@ -465,10 +464,10 @@ namespace po { namespace scene {
         
     private:
         // Private attributes
-        ci::Vec2f mPosition;
-        ci::Vec2f mScale;
+        ci::vec2 mPosition;
+        ci::vec2 mScale;
         float     mRotation;
-        ci::Vec2f mOffset;
+        ci::vec2 mOffset;
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
@@ -481,11 +480,11 @@ namespace po { namespace scene {
         //! Update our attributes based on animation settings
         void updateAttributeAnimations();
         
-        ci::Anim<ci::Vec2f> mPositionAnim;
-        ci::Anim<ci::Vec2f> mScaleAnim;
+        ci::Anim<ci::vec2> mPositionAnim;
+        ci::Anim<ci::vec2> mScaleAnim;
         ci::Anim<float> mRotationAnim;
         ci::Anim<float> mAlphaAnim;
-        ci::Anim<ci::Vec2f> mOffsetAnim;
+        ci::Anim<ci::vec2> mOffsetAnim;
         ci::Anim<ci::Color> mFillColorAnim;
         
         bool  mUpdatePositionFromAnim
@@ -545,8 +544,6 @@ namespace po { namespace scene {
         //  Interaction Events
         //------------------------------------
 		
-        //! Disconnect all of our event signals
-        void disconnectAllSignals();
         //! Determine if this node is visible, has a scene and parent, etc.
         bool isEligibleForInteractionEvents();
         

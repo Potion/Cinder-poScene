@@ -26,7 +26,7 @@ void VideoSampleAdvanced::setup()
     addChild(mPlayer);
     
     //  set location for top/center of primary display
-    mPrimaryDisplayerPosition = ci::Vec2f(ci::app::getWindowWidth() / 2, 50);
+    mPrimaryDisplayerPosition = ci::vec2(ci::app::getWindowWidth() / 2, 50);
     
     try {
         //  load the three videos
@@ -68,11 +68,11 @@ void VideoSampleAdvanced::setUpMovies()
         //  set scale of movie so it plays at width of 640 px (same as mPlayer width)
         float actualWidth = mMovies[i]->getUnderlyingMovie()->getWidth();
         float scale = mPlayer->getWidth() / actualWidth;
-        mMovies[i]->setPlayerScale(ci::Vec2f(scale, scale));
+        mMovies[i]->setPlayerScale(ci::vec2(scale, scale));
         
         //  set position based on its height
         float yOffsetForPlayer = (mMovies[i]->getUnderlyingMovie()->getHeight() * scale) * 0.5;
-        ci::Vec2f playerPosition(mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer);
+        ci::vec2 playerPosition(mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer);
         mMovies[i]->setPlayerPos(playerPosition);
         
         //  calculate the thumbnail scale, then set appropriate variable in mMovie object
@@ -81,7 +81,7 @@ void VideoSampleAdvanced::setUpMovies()
         
         //  calculate the thumbnail position, then set appropriate variable in mMovie object
         float xPos = ((i * 2) + 1) * screenInterval;
-        mMovies[i]->setThumbnailPos(ci::Vec2f(xPos, ci::app::getWindowHeight() * 0.8));
+        mMovies[i]->setThumbnailPos(ci::vec2(xPos, ci::app::getWindowHeight() * 0.8));
         mMovies[i]->setPosition(mMovies[i]->getThumbnailPos());
         
         //  add listeners
@@ -127,7 +127,7 @@ void VideoSampleAdvanced::animateControllerToPos(MovieThumbRef movie)
     float movieHeight = movie->getUnderlyingMovie()->getHeight() * movie->getPlayerScale().y;
     //  push the controller to 50 px below that
     float y = mPrimaryDisplayerPosition.y + movieHeight + 50 ;
-    ci::Vec2f newPos(x, y);
+    ci::vec2 newPos(x, y);
     if (!mIsControllerInPosition) {
         ci::app::timeline().apply(&mPlayer->getPositionAnim(), newPos, 2.f, ci::EaseOutBounce());
     } else {

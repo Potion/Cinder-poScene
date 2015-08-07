@@ -1,6 +1,7 @@
-# po::scene
+!["po::Scene"](images/logo.jpg)
 
-**po::scene** is [Potion's](http://www.potiondesign.com) 2D Scene graph block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
+
+**po::scene** is [Potion's](http://www.potiondesign.com) 2D [Scene Graph](#scenegraph) block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
 The main philosophy behind po::scene is to avoid replacing any of the built-in Cinder functionality at all costs and keep the library as simple as possible.
 
@@ -19,8 +20,15 @@ Some of the key features include:
 + Rendering to FBO/Texture for post-processing or caching
 + Smart-pointer based syntax with TypeDefs for built-in classes
 + Simple inheritance for custom nodes: just define update(),draw() and getBounds()
+
+<a name="scenegraph"></a>
+## What is a Scene Graph
+
+[Wikipedia](http://en.wikipedia.org/wiki/Scene_graph) is probably the best place for a definition that is far more succinct than we can offer.
+
+> A scene graph is a collection of nodes in a graph or tree structure. A tree node (in the overall tree structure of the scene graph) may have many children but often only a single parent, with the effect of a parent applied to all its child nodes; an operation performed on a group automatically propagates its effect to all of its members. In many programs, associating a geometrical transformation matrix (see also transformation and matrix) at each group level and concatenating such matrices together is an efficient and natural way to process such operations. A common feature, for instance, is the ability to group related shapes/objects into a compound object that can then be moved, transformed, selected, etc. as easily as a single object.
  
-## Usage
+## Structure
 
 Using a tree metaphor, **po::scene** contains three main classes:
 
@@ -41,7 +49,7 @@ Nodes are the basic building blocks of a scene. The po::scene::Node class is a b
 ###Attributes
 Nodes have a number of built in attributes that relate to how they appear in the scene:
 
-+ `position` The position within the Node's parent (containing) Node.
++ `position` The coordinate of the Node's origin within it's parent or the scene. This is where 0,0 will be within the node's own coordinate space.
 + `rotation` The rotation of the Node along the z-axis (2d rotation). Expressed in degrees.
 + `scale` The x and y scale of the Node.
 + `fillColor` The color that is used for drawing the Node. This color is used differently depending on the type of drawing the Node does. Expressed as a ci::Color.
@@ -78,7 +86,10 @@ All Node attributes have corresponding ci::Anim objects. These animations can be
 	// Animate a node from 0,0 to 50,50
 	ci::app::timeline().apply(&node->getPositionAnim(), ci::Vec2f(50.0f, 50.0f), 1.0f);
 	
-Setting a Node attribute at any time during an animation will cancel that animation.
+Setting any Node attributes at any time during an animation will cancel the animation for that attribute.
+
+	//Stop animation and retain current position
+	node->setPosition(node->getPosition());
 
 ###Transformations
 Every `po::scene::Node` has its own coordinate space. All `po::scene::Node` members contain functions for translating back and forth between various coordinate spaces. There are three main spaces:
@@ -145,7 +156,7 @@ Adjusting any attributes of a NodeContainer also affects every Node that it cont
 
 A NodeContainer's bounds are determined by its child Nodes.
 
-NodeContainer Events are based on any of the container's child Nodes being eligible for an Event. 
+NodeContainer Events are based on all of the container's child Nodes. For example, if a NodeContainer subscribes to the `MouseEvent::Type::DOWN_INSIDE` event and the mouse is pressed, all of it's child nodes will be checked. If the mouse is down inside any of them, the event will fire.
 
 
 ## Scene
@@ -205,7 +216,10 @@ The first way to use a `po::scene::Shape` is as a solid-filled shape. `po::scene
 	ShapeRef myEllipse = Shape::createEllipse(100,200);
 	ShapeRef myCircle = Shape::createCircle(100);
 	
-**EXAMPLE PICTURE OF THIS**
+
+![Shapes example](images/exampleShapes.png)<br>
+*Examples of the above shapes drawn on a 300x300 app window* 
+
 
 These create and set the backing `ci::Shape2d`. This can be replaced at any time by the user.
 
@@ -213,11 +227,35 @@ This shape will be drawn using the `po::scene::Node` fillColor attribute, and hi
 
 In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Shape` and mapped using a number of alignments.
 
-**EXAMPLE OF TEXTURES AND ALIGNMENTS**
+
+![Texture example](images/exampleTextureShape.png)<br>
+*Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
 ### po::scene::Video
+`po::scene::Video` provides a Node that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoGl` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
+
+	po::scene::VideoGLRef poVideo = po::scene::VideoGl::create();
+	 
+	//	create the Cinder movie reference
+	ci::fs::path moviePath = ci::app::getAssetPath("path_to_movie");
+	ci::qtime::MovieGlRef movieRef = ci::qtime::MovieGl::create(moviePath);
+	
+	//	access the Cinder movie reference from VideoGL node
+	poVideo->setMovieRef(movieRef);
+	poVideo->getMovieRef()->play();
+	
 
 ### po::scene::TextBox
+
+`po::scene::TextBox` wraps the `ci::TextBox` class.
+
+You can create a `po::scene::TextBox` with an preexisting `ci::TextBox`; alternatively, `po::scene::TextBox::create()` will return a `po::scene::TextBox` wrapping a newly created `ci::TextBox`.
+
+To set the `ci::TextBox` member of the `po::scene::TextBox`, call the `setCiTextBox` method. This automatically renders the Cinder TextBox and creates a new texture reference.
+
+The bounds of a `po::scene::TextBox` Node are the bounds of that texture or, if no texture has been created, `getBounds()` returns a new `ci::Rectf`.
+
+To manipulate the underlying `ci::TextBox`, call `getCiTextBoxCopy()`.
 
 ## Custom Nodes
 Custom nodes should be made for anything that needs to draw into the scene graph and be considered for hit-testing/interaction.
@@ -233,10 +271,8 @@ To create a Node, extend this class and implement the following methods:
 			return ci::Rectf(0,0,mTexture->getWidth(),mTexture->getHeight());
 		}
 		
-		IMAGE EXPLAINING BOUNDS HERE?
-		
 
-Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so none of the above methods are necessary.
+Custom NodeContainers are often convenient, but they will draw their children automatically and calculate their bounds, so it is not necessary to override any of the above methods.
 
 ## History
 
@@ -253,9 +289,3 @@ We now feel ready to release po::scene, a 2D scene graph built on top of [Cinder
 At the same time, regardless of the amount of people who decide to use it, this is the library that we will use for the foreseeable future for the majority of our installations, so it will be regularly tested, updated, fixed and improved for our own benefit.
 
 We are happy to have access to the wonderful resource that is Cinder, so hopefully we can pay it forward by open sourcing this library.
-
-## What is a Scene Graph
-
-[Wikipedia](http://en.wikipedia.org/wiki/Scene_graph) is probably the best place for a definition that is far more succinct than we can offer.
-
-> A scene graph is a collection of nodes in a graph or tree structure. A tree node (in the overall tree structure of the scene graph) may have many children but often only a single parent, with the effect of a parent applied to all its child nodes; an operation performed on a group automatically propagates its effect to all of its members. In many programs, associating a geometrical transformation matrix (see also transformation and matrix) at each group level and concatenating such matrices together is an efficient and natural way to process such operations. A common feature, for instance, is the ability to group related shapes/objects into a compound object that can then be moved, transformed, selected, etc. as easily as a single object.

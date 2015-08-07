@@ -135,9 +135,15 @@ namespace po { namespace scene {
         if (getFillEnabled()) {
             ci::gl::enableAlphaBlending();
             ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            if (mTexture) mTexture->enableAndBind();
-            ci::gl::draw(mVboMesh);
-            if (mTexture) mTexture->disable();
+            
+            if (mTexture) {
+                ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));
+                ci::gl::ScopedTextureBind texBind(mTexture);
+                ci::gl::draw(mVboMesh);
+            } else {
+                ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().color()));
+                ci::gl::draw(mVboMesh);
+            }
         }
         
         //	TODO: Draw stroke
@@ -166,7 +172,7 @@ namespace po { namespace scene {
         render();
     }
     
-    void Shape::setTextureOffset(ci::Vec2f offset)
+    void Shape::setTextureOffset(ci::vec2 offset)
     {
         mTextureOffset = offset;
         render();
@@ -187,31 +193,52 @@ namespace po { namespace scene {
 
     void Shape::render()
     {
-        //	Create Mesh
-        ci::TriMesh2d mesh = ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_ODD);
+        //Create a TriMesh from our shape
+        ci::TriMesh::Format format = ci::TriMesh::Format();
+        format.mTexCoords0Dims      = 2;
+        format.mPositionsDims       = 2;
+        format.mNormalsDims         = 3;
+        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
         
-        if (mTexture) {
-            //	Get the texture coords
-            std::vector<ci::Vec2f> texCoords(mesh.getVertices().size());
-            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, mesh.getVertices(), texCoords);
+        if( mTexture )
+        {
+            //  Allocate
+            std::vector< ci::vec2 > texCoords(triMesh->getNumVertices());
+            std::vector< ci::vec2 > vertices;
             
-            //	Check to see if texture is flipped, common if coming from FBO
-            if (mTexture->isFlipped()) std::reverse(texCoords.begin(), texCoords.end());
+            //  Grab the pointer to the mesh vertices
+            const ci::vec2* meshVertices = triMesh->getPositions<2>();
             
-            if (mTextureOffset != ci::Vec2f(0, 0)) {
-                ci::Vec2f normalizedOffset = mTextureOffset/ci::Vec2f((float)mTexture->getWidth(), (float)mTexture->getHeight());
-                ci::app::console() << normalizedOffset << std::endl;
-                for (auto &coord : texCoords) {
+            //  Grab the actual vertices
+            for ( int i=0; i<triMesh->getNumVertices(); i++ )  {
+                vertices.push_back( meshVertices[i] );
+            }
+            
+            //  Calculate the texture coords
+            TextureFit::fitTexture(getBounds(), mTexture, mTextureFitType, mTextureAlignment, vertices, texCoords);
+            
+            //  Check to see if texture is flipped, common if coming from FBO
+            if(!mTexture->isTopDown()) {
+                for(auto &coord : texCoords) {
+                    coord.y = 1 - coord.y;
+                }
+            }
+            
+            //  Set the offset
+            if(mTextureOffset != ci::vec2(0,0)) {
+                ci::vec2 normalizedOffset = mTextureOffset/ci::vec2((float)mTexture->getWidth(), (float)mTexture->getHeight());
+                for(auto &coord : texCoords) {
                     coord -= normalizedOffset;
                 }
             }
             
-            //	Add coords to TriMesh
-            mesh.appendTexCoords(&texCoords[0], texCoords.size());
+            // appending texture coordinates to the mesh ref
+            triMesh->appendTexCoords0(&texCoords[0], texCoords.size());
         }
         
-        //	Create VBO Mesh
-        mVboMesh = ci::gl::VboMesh::create(mesh);
+        
+        //Create VBO mesh
+        mVboMesh = ci::gl::VboMesh::create(*triMesh);
     }
     
     
@@ -219,9 +246,9 @@ namespace po { namespace scene {
     //	Dimensions
 	//------------------------------------
     
-    bool Shape::pointInside(const ci::Vec2f &point, bool localize)
+    bool Shape::pointInside(const ci::vec2 &point, bool localize)
     {
-        ci::Vec2f pos = localize ? windowToLocal(point) : point;
+        ci::vec2 pos = localize ? windowToLocal(point) : point;
         return mCiShape2d.contains(pos);
     }
     
