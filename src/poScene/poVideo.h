@@ -31,7 +31,9 @@
 #pragma once
 
 #include "cinder/qtime/QuickTime.h"
-#include "cinder/qtime/QuickTimeGlImplAvf.h"
+#ifndef CINDER_MSW
+    #include "cinder/qtime/QuickTimeGlImplAvf.h"
+#endif
 #include "cinder/qtime/QuickTimeGl.h"
 #include "cinder/gl/wrapper.h"
 #include "cinder/gl/draw.h"
