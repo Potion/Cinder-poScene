@@ -154,6 +154,7 @@ namespace po { namespace scene {
         
         TouchEvent(ci::app::TouchEvent::Touch event, Type type);
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
+		unsigned int getId() { return mCiEvent.getId(); }
         Type getType() { return mType; }
         
     protected:
