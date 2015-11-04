@@ -118,13 +118,13 @@ namespace po { namespace scene {
         //! Move a child forward one index
 		NodeContainer &moveChildForward( NodeRef node);
         //! Move a child to after (in front of) a node
-		NodeContainer &moveChildAfter(NodeRef after, NodeRef node) { addChildAfter(after, node); };
+		NodeContainer &moveChildAfter(NodeRef after, NodeRef node) { return addChildAfter(after, node); };
         //! Move a child to back (bottom)
 		NodeContainer &moveChildToBack(NodeRef node);
         //! Move a child backward one index
 		NodeContainer &moveChildBackward(NodeRef node);
         //! Move a child to before (behind) another node
-		NodeContainer &moveChildBefore(NodeRef before, NodeRef node) { addChildBefore(before, node); };
+		NodeContainer &moveChildBefore(NodeRef before, NodeRef node) { return addChildBefore(before, node); };
 		
 		//	Bounds
         
