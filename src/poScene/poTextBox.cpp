@@ -52,12 +52,8 @@ namespace po { namespace scene {
     void TextBox::draw()
     {
         if (mTexture) {
-            if (getAppliedAlpha() == 1) {
-                ci::gl::enableAlphaBlending(true);
-            } else {
-                ci::gl::enableAdditiveBlending();
-            }
-            
+			ci::gl::enableAlphaBlending();
+
             ci::gl::color(1, 1, 1, getAppliedAlpha());
             ci::gl::draw(mTexture);
         }
