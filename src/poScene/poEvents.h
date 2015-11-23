@@ -83,7 +83,6 @@ namespace po { namespace scene {
         ci::Vec2f getScenePos();
         //! Get the source of the event
         NodeRef getSource() { return mSource.lock(); };
-        
     protected:
         void setSource(NodeRef source) { mSource = source; };
         ci::Vec2f mWindowPos;
@@ -155,7 +154,7 @@ namespace po { namespace scene {
         TouchEvent(ci::app::TouchEvent::Touch event, Type type);
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
         Type getType() { return mType; }
-        
+		int getId() { return mCiEvent.getId(); }
     protected:
         void setType(Type type) { mType = type; };
         
