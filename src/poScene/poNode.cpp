@@ -87,7 +87,7 @@ namespace po { namespace scene {
             vec4 alphaValue     = texture(mask, c0);
             
             color.rgb     = rgbValue.rgb;
-            color.a       = alphaValue.a;
+            color.a       = alphaValue.a * rgbValue.a;
         }
     );
 
@@ -220,7 +220,7 @@ namespace po { namespace scene {
             
             //  Draw ourself into FBO
             ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
-            ci::gl::clear();
+            ci::gl::clear(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f));
             draw();
         }
         
@@ -239,6 +239,9 @@ namespace po { namespace scene {
     {
         ci::gl::enableAlphaBlending();
         
+        ci::gl::pushModelView();
+        ci::gl::setMatricesWindow(ci::app::getWindowSize());
+        
         // Bind FBO textures
         ci::gl::ScopedTextureBind fboBind(getScene()->getWindowFbo()->getColorTexture(), 0);
         ci::gl::ScopedTextureBind maskBind(getScene()->getMaskFbo()->getColorTexture(), 1);
@@ -252,6 +255,8 @@ namespace po { namespace scene {
 
         //	Draw
         ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
+        
+        ci::gl::popModelView();
     }
 	
 	
