@@ -78,7 +78,7 @@ namespace po { namespace scene {
             vec4 alphaValue     = texture2D(mask, c0);
             
             gl_FragColor.rgb    = rgbValue.rgb;
-            gl_FragColor.a = alphaValue.a;
+            gl_FragColor.a		= alphaValue.a * rgbValue.a;
             
             //gl_FragColor = alphaValue;
         }
@@ -179,9 +179,10 @@ namespace po { namespace scene {
             if (!mIsMasked) {
                 draw();
                 finishDrawTree();
-            } else {
-                captureMasked();
-                finishDrawTree();
+			}
+			else {
+				captureMasked();
+				finishDrawTree();
                 drawMasked();
             }
         }
@@ -209,13 +210,13 @@ namespace po { namespace scene {
     
     void Node::captureMasked()
     {
+
         ci::gl::SaveFramebufferBinding binding;
         //	Save the window buffer
         {
-            
             //  Draw ourself into FBO
-            getScene()->getWindowFbo()->bindFramebuffer();
-            ci::gl::clear();
+			getScene()->getWindowFbo()->bindFramebuffer();
+			ci::gl::clear(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f));
             draw();
         }
         
@@ -223,16 +224,17 @@ namespace po { namespace scene {
             //  Draw mask into Masking FBO (replace with stencil buffer in GLNext)
             getScene()->getStencilFbo()->bindFramebuffer();
             ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
-            ci::gl::pushModelView();
-            //ci::gl::translate(-getPosition());
             mMask->drawTree();
-            ci::gl::popModelView();
         }
     }
     
     void Node::drawMasked()
     {
         ci::gl::enableAlphaBlending();
+
+
+		ci::gl::pushModelView();
+		ci::gl::setMatricesWindow(ci::app::getWindowSize());
         
         // Bind FBO textures
         getScene()->getWindowFbo()->getTexture().bind(0);
@@ -252,6 +254,8 @@ namespace po { namespace scene {
         getScene()->getWindowFbo()->getTexture().unbind();
         getScene()->getStencilFbo()->getTexture().unbind();
         mMaskShader->unbind();
+
+		ci::gl::popModelView();
     }
 	
 	
