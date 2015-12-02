@@ -41,10 +41,18 @@ namespace po { namespace scene {
     {
         return TextBoxRef(new TextBox(ciTextBox));
     }
+
+	TextBoxRef TextBox::create(ci::TextBox ciTextBox, ci::gl::Texture::Format format)
+	{
+		TextBoxRef ref(new TextBox(ciTextBox));
+		ref->setFormat(format);
+		return ref;
+	}
     
     TextBox::TextBox(ci::TextBox ciTextBox)
     : mCiTextBox(ciTextBox)
     , mUseTextBounds(false)
+	, mHasFormat(false)
     {
         render();
     }
@@ -70,7 +78,13 @@ namespace po { namespace scene {
     void TextBox::render()
     {
         mCiTextBox.setPremultiplied(true);
-        mTexture = ci::gl::Texture::create(mCiTextBox.render());
+
+		if (mHasFormat) {
+			mTexture = ci::gl::Texture::create(mCiTextBox.render(), mFormat);
+		}
+		else {
+			mTexture = ci::gl::Texture::create(mCiTextBox.render());
+		}
     }
     
     ci::Rectf TextBox::getBounds()
@@ -82,5 +96,11 @@ namespace po { namespace scene {
             return ci::Rectf();
         }
     }
+
+	void TextBox::setFormat(ci::gl::Texture::Format format)
+	{
+		mFormat = format;
+		mHasFormat = true;
+	}
 	
 } } //  namespace po::scene
