@@ -101,6 +101,7 @@ namespace po { namespace scene {
 	{
 		mFormat = format;
 		mHasFormat = true;
+		render();
 	}
 	
 } } //  namespace po::scene
