@@ -304,6 +304,9 @@ namespace po { namespace scene {
         //! Get the matrix order
         MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
+        Node &setRestrictToWholePixels(bool restrictsToWholePixels) { mRestrictToWholePixels = restrictsToWholePixels; return *this; };
+        bool getRestrictsToWholePixels() { return mRestrictsToWholePixels; }
+        
         // Fill
         // This is the color used when drawing the node,
         // in general when creating a Node class you should use this color
@@ -466,13 +469,15 @@ namespace po { namespace scene {
         // Private attributes
         ci::vec2 mPosition;
         ci::vec2 mScale;
-        float     mRotation;
+        float mRotation;
         ci::vec2 mOffset;
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
         float mAlpha, mAppliedAlpha;
         MatrixOrder mMatrixOrder;
+        
+        bool mRestrictToWholePixels;
         
         // Animation
         //! Initialize our attribute animations

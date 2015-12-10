@@ -113,6 +113,7 @@ namespace po { namespace scene {
     , mFillEnabled(true)
     , mStrokeColor(255, 255, 255)
     , mStrokeEnabled(false)
+    , mRestrictToWholePixels(false)
     , mUpdatePositionFromAnim(false)
     , mUpdateScaleFromAnim(false)
     , mUpdateRotationFromAnim(false)
@@ -544,18 +545,18 @@ namespace po { namespace scene {
     {
         switch(mMatrixOrder) {
             case MatrixOrder::TRS:
-                ci::gl::translate(mPosition);
+                ci::gl::translate(mRestrictToWholePixels ? round(mPosition) : mPosition);
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
                 break;
             case MatrixOrder::RST:
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
-                ci::gl::translate(mPosition);
+                ci::gl::translate(mRestrictToWholePixels ? round(mPosition) : mPosition);
                 break;
         }
         
-        ci::gl::translate(mOffset);
+        ci::gl::translate(mRestrictToWholePixels ? round(mOffset) : mOffset);
         mMatrix.set(ci::gl::getModelMatrix(), ci::gl::getProjectionMatrix(), ci::Area(ci::gl::getViewport().first, ci::gl::getViewport().second));
     }
     
