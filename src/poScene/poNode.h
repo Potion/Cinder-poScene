@@ -304,8 +304,13 @@ namespace po { namespace scene {
         //! Get the matrix order
         MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
-        Node &setRestrictToWholePixels(bool restrictsToWholePixels) { mRestrictToWholePixels = restrictsToWholePixels; return *this; };
-        bool getRestrictsToWholePixels() { return mRestrictsToWholePixels; }
+        // Whole pixel snapping
+        // Snap coordinates (position + offset) to whole pixels
+        // This does not affect parent node
+        
+        //! Set the matrix order
+        Node &setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
+        bool getPixelSnapping() { return mPixelSnapping; }
         
         // Fill
         // This is the color used when drawing the node,
@@ -477,7 +482,7 @@ namespace po { namespace scene {
         float mAlpha, mAppliedAlpha;
         MatrixOrder mMatrixOrder;
         
-        bool mRestrictToWholePixels;
+        bool mPixelSnapping;
         
         // Animation
         //! Initialize our attribute animations
