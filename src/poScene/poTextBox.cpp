@@ -58,7 +58,7 @@ namespace po { namespace scene {
                 ci::gl::enableAdditiveBlending();
             }
             
-            ci::gl::color(1, 1, 1, getAppliedAlpha());
+            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mTexture);
         }
     }
