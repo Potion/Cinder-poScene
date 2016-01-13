@@ -438,7 +438,10 @@ namespace po { namespace scene {
         
         NodeRef parent = getParent();
         while (parent) {
-            if (!parent->mVisible) return false;
+            if (!parent->mVisible) {
+                return false;
+            }
+            
             parent = parent->getParent();
         }
         
@@ -712,7 +715,15 @@ namespace po { namespace scene {
     
     bool Node::isEligibleForInteractionEvents()
     {
-        if ( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
+        if (!hasScene() ||
+            !isInteractionEnabled() ||
+            !isVisible() ||
+            mScale.x == 0.0f ||
+            mScale.y == 0.0f)
+            {
+                return false;
+            }
+        
         return true;
     }
 	
