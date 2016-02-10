@@ -418,10 +418,10 @@ namespace po { namespace scene {
     Node &Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
-        mOffset - ci::vec2(x, y);
+        mOffset = mOffset - ci::vec2(x, y);
         mOffsetAnim = mOffset;
         mFrameDirty = true;
-        
+				
 		//	If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
         
