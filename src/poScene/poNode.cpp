@@ -248,7 +248,7 @@ namespace po { namespace scene {
         ci::gl::ScopedTextureBind maskBind(getScene()->getMaskFbo()->getColorTexture(), 1);
         
         //	Bind Shader
-        mMaskShader->bind();
+		ci::gl::ScopedGlslProg maskShader(mMaskShader);
 
         //	Set uniforms
         mMaskShader->uniform("tex", 0);
