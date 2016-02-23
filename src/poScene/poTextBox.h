@@ -63,6 +63,7 @@ namespace po { namespace scene {
         
         //! Set the ci::TextBox object (by copying) and render to a texture
         void setCiTextBox(ci::TextBox &ciTextBox);
+		
         //! Get a copy of the backing ci::TextBox for manipulation
         ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 

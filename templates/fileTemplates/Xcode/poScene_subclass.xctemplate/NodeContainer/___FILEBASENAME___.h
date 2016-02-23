@@ -12,7 +12,7 @@ public:
 	static ___FILEBASENAME___Ref create();
 	virtual ~___FILEBASENAME___();
 
-	virtual void setup();
+	void setup() override;
 
 protected:
 	___FILEBASENAME___();
