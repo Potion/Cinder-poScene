@@ -36,7 +36,7 @@
 #include "cinder/gl/Vbo.h"
 #include "cinder/gl/VboMesh.h"
 #include "cinder/gl/draw.h"
-#include "cinder/gl/shader.h"
+#include "cinder/gl/Shader.h"
 #include "cinder/gl/scoped.h"
 
 namespace po { namespace scene {

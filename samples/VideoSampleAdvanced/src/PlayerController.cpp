@@ -1,6 +1,6 @@
 #include "PlayerController.h"
 #include "poShape.h"
-#include "cinder/imageIo.h"
+#include "cinder/ImageIo.h"
 #include "cinder/qtime/QuickTime.h"
 using namespace po::scene;
 

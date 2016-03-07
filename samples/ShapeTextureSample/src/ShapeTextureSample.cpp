@@ -1,5 +1,5 @@
 #include "ShapeTextureSample.h"
-#include "cinder/imageIo.h"
+#include "cinder/ImageIo.h"
 
 ShapeTextureSampleRef ShapeTextureSample::create() 
 {

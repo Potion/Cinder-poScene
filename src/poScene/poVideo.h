@@ -31,7 +31,7 @@
 #pragma once
 
 #include "cinder/qtime/QuickTime.h"
-#ifndef CINDER_MSW
+#if ! defined(  CINDER_MSW ) && ! defined( CINDER_LINUX )
     #include "cinder/qtime/QuickTimeGlImplAvf.h"
 #endif
 #include "cinder/qtime/QuickTimeGl.h"
