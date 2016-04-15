@@ -405,6 +405,12 @@ namespace po { namespace scene {
     
     //
     // Set the fill color
+	Node &Node::setFillColor(ci::ColorA color) {
+		setFillColor(ci::Color(color));
+		setAlpha(color.a);
+		return *this;
+	}
+
     Node &Node::setFillColor(ci::Color color)
     {
         mFillColor = color;
