@@ -63,11 +63,37 @@ namespace po { namespace scene {
         BOTTOM_RIGHT,
         NONE
     };
+	
+	inline std::ostream &operator<< (std::ostream &os, Alignment a)  {
+		switch (a) {
+			case Alignment::TOP_LEFT: os << "TOP_LEFT"; break;
+			case Alignment::TOP_CENTER: os << "TOP_CENTER"; break;
+			case Alignment::TOP_RIGHT: os << "TOP_RIGHT"; break;
+			case Alignment::CENTER_LEFT: os << "CENTER_LEFT"; break;
+			case Alignment::CENTER_CENTER: os << "CENTER_CENTER"; break;
+			case Alignment::CENTER_RIGHT: os << "CENTER_RIGHT"; break;
+			case Alignment::BOTTOM_LEFT: os << "BOTTOM_LEFT"; break;
+			case Alignment::BOTTOM_CENTER: os << "BOTTOM_CENTER"; break;
+			case Alignment::BOTTOM_RIGHT: os << "BOTTOM_RIGHT"; break;
+			case Alignment::NONE: os << "NONE"; break;
+			default: os << "UNKNOWN"; break;
+		}
+		return os;
+	}
     
     enum class MatrixOrder {
         TRS, //	standard order
         RST //	orbit order
     };
+	
+	inline std::ostream &operator<< (std::ostream &os, MatrixOrder m)  {
+		switch (m) {
+			case MatrixOrder::TRS: os << "TRS"; break;
+			case MatrixOrder::RST: os << "RST"; break;
+			default: os << "UNKNOWN"; break;
+		}
+		return os;
+	}
     
     //	Forward declare Scene + NodeContainer
     class Scene;
@@ -132,6 +158,10 @@ namespace po { namespace scene {
         NodeContainerRef getParent() const;
         //! Check if this node currently has a parent
         bool hasParent();
+		
+		//  Differentiate between non-rendering NodeContainers and all other nodes
+		//   this gets overridden to return false in NodeContainer
+		virtual bool isRenderable (void) const { return true; }
         
         //	Dimensions
         //  Dimensions are determined by the getBounds() function

@@ -127,7 +127,7 @@ namespace po { namespace scene {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
         //	Adapted from http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
-        float kappa = .5522848;
+        float kappa = .5522848f;
         float x = 0;
         float y = 0;
         float ox = (width / 2) * kappa;		//	control point offset horizontal
@@ -207,9 +207,9 @@ namespace po { namespace scene {
         //	If we don't have an underlying shape, set it from the texture
         if (!mCiShape2d.getNumContours()) {
             mCiShape2d.moveTo(0, 0);
-            mCiShape2d.lineTo(texture->getWidth(), 0);
-            mCiShape2d.lineTo(texture->getWidth(), texture->getHeight());
-            mCiShape2d.lineTo(0, texture->getHeight());
+            mCiShape2d.lineTo((float)texture->getWidth(), 0);
+            mCiShape2d.lineTo((float)texture->getWidth(), (float)texture->getHeight());
+            mCiShape2d.lineTo(0, (float)texture->getHeight());
             mCiShape2d.close();
         }
         
@@ -242,7 +242,7 @@ namespace po { namespace scene {
         format.mTexCoords0Dims      = 2;
         format.mPositionsDims       = 2;
         format.mNormalsDims         = 3;
-        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
+        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, (float)mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
         
         if( mTexture )
         {

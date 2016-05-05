@@ -314,7 +314,7 @@ namespace po { namespace scene {
         format.enableDepthBuffer(false);
         
         //	Create and Bind the FBO
-        ci::gl::FboRef fbo = ci::gl::Fbo::create(getWidth(), getHeight(), format);
+        ci::gl::FboRef fbo = ci::gl::Fbo::create((int)getWidth(), (int)getHeight(), format);
         ci::gl::ScopedFramebuffer fboBind(fbo);
         
         //	Set the viewport
@@ -379,7 +379,7 @@ namespace po { namespace scene {
     {
         
         if(rotation >= M_PI * 2 || rotation <= -M_PI * 2) {
-            rotation = fmodf(rotation, M_PI * 2);
+            rotation = fmodf(rotation, (float)(M_PI * 2));
         }
         
         mRotationAnim.stop();
@@ -683,7 +683,7 @@ namespace po { namespace scene {
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
         ci::gl::scale(ci::vec2(1.f, 1.f) / mScale);
-        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
+        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2.0f, -ORIGIN_SIZE / 2.0f, (float)ORIGIN_SIZE, (float)ORIGIN_SIZE));
         ci::gl::popModelView();
     }
 	

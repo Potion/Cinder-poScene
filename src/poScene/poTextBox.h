@@ -67,6 +67,10 @@ namespace po { namespace scene {
         //! Get a copy of the backing ci::TextBox for manipulation
         ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 
+		// CB - for calling functions like measure()
+        const ci::TextBox& getCiTextBox() const { return mCiTextBox; };
+
+
 		//! Set the texture format to use when rendering to texture
 		void setFormat(ci::gl::Texture::Format format);
 		

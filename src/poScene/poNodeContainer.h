@@ -60,6 +60,9 @@ namespace po { namespace scene {
 		
 		~NodeContainer();
 		
+		//  Overrides function in Node.h so we can tell between NodeContainers and other types of Node
+		virtual bool isRenderable (void) const override { return false; }
+		
 		//	Children
 		static const int INVALID_INDEX = -1;
         
@@ -82,7 +85,7 @@ namespace po { namespace scene {
         // Get Children
         
         //! Get the total number of children for this NodeContainer
-        int getNumChildren() { return mChildren.size(); };
+        size_t getNumChildren() { return mChildren.size(); };
         //! Get all this NodeContainer's children
 		std::deque<NodeRef> getChildren();
         //! Get a reference to all of this NodeContainer's children

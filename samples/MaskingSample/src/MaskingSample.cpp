@@ -38,6 +38,10 @@ void MaskingSample::setup()
 	
 	//	Set the image mask
 	setMask(mMask);
+
+	// CB - test masking with alpha
+	setAlpha(0.5f);
+	mMask->setAlpha(0.5f);
 	
 	//	Connect mouse event
 	getSignal(MouseEvent::MOVE).connect(std::bind(&MaskingSample::onMouseMove, this, std::placeholders::_1));

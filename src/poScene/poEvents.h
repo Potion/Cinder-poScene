@@ -76,7 +76,7 @@ namespace po { namespace scene {
         bool getPropagationEnabled() { return mPropagationEnabled; };
         
         //! Get the position of the event in window Coords
-        ci::vec2 getWindowPos() { return mWindowPos; }
+        ci::vec2 getWindowPos() const { return mWindowPos; }
         //! Get the position of the event in coords local to the source node
         ci::vec2 getLocalPos();
         //! Get the position of the event in coords local to the Scene root node
@@ -119,8 +119,8 @@ namespace po { namespace scene {
         };
         
         MouseEvent(ci::app::MouseEvent event, Type type);
-        ci::app::MouseEvent getCiEvent() { return mCiEvent; };
-        Type getType() { return mType; };
+        ci::app::MouseEvent getCiEvent() const { return mCiEvent; };
+        Type getType() const { return mType; };
         
     protected:
         void setType(Type type) { mType = type; };
