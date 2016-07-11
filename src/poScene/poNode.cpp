@@ -113,6 +113,7 @@ namespace po { namespace scene {
     , mFillEnabled(true)
     , mStrokeColor(255, 255, 255)
     , mStrokeEnabled(false)
+    , mStrokeSize(2.f)
     , mPixelSnapping(false)
     , mUpdatePositionFromAnim(false)
     , mUpdateScaleFromAnim(false)

@@ -372,10 +372,14 @@ namespace po { namespace scene {
         Node &setStrokeColor(float r, float g, float b) { mStrokeColor = ci::Color(r, g, b); return *this;}
         //! Enable or disable the stroke
         Node &setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; return *this; };
+        //! Set the stroke size with a pixel amount
+        Node &setStrokeSize(float size) { mStrokeSize = size; return *this; }
         //! Get stroke enabled
         bool getStrokeEnabled() { return mStrokeEnabled; }
         //! Get the stroke color
         ci::Color getStrokeColor() { return mStrokeColor; }
+        //! Set the stroke color (convenience method)
+        float &getStrokeSize() { return mStrokeSize; }
         
         // Caching/FBO
         // Nodes can be cached to an FBO. This is generally useful when applying a shader to a whole node,
@@ -511,6 +515,7 @@ namespace po { namespace scene {
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
+        float mStrokeSize;
         float mAlpha, mAppliedAlpha;
         MatrixOrder mMatrixOrder;
         
