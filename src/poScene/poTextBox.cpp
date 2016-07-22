@@ -77,8 +77,6 @@ namespace po { namespace scene {
     
     void TextBox::render()
     {
-        mCiTextBox.setPremultiplied(true);
-
 		if (mHasFormat) {
 			mTexture = ci::gl::Texture::create(mCiTextBox.render(), mFormat);
 		}
