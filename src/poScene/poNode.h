@@ -281,11 +281,11 @@ namespace po { namespace scene {
         
         // Rotation
         // Rotates around the origin of the node
-        // Expressed in degrees
+        // Expressed in radians
         
-        //! Set the rotation (in degrees)
+        //! Set the rotation (in radians)
         Node &setRotation(float rotation);
-        //! Get the rotation (in degrees)
+        //! Get the rotation (in radians)
         float getRotation() { return mRotation; };
         
         // Alpha
