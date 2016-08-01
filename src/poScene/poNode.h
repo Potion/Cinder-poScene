@@ -322,7 +322,7 @@ namespace po { namespace scene {
         //  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
         
         //! Set the alignment
-        Node &setAlignment(Alignment alignment);\
+        Node &setAlignment(Alignment alignment);
         //! Get the alignment
         Alignment getAlignment() { return mAlignment; };
         
