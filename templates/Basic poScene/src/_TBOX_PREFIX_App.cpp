@@ -1,4 +1,5 @@
-#include "cinder/app/AppNative.h"
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
 #include "poScene.h"
@@ -10,12 +11,12 @@ using namespace std;
 using namespace po::scene;
 
 class _TBOX_PREFIX_App
-: public AppNative 
+: public App 
 {
   public:
-	void setup();
-	void update();
-	void draw();
+	void setup() override;
+	void update() override;
+	void draw() override;
     
     SceneRef scene;
 };
@@ -37,4 +38,4 @@ void _TBOX_PREFIX_App::draw()
     scene->draw();
 }
 
-CINDER_APP_NATIVE( _TBOX_PREFIX_App, RendererGl )
+CINDER_APP( _TBOX_PREFIX_App, RendererGl )
