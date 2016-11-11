@@ -30,6 +30,8 @@
 
 #pragma once
 
+#include <deque>
+
 #include "poNode.h"
 
 namespace po { namespace scene {
