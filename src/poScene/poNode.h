@@ -137,7 +137,7 @@ namespace po { namespace scene {
         //! Called automatically once per scene draw, do any OpenGL here
         /** All matrix transformations take place before this call, so you are automatically in local space
             when this function begins **/
-        virtual void draw() = 0;
+		virtual void draw() {};
 		
 		
         //------------------------------------
@@ -257,8 +257,9 @@ namespace po { namespace scene {
         
         //! Set the name of the node
         Node &setName(std::string name) { mName = name; return *this; };
+
         //! Get the name of the node
-        std::string getName() { return mName; }
+        std::string getName() const { return mName; }
         
         // Position
         // The position that the origin is at within the parent node
@@ -501,6 +502,10 @@ namespace po { namespace scene {
 //        void drawMasked();
 //        ShapeRef mMask;
 //        bool mIsMasked;
+
+		//	Name (optional, helps identify nodes when debugging)
+		std::string mName;
+		//friend std::ostream& operator<<(std::ostream &os, NodeRef &a);
         
     private:
         // Private attributes
@@ -579,9 +584,6 @@ namespace po { namespace scene {
         uint32_t mDrawOrder;
         uint32_t mUid;
         
-        //	Name (optional, helps identify nodes when debugging)
-        std::string mName;
-        
         //------------------------------------
         //  Interaction Events
         //------------------------------------
@@ -610,5 +612,15 @@ namespace po { namespace scene {
         };
 		
     };
+
+	inline std::ostream &operator<<(std::ostream &os, const po::scene::Node &a) {
+		os << a.getName();
+		return os;
+	}
+
+	inline std::ostream &operator<<(std::ostream &os, const po::scene::NodeRef &a) {
+		os << *a;
+		return os;
+	}
 	
 } } //  namespace po::scene
