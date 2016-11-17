@@ -30,7 +30,9 @@
 
 #pragma once
 
-#include "cinder/app/App.h"
+#include "cinder/app/MouseEvent.h"
+#include "cinder/app/TouchEvent.h"
+
 #include "poEvents.h"
 
 namespace po { namespace scene {

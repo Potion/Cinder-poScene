@@ -29,6 +29,8 @@
 */
 
 #include "cinder/app/Window.h"
+#include "cinder/app/App.h"
+
 #include "poEventCenter.h"
 #include "poScene.h"
 

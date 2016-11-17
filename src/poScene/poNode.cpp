@@ -43,6 +43,8 @@
 #endif
 
 #include "cinder/CinderMath.h"
+#include "cinder/app/App.h"
+
 #include "poNode.h"
 #include "poNodeContainer.h"
 #include "poShape.h"

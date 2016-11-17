@@ -30,13 +30,14 @@
 
 #pragma once
 
-#include "boost/signals2.hpp"
 #include "cinder/Cinder.h"
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 #include "cinder/Exception.h"
+#include "cinder/Signals.h"
+
 #include "poMatrixSet.h"
 #include "poEvents.h"
 
