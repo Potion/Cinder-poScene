@@ -177,8 +177,8 @@ namespace po { namespace scene {
     {
         //Draw fill
         if (getFillEnabled()) {
-            ci::gl::enableAlphaBlending();
-            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
+			ci::gl::ScopedBlendAlpha alphaBlendScoped;
+			ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
             
             if (mTexture) {
                 ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));

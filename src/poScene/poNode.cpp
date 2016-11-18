@@ -180,7 +180,6 @@ namespace po { namespace scene {
     void Node::drawTree()
     {
         if (mVisible) {
-            
             //  Draw
             beginDrawTree();
             
