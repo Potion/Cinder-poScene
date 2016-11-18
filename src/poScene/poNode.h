@@ -274,6 +274,8 @@ namespace po { namespace scene {
         // Scale
         // Scales around the origin of the node
         
+		//! Set the scale to the same in x & y
+		Node &setScale(float scale) { return setScale(scale, scale); };
         //! Set the scale with a ci::vec2
         Node &setScale(ci::vec2 scale) { return setScale(scale.x, scale.y); };
         //! Set the scale, convenience method
