@@ -1,15 +1,13 @@
 #pragma once
 
-#include "poNodeContainer.h"
+#include "poScene/View.h"
 #include "Square.h"
-
-using namespace po::scene;
 
 class HierarchySample;
 typedef std::shared_ptr<HierarchySample> HierarchySampleRef;
 
 class HierarchySample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static HierarchySampleRef create();
@@ -21,7 +19,7 @@ protected:
 	
 private:
 	//	Container to hold all the squares
-	NodeContainerRef mContainer;
+	po::scene::ViewRef mContainer;
 	
 	//	Reference to previous square
 	SquareRef mPreviousSquare;

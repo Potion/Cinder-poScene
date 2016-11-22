@@ -2,7 +2,7 @@
 
 using namespace po::scene;
 
-PlayerButtonRef PlayerButton::create(po::scene::ShapeRef shape)
+PlayerButtonRef PlayerButton::create(po::scene::ShapeViewRef shape)
 {
     PlayerButtonRef ref (new PlayerButton());
     ref->setup(shape);
@@ -14,7 +14,7 @@ PlayerButton::PlayerButton()
 , mPressPosition(ci::vec2(0.f, 0.f))
 {}
 
-void PlayerButton::setup(po::scene::ShapeRef shape)
+void PlayerButton::setup(po::scene::ShapeViewRef shape)
 {
     mShape = shape;
     
@@ -60,5 +60,5 @@ void PlayerButton::onMouseEvent(MouseEvent &event)
 
 void PlayerButton::doAction()
 {
-    mButtonSignal();
+    mButtonSignal.emit();
 }

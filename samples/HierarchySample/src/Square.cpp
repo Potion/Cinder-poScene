@@ -28,7 +28,7 @@ void Square::setup(int size)
 	mSize = size;
 	
 	//	The square shape
-	mShape = Shape::createRect(mSize, mSize);
+	mShape = ShapeView::createRect(mSize, mSize);
 	mShape->setAlignment(po::scene::Alignment::CENTER_CENTER);
 	
 	//	Change hue based on size
@@ -95,7 +95,7 @@ void Square::highlight(bool isHighlighted)
 void Square::highlightChildren(bool isHighlighted)
 {
 	//	Get all the nodes children
-	std::deque<NodeRef> children = getChildren();
+	std::deque<ViewRef> children = getChildren();
 	
 	if (isHighlighted) {
 		for (auto &child : children) {

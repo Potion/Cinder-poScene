@@ -1,7 +1,9 @@
 #include "HierarchySample.h"
 
-#include "poShape.h"
-#include "poTextBox.h"
+#include "cinder/app/App.h"
+
+#include "poScene/ShapeView.h"
+#include "poScene/TextView.h"
 
 HierarchySampleRef HierarchySample::create() 
 {
@@ -24,7 +26,7 @@ void HierarchySample::setup()
 	float maxSize = 300.f;
 	
 	//	Create the container
-	mContainer = NodeContainer::create();
+	mContainer = View::create();
 	addChild(mContainer);
 	
 	//	Add the first square to the container
@@ -50,7 +52,7 @@ void HierarchySample::setup()
 	ciTextBox.font(ci::Font("Arial", 12.f));
 	ciTextBox.color(ci::Color(1, 1, 1));
 	
-	TextBoxRef textBox = TextBox::create(ciTextBox);
+	TextViewRef textBox = TextView::create(ciTextBox);
 	textBox->setPosition(20, 20);
 	addChild(textBox);
 }

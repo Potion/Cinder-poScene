@@ -1,6 +1,6 @@
 #pragma once
 
-#include "poScene/ViewContainer.h"
+#include "poScene/View.h"
 #include "poScene/TextView.h"
 #include "poScene/ShapeView.h"
 
@@ -8,7 +8,7 @@ class Indicator;
 typedef std::shared_ptr<Indicator> IndicatorRef;
 
 class Indicator
-: public po::scene::ViewContainer
+: public po::scene::View
 {
 public:
     static IndicatorRef create(std::string name, ci::Color color);

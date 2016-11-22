@@ -19,14 +19,14 @@ Scrubber::Scrubber()
 void Scrubber::setup()
 {
     //  create and add the scrub track
-    mTrack = Shape::createRect(640, 10);
+    mTrack = ShapeView::createRect(640, 10);
     mTrack->setFillColor(1, 1, 1);
     mTrack->setAlpha(0.2f);
     mTrack->setName("track");
     addChild(mTrack);
     
     //  create and add the scrub handle
-    mHandle = Shape::createRect(50, 10);
+    mHandle = ShapeView::createRect(50, 10);
     mHandle->setFillColor(1, 1, 1);
     mHandle->setAlpha(0.8f);
     mHandle->setName("handle");
@@ -82,7 +82,7 @@ void Scrubber::onMouseDownTrack(MouseEvent &event)
         
         //  Determine percentage
         float pct = newXPos / mFullLength;
-        mScrubberSignal(pct);
+        mScrubberSignal.emit(pct);
         
         //	With repositioned hadle, store the initial positions
         mInitialPos = mHandle->getPosition();
@@ -117,7 +117,7 @@ void Scrubber::onMouseDrag(MouseEvent &event)
         
         //  Determine percentage
         float pct = newPosition.x / mFullLength;
-        mScrubberSignal(pct);
+        mScrubberSignal.emit(pct);
     }
 }
 

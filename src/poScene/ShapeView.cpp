@@ -69,7 +69,7 @@ namespace po { namespace scene {
         ShapeView.lineTo(0, height);
         ShapeView.close();
 		
-        s->setCiShapeView2d(ShapeView);
+        s->setCiShape2d(ShapeView);
         return s;
     }
 	
@@ -108,7 +108,7 @@ namespace po { namespace scene {
 		ShapeView.arcTo( p1,t4,rad );
 		ShapeView.close();
 		
-		s->setCiShapeView2d(ShapeView);
+		s->setCiShape2d(ShapeView);
 
 		return s;
 		
@@ -146,7 +146,7 @@ namespace po { namespace scene {
         ShapeView.curveTo(xm - ox, ye, x, ym + oy, x, ym);
         ShapeView.close();
         
-        s->setCiShapeView2d(ShapeView);
+        s->setCiShape2d(ShapeView);
 
         return s;
     }
@@ -168,9 +168,9 @@ namespace po { namespace scene {
 	{
     }
     
-    void ShapeView::setCiShapeView2d(ci::Shape2d ShapeView)
+    void ShapeView::setCiShape2d(ci::Shape2d ShapeView)
     {
-        mCiShapeView2d = ShapeView;
+        mCiShape2d = ShapeView;
         render();
     }
     
@@ -206,12 +206,12 @@ namespace po { namespace scene {
         mTextureAlignment   = alignment;
         
         //	If we don't have an underlying ShapeView, set it from the texture
-        if (!mCiShapeView2d.getNumContours()) {
-            mCiShapeView2d.moveTo(0, 0);
-            mCiShapeView2d.lineTo((float)texture->getWidth(), 0);
-            mCiShapeView2d.lineTo((float)texture->getWidth(), (float)texture->getHeight());
-            mCiShapeView2d.lineTo(0, (float)texture->getHeight());
-            mCiShapeView2d.close();
+        if (!mCiShape2d.getNumContours()) {
+            mCiShape2d.moveTo(0, 0);
+            mCiShape2d.lineTo((float)texture->getWidth(), 0);
+            mCiShape2d.lineTo((float)texture->getWidth(), (float)texture->getHeight());
+            mCiShape2d.lineTo(0, (float)texture->getHeight());
+            mCiShape2d.close();
         }
         
         render();
@@ -243,7 +243,7 @@ namespace po { namespace scene {
         format.mTexCoords0Dims      = 2;
         format.mPositionsDims       = 2;
         format.mNormalsDims         = 3;
-        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShapeView2d, (float)mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
+        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, (float)mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
         
         if( mTexture )
         {
@@ -294,13 +294,13 @@ namespace po { namespace scene {
     bool ShapeView::pointInside(const ci::vec2 &point, bool localize)
     {
         ci::vec2 pos = localize ? windowToLocal(point) : point;
-        return mCiShapeView2d.contains(pos);
+        return mCiShape2d.contains(pos);
     }
     
     ci::Rectf ShapeView::getBounds()
     {
         //if (mBoundsDirty) {
-            mBounds = mCiShapeView2d.calcBoundingBox();
+            mBounds = mCiShape2d.calcBoundingBox();
             //mBoundsDirty = false;
         //}
         

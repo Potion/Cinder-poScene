@@ -1,6 +1,6 @@
 #pragma once
 
-#include "poScene/ViewContainer.h"
+#include "poScene/View.h"
 #include "poScene/ShapeView.h"
 #include "Indicator.h"
 
@@ -8,7 +8,7 @@ class AnimationSquare;
 typedef std::shared_ptr<AnimationSquare> AnimationSquareRef;
 
 class AnimationSquare
-: public po::scene::ViewContainer
+: public po::scene::View
 {
 public:
     static AnimationSquareRef create(std::string name, ci::Color color);

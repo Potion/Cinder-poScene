@@ -1,4 +1,7 @@
 #include "MouseEventsSample.h"
+
+#include "cinder/app/App.h"
+
 #include "Square.h"
 
 MouseEventsSampleRef MouseEventsSample::create() 
@@ -38,7 +41,7 @@ void MouseEventsSample::createIndicators()
 	};
 	
 	//	Create a container to hold the indicators
-	mIndicatorContainer = NodeContainer::create();
+	mIndicatorContainer = View::create();
 	addChild(mIndicatorContainer);
 	mIndicatorContainer->setPosition(30, 30);
 	
@@ -61,7 +64,7 @@ void MouseEventsSample::createIndicators()
 void MouseEventsSample::createSquares()
 {
 	// Create a container for the squares
-	mSquareContainer = NodeContainer::create();
+	mSquareContainer = View::create();
 	addChild(mSquareContainer);
 	
 	//	Create and add the squares to the container

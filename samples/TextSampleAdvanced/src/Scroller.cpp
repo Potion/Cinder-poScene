@@ -1,5 +1,7 @@
 #include "Scroller.h"
 
+#include "cinder/app/App.h"
+
 ScrollerRef Scroller::create()
 {
 	ScrollerRef ref = std::shared_ptr<Scroller>(new Scroller());
@@ -22,13 +24,13 @@ Scroller::~Scroller()
 void Scroller::setup()
 {
 	//	Create the scroll track
-	mTrack = Shape::createRect(10, ci::app::getWindowHeight() - 40);
+	mTrack = ShapeView::createRect(10, ci::app::getWindowHeight() - 40);
 	mTrack->setFillColor(ci::Color(1, 1, 1));
 	mTrack->setAlpha(0.2);
 	addChild(mTrack);
 	
 	//	Create the scroll thumb
-	mThumb = Shape::createRect(10, 100);
+	mThumb = ShapeView::createRect(10, 100);
 	mThumb->setFillColor(ci::Color(1, 1, 1));
 	mThumb->setAlpha(0.8);
 	addChild(mThumb);

@@ -2,7 +2,7 @@
 
 #include "cinder/app/KeyEvent.h"
 
-#include "poScene/ViewContainer.h"
+#include "poScene/View.h"
 #include "poScene/ShapeView.h"
 #include "poScene/TextView.h"
 
@@ -14,7 +14,7 @@ typedef std::shared_ptr<AlignmentSample> AlignmentSampleRef;
 
 //  define the class
 class AlignmentSample
-: public po::scene::ViewContainer
+: public po::scene::View
 {
 public:
     static AlignmentSampleRef create();
@@ -28,7 +28,7 @@ private:
     po::scene::TextViewRef   mTextBottom;
     
     //  Container to hold the indicators
-    po::scene::ViewContainerRef             mIndicatorContainer;
+    po::scene::ViewRef mIndicatorContainer;
     
     //  Alignment types mapped to indicators
     std::vector<std::string>                mIndicatorNames;

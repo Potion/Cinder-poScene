@@ -1,8 +1,8 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poTextBox.h"
-#include "poShape.h"
+#include "poScene/View.h"
+#include "poScene/TextView.h"
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -10,7 +10,7 @@ class TextSample;
 typedef std::shared_ptr<TextSample> TextSampleRef;
 
 class TextSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static TextSampleRef create();
@@ -23,7 +23,7 @@ private:
 	TextSample();
 	
 	//	Scaling text box
-	TextBoxRef mScalingText;
+	TextViewRef mScalingText;
 	
 	//	Scale text up and down in a loop
 	void animateScale();

@@ -40,7 +40,7 @@ void VideoSampleAdvanced::setup()
         //  load the movies, create po::scene movie references, then create MovieThumb objects
         for (int i = 0; i < mNumMovies; i++) {
             qtMovie[i] = ci::qtime::MovieGl::create(moviePath[i]);
-            VideoGlRef poMovie = VideoGl::create();
+            VideoViewGlRef poMovie = VideoViewGl::create();
             poMovie->setMovieRef(qtMovie[i]);
             mMovies[i] = MovieThumb::create(poMovie);
 			//mMovies[i]->setDrawBounds(true);
@@ -92,8 +92,8 @@ void VideoSampleAdvanced::setUpMovies()
 
 void VideoSampleAdvanced::onThumbnailClick(MouseEvent &event)
 {
-    NodeRef node = event.getSource();
-    MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(node);
+    ViewRef view = event.getSource();
+    MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>(view);
     
     for (int i = 0; i < mNumMovies; i++) {
         

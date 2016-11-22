@@ -1,8 +1,8 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
-#include "poImage.h"
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
+#include "poScene/ImageView.h"
 
 using namespace po::scene;
 
@@ -10,7 +10,7 @@ class MaskingSample;
 typedef std::shared_ptr<MaskingSample> MaskingSampleRef;
 
 class MaskingSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static MaskingSampleRef create();
@@ -22,14 +22,12 @@ protected:
 
 private:
 	//	Image
-	ImageRef mImage;
+	ImageViewRef mImage;
 	
 	//	Mask shape
-	ShapeRef mMask;
+	ShapeViewRef mMask;
 	
 	//	Mouse event handlers
-	void onMouseMove(MouseEvent &event);
-	
-	void keyUp(ci::app::KeyEvent &event);
+	void onMouseMove(po::scene::MouseEvent &event);
 
 };

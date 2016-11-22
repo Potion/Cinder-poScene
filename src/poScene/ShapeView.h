@@ -86,10 +86,10 @@ namespace po { namespace scene {
 		
 		//!	Set/Return the backing ci::Shape2d
 		/**	This should be used for modifying or changing the ShapeView **/
-		ci::Shape2d getCiShapeView2dCopy() { return mCiShapeView2d; };
+		ci::Shape2d getCiShapeView2dCopy() { return mCiShape2d; };
         
         /**	This should be used for modifying or changing the ShapeView **/
-		void setCiShapeView2d(ci::Shape2d ShapeView);
+		void setCiShape2d(ci::Shape2d ShapeView);
 		
         //! Get the bounds
         /** The bounds of a ShapeView are determined by the bounds of the ci::Shape2d 
@@ -127,7 +127,7 @@ namespace po { namespace scene {
 		ci::gl::VboMeshRef mVboMesh;
 		
 		//	Our underlying ci::Shape2d
-		ci::Shape2d mCiShapeView2d;
+		ci::Shape2d mCiShape2d;
 		
 		//	Textures
 		ci::gl::TextureRef mTexture;

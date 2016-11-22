@@ -60,9 +60,6 @@
     <ClCompile Include="..\..\..\src\poScene\View.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\ViewContainer.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\poScene\TextView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
@@ -99,9 +96,6 @@
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\View.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\ViewContainer.h">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\TextView.h">

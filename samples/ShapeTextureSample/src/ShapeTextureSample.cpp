@@ -1,4 +1,6 @@
 #include "ShapeTextureSample.h"
+
+#include "cinder/app/App.h"
 #include "cinder/ImageIo.h"
 
 ShapeTextureSampleRef ShapeTextureSample::create() 
@@ -35,13 +37,13 @@ void ShapeTextureSample::setup()
     float yOffset = ((ci::app::getWindowHeight() - shapeHeight) / 2);
     
     //  create and add shapes
-    mRectShape = Shape::createRect(shapeWidth, shapeHeight);
+    mRectShape = ShapeView::createRect(shapeWidth, shapeHeight);
     mRectShape->setPosition(xOffset, yOffset);
     mRectShape->setTexture(mTexture);
     mRectShape->setDrawBounds(true);
     addChild(mRectShape);
     
-    mEllipseShape = Shape::createEllipse(shapeWidth, shapeHeight);
+    mEllipseShape = ShapeView::createEllipse(shapeWidth, shapeHeight);
     mEllipseShape->setPosition(ci::vec2(xInterval + xOffset, yOffset));
     mEllipseShape->setTexture(mTexture);
     mEllipseShape->setDrawBounds(true);
@@ -53,7 +55,7 @@ void ShapeTextureSample::setup()
     customShape.lineTo(0, shapeHeight);
     customShape.close();
     
-    mTriangleShape = Shape::create();
+    mTriangleShape = ShapeView::create();
     mTriangleShape->setCiShape2d(customShape);
     mTriangleShape->setPosition(ci::vec2((xInterval * 2) + xOffset, yOffset));
     mTriangleShape->setTexture(mTexture);
@@ -167,7 +169,7 @@ void ShapeTextureSample::createFitIndicators()
     labelText.color(ci::Color(1, 1, 1));
     labelText.size(85, ci::TextBox::GROW);
     
-    TextBoxRef fitLabel = TextBox::create(labelText);
+    TextViewRef fitLabel = TextView::create(labelText);
     fitLabel->setPosition(10, 15);
     addChild(fitLabel);
     
@@ -181,7 +183,7 @@ void ShapeTextureSample::createFitIndicators()
     };
     
     //  Create a container to hold the indicators
-    mFitIndicatorContainer = NodeContainer::create();
+    mFitIndicatorContainer = View::create();
     addChild(mFitIndicatorContainer);
     mFitIndicatorContainer->setPosition(95, 10);
     
@@ -203,7 +205,7 @@ void ShapeTextureSample::createAlignmentIndicators()
     labelText.color(ci::Color(1, 1, 1));
     labelText.size(85, ci::TextBox::GROW);
     
-    TextBoxRef alignLabel = TextBox::create(labelText);
+    TextViewRef alignLabel = TextView::create(labelText);
     alignLabel->setPosition(300, 15);
     addChild(alignLabel);
     
@@ -221,7 +223,7 @@ void ShapeTextureSample::createAlignmentIndicators()
     };
     
     //  Create a container to hold the indicators
-    mAlignIndicatorContainer = NodeContainer::create();
+    mAlignIndicatorContainer = View::create();
     addChild(mAlignIndicatorContainer);
     mAlignIndicatorContainer->setPosition(390, 10);
     

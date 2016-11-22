@@ -1,4 +1,6 @@
 #include "Indicator.h"
+
+#include "cinder/app/App.h"
 #include "cinder/Text.h"
 
 IndicatorRef Indicator::create(std::string name)
@@ -21,9 +23,8 @@ void Indicator::setup(std::string name)
 {
 	//	Create and add the highlight shape
 	//	Set alpha to 0 so we can animate it later
-	mHighlight = Shape::createRect(100, 20);
+	mHighlight = ShapeView::createRect(100, 20);
 	mHighlight->setFillColor(mColor);
-	addChild(mHighlight);
 	mHighlight->setAlpha(0);
 	
 	//	Create a text box
@@ -33,9 +34,11 @@ void Indicator::setup(std::string name)
 	textbox.size(100, 10);
 	
 	//	Add it to the text node
-	mTextBox = TextBox::create(textbox);
-	addChild(mTextBox);
+	mTextBox = TextView::create(textbox);
 	mTextBox->setPosition(5, 5);
+
+	addChild(mHighlight);
+	addChild(mTextBox);
 }
 
 void Indicator::showHighlighted()

@@ -117,7 +117,6 @@
     <ClInclude Include="..\..\..\src\poScene\TextView.h" />
     <ClInclude Include="..\..\..\src\poScene\VideoView.h" />
     <ClInclude Include="..\..\..\src\poScene\View.h" />
-    <ClInclude Include="..\..\..\src\poScene\ViewContainer.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\AnimationSample.h" />
     <ClInclude Include="..\..\..\..\Box2D\src\Box2D\Collision\b2BroadPhase.h" />
@@ -178,7 +177,6 @@
     <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\TextView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\View.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\ViewContainer.cpp" />
     <ClCompile Include="..\src\AnimationSampleApp.cpp" />
     <ClCompile Include="..\src\AnimationSample.cpp" />
     <ClCompile Include="..\..\..\..\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />

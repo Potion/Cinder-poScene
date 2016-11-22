@@ -114,7 +114,6 @@
     <ClInclude Include="..\..\..\src\poScene\ImageView.h" />
     <ClInclude Include="..\..\..\src\poScene\MatrixSet.h" />
     <ClInclude Include="..\..\..\src\poScene\View.h" />
-    <ClInclude Include="..\..\..\src\poScene\ViewContainer.h" />
     <ClInclude Include="..\..\..\src\poScene\Scene.h" />
     <ClInclude Include="..\..\..\src\poScene\ShapeView.h" />
     <ClInclude Include="..\..\..\src\poScene\TextView.h" />
@@ -130,7 +129,6 @@
     <ClCompile Include="..\..\..\src\poScene\ImageView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\MatrixSet.cpp" />
     <ClCompile Include="..\..\..\src\poScene\View.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\ViewContainer.cpp" />
     <ClCompile Include="..\..\..\src\poScene\Scene.cpp" />
     <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\TextView.cpp" />

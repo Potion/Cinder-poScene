@@ -1,7 +1,9 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
-#include "poScene.h"
+
+#include "poScene/Scene.h"
+
 #include "HierarchySample.h"
 
 using namespace ci;

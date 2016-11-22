@@ -1,6 +1,6 @@
 #pragma once
 
-#include "poNodeContainer.h"
+#include "poScene/View.h"
 #include "Square.h"
 #include "Indicator.h"
 
@@ -10,7 +10,7 @@ class MouseEventsSample;
 typedef std::shared_ptr<MouseEventsSample> MouseEventsSampleRef;
 
 class MouseEventsSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static MouseEventsSampleRef create();
@@ -21,14 +21,14 @@ protected:
 	
 private:
 	//	Container to hold the indicators
-	NodeContainerRef mIndicatorContainer;
+	ViewRef mIndicatorContainer;
 	
 	//	Event names mapped to indicators
 	std::vector<std::string> mIndicatorNames;
 	std::map<std::string, IndicatorRef> mIndicators;
 	
 	//	Container to hold all the squares
-	NodeContainerRef mSquareContainer;
+	ViewRef mSquareContainer;
 	
 	//	Create indicators
 	void createIndicators();

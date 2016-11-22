@@ -1,8 +1,10 @@
-#include "cinder/qtime/QuickTimeGl.h"
 #include "VideoSample.h"
-#include "poShape.h"
+
+#include "cinder/qtime/QuickTimeGl.h"
 #include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
+
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -20,9 +22,9 @@ VideoSample::VideoSample()
 void VideoSample::setup()
 {
     //  create a player that loops video
-    mVideo = po::scene::VideoGl::create();
+    mVideo = po::scene::VideoViewGl::create();
     ci::fs::path moviePath = ci::app::getAssetPath("test.mp4");
-    
+    ci::app::console() << moviePath << std::endl;
     try {
         ci::qtime::MovieGlRef movieRef;
         
@@ -31,7 +33,7 @@ void VideoSample::setup()
         mVideo->getMovieRef()->setLoop(true);
         mVideo->getMovieRef()->play();
     } catch (...) {
-        ci::app::console() << "PlayerNode::setup: Failed to load movie" << std::endl;
+        ci::app::console() << "PlayerView::setup: Failed to load movie" << std::endl;
     }
     
     mVideo->setAlignment(po::scene::Alignment::CENTER_CENTER);
@@ -40,7 +42,7 @@ void VideoSample::setup()
     
     //  create the spin button, and connect the mouse signal
     ci::gl::TextureRef spinnerTex = ci::gl::Texture::create(loadImage(ci::app::loadAsset("spinArrows.png")));
-    ShapeRef spinner = Shape::create(spinnerTex);
+    ShapeViewRef spinner = ShapeView::create(spinnerTex);
     spinner->setAlignment(po::scene::Alignment::CENTER_CENTER);
     spinner->setPosition(ci::app::getWindowWidth() * 0.5, ci::app::getWindowHeight() * 0.85);
     spinner->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&VideoSample::spinPlayer, this));

@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include "ViewContainer.h"
+#include "View.h"
 #include "EventCenter.h"
 #include "cinder/Camera.h"
 

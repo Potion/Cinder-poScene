@@ -1,5 +1,7 @@
 #include "TextSampleAdvanced.h"
 
+#include "cinder/app/App.h"
+
 TextSampleAdvancedRef TextSampleAdvanced::create() 
 {
     TextSampleAdvancedRef node(new TextSampleAdvanced());
@@ -27,7 +29,7 @@ void TextSampleAdvanced::setup()
 void TextSampleAdvanced::update()
 {
 	//	Call baseclass update
-	NodeContainer::update();
+	View::update();
 	
 	//	Calculate the position of the text based on the scroll thumb postion
 	float textPos = ci::lmap<float>(mScroller->getThumbPosition().y, 0, 340, -20, mTextComponent->getHeight() - ci::app::getWindowHeight() + 20);

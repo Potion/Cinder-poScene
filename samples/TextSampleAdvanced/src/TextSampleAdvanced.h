@@ -1,6 +1,7 @@
 #pragma once
 
-#include "poNodeContainer.h"
+#include "poScene/View.h"
+
 #include "TextComponent.h"
 #include "Scroller.h"
 
@@ -10,7 +11,7 @@ class TextSampleAdvanced;
 typedef std::shared_ptr<TextSampleAdvanced> TextSampleAdvancedRef;
 
 class TextSampleAdvanced
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static TextSampleAdvancedRef create();

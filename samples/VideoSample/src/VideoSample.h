@@ -1,14 +1,14 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poVideo.h"
+#include "poScene/View.h"
+#include "poScene/VideoView.h"
 
 
 class VideoSample;
 typedef std::shared_ptr<VideoSample> VideoSampleRef;
 
 class VideoSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static VideoSampleRef create();
@@ -19,7 +19,7 @@ protected:
     VideoSample();
     
 private:
-    po::scene::VideoGlRef       mVideo;
+    po::scene::VideoViewGlRef       mVideo;
     void                        spinPlayer();
     void                        resetPlayerRotation();
 };

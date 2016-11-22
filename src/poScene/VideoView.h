@@ -37,10 +37,12 @@
 #include "cinder/qtime/QuickTimeGl.h"
 #include "cinder/gl/wrapper.h"
 #include "cinder/gl/draw.h"
-#include "poNode.h"
-#include "boost/any.hpp"
+#include "cinder/gl/scoped.h"
+
 #include "cinder/app/App.h"
 #include "cinder/gl/Texture.h"
+
+#include "View.h"
 
 namespace po { namespace scene {
     // This class is a generic wrapper for any Cinder based video player
@@ -51,17 +53,17 @@ namespace po { namespace scene {
     // the Cinder Quicktime player (currently the most standard player in 0.8.6)
 	
     template<class T>
-    class Video
-    : public Node
+    class VideoView
+    : public View
 	{
     private:
         typedef std::shared_ptr<T> GenericMovieRef;
         
     public:
         //! Create empty Video node
-        static std::shared_ptr< Video<T> > create();
+        static std::shared_ptr< VideoView<T> > create();
         //! Create with a movieref
-        static std::shared_ptr< Video<T> > create(GenericMovieRef movieRef);
+        static std::shared_ptr< VideoView<T> > create(GenericMovieRef movieRef);
         //! Set the movie ref
         void setMovieRef(GenericMovieRef movieRef)  { mMovieRef = movieRef; };
         //! Get the movie ref
@@ -70,7 +72,7 @@ namespace po { namespace scene {
         ci::Rectf getBounds();
         
     protected:
-		Video() {};
+		VideoView() {};
 		
         void setup();
         void update();
@@ -83,37 +85,37 @@ namespace po { namespace scene {
 	
     //  Template Class Implementation
     template<class T>
-    std::shared_ptr< Video<T> > Video<T>::create()
+    std::shared_ptr< VideoView<T> > VideoView<T>::create()
 	{
-        std::shared_ptr< Video<T> > ref = std::shared_ptr< Video<T> >(new Video());
+        std::shared_ptr<VideoView<T> > ref = std::shared_ptr<VideoView<T> >(new VideoView());
         ref->setup();
         return ref;
     }
 	
     template<class T>
-    std::shared_ptr< Video<T> > Video<T>::create(GenericMovieRef movieRef)
+    std::shared_ptr<VideoView<T> >VideoView<T>::create(GenericMovieRef movieRef)
 	{
-        std::shared_ptr< Video<T> > ref = std::shared_ptr< Video<T> >(new Video());
+        std::shared_ptr<VideoView<T> > ref = std::shared_ptr<VideoView<T> >(new VideoView());
         ref->setup();
         ref->setMovieRef(movieRef);
         return ref;
     }
 	
     template<class T>
-    void Video<T>::setup() {}
+    void VideoView<T>::setup() {}
 	
     template<class T>
-    void Video<T>::update() {}
+    void VideoView<T>::update() {}
 	
     template<class T>
-    ci::Rectf Video<T>::getBounds()
+    ci::Rectf VideoView<T>::getBounds()
     {
         if (mMovieRef != nullptr) return mMovieRef->getBounds();
         return ci::Rectf(0, 0, 0, 0);
     }
 	
     template<class T>
-    void Video<T>::draw()
+    void VideoView<T>::draw()
     {
         if ( mMovieRef != nullptr && mMovieRef->getTexture() ) {
 			ci::gl::ScopedBlendAlpha alphaBlendScoped;
@@ -123,9 +125,9 @@ namespace po { namespace scene {
     }
     
     //	Template ref and GL ref
-    template<class T> using VideoRef = std::shared_ptr< Video<T> >;
+    template<class T> using VideoViewRef = std::shared_ptr< VideoView<T> >;
     
-    typedef Video<ci::qtime::MovieGl> VideoGl;
-    typedef std::shared_ptr<VideoGl> VideoGlRef;
+    typedef VideoView<ci::qtime::MovieGl> VideoViewGl;
+    typedef std::shared_ptr<VideoViewGl> VideoViewGlRef;
 	
 } } //  namespace po::scene

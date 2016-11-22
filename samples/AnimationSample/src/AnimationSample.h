@@ -1,13 +1,13 @@
 #pragma once
 
-#include "poScene/ViewContainer.h"
+#include "poScene/View.h"
 #include "AnimationSquare.h"
 
 class AnimationSample;
 typedef std::shared_ptr<AnimationSample> AnimationSampleRef;
 
 class AnimationSample
-: public po::scene::ViewContainer
+: public po::scene::View
 {
 public:
     static AnimationSampleRef create();

@@ -1,5 +1,8 @@
 #include "TextSample.h"
+
+#include "cinder/app/App.h"
 #include "cinder/ImageIo.h"
+
 TextSampleRef TextSample::create() 
 {
     TextSampleRef node(new TextSample());
@@ -15,7 +18,7 @@ void TextSample::setup()
 {
 	std::string text = "Have secret plans intrigued by the shower hack up furballs, for kick up litter so loves cheeseburgers, for poop on grasses scamper. Leave hair everywhere stand in front of the computer screen.";
 	
-	//	Create the ci textbox
+	//	Create the ci TextView
 	ci::TextBox ciTextBox = ci::TextBox();
 	ciTextBox.size(200, 100);
 	ciTextBox.color(ci::Color(1, 1, 1));
@@ -24,21 +27,21 @@ void TextSample::setup()
 	ciTextBox.font(ci::Font("Arial", 13));
 	
 	//	Create a text box that rotates
-	TextBoxRef rotatingText = TextBox::create(ciTextBox);
+	TextViewRef rotatingText = TextView::create(ciTextBox);
 	rotatingText->setAlignment(po::scene::Alignment::CENTER_CENTER)
 	.setPosition(150, 150);
 	addChild(rotatingText);
 	ci::app::timeline().apply(&rotatingText->getRotationAnim(), ci::toRadians(360.f), 10.0f).loop();
 	
 	//	Create a text box that scales up and down
-	mScalingText = TextBox::create(ciTextBox);
+	mScalingText = TextView::create(ciTextBox);
 	mScalingText->setAlignment(po::scene::Alignment::CENTER_CENTER)
 	.setPosition(150, 350);
 	addChild(mScalingText);
 	animateScale();
 	
 	//	Create a text box that scrolls across the screen
-	TextBoxRef movingText = TextBox::create(ciTextBox);
+	TextViewRef movingText = TextView::create(ciTextBox);
 	movingText->setPosition(400, ci::app::getWindowHeight());
 	addChild(movingText);
 	ci::app::timeline().apply(&movingText->getPositionAnim(), ci::vec2(movingText->getPosition().x, -movingText->getHeight()), 10.f)
@@ -47,15 +50,15 @@ void TextSample::setup()
 	
 	//	Load in the mask texture and create a mask shape
 	ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("mask.jpg")));
-	ShapeRef mask = Shape::create(texture);
+	ShapeViewRef mask = ShapeView::create(texture);
 	
 	//	Create a container to hold the text box
-	NodeContainerRef textNode = NodeContainer::create();
+	ViewRef textNode = View::create();
 	addChild(textNode);
 	textNode->setPosition(400, 100);
 	
 	//	Create a text box to be masked and add it to the container
-	TextBoxRef maskedText = TextBox::create(ciTextBox);
+	TextViewRef maskedText = TextView::create(ciTextBox);
 	textNode->addChild(maskedText);
 	
 	//	Apply a mask to the container

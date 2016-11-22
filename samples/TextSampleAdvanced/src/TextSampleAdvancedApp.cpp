@@ -2,7 +2,8 @@
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
 
-#include "poScene.h"
+#include "poScene/Scene.h"
+
 #include "TextSampleAdvanced.h"
 
 using namespace ci;

@@ -1,8 +1,10 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
-#include "poTextBox.h"
+#include "cinder/app/KeyEvent.h"
+
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
+#include "poScene/TextView.h"
 
 #include "Indicator.h"
 
@@ -10,7 +12,7 @@ class ShapeTextureSample;
 typedef std::shared_ptr<ShapeTextureSample> ShapeTextureSampleRef;
 
 class ShapeTextureSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static ShapeTextureSampleRef create();
@@ -21,14 +23,14 @@ protected:
 	ShapeTextureSample();
 
 private:
-    po::scene::ShapeRef     mRectShape;     // rectangle for reference
-    po::scene::ShapeRef     mEllipseShape;  // ellipse that will have texture
-    po::scene::ShapeRef     mTriangleShape; // custom cinder shape
+    po::scene::ShapeViewRef     mRectShape;     // rectangle for reference
+    po::scene::ShapeViewRef     mEllipseShape;  // ellipse that will have texture
+    po::scene::ShapeViewRef     mTriangleShape; // custom cinder shape
     ci::gl::TextureRef      mTexture;       // cinder texture
     
     //  Container to hold the indicators
-    NodeContainerRef        mFitIndicatorContainer;
-    NodeContainerRef        mAlignIndicatorContainer;
+    ViewRef        mFitIndicatorContainer;
+    ViewRef        mAlignIndicatorContainer;
     
     //  TextureFit types mapped to indicators
     std::vector<std::string>                mFitIndicatorNames;

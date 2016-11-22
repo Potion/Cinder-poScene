@@ -1,8 +1,9 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
-#include "poVideo.h"
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
+#include "poScene/VideoView.h"
+
 #include "PlayerController.h"
 #include "MovieThumb.h"
 
@@ -10,7 +11,7 @@ class VideoSampleAdvanced;
 typedef std::shared_ptr<VideoSampleAdvanced> VideoSampleAdvancedRef;
 
 class VideoSampleAdvanced
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static VideoSampleAdvancedRef create();

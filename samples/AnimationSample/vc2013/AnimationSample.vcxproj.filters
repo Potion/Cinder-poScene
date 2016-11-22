@@ -366,9 +366,6 @@
     <ClCompile Include="..\..\..\src\poScene\View.cpp">
       <Filter>Blocks\poScene\src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\ViewContainer.cpp">
-      <Filter>Blocks\poScene\src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\poScene\EventCenter.cpp">
       <Filter>Blocks\poScene\src</Filter>
     </ClCompile>
@@ -414,9 +411,6 @@
       <Filter>Blocks\poScene\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\View.h">
-      <Filter>Blocks\poScene\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\ViewContainer.h">
       <Filter>Blocks\poScene\src</Filter>
     </ClInclude>
   </ItemGroup>

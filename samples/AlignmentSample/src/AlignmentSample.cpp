@@ -112,7 +112,7 @@ void AlignmentSample::createIndicators()
     };
     
     //  Create a container to hold the indicators
-    mIndicatorContainer = ViewContainer::create();
+    mIndicatorContainer = View::create();
     addChild(mIndicatorContainer);
     mIndicatorContainer->setPosition(10, 10);
     

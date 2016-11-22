@@ -1,8 +1,8 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poTextBox.h"
-#include "poShape.h"
+#include "poScene/View.h"
+#include "poScene/TextView.h"
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -10,7 +10,7 @@ class Indicator;
 typedef std::shared_ptr<Indicator> IndicatorRef;
 
 class Indicator
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
 	static IndicatorRef create(std::string name);
@@ -26,10 +26,10 @@ protected:
 
 private:
 	//	Text box with event name
-	TextBoxRef mTextBox;
+	TextViewRef mTextBox;
 	
 	//	Highlight shape
-	ShapeRef mHighlight;
+	ShapeViewRef mHighlight;
 	
 	//	Highlight color
 	ci::Color mColor;
