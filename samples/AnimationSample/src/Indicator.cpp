@@ -1,5 +1,9 @@
 #include "Indicator.h"
 
+#include "cinder/app/App.h"
+
+using namespace po::scene;
+
 IndicatorRef Indicator::create(std::string name, ci::Color color)
 {
     IndicatorRef ref = std::shared_ptr<Indicator>(new Indicator());
@@ -21,7 +25,7 @@ void Indicator::setup(std::string name, ci::Color color)
     
     //	Create and add the highlight shape
     //	Set alpha to 0 so we can animate it later
-    mHighlight = Shape::createRect(100, 20);
+    mHighlight = ShapeView::createRect(100, 20);
     mHighlight->setFillColor(mColor);
     addChild(mHighlight);
     mHighlight->setAlpha(0);
@@ -34,7 +38,7 @@ void Indicator::setup(std::string name, ci::Color color)
     textbox.setAlignment(ci::TextBox::Alignment::CENTER);
     
     //	Add it to the text node
-    mTextBox = TextBox::create(textbox);
+    mTextBox = TextView::create(textbox);
     addChild(mTextBox);
     mTextBox->setPosition(5, 5);
 }

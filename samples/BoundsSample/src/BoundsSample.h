@@ -1,14 +1,16 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
-#include "poTextBox.h"
+#include "cinder/app/KeyEvent.h"
+
+#include "poScene/ViewContainer.h"
+#include "poScene/ShapeView.h"
+#include "poScene/TextView.h"
 
 class BoundsSample;
 typedef std::shared_ptr<BoundsSample> BoundsSampleRef;
 
 class BoundsSample
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     static BoundsSampleRef create();
@@ -20,21 +22,21 @@ protected:
 	
 private:
     ci::TextBox mInfoText;
-    po::scene::TextBoxRef mWindowTextBox;
+    po::scene::TextViewRef mWindowTextBox;
     
-    po::scene::ShapeRef mBG;
-    po::scene::TextBoxRef mTextBox;
+    po::scene::ShapeViewRef mBG;
+    po::scene::TextViewRef mTextView;
     
-    po::scene::NodeContainerRef mNodeContainer;
-    po::scene::ShapeRef mNodeContainerBG;
-    po::scene::TextBoxRef mNodeContainerTextBox;
+    po::scene::ViewRef mContainerView;
+    po::scene::ShapeViewRef mContainerViewBG;
+    po::scene::TextViewRef mContainerTextView;
     
     
     void nodeMouseOver(po::scene::MouseEvent &event);
-    po::scene::NodeRef mSelectedNode;
+    po::scene::ViewRef mSelectedView;
     
     void keyPressed(ci::app::KeyEvent &key);
     
-    std::string getNodeInfo(po::scene::NodeRef);
+    std::string getViewInfo(po::scene::ViewRef);
 
 };

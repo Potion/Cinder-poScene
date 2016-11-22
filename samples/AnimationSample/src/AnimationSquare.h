@@ -1,14 +1,14 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
+#include "poScene/ViewContainer.h"
+#include "poScene/ShapeView.h"
 #include "Indicator.h"
 
 class AnimationSquare;
 typedef std::shared_ptr<AnimationSquare> AnimationSquareRef;
 
 class AnimationSquare
-: public po::scene::NodeContainer
+: public po::scene::ViewContainer
 {
 public:
     static AnimationSquareRef create(std::string name, ci::Color color);
@@ -33,7 +33,7 @@ public:
 protected:
 
 private:
-    po::scene::ShapeRef mBaseShape;
+    po::scene::ViewRef mBaseShape;
     ci::vec2           mBasePosition;
     ci::Color           mBaseColor;
     

@@ -1,5 +1,8 @@
 #include "AnimationSquare.h"
-#include "poShape.h"
+
+#include "cinder/app/App.h"
+
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -14,7 +17,7 @@ void AnimationSquare::setup(std::string name, ci::Color color)
 {
 
     //  create and add the shape to the node container
-    mBaseShape = Shape::createRect(100, 100);
+    mBaseShape = ShapeView::createRect(100, 100);
     mBaseColor = color;
     mBaseShape->setFillColor(color);
     addChild(mBaseShape);

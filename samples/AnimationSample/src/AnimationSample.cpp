@@ -1,4 +1,5 @@
 #include "AnimationSample.h"
+#include "cinder/app/App.h"
 
 using namespace po::scene;
 

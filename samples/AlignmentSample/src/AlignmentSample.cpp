@@ -1,5 +1,6 @@
 #include "AlignmentSample.h"
 
+#include "cinder/app/App.h"
 
 using namespace po::scene;
 
@@ -21,14 +22,14 @@ void AlignmentSample::setup()
     ci::vec2 center(320, 240);
     
     //  create and add the shape
-    mShapeNode = Shape::createRect(200, 100);
-    mShapeNode->setAlignment(po::scene::Alignment::NONE)
+    mShapeView = ShapeView::createRect(200, 100);
+    mShapeView->setAlignment(po::scene::Alignment::NONE)
                 .setFillColor(122.f/255, 201.f/255, 67.4/255)
                 .setPosition(center);
-    addChild(mShapeNode);
+    addChild(mShapeView);
 
-    //  create and add a reference dot to indicate position of mShapeNode
-    ShapeRef dot = Shape::createCircle(10);
+    //  create and add a reference dot to indicate position of mShapeView
+    ShapeViewRef dot = ShapeView::createCircle(10);
     dot->setAlignment(po::scene::Alignment::CENTER_CENTER)
         .setFillColor(255.f/255, 123.f/255, 172.f/255)
         .setPosition(center);
@@ -50,43 +51,43 @@ void AlignmentSample::keyDown(ci::app::KeyEvent &event)
     
     switch (event.getChar()) {
         case '0':
-            mShapeNode->setAlignment(po::scene::Alignment::NONE);
+            mShapeView->setAlignment(po::scene::Alignment::NONE);
             break;
 
         case '1':
-            mShapeNode->setAlignment(po::scene::Alignment::TOP_LEFT);
+            mShapeView->setAlignment(po::scene::Alignment::TOP_LEFT);
             break;
             
         case '2':
-            mShapeNode->setAlignment(po::scene::Alignment::TOP_CENTER);
+            mShapeView->setAlignment(po::scene::Alignment::TOP_CENTER);
             break;
             
         case '3':
-            mShapeNode->setAlignment(po::scene::Alignment::TOP_RIGHT);
+            mShapeView->setAlignment(po::scene::Alignment::TOP_RIGHT);
             break;
             
         case '4':
-            mShapeNode->setAlignment(po::scene::Alignment::CENTER_LEFT);
+            mShapeView->setAlignment(po::scene::Alignment::CENTER_LEFT);
             break;
             
         case '5':
-            mShapeNode->setAlignment(po::scene::Alignment::CENTER_CENTER);
+            mShapeView->setAlignment(po::scene::Alignment::CENTER_CENTER);
             break;
             
         case '6':
-            mShapeNode->setAlignment(po::scene::Alignment::CENTER_RIGHT);
+            mShapeView->setAlignment(po::scene::Alignment::CENTER_RIGHT);
             break;
             
         case '7':
-            mShapeNode->setAlignment(po::scene::Alignment::BOTTOM_LEFT);
+            mShapeView->setAlignment(po::scene::Alignment::BOTTOM_LEFT);
             break;
             
         case '8':
-            mShapeNode->setAlignment(po::scene::Alignment::BOTTOM_CENTER);
+            mShapeView->setAlignment(po::scene::Alignment::BOTTOM_CENTER);
             break;
             
         case '9':
-            mShapeNode->setAlignment(po::scene::Alignment::BOTTOM_RIGHT);
+            mShapeView->setAlignment(po::scene::Alignment::BOTTOM_RIGHT);
             break;
             
         default:
@@ -111,7 +112,7 @@ void AlignmentSample::createIndicators()
     };
     
     //  Create a container to hold the indicators
-    mIndicatorContainer = NodeContainer::create();
+    mIndicatorContainer = ViewContainer::create();
     addChild(mIndicatorContainer);
     mIndicatorContainer->setPosition(10, 10);
     

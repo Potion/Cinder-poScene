@@ -1,8 +1,10 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
-#include "poTextBox.h"
+#include "cinder/app/KeyEvent.h"
+
+#include "poScene/ViewContainer.h"
+#include "poScene/ShapeView.h"
+#include "poScene/TextView.h"
 
 #include "Indicator.h"
 
@@ -12,7 +14,7 @@ typedef std::shared_ptr<AlignmentSample> AlignmentSampleRef;
 
 //  define the class
 class AlignmentSample
-: public po::scene::NodeContainer
+: public po::scene::ViewContainer
 {
 public:
     static AlignmentSampleRef create();
@@ -22,11 +24,11 @@ public:
 protected:
 	
 private:
-    po::scene::ShapeRef     mShapeNode;
-    po::scene::TextBoxRef   mTextBottom;
+    po::scene::ShapeViewRef  mShapeView;
+    po::scene::TextViewRef   mTextBottom;
     
     //  Container to hold the indicators
-    po::scene::NodeContainerRef             mIndicatorContainer;
+    po::scene::ViewContainerRef             mIndicatorContainer;
     
     //  Alignment types mapped to indicators
     std::vector<std::string>                mIndicatorNames;

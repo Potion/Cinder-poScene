@@ -1,6 +1,8 @@
 #include "Indicator.h"
 #include "cinder/Text.h"
 
+using namespace po::scene;
+
 IndicatorRef Indicator::create(std::string name)
 {
     IndicatorRef ref = std::shared_ptr<Indicator>(new Indicator());
@@ -21,19 +23,19 @@ void Indicator::setup(std::string name)
 {
     //	Create and add the highlight shape
     //	Set alpha to 0 so we can highlight it later
-    mHighlight = Shape::createRect(135, 20);
+    mHighlight = ShapeView::createRect(135, 20);
     mHighlight->setFillColor(mColor);
     addChild(mHighlight);
     mHighlight->setAlpha(0);
     
     //	Create a text box
-    ci::TextBox textbox = ci::TextBox();
-    textbox.text(name);
-    textbox.color(ci::Color(1, 1, 1));
-    textbox.size(125, 10);
+    ci::TextBox textbox;
+    textbox.text(name)
+    .color(ci::Color(1, 1, 1))
+    .size(125, 10);
     
     //	Add it to the text node
-    mTextBox = TextBox::create(textbox);
+    mTextBox = TextView::create(textbox);
     addChild(mTextBox);
     mTextBox->setPosition(5, 5);
 }

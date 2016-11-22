@@ -1,6 +1,6 @@
 #include "BoundsSample.h"
-#include "poShape.h"
-#include "poImage.h"
+
+#include "cinder/app/App.h"
 
 using namespace po::scene;
 
@@ -35,57 +35,57 @@ void BoundsSample::setup()
     .font(ci::Font("Arial", 11));
     
     // Scene BG
-    mBG = Shape::createRect(1, 1);
+    mBG = ShapeView::createRect(1, 1);
     mBG->setFillColor(ci::Color(ci::CM_HSV, hue, saturation, brightness))
     .setParentShouldIgnoreInBounds(true);
     addChild(mBG);
     
     // Scene text box + window text box
-    mWindowTextBox = TextBox::create();
+    mWindowTextBox = TextView::create();
     mWindowTextBox->setPosition(-250, 0)
     .setParentShouldIgnoreInBounds(true);
     addChild(mWindowTextBox);
     
-    mTextBox = TextBox::create();
-    mTextBox->setPosition(5, 5)
+    mTextView = TextView::create();
+    mTextView->setPosition(5, 5)
     .setParentShouldIgnoreInBounds(true);
-    addChild(mTextBox);
+    addChild(mTextView);
     
     // Node Container
-    mNodeContainer = NodeContainer::create("Node Container");
-    mNodeContainer->setPosition(100, 150)
+    mContainerView = View::create("Node Container");
+    mContainerView->setPosition(100, 150)
     .setDrawBounds(true)
     .setBoundsColor(boundsColor)
     .setName("Node Container");
     
-    mNodeContainerBG = Shape::createRect(1, 1);
-    mNodeContainerBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness))
+    mContainerViewBG = ShapeView::createRect(1, 1);
+	mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness))
     .setParentShouldIgnoreInBounds(true);
     
-    mNodeContainerTextBox = TextBox::create();
+	mContainerTextView = TextView::create();
     
-    mNodeContainerTextBox->setPosition(5, 5)
+	mContainerTextView->setPosition(5, 5)
     .setParentShouldIgnoreInBounds(true);
     
-    mNodeContainer->addChild(mNodeContainerBG)
-    .addChild(mNodeContainerTextBox)
+    mContainerView->addChild(mContainerViewBG)
+    .addChild(mContainerTextView)
     .getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&BoundsSample::nodeMouseOver, this, std::placeholders::_1));
     
     
     // Add some shapes
     int yPos = 175;
     for(int i=0; i<3; i++) {
-        ShapeRef s = Shape::createRect(100, 100);
+        ShapeViewRef s = ShapeView::createRect(100, 100);
         s->setPosition(i * 125, yPos)
         .setName("Selected Node")
         .setDrawBounds(true)
         .setBoundsColor(boundsColor)
         .setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness))
         .getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&BoundsSample::nodeMouseOver, this, std::placeholders::_1));
-        mNodeContainer->addChild(s);
+        mContainerView->addChild(s);
     }
     
-    addChild(mNodeContainer);
+    addChild(mContainerView);
     
     // Setup Scene (this class is the root node)
     setName("Scene (Scene Root Node)")
@@ -105,23 +105,23 @@ void BoundsSample::update()
     mBG->setPosition(getBounds().getUpperLeft())
     .setScale(getSize());
     
-    mNodeContainerBG->setPosition(mNodeContainer->getBounds().getUpperLeft())
-    .setScale(mNodeContainer->getSize());
+    mContainerViewBG->setPosition(mContainerView->getBounds().getUpperLeft())
+    .setScale(mContainerView->getSize());
     
     // Update the scene and node container text
-    mInfoText.setText(getNodeInfo(shared_from_this()));
-    mTextBox->setCiTextBox(mInfoText);
+    mInfoText.setText(getViewInfo(shared_from_this()));
+    mTextView->setCiTextBox(mInfoText);
     
     
-    mInfoText.setText(getNodeInfo(mNodeContainer));
-    mNodeContainerTextBox->setCiTextBox(mInfoText);
+    mInfoText.setText(getViewInfo(mContainerView));
+   mContainerTextView->setCiTextBox(mInfoText);
     
     // Update window text
     std::stringstream ss;
     ss << "Window Mouse Position: " << ci::app::App::get()->getMousePos()-ci::app::getWindow()->getPos();
     
-    if(mSelectedNode) {
-        ss << "\n\n" << getNodeInfo(mSelectedNode)
+    if(mSelectedView) {
+        ss << "\n\n" << getViewInfo(mSelectedView)
         << "\n---------------------------------"
         << "\n To rotate press 'r'"
         << "\n To adjust alignment press 'a'"
@@ -139,48 +139,48 @@ void BoundsSample::update()
 
 void BoundsSample::nodeMouseOver(po::scene::MouseEvent &event)
 {
-    if(mSelectedNode)
+    if(mSelectedView)
     {
-        if(mSelectedNode == mNodeContainer) {
-            mNodeContainerBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness));
+        if(mSelectedView ==mContainerView) {
+            mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness));
         } else {
-            mSelectedNode->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness));
+            mSelectedView->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness));
         }
     }
     
-    mSelectedNode = event.getSource();
-    if(mSelectedNode == mNodeContainer) {
-        mNodeContainerBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, selectedBrightness));
+    mSelectedView = event.getSource();
+    if(mSelectedView ==mContainerView) {
+        mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, selectedBrightness));
     } else {
-        mSelectedNode->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, selectedBrightness));
+        mSelectedView->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, selectedBrightness));
     }
 }
 
 void BoundsSample::keyPressed(ci::app::KeyEvent &key)
 {
-    if(!mSelectedNode)
+    if(!mSelectedView)
         return;
     
     switch (key.getChar()) {
         case 'r':
-            mSelectedNode->setRotation(mSelectedNode->getRotation() + M_PI / 4.0f);
+            mSelectedView->setRotation(mSelectedView->getRotation() + M_PI / 4.0f);
             break;
         case 'a': {
-            int curAlignment = static_cast<int>(mSelectedNode->getAlignment());
+            int curAlignment = static_cast<int>(mSelectedView->getAlignment());
             curAlignment += 1;
             if(curAlignment > static_cast<int>(po::scene::Alignment::NONE)) {
                 curAlignment = 0;
             }
             
-            mSelectedNode->setAlignment(static_cast<po::scene::Alignment>(curAlignment));
+            mSelectedView->setAlignment(static_cast<po::scene::Alignment>(curAlignment));
         }
             
         case '+':
-            mSelectedNode->setScale(mSelectedNode->getScale() + ci::vec2(scaleIncrease, scaleIncrease));
+            mSelectedView->setScale(mSelectedView->getScale() + ci::vec2(scaleIncrease, scaleIncrease));
             break;
         
         case '-':
-            mSelectedNode->setScale(mSelectedNode->getScale() - ci::vec2(scaleIncrease, scaleIncrease));
+            mSelectedView->setScale(mSelectedView->getScale() - ci::vec2(scaleIncrease, scaleIncrease));
             break;
             
             
@@ -190,7 +190,7 @@ void BoundsSample::keyPressed(ci::app::KeyEvent &key)
 }
 
 
-std::string BoundsSample::getNodeInfo(po::scene::NodeRef node)
+std::string BoundsSample::getViewInfo(po::scene::ViewRef node)
 {
     std::stringstream ss;
     ss << node->getName()
