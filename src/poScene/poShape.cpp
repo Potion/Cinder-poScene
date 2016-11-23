@@ -175,6 +175,26 @@ namespace po { namespace scene {
     
     void Shape::draw()
     {
+        if(getStrokeEnabled()) {
+            ci::Rectf b = getBounds();
+            float s = getStrokeSize();
+            ci::vec2 scale =
+                ci::vec2((b.getWidth() + s * 2.f) / b.getWidth(), (b.getHeight() + s * 2.f) / b.getHeight());
+            
+            ci::gl::color(ci::Color(getStrokeColor()));
+            // Scale up by 2 times stroke size pixels.
+            ci::gl::scale(scale);
+            
+            // Translate it so that the main shape is centered.
+            ci::gl::translate(-s, -s);
+            ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().color()));
+            ci::gl::draw(mVboMesh);
+            
+            // Remember to scale and translate back before drawing the main shape.
+            ci::gl::scale(ci::vec2(1.0f) / scale);
+            ci::gl::translate(s, s);
+        }
+        
         //Draw fill
         if (getFillEnabled()) {
 			ci::gl::ScopedBlendAlpha alphaBlendScoped;
@@ -189,8 +209,6 @@ namespace po { namespace scene {
                 ci::gl::draw(mVboMesh);
             }
         }
-        
-        //	TODO: Draw stroke
     }
     
     

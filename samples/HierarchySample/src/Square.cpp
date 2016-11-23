@@ -37,6 +37,8 @@ void Square::setup(int size)
 	mHighlightColor = ci::Color(ci::CM_HSV, 1 - hue, 1, 1);
 	
 	mShape->setFillColor(mColor);
+	mShape->setStrokeColor(ci::Color::black());
+	mShape->setStrokeEnabled(true);
 	addChild(mShape);
 	
 	//	Connect to mouse events
