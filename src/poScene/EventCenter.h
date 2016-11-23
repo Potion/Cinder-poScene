@@ -97,7 +97,7 @@ namespace po { namespace scene {
             {
                 //	Go through the draw tree, notifying views that are listening
                 for (ViewRef &view : views) {
-                    if ( view->isEligibleForInteractionEvent(event.getType()) && view->pointInside(event.getWindowPos()) ) {
+                    if ( view->isEligibleForInteractionEvent(event.getType()) && hitTest(view, event) ) {
                         view->emitEvent(event);
                         if (event.getPropagationEnabled()) {
                             event.setPropagationEnabled(false);
@@ -107,6 +107,13 @@ namespace po { namespace scene {
                     }
                 }
             }
+
+			// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
+			virtual bool hitTest(const NodeRef &node, const EventT &event) {
+				return node->pointInside(event.getWindowPos());
+			}
+
+
             
             std::map<EventTypeT, std::vector<CiEventT> > mQueue;
 			
