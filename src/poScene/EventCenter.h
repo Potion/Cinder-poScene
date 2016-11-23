@@ -109,7 +109,7 @@ namespace po { namespace scene {
             }
 
 			// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
-			virtual bool hitTest(const NodeRef &node, const EventT &event) {
+			virtual bool hitTest(const ViewRef &node, const EventT &event) {
 				return node->pointInside(event.getWindowPos());
 			}
 
