@@ -67,7 +67,7 @@ namespace po { namespace scene {
         
     private:
         EventCenter();
-        
+
 		std::vector<EventProcessorBaseRef> mEventProcessors;
     };
 
