@@ -29,8 +29,9 @@
 */
 
 #include "cinder/app/App.h"
-#include "Scene.h"
-#include "View.h"
+
+#include "poScene/Scene.h"
+#include "poScene/View.h"
 
 namespace po { namespace scene {
 

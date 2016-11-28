@@ -40,8 +40,8 @@
 #include "cinder/Exception.h"
 #include "cinder/Signals.h"
 
-#include "MatrixSet.h"
-#include "Events.h"
+#include "poScene/MatrixSet.h"
+#include "poScene/Events.h"
 
 namespace po { namespace scene {
     
@@ -100,7 +100,6 @@ namespace po { namespace scene {
     
     //	Forward declare refs
     typedef std::shared_ptr<class Scene> SceneRef;
-    typedef std::shared_ptr<class View> ViewRef;
     typedef std::shared_ptr<class ShapeView> ShapeViewRef;
     typedef std::shared_ptr<class EventCenter> EventCenterRef;
 
@@ -114,7 +113,6 @@ namespace po { namespace scene {
     : public std::enable_shared_from_this<View>
     {
         friend class Scene;
-        friend class View;
         friend class EventCenter;
 
     public:
@@ -509,8 +507,13 @@ namespace po { namespace scene {
         
         //! Get a Mouse Event Signal
         MouseEventSignal &getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
+		bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
+		void emitEvent(MouseEvent &event);
+
         //! Get a Touch Event Signal
         TouchEventSignal &getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
+		bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
+		void emitEvent(TouchEvent &event);
 
     protected:
         // Constructor
@@ -663,15 +666,9 @@ namespace po { namespace scene {
         //! Determine if this View is visible, has a scene and parent, etc.
         bool isEligibleForInteractionEvents();
         
-        //	Mouse
+        //	Mouse + Touch Signals
         std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
-        bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
-        void emitEvent(MouseEvent &event);
-        
-        //	Touch
         std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
-        bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
-        void emitEvent(TouchEvent &event);
 		
         
         //------------------------------------

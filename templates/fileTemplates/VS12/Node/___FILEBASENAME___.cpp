@@ -1,5 +1,4 @@
 #include "___FILEBASENAME___.h"
-#include "poScene.h"
 
 namespace po 
 { 

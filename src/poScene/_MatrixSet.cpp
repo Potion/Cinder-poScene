@@ -29,7 +29,7 @@
 */
 
 #include "cinder/Area.h"
-#include "MatrixSet.h"
+#include "poScene/MatrixSet.h"
 
 #if defined( CINDER_MSW )
 	#include <windows.h>

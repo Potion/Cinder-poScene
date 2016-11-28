@@ -4,15 +4,13 @@
  *	Copyright ___YEAR___ ___ORGANIZATIONNAME___. All rights reserved.
  */
 
-#include "poNode.h"
-
 namespace po { 
 	namespace scene {
 
 		class ___FILEBASENAME___;
 		typedef std::shared_ptr< ___FILEBASENAME___ > ___FILEBASENAME___Ref;
 
-		class ___FILEBASENAME___ : public po::scene::Node
+		class ___FILEBASENAME___ : public po::scene::View
 		{
 		public:
 			static ___FILEBASENAME___Ref create();

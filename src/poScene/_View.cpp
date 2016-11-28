@@ -45,9 +45,9 @@
 #include "cinder/CinderMath.h"
 #include "cinder/app/App.h"
 
-#include "View.h"
-#include "ShapeView.h"
-#include "Scene.h"
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
+#include "poScene/Scene.h"
 
 namespace po { namespace scene {
     

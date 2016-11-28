@@ -33,7 +33,8 @@
 #include "cinder/Text.h"
 #include "cinder/gl/Texture.h"
 #include "cinder/gl/draw.h"
-#include "View.h"
+
+#include "poScene/View.h"
 
 namespace po { namespace scene {
     // TextViewes are View wrappers for Cinder's ci::TextBox class.

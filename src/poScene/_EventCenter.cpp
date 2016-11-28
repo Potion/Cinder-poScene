@@ -28,64 +28,39 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "Events.h"
-#include "View.h"
-#include "Scene.h"
+#include "cinder/app/Window.h"
+#include "cinder/app/App.h"
+
+#include "poScene/EventCenter.h"
+#include "poScene/Scene.h"
 
 namespace po { namespace scene {
-    
-    //------------------------------------
-    //	Base Event
-	//------------------------------------
-    
-    Event::Event()
-    : mPropagationEnabled(false)
-    , mWindowPos(0, 0)
-    {
-    }
-    
-    ci::vec2 Event::getScenePos()
-    {
-        ViewRef source = getSource();
-        if (source) {
-            return source->windowToScene(getWindowPos());
-        }
-        
-        return getWindowPos();
-    }
-    
-    ci::vec2 Event::getLocalPos()
-    {
-        ViewRef source = getSource();
-        if (source) {
-            return source->windowToLocal(getWindowPos());
-        }
-        
-        return getWindowPos();
-    }
-    
-    
-    //------------------------------------
-    //	Mouse Event
-	//------------------------------------
 
-    MouseEvent::MouseEvent(ci::app::MouseEvent event, Type type)
-    : mCiEvent(event)
-    , mType(type)
-    {
-        mWindowPos = event.getPos();
-    }
-    
-    
-    //------------------------------------
-    //	Touch Event
-	//------------------------------------
-    
-    TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event, Type type)
-    : mCiEvent(event)
-    , mType(type)
-    {
-        mWindowPos = event.getPos();
-    }
+	EventCenterRef EventCenter::create()
+	{
+		return EventCenterRef(new EventCenter());
+	}
 	
+	EventCenter::EventCenter()
+	{
+		addEventProcessor(EventProcessorBaseRef(new MouseEventProcessor()));
+		addEventProcessor(EventProcessorBaseRef(new TouchEventProcessor()));
+	}
+	
+	//	Process all the event queues for this scene
+	void EventCenter::processEvents(std::vector<ViewRef> views)
+	{
+		//	Sort views to be top down
+		std::sort(views.begin(), views.end(),
+			[&views] (const ViewRef &a, const ViewRef &b) {
+			  return a->getDrawOrder() > b->getDrawOrder();
+			}
+		);
+		
+		//	Process them
+		for(auto &processor : mEventProcessors) {
+			processor->processEvents(views);
+		}
+	}
+		
 } } //  namespace po::scene

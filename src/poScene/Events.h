@@ -33,8 +33,6 @@
 #include "cinder/app/MouseEvent.h"
 #include "cinder/app/TouchEvent.h"
 
-#include "Events.h"
-
 namespace po { namespace scene {
     
     // Events in poScene extend the functionality of Cinder events
@@ -59,8 +57,6 @@ namespace po { namespace scene {
     
     
     typedef std::shared_ptr<class View> ViewRef;
-    
-    class EventCenter;
 	
 	
     //------------------------------------
@@ -102,7 +98,6 @@ namespace po { namespace scene {
     class MouseEvent
     : public po::scene::Event
     {
-        friend class EventCenter;
         
     public:
         //! Mouse event types
@@ -121,10 +116,9 @@ namespace po { namespace scene {
         
         MouseEvent(ci::app::MouseEvent event, Type type);
         ci::app::MouseEvent getCiEvent() const { return mCiEvent; };
+
+		void setType(Type type) { mType = type; };
         Type getType() const { return mType; };
-        
-    protected:
-        void setType(Type type) { mType = type; };
         
     private:
         ci::app::MouseEvent mCiEvent;
@@ -140,7 +134,6 @@ namespace po { namespace scene {
     class TouchEvent
     : public Event
     {
-        friend class EventCenter;
     public:
         //! Touch Event Types
         enum Type {
@@ -155,11 +148,11 @@ namespace po { namespace scene {
         
         TouchEvent(ci::app::TouchEvent::Touch event, Type type);
         ci::app::TouchEvent::Touch getCiEvent() { return mCiEvent; };
+
 		unsigned int getId() { return mCiEvent.getId(); }
+
+		void setType(Type type) { mType = type; };
         Type getType() { return mType; }
-        
-    protected:
-        void setType(Type type) { mType = type; };
         
     private:
         ci::app::TouchEvent::Touch mCiEvent;

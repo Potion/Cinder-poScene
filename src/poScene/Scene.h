@@ -30,9 +30,10 @@
 
 #pragma once
 
-#include "View.h"
-#include "EventCenter.h"
 #include "cinder/Camera.h"
+
+#include "poScene/View.h"
+#include "poScene/EventCenter.h"
 
 namespace po { namespace scene {
     // Scenes are (naturally) the main entry points for po::scene.

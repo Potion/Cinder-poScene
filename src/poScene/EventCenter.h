@@ -30,196 +30,213 @@
 
 #pragma once
 
-#include "cinder/app/MouseEvent.h"
-#include "Events.h"
-#include "View.h"
+#include "cinder/app/App.h"
+
+#include "poScene/Events.h"
+#include "poScene/View.h"
 
 namespace po { namespace scene {
     // EventCenter is an internal class that is used by Scene's to process their child views
     // and distribute events to the draw tree
     // It should never be accessed directly except by Scenes.
     
-    class EventCenter;
-    typedef std::shared_ptr<EventCenter> EventCenterRef;
-    
+	// Base class for event processors
+	class EventProcessorBase {
+	public:
+		virtual void connectEvents() = 0;
+		virtual void processEvents(std::vector<ViewRef> &views) = 0;
+	private:
+	};
+
+	typedef std::shared_ptr<EventProcessorBase> EventProcessorBaseRef;
+
+	// Main Class
+	typedef std::shared_ptr<class EventCenter> EventCenterRef;
+
     class EventCenter
     {
     public:
         static EventCenterRef create();
         
+		void addEventProcessor(const EventProcessorBaseRef &processor) {
+			mEventProcessors.push_back(processor); 
+			mEventProcessors.back()->connectEvents();
+		};
+
         void processEvents(std::vector<ViewRef> views);
         
     private:
         EventCenter();
         
-        //	Event Processor
-        template<typename CiEventT, typename EventT, typename EventTypeT>
-		
-        class EventProcessor {
-        public:
-            void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
-            
-            void processEvents(std::vector<ViewRef> &views)
-			{
-                //	Go through the queue
-                for (auto &eventQueue : mQueue) {
-                    //	Get the type for this item in the std::map
-                    EventTypeT type = (EventTypeT)eventQueue.first;
-                    
-                    //	Go through all the ci::MouseEvents for this type
-                    for (CiEventT &ciEvent : eventQueue.second) {
-                        EventT poEvent(ciEvent, type);
-                        notifyAllviews(views, poEvent);
-                        notifyCallbacks(views, poEvent);
-                    }
-                    
-                    //	Clear out the events
-                    eventQueue.second.clear();
-                }
-            }
-            
-        protected:
-            void notifyAllviews(std::vector<ViewRef> &views, EventT event)
-			{
-                for (ViewRef &view : views) {
-                    //	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-                    if ( view == nullptr || (!view->isEligibleForInteractionEvent(event.getType())) ) continue;
-                    
-                    event.setPropagationEnabled(true);
-                    
-                    //	Notify the view
-                    view->emitEvent(event);
-                }
-            }
-            
-            //  Extend this function to define custom callback type
-            virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT event)
-            {
-                //	Go through the draw tree, notifying views that are listening
-                for (ViewRef &view : views) {
-                    if ( view->isEligibleForInteractionEvent(event.getType()) && hitTest(view, event) ) {
-                        view->emitEvent(event);
-                        if (event.getPropagationEnabled()) {
-                            event.setPropagationEnabled(false);
-                        } else {
-                            return;
-                        }
-                    }
-                }
-            }
+		std::vector<EventProcessorBaseRef> mEventProcessors;
+    };
 
-			// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
-			virtual bool hitTest(const NodeRef &node, const EventT &event) {
-				return node->pointInside(event.getWindowPos());
+	//	Event Processor, create one of these for each category of event, i.e. touch or mouse
+	template<typename CiEventT, typename EventT, typename EventTypeT>
+	class EventProcessor : public EventProcessorBase {
+	public:
+
+		virtual void connectEvents() = 0;
+		void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
+
+
+		void processEvents(std::vector<ViewRef> &views)
+		{
+			//	Go through the queue
+			for (auto &eventQueue : mQueue) {
+				//	Get the type for this item in the std::map
+				EventTypeT type = (EventTypeT)eventQueue.first;
+
+				//	Go through all the ci::MouseEvents for this type
+				for (CiEventT &ciEvent : eventQueue.second) {
+					EventT poEvent(ciEvent, type);
+					notifyAllviews(views, poEvent);
+					notifyCallbacks(views, poEvent);
+				}
+
+				//	Clear out the events
+				eventQueue.second.clear();
+			}
+		}
+
+	protected:
+		void notifyAllviews(std::vector<ViewRef> &views, EventT event)
+		{
+			for (ViewRef &view : views) {
+				//	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
+				if ( view == nullptr || (!view->isEligibleForInteractionEvent(event.getType())) ) continue;
+
+				event.setPropagationEnabled(true);
+
+				//	Notify the view
+				view->emitEvent(event);
+			}
+		}
+
+		//  Extend this function to define custom callback type
+		virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT event)
+		{
+			//	Go through the draw tree, notifying views that are listening
+			for (ViewRef &view : views) {
+				if ( view->isEligibleForInteractionEvent(event.getType()) && hitTest(view, event) ) {
+					view->emitEvent(event);
+					if (event.getPropagationEnabled()) {
+						event.setPropagationEnabled(false);
+					} else {
+						return;
+					}
+				}
+			}
+		}
+
+		// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
+		virtual bool hitTest(const ViewRef &node, const EventT &event) {
+			return node->pointInside(event.getWindowPos());
+		}
+
+		std::map<EventTypeT, std::vector<CiEventT> > mQueue;
+	};
+
+
+
+
+	//------------------------------------
+    //	Mouse Events
+	//------------------------------------
+    class MouseEventProcessor
+    : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
+    {
+	public:
+		MouseEventProcessor() {};
+
+		void connectEvents() override {
+			ci::app::getWindow()->getSignalMouseDown().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DOWN,	std::placeholders::_1));
+			ci::app::getWindow()->getSignalMouseMove().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::MOVE,	std::placeholders::_1));
+			ci::app::getWindow()->getSignalMouseDrag().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DRAG,	std::placeholders::_1));
+			ci::app::getWindow()->getSignalMouseUp().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::UP,		std::placeholders::_1));
+			ci::app::getWindow()->getSignalMouseWheel().connect(std::bind(&MouseEventProcessor::addToQueue, this, MouseEvent::Type::WHEEL,	std::placeholders::_1));
+		}
+
+        void notifyCallbacks(std::vector<ViewRef> &views, MouseEvent event)
+        {
+                
+            MouseEvent::Type callbackType = MouseEvent::Type::UNKOWN;
+            switch (event.getType()) {
+                case MouseEvent::Type::DOWN:
+                    callbackType = MouseEvent::Type::DOWN_INSIDE;
+					break;
+                case MouseEvent::Type::MOVE:
+                    callbackType = MouseEvent::Type::MOVE_INSIDE;
+					break;
+                case MouseEvent::Type::DRAG:
+                    callbackType = MouseEvent::Type::DRAG_INSIDE;
+					break;
+                case MouseEvent::Type::UP:
+                    callbackType = MouseEvent::Type::UP_INSIDE;
+					break;
+            }
+                
+            // If we didnt' handle it (i.e. wheel event) just return
+            if(callbackType == MouseEvent::Type::UNKOWN)
+            {
+                return;
+            }
+                
+            event.setType(callbackType);
+            EventProcessor::notifyCallbacks(views, event);
+        }	
+    };
+
+
+
+	//------------------------------------
+	//	Touch Events
+	//------------------------------------
+	class TouchEventProcessor
+		: public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type>
+	{
+	public:
+		void connectEvents() override {
+			//	Connect touch events
+			ci::app::getWindow()->getSignalTouchesBegan().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::BEGAN, std::placeholders::_1));
+			ci::app::getWindow()->getSignalTouchesMoved().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::MOVED, std::placeholders::_1));
+			ci::app::getWindow()->getSignalTouchesEnded().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::ENDED, std::placeholders::_1));
+		}
+
+		//	Needs to break about grouped touches from Cinder
+		void addToQueue(TouchEvent::Type type, ci::app::TouchEvent event)
+		{
+			for (auto &ciTouch : event.getTouches()) {
+				mQueue[type].push_back(ciTouch);
+			}
+		}
+
+	private:
+		void notifyCallbacks(std::vector<ViewRef> &views, TouchEvent event)
+		{
+			//	Set the callback type
+			TouchEvent::Type callbackType = TouchEvent::Type::UNKOWN;
+			switch (event.getType()) {
+				case TouchEvent::Type::BEGAN:
+				callbackType = TouchEvent::Type::BEGAN_INSIDE;
+				break;
+				case TouchEvent::Type::MOVED:
+				callbackType = TouchEvent::Type::MOVED_INSIDE;
+				break;
+				case TouchEvent::Type::ENDED:
+				callbackType = TouchEvent::Type::ENDED_INSIDE;
+				break;
 			}
 
-
-            
-            std::map<EventTypeT, std::vector<CiEventT> > mQueue;
-			
-        };
-        
-		
-        //------------------------------------
-        //	Mouse Events
-		//------------------------------------
-		
-        class MouseEventProcessor
-        : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
-        {
-            void notifyCallbacks(std::vector<ViewRef> &views, MouseEvent event)
-            {
-                
-                MouseEvent::Type callbackType = MouseEvent::Type::UNKOWN;
-                switch (event.getType()) {
-                    case MouseEvent::Type::DOWN:
-                        callbackType = MouseEvent::Type::DOWN_INSIDE;
-						break;
-                    case MouseEvent::Type::MOVE:
-                        callbackType = MouseEvent::Type::MOVE_INSIDE;
-						break;
-                    case MouseEvent::Type::DRAG:
-                        callbackType = MouseEvent::Type::DRAG_INSIDE;
-						break;
-                    case MouseEvent::Type::UP:
-                        callbackType = MouseEvent::Type::UP_INSIDE;
-						break;
-                }
-                
-                // If we didnt' handle it (i.e. wheel event) just return
-                if(callbackType == MouseEvent::Type::UNKOWN)
-                {
-                    return;
-                }
-                
-                event.setType(callbackType);
-                EventProcessor::notifyCallbacks(views, event);
-            }
-			
-        };
-        
-        MouseEventProcessor mMouseProcessor;
-        
-        //	Mouse Event Cinder Callbacks
-        void mouseDown(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DOWN, event); };
-        void mouseMove(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::MOVE, event); };
-        void mouseDrag(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::DRAG, event); };
-        void mouseUp(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::UP, event); };
-        void mouseWheel(ci::app::MouseEvent event) { mMouseProcessor.addToQueue(MouseEvent::Type::WHEEL, event); };
-		
-		
-        //------------------------------------
-        //	Touch Events
-		//------------------------------------
-		
-        class TouchEventProcessor
-        : public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type>
-        {
-        public:
-            //	Needs to break about grouped touches from Cinder
-            void addToQueue(TouchEvent::Type type, ci::app::TouchEvent event)
+			// If we didnt' handle it just return
+			if(callbackType == TouchEvent::Type::UNKOWN)
 			{
-                for (auto &ciTouch : event.getTouches()) {
-                    mQueue[type].push_back(ciTouch);
-                }
-            }
-            
-        private:
-            void notifyCallbacks(std::vector<ViewRef> &views, TouchEvent event)
-            {
-                //	Set the callback type
-                TouchEvent::Type callbackType = TouchEvent::Type::UNKOWN;
-                switch (event.getType()) {
-                    case TouchEvent::Type::BEGAN:
-                        callbackType = TouchEvent::Type::BEGAN_INSIDE;
-						break;
-                    case TouchEvent::Type::MOVED:
-                        callbackType = TouchEvent::Type::MOVED_INSIDE;
-						break;
-                    case TouchEvent::Type::ENDED:
-                        callbackType = TouchEvent::Type::ENDED_INSIDE;
-						break;
-                }
-                
-                // If we didnt' handle it just return
-                if(callbackType == TouchEvent::Type::UNKOWN)
-                {
-                    return;
-                }
-                
-                event.setType(callbackType);
-                EventProcessor::notifyCallbacks(views, event);
-            }
-			
-        };
-        
-        TouchEventProcessor mTouchProcessor;
-        
-        //	Touch Event Cinder Callbacks
-        void touchesBegan(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::BEGAN, event); };
-        void touchesMoved(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::MOVED, event); };
-        void touchesEnded(ci::app::TouchEvent event) { mTouchProcessor.addToQueue(TouchEvent::Type::ENDED, event); };
-		
-    };
+				return;
+			}
+
+			event.setType(callbackType);
+			EventProcessor::notifyCallbacks(views, event);
+		}
+	};
     
 } } //	namespace po::scene

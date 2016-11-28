@@ -32,7 +32,7 @@
 #include "cinder/Triangulate.h"
 #include "cinder/gl/Texture.h"
 
-#include "ShapeView.h"
+#include "poScene/ShapeView.h"
 
 namespace po { namespace scene {
     

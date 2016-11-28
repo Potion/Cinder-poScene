@@ -26,41 +26,66 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/
 
-#include "ImageView.h"
-#include "cinder/gl/gl.h"
+#include "poScene/Events.h"
+#include "poScene/View.h"
+#include "poScene/Scene.h"
 
 namespace po { namespace scene {
     
-    ImageViewRef Image::create()
+    //------------------------------------
+    //	Base Event
+	//------------------------------------
+    
+    Event::Event()
+    : mPropagationEnabled(false)
+    , mWindowPos(0, 0)
     {
-        return create(nullptr);
     }
     
-    ImageViewRef Image::create(ci::gl::TextureRef texture)
+    ci::vec2 Event::getScenePos()
     {
-        ImageViewRef ref(new Image(texture));
-        return ref;
-    }
-    
-    Image::Image(ci::gl::TextureRef texture)
-    : mTexture(texture)
-    { 
-    }
-    
-    void Image::draw()
-    {
-        if (mTexture) {
-			ci::gl::ScopedBlendAlpha alphaBlendScoped;
-			ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            ci::gl::draw(mTexture);
+        ViewRef source = getSource();
+        if (source) {
+            return source->windowToScene(getWindowPos());
         }
+        
+        return getWindowPos();
     }
     
-    ci::Rectf Image::getBounds()
+    ci::vec2 Event::getLocalPos()
     {
-        return mTexture->getBounds();
+        ViewRef source = getSource();
+        if (source) {
+            return source->windowToLocal(getWindowPos());
+        }
+        
+        return getWindowPos();
     }
     
-} } //  Namespace: po::scene
+    
+    //------------------------------------
+    //	Mouse Event
+	//------------------------------------
+
+    MouseEvent::MouseEvent(ci::app::MouseEvent event, Type type)
+    : mCiEvent(event)
+    , mType(type)
+    {
+        mWindowPos = event.getPos();
+    }
+    
+    
+    //------------------------------------
+    //	Touch Event
+	//------------------------------------
+    
+    TouchEvent::TouchEvent(ci::app::TouchEvent::Touch event, Type type)
+    : mCiEvent(event)
+    , mType(type)
+    {
+        mWindowPos = event.getPos();
+    }
+	
+} } //  namespace po::scene

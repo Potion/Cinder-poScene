@@ -26,39 +26,31 @@
  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+ */
 
-#include "TextView.h"
+#include "poScene/ImageView.h"
+
 #include "cinder/gl/gl.h"
 
 namespace po { namespace scene {
     
-    TextViewRef TextView::create()
+    ImageViewRef Image::create()
     {
-        return TextViewRef(new TextView(ci::TextBox()));
+        return create(nullptr);
     }
     
-    TextViewRef TextView::create(ci::TextBox ciTextBox)
+    ImageViewRef Image::create(ci::gl::TextureRef texture)
     {
-        return TextViewRef(new TextView(ciTextBox));
-    }
-
-	TextViewRef TextView::create(ci::TextBox ciTextBox, ci::gl::Texture::Format format)
-	{
-		TextViewRef ref(new TextView(ciTextBox));
-		ref->setFormat(format);
-		return ref;
-	}
-    
-    TextView::TextView(ci::TextBox ciTextBox)
-    : mCiTextBox(ciTextBox)
-    , mUseTextBounds(false)
-	, mHasFormat(false)
-    {
-        render();
+        ImageViewRef ref(new Image(texture));
+        return ref;
     }
     
-    void TextView::draw()
+    Image::Image(ci::gl::TextureRef texture)
+    : mTexture(texture)
+    { 
+    }
+    
+    void Image::draw()
     {
         if (mTexture) {
 			ci::gl::ScopedBlendAlpha alphaBlendScoped;
@@ -67,39 +59,9 @@ namespace po { namespace scene {
         }
     }
     
-    void TextView::setCiTextBox(ci::TextBox &ciTextBox)
+    ci::Rectf Image::getBounds()
     {
-        mCiTextBox = ciTextBox;
-        render();
-        
-        mUseTextBounds = mCiTextBox.getSize().y == ci::TextBox::GROW ? true : false;
+        return mTexture->getBounds();
     }
     
-    void TextView::render()
-    {
-		if (mHasFormat) {
-			mTexture = ci::gl::Texture::create(mCiTextBox.render(), mFormat);
-		}
-		else {
-			mTexture = ci::gl::Texture::create(mCiTextBox.render());
-		}
-    }
-    
-    ci::Rectf TextView::getBounds()
-    {
-        if(mTexture)
-        {
-            return mTexture->getBounds();
-        } else {
-            return ci::Rectf();
-        }
-    }
-
-	void TextView::setFormat(ci::gl::Texture::Format format)
-	{
-		mFormat = format;
-		mHasFormat = true;
-		render();
-	}
-	
-} } //  namespace po::scene
+} } //  Namespace: po::scene

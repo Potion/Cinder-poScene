@@ -37,8 +37,8 @@
 #include "cinder/gl/Shader.h"
 #include "cinder/gl/scoped.h"
 
-#include "View.h"
-#include "TextureFit.h"
+#include "poScene/View.h"
+#include "poScene/TextureFit.h"
 
 namespace po { namespace scene {
     // ShapeView2d is a class that converts any Cinder ShapeView2d to a VBO Mesh

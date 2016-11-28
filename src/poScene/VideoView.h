@@ -42,7 +42,7 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/Texture.h"
 
-#include "View.h"
+#include "poScene/View.h"
 
 namespace po { namespace scene {
     // This class is a generic wrapper for any Cinder based video player
