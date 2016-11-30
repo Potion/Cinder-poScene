@@ -191,7 +191,7 @@
   <ItemGroup />
   <ItemGroup />
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\poScene\DragAndDropViewController.h" />
+    <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h" />
     <ClInclude Include="..\..\..\src\poScene\DraggableView.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\include\Resources.h" />
@@ -208,7 +208,7 @@
     <ClInclude Include="..\src\ViewController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\poScene\_DragAndDropViewController.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
     <ClCompile Include="..\src\DragAndDropApp.cpp" />

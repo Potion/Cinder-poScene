@@ -93,11 +93,11 @@
     <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\_DragAndDropViewController.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ViewController.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\ViewController.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\DragAndDropViewController.h">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\DraggableView.h">
@@ -118,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="..\src\ViewController.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

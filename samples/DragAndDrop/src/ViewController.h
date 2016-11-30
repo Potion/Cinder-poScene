@@ -1,7 +1,8 @@
 #pragma once
 
 #include "poScene/ViewController.h"
-#include "poScene/DragAndDropViewController.h"
+
+#include "poScene/DragAndDrop.h"
 
 namespace sample {
 	class ViewController;
@@ -15,7 +16,20 @@ namespace sample {
 		ViewController();
 
 		void setup();
-	
-		po::scene::DragAndDropViewControllerRef mDragAndDropVC;
+
+		bool checkForIntersection(po::scene::ViewRef view1, po::scene::ViewRef view2);
+
+		void trackDragAndDropView(po::scene::DragAndDropViewRef view);
+		void trackDropZoneView(po::scene::DropZoneViewRef view);
+
+		std::vector<po::scene::DragAndDropViewRef> mDragAndDropViews;
+		std::vector<po::scene::DropZoneViewRef> mDropZoneViews;
+
+		// Event Handlers
+		void viewDragBeganHandler(po::scene::DraggableViewRef &view);
+		void viewDraggedHandler(po::scene::DraggableViewRef &view);
+		void viewDragEndedHandler(po::scene::DraggableViewRef &view);
+
+
 	};
 }

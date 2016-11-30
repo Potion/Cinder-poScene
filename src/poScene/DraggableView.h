@@ -9,18 +9,20 @@ namespace po { namespace scene {
 
 	class DraggableView : public po::scene::View {
 	public:
-		typedef ci::signals::Signal<void(const ViewRef&)> DragAndDropSignal;
+		typedef ci::signals::Signal<void(DraggableViewRef&)> DragAndDropSignal;
 
 		static DraggableViewRef create();
 
 		void setup() override;
 
-		const DragAndDropSignal &getSignalDragStart() { return mSignalDragStart; };
-		const DragAndDropSignal &getSignalDrag() { return mSignalDrag; };
-		const DragAndDropSignal &getSignalDrop() { return mSignalDrop; };
+		DragAndDropSignal &getSignalDragBegan()		{ return mSignalDragBegan; };
+		DragAndDropSignal &getSignalDragged()		{ return mSignalDragged; };
+		DragAndDropSignal &getSignalDragEnded()		{ return mSignalDragEnded; };
+
+	protected:
+		DraggableView();
 
 	private:
-		DraggableView();
 
 		void mouseEventHandler(po::scene::MouseEvent &event);
 
@@ -28,6 +30,6 @@ namespace po { namespace scene {
 		ci::vec2 mDragOffset;
 
 		// Signals
-		DragAndDropSignal mSignalDragStart, mSignalDrag, mSignalDrop;
+		DragAndDropSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
 	};
 }}

@@ -3,7 +3,7 @@
 #include "cinder/gl/gl.h"
 
 #include "poScene/Scene.h"
-#include "poScene/DragAndDropViewController.h"
+#include "poScene/DragAndDrop.h"
 
 #include "ViewController.h"
 

@@ -17,8 +17,11 @@ namespace po { namespace scene {
 	}
 
 	void DraggableView::setup() {
-		po::scene::ShapeViewRef rect = po::scene::ShapeView::createRect(100, 100);
-		rect->setFillColor(ci::Color(0.0, 1.0, 0.0));
+		po::scene::ShapeViewRef rect = po::scene::ShapeView::createRect(50, 50);
+
+		rect->setFillColor(ci::Color(0.0, 1.0, 0.0))
+			.setAlignment(po::scene::Alignment::CENTER_CENTER);
+
 		addChild(rect);
 
 		// Attach drag events
@@ -33,7 +36,7 @@ namespace po { namespace scene {
 			case po::scene::MouseEvent::DOWN_INSIDE:
 				mIsDragging = true;
 				mDragOffset = event.getLocalPos();
-				mSignalDragStart.emit(shared_from_this());
+				mSignalDragBegan.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
 				break;
 
 			// Move if we are dragging
@@ -43,14 +46,17 @@ namespace po { namespace scene {
 					if(parent != nullptr) {
 						setPosition(parent->windowToLocal(event.getWindowPos() - mDragOffset) ) ;
 					}
+
+					mSignalDragged.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
 				}
-				mSignalDrag.emit(shared_from_this());
 				break;
 
 			// Stop any dragging
 			case po::scene::MouseEvent::UP:
-				mIsDragging = false;
-				mSignalDrop.emit(shared_from_this());
+				if(mIsDragging) {
+					mIsDragging = false;
+					mSignalDragEnded.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+				}
 				break;
 		}
 	}
