@@ -804,6 +804,11 @@ namespace po { namespace scene {
 		return (mChildren.size() != 0);
 	}
 
+	bool View::hasChild(ViewRef view)
+	{
+		return view->getParent()->getUID() == getUID();
+	}
+
 	int View::getChildIndex(const ViewRef &child)
 	{
 		std::deque<ViewRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
@@ -862,7 +867,7 @@ namespace po { namespace scene {
 	//  Remove Children
 	//
 
-	View &View::removeChild(ViewRef view)
+	ViewRef View::removeChild(ViewRef view)
 	{
 		std::deque<ViewRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), view);
 		if (iter != mChildren.end()) {
@@ -873,42 +878,40 @@ namespace po { namespace scene {
 
 			setAlignment(getAlignment());
 
-			return *this;
+			return view;
 		} else {
-			ViewInvalidChildException exc;
-			throw(exc);
+			return nullptr;
 		}
 	}
 
-	View &View::removeChildAt(int index)
+	ViewRef View::removeChildAt(int index)
 	{
 		if ( index <= 0 || index >= mChildren.size() ) {
-			ViewInvalidChildException exc;
-			throw(exc);
+			return nullptr;
 		} else {
-			mChildren[index]->removeParent();
-			mChildren[index]->removeScene();
+			ViewRef child = mChildren[index];
 
 			mChildren.erase(mChildren.begin() + index);
 
+			child->removeParent();
+			child->removeScene();
+
 			setAlignment(getAlignment());
 
-			return *this;
+			return child;
 		}
 	}
 
-	View &View::removeAllChildren()
+	void View::removeAllChildren()
 	{
-		for (ViewRef &View : mChildren) {
-			View->removeParent();
-			View->removeScene();
+		for (ViewRef &view : mChildren) {
+			view->removeParent();
+			view->removeScene();
 		}
 
 		setAlignment(getAlignment());
 
 		mChildren.clear();
-
-		return *this;
 	}
 
 	//

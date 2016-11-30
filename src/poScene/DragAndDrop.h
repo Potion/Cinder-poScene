@@ -1,6 +1,9 @@
 #pragma once
 
+#include "cinder/Signals.h"
+
 #include "poScene/View.h"
+#include "poScene/ViewController.h"
 #include "poScene/DraggableView.h"
 
 namespace po { namespace scene {
@@ -25,13 +28,15 @@ private:
 
 
 typedef std::shared_ptr<class DropZoneView> DropZoneViewRef;
+
 class DropZoneView : public View {
 public:
 	static DropZoneViewRef create();
 
 	virtual void setHighlighted(bool highlighted=true);
 
-	virtual bool addView(DraggableViewRef view);
+	virtual bool addDragAndDropView(DragAndDropViewRef view);
+	virtual bool removeDragAndDropView(DragAndDropViewRef view);
 
 protected:
 
@@ -41,7 +46,39 @@ private:
 
 	bool mIsHighlighted;
 	ViewRef mBackgroundView;
-	ViewRef mDraggableViews;
+	ViewRef mDragAndDropViewsHolder;
+};
+
+class DragAndDropViewController;
+typedef std::shared_ptr<DragAndDropViewController> DragAndDropViewControllerRef;
+
+class DragAndDropViewController : public ViewController {
+public:
+	static DragAndDropViewControllerRef create();
+
+	void trackDragAndDropView(DragAndDropViewRef view);
+	void trackDropZoneView(DropZoneViewRef view);
+
+	const std::vector<DragAndDropViewRef> &getDragAndDropViews() { return mDragAndDropViews; };
+	const std::vector<DropZoneViewRef> &getDropZoneViews() { return mDropZoneViews; };
+
+protected:
+	virtual void viewRemovedFromDropZone(DragAndDropViewRef view);
+
+private:
+	DragAndDropViewController();
+
+	void setup();
+
+	bool checkForIntersection(ViewRef view1, ViewRef view2);
+
+	std::vector<DragAndDropViewRef> mDragAndDropViews;
+	std::vector<po::scene::DropZoneViewRef> mDropZoneViews;
+
+	// Event Handlers
+	void viewDragBeganHandler(po::scene::DraggableViewRef &view);
+	void viewDraggedHandler(po::scene::DraggableViewRef &view);
+	void viewDragEndedHandler(po::scene::DraggableViewRef &view);
 };
 }}
 
