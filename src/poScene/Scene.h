@@ -32,7 +32,7 @@
 
 #include "cinder/Camera.h"
 
-#include "poScene/View.h"
+#include "poScene/ViewController.h"
 #include "poScene/EventCenter.h"
 
 namespace po { namespace scene {
@@ -69,7 +69,7 @@ namespace po { namespace scene {
         
     public:
         static SceneRef create();
-        static SceneRef create(ViewRef rootView);
+        static SceneRef create(ViewControllerRef rootViewController);
         ~Scene();
         
         //! Get this Scene's internal camera
@@ -88,15 +88,16 @@ namespace po { namespace scene {
         uint32_t getNextDrawOrder();
         
         //! Get the current root View for this scene
-        ViewRef getRootView() { return mRootView; };
+        ViewControllerRef getRootViewController() { return mRootViewController; };
+		ViewRef getRootView() { return mRootViewController->getView(); };
         //! Get the root View
-        void setRootView(ViewRef View);
+		void setRootViewController(ViewControllerRef View);
                 
     protected:
-        Scene(ViewRef rootView);
+        Scene(ViewControllerRef rootViewController);
         
         //	Root View of scene
-        ViewRef mRootView;
+        ViewControllerRef mRootViewController;
         
         //	Our Event Center (each Scene has its own)
         EventCenterRef eventCenter;
@@ -128,17 +129,12 @@ namespace po { namespace scene {
         void processTrackingQueue();
         std::map<ViewRef, bool> mTrackingQueue;
         
-        
-        
         //
         //  FBOs for caching + masking
         void createFbos();
         void resetFbos();
         ci::gl::FboRef mFbo;
         ci::gl::FboRef mMaskFbo;
-        
-        
-		
     };
 	
 } } //  namespace po::scene

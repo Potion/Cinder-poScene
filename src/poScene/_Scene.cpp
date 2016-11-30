@@ -37,18 +37,18 @@ namespace po { namespace scene {
 
     SceneRef Scene::create()
     {
-        return create(View::create());
+        return create(ViewController::create());
     }
 	
-    SceneRef Scene::create(ViewRef rootView)
+    SceneRef Scene::create(ViewControllerRef rootViewController)
     {
-        SceneRef scene(new Scene(rootView));
-        scene->getRootView()->setScene(scene);
+        SceneRef scene(new Scene(rootViewController));
+		scene->setRootViewController(rootViewController);
         return scene;
     }
     
-    Scene::Scene(ViewRef rootView)
-    : mRootView(rootView)
+    Scene::Scene(ViewControllerRef rootViewController)
+    : mRootViewController(rootViewController)
     , mAutoCam(true)
     , eventCenter(EventCenter::create())
     , mFbo(nullptr)
@@ -60,8 +60,6 @@ namespace po { namespace scene {
     
     Scene::~Scene()
     {
-        mRootView->removeAllChildren();
-        mRootView = nullptr;
         resetFbos();
     }
     
@@ -71,7 +69,7 @@ namespace po { namespace scene {
         //processTrackingQueue();
         eventCenter->processEvents(allChildren);
         
-        mRootView->updateTree();
+        mRootViewController->getView()->updateTree();
         
         if (mAutoCam) mCamera.setOrtho(0, (float)ci::app::getWindowWidth(), (float)ci::app::getWindowHeight(), 0, -1, 1);
     }
@@ -80,7 +78,7 @@ namespace po { namespace scene {
     {
         drawOrderCounter = 0;
         if (mAutoCam) ci::gl::setMatricesWindow(ci::app::getWindowSize());
-        mRootView->drawTree();
+        mRootViewController->getView()->drawTree();
     }
     
     uint32_t Scene::getNextDrawOrder()
@@ -88,12 +86,12 @@ namespace po { namespace scene {
         return drawOrderCounter++;
     }
     
-    void Scene::setRootView(ViewRef View)
+    void Scene::setRootViewController(ViewControllerRef viewController)
     {
-        if (View) {
-            mRootView->removeScene();
-            mRootView = View;
-            mRootView->setScene(shared_from_this());
+        if (viewController) {
+            mRootViewController->getView()->removeScene();
+            mRootViewController = viewController;
+            mRootViewController->getView()->setScene(shared_from_this());
         }
     }
     
