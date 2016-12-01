@@ -40,9 +40,9 @@ namespace sample {
 
 		mDragAndDropViews.push_back(view);
 
-		view->getSignalDragBegan().connect(std::bind(&ViewController::viewDragBeganHandler,	this, std::placeholders::_1));
-		view->getSignalDragged().connect(std::bind(&ViewController::viewDraggedHandler,		this, std::placeholders::_1));
-		view->getSignalDragEnded().connect(std::bind(&ViewController::viewDragEndedHandler,	this, std::placeholders::_1));
+		view, view->getSignalDragBegan().connect(std::bind(&ViewController::viewDragBeganHandler,	this, std::placeholders::_1));
+		view, view->getSignalDragged().connect(std::bind(&ViewController::viewDraggedHandler,		this, std::placeholders::_1));
+		view, view->getSignalDragEnded().connect(std::bind(&ViewController::viewDragEndedHandler,	this, std::placeholders::_1));
 	}
 
 	void ViewController::trackDropZoneView(po::scene::DropZoneViewRef view) {

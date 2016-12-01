@@ -25,6 +25,8 @@ namespace sample {
 		std::vector<po::scene::DragAndDropViewRef> mDragAndDropViews;
 		std::vector<po::scene::DropZoneViewRef> mDropZoneViews;
 
+		void storeConnection(po::scene::ViewRef view, ci::signals::Connection &connection);
+
 		// Event Handlers
 		void viewDragBeganHandler(po::scene::DraggableViewRef &view);
 		void viewDraggedHandler(po::scene::DraggableViewRef &view);
