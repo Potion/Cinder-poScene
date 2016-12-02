@@ -31,6 +31,7 @@
 #pragma once
 
 #include <deque>
+#include <typeindex>
 
 #include "cinder/Cinder.h"
 #include "cinder/gl/Fbo.h"
@@ -42,6 +43,7 @@
 
 #include "poScene/MatrixSet.h"
 #include "poScene/Events.h"
+#include "poScene/ViewEvents.h"
 
 namespace po { namespace scene {
     
@@ -506,16 +508,56 @@ namespace po { namespace scene {
         // and then return it for you to make a connection to any function.
         //
         //------------------------------------
-        
-        //! Get a Mouse Event Signal
-        MouseEventSignal &getSignal(MouseEvent::Type type) { return mMouseEventSignals[type]; }
-		bool isEligibleForInteractionEvent(const MouseEvent::Type &type);
-		void emitEvent(MouseEvent &event);
 
-        //! Get a Touch Event Signal
-        TouchEventSignal &getSignal(TouchEvent::Type type) { return mTouchEventSignals[type]; }
-		bool isEligibleForInteractionEvent(const TouchEvent::Type &type);
-		void emitEvent(TouchEvent &event);
+        //! Get an Event Signal
+
+		template<typename EventT, typename EventTypeT, typename SignalTypeT>
+		std::shared_ptr<ViewEventController<EventT, typename EventTypeT, SignalTypeT> > getCorrectEventController() {
+			// Try to find an appropriate controller
+			for (auto &controller : eventControllers) {
+				try {
+					// Cast up the controller to the correct type and return
+
+					return std::dynamic_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
+				}
+				catch(...) {
+					// Keep trying if we can't find one
+					continue;
+				}
+			}
+
+			// Create Controller if it doesn't exist
+			eventControllers.push_back(std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT> >( new ViewEventController<EventT, EventTypeT, SignalTypeT>()));
+			return getCorrectEventController<EventT, EventTypeT, SignalTypeT>();
+		}
+
+		template<typename EventT, typename EventTypeT, typename SignalTypeT>
+		SignalTypeT &getSignalT(EventTypeT type) {
+			return getCorrectEventController<EventT, EventTypeT, SignalTypeT>()->getSignal(type);
+		}
+
+		// Check to see if we have any connections for this event type
+		template<typename EventT, typename EventTypeT, typename SignalTypeT>
+		bool isEligibleForInteractionEventT(const EventTypeT &type) {
+			return getCorrectEventController<EventT, EventTypeT, SignalTypeT>()->isEligibleForInteractionEvent(type);
+		}
+
+		template<typename EventT, typename EventTypeT, typename SignalTypeT>
+		void emitEventT(EventT &event) {
+			getCorrectEventController<EventT, EventTypeT, SignalTypeT>()->emitEvent(shared_from_this(), event);
+		}
+
+		// Mouse Events
+		MouseEventSignal &getSignal(MouseEvent::Type type) { return getSignalT<MouseEvent, MouseEvent::Type, MouseEventSignal>(type); }
+		bool isEligibleForInteractionEvent(const MouseEvent::Type &type) { return isEligibleForInteractionEventT<MouseEvent, MouseEvent::Type, MouseEventSignal>(type); };
+		void emitEvent(MouseEvent &event) { return emitEventT<MouseEvent, MouseEvent::Type, MouseEventSignal>(event); };
+
+		// Touch Events
+        TouchEventSignal &getSignal(TouchEvent::Type type) { return getSignalT<TouchEvent, TouchEvent::Type, TouchEventSignal>(type); }
+		bool isEligibleForInteractionEvent(const TouchEvent::Type &type) { return isEligibleForInteractionEventT<TouchEvent, TouchEvent::Type, TouchEventSignal>(type); };
+		void emitEvent(TouchEvent &event) { return emitEventT<TouchEvent, TouchEvent::Type, TouchEventSignal>(event); };
+
+		std::vector<ViewEventControllerBaseRef> eventControllers;
 
     protected:
         // Constructor
@@ -667,10 +709,6 @@ namespace po { namespace scene {
 		
         //! Determine if this View is visible, has a scene and parent, etc.
         bool isEligibleForInteractionEvents();
-        
-        //	Mouse + Touch Signals
-        std::map<MouseEvent::Type, MouseEventSignal> mMouseEventSignals;
-        std::map<TouchEvent::Type, TouchEventSignal> mTouchEventSignals;
 		
         
         //------------------------------------

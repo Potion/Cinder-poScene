@@ -79,7 +79,6 @@ namespace po { namespace scene {
 		virtual void connectEvents() = 0;
 		void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
 
-
 		void processEvents(std::vector<ViewRef> &views)
 		{
 			//	Go through the queue
@@ -114,7 +113,7 @@ namespace po { namespace scene {
 		}
 
 		//  Extend this function to define custom callback type
-		virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT event)
+		virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT &event)
 		{
 			//	Go through the draw tree, notifying views that are listening
 			for (ViewRef &view : views) {
@@ -130,8 +129,8 @@ namespace po { namespace scene {
 		}
 
 		// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
-		virtual bool hitTest(const ViewRef &node, const EventT &event) {
-			return node->pointInside(event.getWindowPos());
+		virtual bool hitTest(const ViewRef &view, const EventT &event) {
+			return view->pointInside(event.getWindowPos());
 		}
 
 		std::map<EventTypeT, std::vector<CiEventT> > mQueue;

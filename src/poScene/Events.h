@@ -123,7 +123,6 @@ namespace po { namespace scene {
     private:
         ci::app::MouseEvent mCiEvent;
         Type mType;
-		
     };
     
 	
