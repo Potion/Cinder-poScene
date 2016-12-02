@@ -202,6 +202,8 @@ namespace po { namespace scene {
 		std::deque<ViewRef> &getChildrenByReference();
 		//! Find if the View has any children
 		bool hasChildren();
+		//! See if we have a child.
+		bool hasChild(ViewRef view);
 		//! Get a child at an index. Returns INVALID_INDEX if not found
 		int getChildIndex(const ViewRef &child);
 		//! Get a child by an index. Returns null_ptr if not found.
@@ -218,11 +220,11 @@ namespace po { namespace scene {
 		// Remove children
 
 		//! Remove a child by View reference
-		View &removeChild(ViewRef View);
+		ViewRef removeChild(ViewRef View);
 		//! Remove a child at a specific index
-		View &removeChildAt(int index);
+		ViewRef removeChildAt(int index);
 		//! Remove all the children from this View.
-		View &removeAllChildren();
+		void removeAllChildren();
 
 		// Move Child Views
 
