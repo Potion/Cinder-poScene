@@ -79,7 +79,6 @@ namespace po { namespace scene {
 		virtual void connectEvents() = 0;
 		void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
 
-
 		void processEvents(std::vector<ViewRef> &views)
 		{
 			//	Go through the queue
@@ -114,7 +113,7 @@ namespace po { namespace scene {
 		}
 
 		//  Extend this function to define custom callback type
-		virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT event)
+		virtual void notifyCallbacks(std::vector<ViewRef> &views, EventT &event)
 		{
 			//	Go through the draw tree, notifying views that are listening
 			for (ViewRef &view : views) {
@@ -130,8 +129,8 @@ namespace po { namespace scene {
 		}
 
 		// Hit testing, override in subclass for custom hit testing, i.e. overlapping shapes
-		virtual bool hitTest(const ViewRef &node, const EventT &event) {
-			return node->pointInside(event.getWindowPos());
+		virtual bool hitTest(const ViewRef &view, const EventT &event) {
+			return view->pointInside(event.getWindowPos());
 		}
 
 		std::map<EventTypeT, std::vector<CiEventT> > mQueue;
@@ -157,9 +156,8 @@ namespace po { namespace scene {
 			ci::app::getWindow()->getSignalMouseWheel().connect(std::bind(&MouseEventProcessor::addToQueue, this, MouseEvent::Type::WHEEL,	std::placeholders::_1));
 		}
 
-        void notifyCallbacks(std::vector<ViewRef> &views, MouseEvent event)
+        void notifyCallbacks(std::vector<ViewRef> &views, MouseEvent &event) override
         {
-                
             MouseEvent::Type callbackType = MouseEvent::Type::UNKOWN;
             switch (event.getType()) {
                 case MouseEvent::Type::DOWN:
@@ -212,7 +210,7 @@ namespace po { namespace scene {
 		}
 
 	private:
-		void notifyCallbacks(std::vector<ViewRef> &views, TouchEvent event)
+		void notifyCallbacks(std::vector<ViewRef> &views, TouchEvent &event) override
 		{
 			//	Set the callback type
 			TouchEvent::Type callbackType = TouchEvent::Type::UNKOWN;
