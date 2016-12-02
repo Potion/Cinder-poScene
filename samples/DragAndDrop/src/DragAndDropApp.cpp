@@ -26,7 +26,7 @@ class DragAndDropApp
 void DragAndDropApp::setup()
 {
 	viewController = sample::ViewController::create();
-    scene = po::scene::Scene::create(viewController->getView());
+    scene = po::scene::Scene::create(viewController);
 }
 
 void DragAndDropApp::update()
