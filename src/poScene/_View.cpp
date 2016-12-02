@@ -992,7 +992,7 @@ namespace po { namespace scene {
 	
     void View::drawBounds()
     {
-        ci::gl::color(mBoundsColor);
+        ci::gl::ScopedColor color(ci::Color(mBoundsColor));
         
         //	Draw bounding box
         ci::gl::drawStrokedRect(getBounds());
@@ -1074,7 +1074,18 @@ namespace po { namespace scene {
 	//------------------------------------
     //  Touch Events
 	//------------------------------------
-	
+
+	//
+	//	See if we care about an event
+	//
+	bool View::isEligibleForInteractionEvent(const TouchEvent::Type &type)
+	{
+		if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].getNumSlots() != 0)) {
+			return isEligibleForInteractionEvents();
+		}
+		return false;
+	}
+
 	//
     //	For the given event, notify everyone that we have as a subscriber
 	//
@@ -1082,17 +1093,6 @@ namespace po { namespace scene {
     {
         event.setSource(shared_from_this());
         mTouchEventSignals[event.getType()].emit(event);
-    }
-	
-	//
-    //	See if we care about an event
-	//
-    bool View::isEligibleForInteractionEvent(const TouchEvent::Type &type)
-    {
-        if ((mTouchEventSignals.count(type) && mTouchEventSignals[type].getNumSlots() != 0)) {
-            return isEligibleForInteractionEvents();
-        }
-        return false;
     }
 	
 } } //  namespace po::scene
