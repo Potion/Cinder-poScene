@@ -32,6 +32,7 @@
 
 #include "cinder/app/MouseEvent.h"
 #include "cinder/app/TouchEvent.h"
+#include "cinder/Signals.h"
 
 namespace po { namespace scene {
     
@@ -102,7 +103,7 @@ namespace po { namespace scene {
     public:
         //! Mouse event types
         enum Type {
-            DOWN,
+            DOWN = 0,
             DOWN_INSIDE,
             MOVE,
             MOVE_INSIDE,
@@ -124,6 +125,9 @@ namespace po { namespace scene {
         ci::app::MouseEvent mCiEvent;
         Type mType;
     };
+
+	//	Signal
+	typedef ci::signals::Signal<void(MouseEvent&)> MouseEventSignal;
     
 	
     //------------------------------------
@@ -136,7 +140,7 @@ namespace po { namespace scene {
     public:
         //! Touch Event Types
         enum Type {
-            BEGAN,
+            BEGAN = 0,
             BEGAN_INSIDE,
             MOVED,
             MOVED_INSIDE,
@@ -158,5 +162,8 @@ namespace po { namespace scene {
         Type mType;
 		
     };
+
+	//	Signal
+	typedef ci::signals::Signal<void(TouchEvent&)> TouchEventSignal;
 	
 } } //  namespace po::scene

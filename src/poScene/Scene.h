@@ -92,6 +92,8 @@ namespace po { namespace scene {
 		ViewRef getRootView() { return mRootViewController->getView(); };
         //! Get the root View
 		void setRootViewController(ViewControllerRef View);
+
+		void addEventProcessor(EventProcessorBaseRef processor) { mEventCenter->addEventProcessor(processor); }
                 
     protected:
         Scene(ViewControllerRef rootViewController);
@@ -100,7 +102,7 @@ namespace po { namespace scene {
         ViewControllerRef mRootViewController;
         
         //	Our Event Center (each Scene has its own)
-        EventCenterRef eventCenter;
+        EventCenterRef mEventCenter;
         
         //	Internal tracking functions
         void trackChildView(ViewRef View);

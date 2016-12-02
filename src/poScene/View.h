@@ -40,7 +40,6 @@
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 #include "cinder/Exception.h"
-#include "cinder/Signals.h"
 
 #include "poScene/MatrixSet.h"
 #include "poScene/Events.h"
@@ -107,10 +106,6 @@ namespace po { namespace scene {
     typedef std::shared_ptr<class EventCenter> EventCenterRef;
 
 	typedef std::shared_ptr<class View> ViewRef;
-    
-    //	Signals
-    typedef ci::signals::Signal<void(MouseEvent&)> MouseEventSignal;
-    typedef ci::signals::Signal<void(TouchEvent&)> TouchEventSignal;
     
     class View
     : public std::enable_shared_from_this<View>
@@ -518,7 +513,7 @@ namespace po { namespace scene {
 			for (auto &controller : eventControllers) {
 				try {
 					// Cast up the controller to the correct type and return
-					return std::dynamic_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
+					return std::static_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
 				}
 				catch(...) {
 					// Keep trying if we can't find one

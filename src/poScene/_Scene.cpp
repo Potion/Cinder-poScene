@@ -50,7 +50,7 @@ namespace po { namespace scene {
     Scene::Scene(ViewControllerRef rootViewController)
     : mRootViewController(rootViewController)
     , mAutoCam(true)
-    , eventCenter(EventCenter::create())
+    , mEventCenter(EventCenter::create())
     , mFbo(nullptr)
     , mMaskFbo(nullptr)
     {
@@ -67,7 +67,7 @@ namespace po { namespace scene {
     {
         //	Send a copy of all over our children to be processed
         //processTrackingQueue();
-        eventCenter->processEvents(allChildren);
+        mEventCenter->processEvents(allChildren);
         
         mRootViewController->getView()->updateTree();
         

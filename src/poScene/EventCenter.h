@@ -72,12 +72,12 @@ namespace po { namespace scene {
     };
 
 	//	Event Processor, create one of these for each category of event, i.e. touch or mouse
-	template<typename CiEventT, typename EventT, typename EventTypeT>
+	template<typename CiEventT, typename EventT, typename EventTypeT, typename SignalTypeT>
 	class EventProcessor : public EventProcessorBase {
 	public:
 
 		virtual void connectEvents() = 0;
-		void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
+		virtual void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
 
 		void processEvents(std::vector<ViewRef> &views)
 		{
@@ -103,12 +103,12 @@ namespace po { namespace scene {
 		{
 			for (ViewRef &view : views) {
 				//	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-				if ( view == nullptr || (!view->isEligibleForInteractionEvent(event.getType())) ) continue;
-
+				if ( view == nullptr || (!view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType())) ) continue;
+				
 				event.setPropagationEnabled(true);
 
 				//	Notify the view
-				view->emitEvent(event);
+				view->emitEventT<EventT, EventTypeT, SignalTypeT>(event);
 			}
 		}
 
@@ -117,8 +117,8 @@ namespace po { namespace scene {
 		{
 			//	Go through the draw tree, notifying views that are listening
 			for (ViewRef &view : views) {
-				if ( view->isEligibleForInteractionEvent(event.getType()) && hitTest(view, event) ) {
-					view->emitEvent(event);
+				if ( view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType()) && hitTest(view, event) ) {
+					view->emitEventT<EventT, EventTypeT, SignalTypeT>(event);
 					if (event.getPropagationEnabled()) {
 						event.setPropagationEnabled(false);
 					} else {
@@ -143,7 +143,7 @@ namespace po { namespace scene {
     //	Mouse Events
 	//------------------------------------
     class MouseEventProcessor
-    : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type>
+    : public EventProcessor<ci::app::MouseEvent, MouseEvent, MouseEvent::Type, MouseEventSignal>
     {
 	public:
 		MouseEventProcessor() {};
@@ -191,7 +191,7 @@ namespace po { namespace scene {
 	//	Touch Events
 	//------------------------------------
 	class TouchEventProcessor
-		: public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type>
+		: public EventProcessor<ci::app::TouchEvent::Touch, TouchEvent, TouchEvent::Type, TouchEventSignal>
 	{
 	public:
 		void connectEvents() override {
