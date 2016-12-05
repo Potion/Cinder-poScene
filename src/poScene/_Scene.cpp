@@ -55,7 +55,7 @@ namespace po { namespace scene {
     , mMaskFbo(nullptr)
     {
         createFbos();
-        ci::app::getWindow()->getSignalResize().connect(std::bind(&Scene::createFbos, this));
+        mConnWindowResize = ci::app::getWindow()->getSignalResize().connect(std::bind(&Scene::createFbos, this));
     }
     
     Scene::~Scene()
