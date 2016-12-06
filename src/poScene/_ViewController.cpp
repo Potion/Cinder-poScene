@@ -11,6 +11,6 @@ namespace po { namespace scene {
 	: mView(po::scene::View::create()) 
 	{
 		// Subscribe to update loop
-		ci::app::App::get()->getSignalUpdate().connect(std::bind(&ViewController::update, this));
+		mUpdateConnection = ci::app::App::get()->getSignalUpdate().connect(std::bind(&ViewController::update, this));
 	}
 }}
