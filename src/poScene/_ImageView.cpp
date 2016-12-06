@@ -33,24 +33,23 @@
 #include "cinder/gl/gl.h"
 
 namespace po { namespace scene {
-    
-    ImageViewRef Image::create()
+    ImageViewRef ImageView::create()
     {
         return create(nullptr);
     }
     
-    ImageViewRef Image::create(ci::gl::TextureRef texture)
+    ImageViewRef ImageView::create(ci::gl::TextureRef texture)
     {
-        ImageViewRef ref(new Image(texture));
+        ImageViewRef ref(new ImageView(texture));
         return ref;
     }
     
-    Image::Image(ci::gl::TextureRef texture)
+    ImageView::ImageView(ci::gl::TextureRef texture)
     : mTexture(texture)
     { 
     }
     
-    void Image::draw()
+    void ImageView::draw()
     {
         if (mTexture) {
 			ci::gl::ScopedBlendAlpha alphaBlendScoped;
@@ -59,7 +58,7 @@ namespace po { namespace scene {
         }
     }
     
-    ci::Rectf Image::getBounds()
+    ci::Rectf ImageView::getBounds()
     {
         return mTexture->getBounds();
     }

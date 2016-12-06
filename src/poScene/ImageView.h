@@ -42,10 +42,10 @@ namespace po { namespace scene {
     // For more complex usage of textures (i.e. mapping to complex shapes)
     // use the Shape class.
     
-    class Image;
-    typedef std::shared_ptr<Image> ImageViewRef;
+    class ImageView;
+    typedef std::shared_ptr<ImageView> ImageViewRef;
     
-    class Image
+    class ImageView
     : public View
     {
     public:
@@ -66,7 +66,7 @@ namespace po { namespace scene {
         ci::Rectf getBounds();
         
     protected:
-        Image(ci::gl::TextureRef texture);
+        ImageView(ci::gl::TextureRef texture);
         
     private:
         ci::gl::TextureRef mTexture;
