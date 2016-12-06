@@ -49,5 +49,6 @@ namespace po { namespace scene {
 
 		bool mSnapsBack;
 		ci::vec2 mSnapPosition;
+		ci::signals::ConnectionList	mConnections;
 	};
 }}

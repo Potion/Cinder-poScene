@@ -60,5 +60,7 @@ private:
 	void viewDragBeganHandler(po::scene::DraggableViewRef &view);
 	void viewDraggedHandler(po::scene::DraggableViewRef &view);
 	void viewDragEndedHandler(po::scene::DraggableViewRef &view);
+
+	ci::signals::ConnectionList mConnections;
 };
 }}

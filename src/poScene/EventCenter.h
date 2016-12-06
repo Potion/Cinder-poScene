@@ -149,11 +149,11 @@ namespace po { namespace scene {
 		MouseEventProcessor() {};
 
 		void connectEvents() override {
-			ci::app::getWindow()->getSignalMouseDown().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DOWN,	std::placeholders::_1));
-			ci::app::getWindow()->getSignalMouseMove().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::MOVE,	std::placeholders::_1));
-			ci::app::getWindow()->getSignalMouseDrag().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DRAG,	std::placeholders::_1));
-			ci::app::getWindow()->getSignalMouseUp().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::UP,		std::placeholders::_1));
-			ci::app::getWindow()->getSignalMouseWheel().connect(std::bind(&MouseEventProcessor::addToQueue, this, MouseEvent::Type::WHEEL,	std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalMouseDown().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DOWN,	std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalMouseMove().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::MOVE,	std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalMouseDrag().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::DRAG,	std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalMouseUp().connect(std::bind(&MouseEventProcessor::addToQueue,	this, MouseEvent::Type::UP,		std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalMouseWheel().connect(std::bind(&MouseEventProcessor::addToQueue, this, MouseEvent::Type::WHEEL,	std::placeholders::_1));
 		}
 
         void notifyCallbacks(std::vector<ViewRef> &views, MouseEvent &event) override
@@ -182,7 +182,10 @@ namespace po { namespace scene {
                 
             event.setType(callbackType);
             EventProcessor::notifyCallbacks(views, event);
-        }	
+        }
+
+	private:
+		ci::signals::ConnectionList	mConnections;
     };
 
 
@@ -196,9 +199,9 @@ namespace po { namespace scene {
 	public:
 		void connectEvents() override {
 			//	Connect touch events
-			ci::app::getWindow()->getSignalTouchesBegan().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::BEGAN, std::placeholders::_1));
-			ci::app::getWindow()->getSignalTouchesMoved().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::MOVED, std::placeholders::_1));
-			ci::app::getWindow()->getSignalTouchesEnded().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::ENDED, std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalTouchesBegan().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::BEGAN, std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalTouchesMoved().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::MOVED, std::placeholders::_1));
+			mConnections += ci::app::getWindow()->getSignalTouchesEnded().connect(std::bind(&TouchEventProcessor::addToQueue, this, TouchEvent::Type::ENDED, std::placeholders::_1));
 		}
 
 		//	Needs to break about grouped touches from Cinder
@@ -235,6 +238,8 @@ namespace po { namespace scene {
 			event.setType(callbackType);
 			EventProcessor::notifyCallbacks(views, event);
 		}
+
+		ci::signals::ConnectionList	mConnections;
 	};
     
 } } //	namespace po::scene
