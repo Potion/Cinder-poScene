@@ -116,6 +116,8 @@ namespace po { namespace scene {
     public:
 		//! Create a ViewContainer
 		static ViewRef create(std::string name = "");
+		static ViewRef create(ci::vec2 size, std::string name = "");
+
         ~View();
 		
 		//! Setup function, used to initialize View
@@ -247,6 +249,10 @@ namespace po { namespace scene {
         View &setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
         //! Return the bounds
         virtual ci::Rectf getBounds();
+		//! Set the bounds to a fixed size, disabling elastic bounds
+		void setBounds(ci::Rectf bounds);
+		//! Enable elastic bounds, which gives bounds containing all child views
+		void setUseElasticBounds(bool useElasticBounds = true) { mUseElasticBounds = useElasticBounds; };
         //! Set the color that the bounds should be drawn in
         View &setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
         //! Get the current bounds color
@@ -581,7 +587,7 @@ namespace po { namespace scene {
         //	Bounds/Frame
         ci::Rectf mBounds;
         ci::Rectf mFrame;
-        bool mBoundsDirty, mFrameDirty;
+        bool mUseElasticBounds, mBoundsDirty, mFrameDirty;
         
         //	Caching/FBO
         void captureMasked();

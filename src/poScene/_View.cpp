@@ -96,46 +96,54 @@ namespace po { namespace scene {
 		return std::shared_ptr<View>(new View(name));
 	}
 
-    View::View(std::string name)
-    : mUid(OBJECT_UID++)
-    , mName(name)
-    , mDrawOrder(0)
-    , mPosition(0.f, 0.f)
-    , mScale(1.f, 1.f)
-    , mRotation(0)
-    , mOffset(0.f,0.f)
-    , mAlpha(1.f)
-    , mAppliedAlpha(1.f)
-    , mPositionAnim(ci::vec2(0.f, 0.f))
-    , mScaleAnim(ci::vec2(1.f, 1.f))
-    , mRotationAnim(0)
-    , mOffsetAnim(ci::vec2(0.f, 0.f))
-    , mAlphaAnim(1.f)
-    , mAlignment(Alignment::TOP_LEFT)
-    , mMatrixOrder(MatrixOrder::TRS)
-    , mFillColor(1.f, 1.f, 1.f)
-    , mFillColorAnim(ci::Color(1.f, 1.f, 1.f))
-    , mFillEnabled(true)
-    , mStrokeColor(255, 255, 255)
-    , mStrokeEnabled(false)
-    , mPixelSnapping(false)
-    , mUpdatePositionFromAnim(false)
-    , mUpdateScaleFromAnim(false)
-    , mUpdateRotationFromAnim(false)
-    , mUpdateOffsetFromAnim(false)
-    , mUpdateAlphaFromAnim(false)
-    , mUpdateFillColorFromAnim(false)
-    , mDrawBounds(false)
-    , mBoundsColor(1.f, 0, 0)
-    , mParentShouldIgnoreInBounds(false)
-    , mBoundsDirty(true)
-    , mFrameDirty(true)
-    , mVisible(true)
-    , mInteractionEnabled(true)
-    , mHasScene(false)
-    , mHasParent(false)
-    , mIsMasked(false)
-    , mMask(nullptr)
+	ViewRef View::create(ci::vec2 size, std::string name) {
+		ViewRef ref = create(name);
+		ref->setBounds(ci::Rectf(ci::vec2(0), size));
+		return ref;
+	}
+
+	View::View(std::string name)
+		: mUid(OBJECT_UID++)
+		, mName(name)
+		, mDrawOrder(0)
+		, mPosition(0.f, 0.f)
+		, mScale(1.f, 1.f)
+		, mRotation(0)
+		, mOffset(0.f, 0.f)
+		, mAlpha(1.f)
+		, mAppliedAlpha(1.f)
+		, mPositionAnim(ci::vec2(0.f, 0.f))
+		, mScaleAnim(ci::vec2(1.f, 1.f))
+		, mRotationAnim(0)
+		, mOffsetAnim(ci::vec2(0.f, 0.f))
+		, mAlphaAnim(1.f)
+		, mAlignment(Alignment::TOP_LEFT)
+		, mMatrixOrder(MatrixOrder::TRS)
+		, mFillColor(1.f, 1.f, 1.f)
+		, mFillColorAnim(ci::Color(1.f, 1.f, 1.f))
+		, mFillEnabled(true)
+		, mStrokeColor(255, 255, 255)
+		, mStrokeEnabled(false)
+		, mPixelSnapping(false)
+		, mUpdatePositionFromAnim(false)
+		, mUpdateScaleFromAnim(false)
+		, mUpdateRotationFromAnim(false)
+		, mUpdateOffsetFromAnim(false)
+		, mUpdateAlphaFromAnim(false)
+		, mUpdateFillColorFromAnim(false)
+		, mBounds(ci::Rectf::zero())
+		, mDrawBounds(false)
+		, mUseElasticBounds(true)
+		, mBoundsColor(1.f, 0, 0)
+		, mParentShouldIgnoreInBounds(false)
+		, mBoundsDirty(true)
+		, mFrameDirty(true)
+		, mVisible(true)
+		, mInteractionEnabled(true)
+		, mHasScene(false)
+		, mHasParent(false)
+		, mIsMasked(false)
+		, mMask(nullptr)
     {
         //	Initialize our animations
         initAttrAnimations();
@@ -976,9 +984,15 @@ namespace po { namespace scene {
     //------------------------------------
     //  Dimensions
 	//------------------------------------
+
+	void View::setBounds(ci::Rectf bounds) {
+		mUseElasticBounds = false;
+		mBounds = bounds;
+	}
     
     ci::Rectf View::getBounds()
     {
+		if (mUseElasticBounds) {
 			// Reset Bounds
 			ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
 
@@ -988,6 +1002,10 @@ namespace po { namespace scene {
 			}
 
 			return bounds;
+		}
+		else {
+			return mBounds;
+		}
     }
 	
     void View::drawBounds()
