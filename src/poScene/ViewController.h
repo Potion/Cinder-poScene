@@ -10,6 +10,10 @@ namespace po { namespace scene {
 	class ViewController : public std::enable_shared_from_this<ViewController> {
 	public:
 		static ViewControllerRef create();
+		static ViewControllerRef create(ViewRef view );
+
+		ViewController();
+		ViewController(ViewRef view);
 
 		virtual void setup() {};
 		virtual void update() {};
@@ -18,7 +22,6 @@ namespace po { namespace scene {
 		ViewRef getView() { return mView; };
 
 	protected:
-		ViewController();
 
 		ViewRef mView;
 
