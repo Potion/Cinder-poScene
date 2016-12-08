@@ -98,7 +98,7 @@ namespace po { namespace scene {
 
 	ViewRef View::create(ci::vec2 size, std::string name) {
 		ViewRef ref = create(name);
-		ref->setBounds(ci::Rectf(ci::vec2(0), size));
+		ref->setSize(size);
 		return ref;
 	}
 
@@ -984,10 +984,9 @@ namespace po { namespace scene {
     //------------------------------------
     //  Dimensions
 	//------------------------------------
-
-	void View::setBounds(ci::Rectf bounds) {
+	void View::setSize(ci::vec2 size) {
 		mUseElasticBounds = false;
-		mBounds = bounds;
+		mBounds = ci::Rectf(0, 0, size.x, size.y);
 	}
     
     ci::Rectf View::getBounds()

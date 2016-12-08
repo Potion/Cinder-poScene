@@ -162,6 +162,8 @@ namespace po { namespace scene {
         //  Override this function for custom bounds, i.e. invisible hit areas
         //  or a fixed size
         
+		//! Set the width and height, switching to manual bounds
+		void setSize(ci::vec2 size);
         //! Get the width + height
         ci::vec2 getSize() { return getBounds().getSize(); }
         //! Get the absolute (unscaled) width of the View
@@ -249,8 +251,6 @@ namespace po { namespace scene {
         View &setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
         //! Return the bounds
         virtual ci::Rectf getBounds();
-		//! Set the bounds to a fixed size, disabling elastic bounds
-		void setBounds(ci::Rectf bounds);
 		//! Enable elastic bounds, which gives bounds containing all child views
 		void setUseElasticBounds(bool useElasticBounds = true) { mUseElasticBounds = useElasticBounds; };
         //! Set the color that the bounds should be drawn in
