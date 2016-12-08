@@ -127,13 +127,13 @@ namespace po { namespace scene {
 
 	void DragAndDropViewController::viewRemovedFromDropZone(DraggableViewRef view) {
 		view->setScale(1.0f);
-		view->setPosition(mView->windowToLocal(view->getParent()->localToWindow(view->getPosition())));
-		mView->addChild(view);
+		view->setPosition(getView()->windowToLocal(view->getParent()->localToWindow(view->getPosition())));
+		getView()->addChild(view);
 	}
 
 	void DragAndDropViewController::viewDragBeganHandler(DraggableViewRef &view) {
 		// TESTING, FIX ZONE/CONTROLLER REMOVAL RELATIONSHIP
-		if (view->getParent() != mView) {
+		if (view->getParent() != getView()) {
 			viewRemovedFromDropZone(view);
 		}
 	}

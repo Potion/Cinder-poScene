@@ -18,13 +18,13 @@ namespace po { namespace scene {
 		virtual void setup() {};
 		virtual void update() {};
 
-		void setView(ViewRef view) { mView = view; }; 
-		ViewRef getView() { return mView; };
+		virtual void setView(ViewRef view) { mView = view; }; 
+		virtual ViewRef getView() { return mView; };
 
 	protected:
-
-		ViewRef mView;
-
 		ci::signals::ScopedConnection mUpdateConnection;
+
+	private:
+		ViewRef mView;
 	};
 }}
