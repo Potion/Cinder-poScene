@@ -516,19 +516,16 @@ namespace po { namespace scene {
 		template<typename EventT, typename EventTypeT, typename SignalTypeT>
 		std::shared_ptr<ViewEventController<EventT, typename EventTypeT, SignalTypeT> > getCorrectEventController() {
 			// Try to find an appropriate controller
-			for (auto &controller : eventControllers) {
-				try {
-					// Cast up the controller to the correct type and return
-					return std::static_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
-				}
-				catch(...) {
-					// Keep trying if we can't find one
-					continue;
+			for (auto &controller : mEventControllers) {
+				std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT>> castController = std::dynamic_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
+
+				if (castController != nullptr) {
+					return castController;
 				}
 			}
 
 			// Create Controller if it doesn't exist
-			eventControllers.push_back(std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT> >( new ViewEventController<EventT, EventTypeT, SignalTypeT>()));
+			mEventControllers.push_back(std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT> >( new ViewEventController<EventT, EventTypeT, SignalTypeT>()));
 			return getCorrectEventController<EventT, EventTypeT, SignalTypeT>();
 		}
 
@@ -552,14 +549,14 @@ namespace po { namespace scene {
 		// Mouse Events
 		MouseEventSignal &getSignal(MouseEvent::Type type) { return getSignalT<MouseEvent, MouseEvent::Type, MouseEventSignal>(type); }
 		bool isEligibleForInteractionEvent(const MouseEvent::Type &type) { return isEligibleForInteractionEventT<MouseEvent, MouseEvent::Type, MouseEventSignal>(type); };
-		void emitEvent(MouseEvent &event) { return emitEventT<MouseEvent, MouseEvent::Type, MouseEventSignal>(event); };
+		void emitEvent(MouseEvent &event) { emitEventT<MouseEvent, MouseEvent::Type, MouseEventSignal>(event); };
 
 		// Touch Events
         TouchEventSignal &getSignal(TouchEvent::Type type) { return getSignalT<TouchEvent, TouchEvent::Type, TouchEventSignal>(type); }
 		bool isEligibleForInteractionEvent(const TouchEvent::Type &type) { return isEligibleForInteractionEventT<TouchEvent, TouchEvent::Type, TouchEventSignal>(type); };
-		void emitEvent(TouchEvent &event) { return emitEventT<TouchEvent, TouchEvent::Type, TouchEventSignal>(event); };
+		void emitEvent(TouchEvent &event) { emitEventT<TouchEvent, TouchEvent::Type, TouchEventSignal>(event); };
 
-		std::vector<ViewEventControllerBaseRef> eventControllers;
+		std::vector<ViewEventControllerBaseRef> mEventControllers;
 
     protected:
         // Constructor
