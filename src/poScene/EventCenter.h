@@ -75,7 +75,6 @@ namespace po { namespace scene {
 	template<typename CiEventT, typename EventT, typename EventTypeT, typename SignalTypeT>
 	class EventProcessor : public EventProcessorBase {
 	public:
-
 		virtual void connectEvents() = 0;
 		virtual void addToQueue(EventTypeT type, CiEventT ciEvent) { mQueue[type].push_back(ciEvent); }
 
@@ -86,7 +85,7 @@ namespace po { namespace scene {
 				//	Get the type for this item in the std::map
 				EventTypeT type = (EventTypeT)eventQueue.first;
 
-				//	Go through all the ci::MouseEvents for this type
+				//	Go through all the events for this type
 				for (CiEventT &ciEvent : eventQueue.second) {
 					EventT poEvent(ciEvent, type);
 					notifyAllviews(views, poEvent);
