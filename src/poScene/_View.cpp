@@ -609,7 +609,7 @@ namespace po { namespace scene {
     }
     
 
-    ci::vec2 View::ViewToLocal(const ci::vec2 &point, ViewRef View) {
+    ci::vec2 View::viewToLocal(const ci::vec2 &point, ViewRef View) {
 		return windowToLocal(View->localToWindow(point));
 	}
     
