@@ -145,6 +145,16 @@ namespace po { namespace scene {
     
     void Scene::createFbos()
     {
+		// If the window width or height is 0 (proably minimized) we can't create FBOs so return
+		if (ci::app::getWindowWidth() == 0 | ci::app::getWindowHeight() == 0) {
+			return;
+		}
+		
+		// If the size is the same as our FBO do nothing (i.e. open window from minimize)
+		if (mFbo && ci::app::getWindowWidth() == mFbo->getWidth() && ci::app::getWindowHeight() == mFbo->getHeight()) {
+			return;
+		}
+
         //	Create the FBO
         ci::gl::Fbo::Format format;
         format.setSamples(1);
@@ -152,10 +162,6 @@ namespace po { namespace scene {
         
         mFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
         mMaskFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
-        
-//        mFbo->getT
-//        mFbo->getColorTexture().setFlipped(true);
-//        mMaskFbo->getColorTexture().setFlipped(true);
     }
     
     
@@ -168,7 +174,6 @@ namespace po { namespace scene {
         // Reset the FBO
         mFbo.reset();
         mMaskFbo.reset();
-
     }
     
     
