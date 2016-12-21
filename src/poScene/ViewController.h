@@ -16,7 +16,7 @@ namespace po { namespace scene {
 		ViewController(ViewRef view);
 
 		virtual void setup() {};
-		virtual void update() {}; 
+		virtual void update() {};
 
 		virtual void setView(ViewRef view) { mView = view; }; 
 		virtual ViewRef getView() { return mView; };
