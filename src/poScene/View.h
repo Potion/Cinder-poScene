@@ -37,6 +37,7 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
+#include "cinder/gl/Batch.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 #include "cinder/Exception.h"
@@ -151,7 +152,7 @@ namespace po { namespace scene {
         //! Get the parent of this View (if any)
 		virtual ViewRef getParent() const;
         //! Check if this View currently has a parent
-		virtual bool hasParent();
+		virtual bool hasParent();	
 		
 		//  Differentiate between non-rendering Views and all other Views
 		//   this gets overridden to return false in View
@@ -409,17 +410,23 @@ namespace po { namespace scene {
 		virtual View &setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
 		virtual bool getPixelSnapping() { return mPixelSnapping; }
         
+		// Background
+		// Color the background,based on the bounds of the view.
+		// If the alpha is set to 0.0 the draw call does not execute.
+		virtual View& setBackgroundColor(ci::ColorA color) { mBackgroundColor = color; return *this; };
+		virtual View& setBackgroundColor(ci::Color color) { return setBackgroundColor(ci::ColorA(color, 1.0)); };
+
         // Fill
         // This is the color used when drawing the View,
         // in general when creating a View class you should use this color
         // but you can ignore it if doing something custom
         
         //! Set the fill color
-		virtual View &setFillColor(ci::ColorA color);
-		virtual View &setFillColor(ci::Color color);
+		virtual View& setFillColor(ci::ColorA color);
+		virtual View& setFillColor(ci::Color color);
         //! Get the fill color
-		virtual View &setFillColor(float r, float g, float b, float a) { mFillColor = ci::Color(r, g, b); setAlpha(a); return *this; }
-		virtual View &setFillColor(float r, float g, float b) { mFillColor = ci::Color(r, g, b); return *this; }
+		virtual View& setFillColor(float r, float g, float b, float a) { mFillColor = ci::Color(r, g, b); setAlpha(a); return *this; }
+		virtual View& setFillColor(float r, float g, float b) { mFillColor = ci::Color(r, g, b); return *this; }
         //! Enable fill
 		virtual View &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
         //! Disable fill
@@ -621,6 +628,7 @@ namespace po { namespace scene {
         ci::vec2 mScale;
         float mRotation;
         ci::vec2 mOffset;
+		ci::ColorA mBackgroundColor;
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
@@ -691,6 +699,10 @@ namespace po { namespace scene {
 		//  Set the parent to this container and the scene to this container's scene
 		void setParentAndScene(ViewRef View);
         
+		// Background Drawing
+		void drawBackground();
+		static ci::gl::BatchRef mBackgroundBatch;
+
         //	Bounds and frame
         //! Draw the bounds/frame
         void drawBounds();

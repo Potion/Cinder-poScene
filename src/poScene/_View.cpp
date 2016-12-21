@@ -51,6 +51,8 @@
 
 namespace po { namespace scene {
     
+	ci::gl::BatchRef View::mBackgroundBatch = nullptr;
+
     static uint32_t OBJECT_UID		= 0;
     static const int ORIGIN_SIZE	= 2;
     
@@ -119,6 +121,7 @@ namespace po { namespace scene {
 		, mAlphaAnim(1.f)
 		, mAlignment(Alignment::TOP_LEFT)
 		, mMatrixOrder(MatrixOrder::TRS)
+		, mBackgroundColor(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f))
 		, mFillColor(1.f, 1.f, 1.f)
 		, mFillColorAnim(ci::Color(1.f, 1.f, 1.f))
 		, mFillEnabled(true)
@@ -179,6 +182,24 @@ namespace po { namespace scene {
 		}
     }
 
+	void View::drawBackground()
+	{
+		if (mBackgroundColor.a <= 0.0f) {
+			return;
+		}
+
+		if (mBackgroundBatch == nullptr) {
+			ci::gl::GlslProgRef shader = ci::gl::getStockShader(ci::gl::ShaderDef().color());
+			mBackgroundBatch = ci::gl::Batch::create(ci::geom::Rect(ci::Rectf(0, 0, 1, 1)), shader);
+		}
+
+		ci::gl::ScopedColor color(mBackgroundColor);
+
+		ci::gl::ScopedModelMatrix mModelView;
+		ci::gl::scale(ci::vec2(getBounds().getSize()));
+		mBackgroundBatch->draw();
+	}
+
 	void View::draw()
 	{
 		for (ViewRef &childView : mChildren) {
@@ -208,7 +229,8 @@ namespace po { namespace scene {
         if (mVisible) {
             //  Draw
             beginDrawTree();
-            
+			drawBackground();
+
             if (!mIsMasked) {
                 draw();
                 finishDrawTree();
@@ -217,14 +239,14 @@ namespace po { namespace scene {
                 finishDrawTree();
                 drawMasked();
             }
+
+			//	Draw bounds if necessary
+			if (mDrawBounds) drawBounds();
         }
     }
 	
     void View::finishDrawTree()
     {
-        //	Draw bounds if necessary
-        if (mDrawBounds) drawBounds();
-        
         //	Pop our Matrix
         ci::gl::popModelView();
     }
@@ -970,6 +992,10 @@ namespace po { namespace scene {
 
 	void View::setParentAndScene(ViewRef view)
 	{
+		if (view == nullptr) {
+			return;
+		}
+
 		//	See if the View is already a child of another View.
 		if (view->getParent() != nullptr) {
 			view->getParent()->removeChild(view);
