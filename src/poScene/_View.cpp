@@ -239,14 +239,15 @@ namespace po { namespace scene {
                 finishDrawTree();
                 drawMasked();
             }
-
-			//	Draw bounds if necessary
-			if (mDrawBounds) drawBounds();
         }
     }
 	
     void View::finishDrawTree()
-    {
+	{
+
+		//	Draw bounds if necessary
+		if( mDrawBounds ) drawBounds();
+
         //	Pop our Matrix
         ci::gl::popModelView();
     }

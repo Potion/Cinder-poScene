@@ -20,10 +20,10 @@ public:
 	virtual bool removeDraggableView(DraggableViewRef view);
 
 protected:
-
-private:
 	DropZoneView();
 	void setup();
+
+private:
 
 	bool mIsHighlighted;
 	ViewRef mBackgroundView;
