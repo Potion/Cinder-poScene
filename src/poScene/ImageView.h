@@ -30,7 +30,8 @@
 
 #pragma once
 
-#include "cinder/gl/draw.h"
+#include "cinder/gl/Texture.h"
+#include "cinder/gl/Batch.h"
 
 #include "poScene/View.h"
 
@@ -71,6 +72,7 @@ namespace po { namespace scene {
     private:
         ci::gl::TextureRef mTexture;
 		
+		static ci::gl::BatchRef mTextureBatch;
     };
 
 } } //  namespace po::scene

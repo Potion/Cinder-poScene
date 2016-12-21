@@ -33,6 +33,8 @@
 #include "cinder/gl/gl.h"
 
 namespace po { namespace scene {
+	ci::gl::BatchRef ImageView::mTextureBatch = nullptr;
+
     ImageViewRef ImageView::create()
     {
         return create(nullptr);
@@ -47,6 +49,10 @@ namespace po { namespace scene {
     ImageView::ImageView(ci::gl::TextureRef texture)
     : mTexture(texture)
     { 
+		if (mTextureBatch == nullptr) {
+			ci::gl::GlslProgRef textureShader = ci::gl::getStockShader(ci::gl::ShaderDef().texture().color());
+			mTextureBatch = ci::gl::Batch::create(ci::geom::Rect(ci::Rectf(0, 0, 1, 1)), textureShader);
+		}
     }
     
     void ImageView::draw()
@@ -54,7 +60,11 @@ namespace po { namespace scene {
         if (mTexture) {
 			ci::gl::ScopedBlendAlpha alphaBlendScoped;
 			ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
-            ci::gl::draw(mTexture);
+
+			ci::gl::ScopedTextureBind texBind(mTexture);
+			ci::gl::ScopedModelMatrix mModelView;
+			ci::gl::scale(ci::vec2(mTexture->getWidth(), mTexture->getHeight()));
+			mTextureBatch->draw();
         }
     }
     
