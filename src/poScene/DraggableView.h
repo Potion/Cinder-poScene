@@ -9,7 +9,7 @@ namespace po { namespace scene {
 
 	class DraggableView : public po::scene::View {
 	public:
-		typedef ci::signals::Signal<void(DraggableViewRef&)> DragAndDropSignal;
+		typedef ci::signals::Signal<void(DraggableViewRef&)> DraggableViewSignal;
 
 		static DraggableViewRef create();
 		static DraggableViewRef create(ci::vec2 snapBackPosition);
@@ -25,9 +25,9 @@ namespace po { namespace scene {
 		void setSnapsBackToPosition(bool snapsBackToPosition) { mSnapsBack = snapsBackToPosition; }
 		bool getSnapsBackToPosition() { return mSnapsBack; }
 
-		DragAndDropSignal &getSignalDragBegan()		{ return mSignalDragBegan; };
-		DragAndDropSignal &getSignalDragged()		{ return mSignalDragged; };
-		DragAndDropSignal &getSignalDragEnded()		{ return mSignalDragEnded; };
+		DraggableViewSignal &getSignalDragBegan()	{ return mSignalDragBegan;	};
+		DraggableViewSignal &getSignalDragged()		{ return mSignalDragged;	};
+		DraggableViewSignal &getSignalDragEnded()	{ return mSignalDragEnded;	};
 
 	protected:
 		DraggableView();
@@ -40,7 +40,7 @@ namespace po { namespace scene {
 		int mDraggingEventID;
 
 		// Signals
-		DragAndDropSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
+		DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
 
 	private:
 

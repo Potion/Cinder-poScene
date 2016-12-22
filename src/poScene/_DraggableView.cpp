@@ -35,14 +35,7 @@ namespace po { namespace scene {
 		connectEvents();
 	}
 
-	void DraggableView::setup() {
-		po::scene::ShapeViewRef rect = po::scene::ShapeView::createRect(50, 50);
-
-		rect->setFillColor(ci::Color(0.0, 1.0, 0.0))
-			.setAlignment(po::scene::Alignment::CENTER_CENTER);
-
-		addChild(rect);
-	}
+	void DraggableView::setup() {}
 
 	void DraggableView::setSnapBackPosition(ci::vec2 snapBackPosition) {
 		mSnapPosition = snapBackPosition;
@@ -83,10 +76,6 @@ namespace po { namespace scene {
 				if(mIsDragging) {
 					mIsDragging = false;
 					mSignalDragEnded.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
-
-					if(mSnapsBack) {
-						setPosition(mSnapPosition);
-					}
 				}
 				break;
 		}

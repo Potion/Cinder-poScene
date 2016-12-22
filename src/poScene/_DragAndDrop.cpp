@@ -3,7 +3,7 @@
 #include "poScene/ShapeView.h"
 
 namespace po { namespace scene {
-
+	// -----------------------------------------------
 	// Drop Zone View
 	DropZoneViewRef DropZoneView::create() {
 		DropZoneViewRef ref(new DropZoneView());
@@ -15,21 +15,19 @@ namespace po { namespace scene {
 		: mBackgroundView(View::create())
 		, mDraggableViewsHolder(View::create())
 		, mIsHighlighted(false)
+		, mCanHoldMultipleViews(false)
 	{
 	}
 
 	void DropZoneView::setup() {
 		setHighlighted(false);
 
-		ShapeViewRef rect = ShapeView::createRect(50, 50);
-
-		rect->setFillColor(ci::Color(0.5, 0.5, 1.0))
-			.setAlignment(Alignment::CENTER_CENTER);
-
-		mBackgroundView->addChild(rect);
-
 		addChild(mBackgroundView);
 		addChild(mDraggableViewsHolder);
+	}
+
+	ci::Rectf DropZoneView::getBounds() {
+		return mBackgroundView->getBounds();
 	}
 
 	void DropZoneView::setHighlighted(bool highlighted) {
@@ -43,15 +41,12 @@ namespace po { namespace scene {
 	}
 
 	bool DropZoneView::addDraggableView(DraggableViewRef view) {
-		if(mDraggableViewsHolder->hasChildren()) {
+		if(!mCanHoldMultipleViews && mDraggableViewsHolder->hasChildren()) {
 			return false;
 		}
 
-		setHighlighted(false);
-		mDraggableViewsHolder->addChild(view);
-
-		view->setScale(0.75f, 0.75f);
-		view->setPosition(0.0f, 0.0f);
+		view->setPosition( viewToLocal(view->getPosition(), view->getParent()) );
+		mDraggableViewsHolder->addChild( view );
 
 		return true;
 	}
@@ -60,6 +55,7 @@ namespace po { namespace scene {
 		return mDraggableViewsHolder->removeChild(view) != nullptr;
 	}
 
+	// -----------------------------------------------
 	// View Controller
 	DragAndDropViewControllerRef DragAndDropViewController::create() {
 		DragAndDropViewControllerRef ref(new DragAndDropViewController());
@@ -73,7 +69,7 @@ namespace po { namespace scene {
 	void DragAndDropViewController::setup() {
 	}
 
-	void DragAndDropViewController::trackDragAndDropView(DraggableViewRef view) {
+	void DragAndDropViewController::trackDraggableView(DraggableViewRef view) {
 		if (std::find(mDraggableViews.begin(), mDraggableViews.end(), view) != mDraggableViews.end()) {
 			//Already exists, throw exception or something?
 			return;
@@ -125,16 +121,15 @@ namespace po { namespace scene {
 		return false;
 	}
 
-	void DragAndDropViewController::viewRemovedFromDropZone(DraggableViewRef view) {
-		view->setScale(1.0f);
-		view->setPosition(getView()->windowToLocal(view->getParent()->localToWindow(view->getPosition())));
-		getView()->addChild(view);
-	}
-
 	void DragAndDropViewController::viewDragBeganHandler(DraggableViewRef &view) {
-		// TESTING, FIX ZONE/CONTROLLER REMOVAL RELATIONSHIP
-		if (view->getParent() != getView()) {
-			viewRemovedFromDropZone(view);
+		// See if the view has a drop zone
+		DropZoneViewRef dropZone = std::static_pointer_cast<DropZoneView>(view->getParent());
+		if (dropZone != nullptr) {
+			// If so, remove it and notify
+			view->setPosition( getView()->viewToLocal( view->getPosition(), view->getParent() ) );
+			getView()->addChild( view );
+
+			mSignalViewRemovedFromDropZone.emit( dropZone, view );
 		}
 	}
 
@@ -144,7 +139,9 @@ namespace po { namespace scene {
 				dropZone->setHighlighted(true);
 			}
 			else {
-				dropZone->setHighlighted(false);
+				if(!dropZone->isHoldingViews()) {
+					dropZone->setHighlighted(false);
+				}
 			}
 		}
 	}
@@ -152,8 +149,10 @@ namespace po { namespace scene {
 	void DragAndDropViewController::viewDragEndedHandler(DraggableViewRef &view) {
 		for (auto &dropZone : mDropZoneViews) {
 			if (checkForIntersection(view, dropZone)) {
-				dropZone->addDraggableView(view);
-				return;
+				if(dropZone->addDraggableView(view)) {
+					mSignalViewAddedToDropZone.emit(dropZone, view);
+					return;
+				}
 			}
 		}
 

@@ -10,21 +10,30 @@ namespace po { namespace scene {
 
 typedef std::shared_ptr<class DropZoneView> DropZoneViewRef;
 
+
 class DropZoneView : public View {
 public:
 	static DropZoneViewRef create();
 
+	ci::Rectf getBounds();
+
+	bool getCanHoldMultipleViews() { return mCanHoldMultipleViews; };
+	void setCanHoldMultipleViews(bool canHoldMultipleViews) { mCanHoldMultipleViews = canHoldMultipleViews; };
+
+	bool isHoldingViews() { return mDraggableViewsHolder->hasChildren(); };
 	virtual void setHighlighted(bool highlighted=true);
 
-	virtual bool addDraggableView(DraggableViewRef view);
-	virtual bool removeDraggableView(DraggableViewRef view);
+	bool addDraggableView(DraggableViewRef view);
+	bool removeDraggableView(DraggableViewRef view);
+
+	ViewRef getBackgroundView() { return mBackgroundView; };
 
 protected:
 	DropZoneView();
 	void setup();
 
 private:
-
+	bool mCanHoldMultipleViews;
 	bool mIsHighlighted;
 	ViewRef mBackgroundView;
 	ViewRef mDraggableViewsHolder;
@@ -33,18 +42,23 @@ private:
 class DragAndDropViewController;
 typedef std::shared_ptr<DragAndDropViewController> DragAndDropViewControllerRef;
 
+
+typedef ci::signals::Signal<void( DropZoneViewRef&, DraggableViewRef& )> DragAndDropSignal;
+
 class DragAndDropViewController : public ViewController {
 public:
 	static DragAndDropViewControllerRef create();
 
-	void trackDragAndDropView(DraggableViewRef view);
+	DragAndDropSignal& getSignalViewAddedToDropZone() { return mSignalViewAddedToDropZone; };
+	DragAndDropSignal& getSignalViewRemovedFromDropZone() { return mSignalViewRemovedFromDropZone; };
+
+	void trackDraggableView(DraggableViewRef view);
 	void trackDropZoneView(DropZoneViewRef view);
 
 	const std::vector<DraggableViewRef> &getDraggableViews() { return mDraggableViews; };
 	const std::vector<DropZoneViewRef> &getDropZoneViews() { return mDropZoneViews; };
 
 protected:
-	virtual void viewRemovedFromDropZone(DraggableViewRef view);
 
 private:
 	DragAndDropViewController();
@@ -62,5 +76,7 @@ private:
 	void viewDragEndedHandler(po::scene::DraggableViewRef &view);
 
 	ci::signals::ConnectionList mConnections;
+
+	DragAndDropSignal mSignalViewAddedToDropZone, mSignalViewRemovedFromDropZone;
 };
 }}
