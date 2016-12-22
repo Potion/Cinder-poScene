@@ -52,7 +52,7 @@ public:
 	DragAndDropSignal& getSignalViewAddedToDropZone() { return mSignalViewAddedToDropZone; };
 	DragAndDropSignal& getSignalViewRemovedFromDropZone() { return mSignalViewRemovedFromDropZone; };
 
-	void trackDraggableView(DraggableViewRef view);
+	void trackDraggableView(DraggableViewRef view, DropZoneViewRef dropZone = nullptr);
 	void trackDropZoneView(DropZoneViewRef view);
 
 	const std::vector<DraggableViewRef> &getDraggableViews() { return mDraggableViews; };
@@ -68,12 +68,16 @@ private:
 	bool checkForIntersection(ViewRef view1, ViewRef view2);
 
 	std::vector<DraggableViewRef> mDraggableViews;
-	std::vector<po::scene::DropZoneViewRef> mDropZoneViews;
+	std::vector<DropZoneViewRef> mDropZoneViews;
+
+	std::map<DraggableViewRef, DropZoneViewRef> mDraggableViewValidDropZones;
+
+	bool setDropZoneHighlightForView(DraggableViewRef view, DropZoneViewRef dropZone);
 
 	// Event Handlers
-	void viewDragBeganHandler(po::scene::DraggableViewRef &view);
-	void viewDraggedHandler(po::scene::DraggableViewRef &view);
-	void viewDragEndedHandler(po::scene::DraggableViewRef &view);
+	void viewDragBeganHandler(DraggableViewRef &view);
+	void viewDraggedHandler(DraggableViewRef &view);
+	void viewDragEndedHandler(DraggableViewRef &view);
 
 	ci::signals::ConnectionList mConnections;
 

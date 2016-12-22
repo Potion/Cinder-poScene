@@ -69,13 +69,17 @@ namespace po { namespace scene {
 	void DragAndDropViewController::setup() {
 	}
 
-	void DragAndDropViewController::trackDraggableView(DraggableViewRef view) {
+	void DragAndDropViewController::trackDraggableView(DraggableViewRef view, DropZoneViewRef dropZone) {
 		if (std::find(mDraggableViews.begin(), mDraggableViews.end(), view) != mDraggableViews.end()) {
 			//Already exists, throw exception or something?
 			return;
 		}
 
 		mDraggableViews.push_back(view);
+
+		if (dropZone != nullptr) {
+			mDraggableViewValidDropZones[view] = dropZone;
+		}
 
 		mConnections += view->getSignalDragBegan().connect(std::bind(&DragAndDropViewController::viewDragBeganHandler, this, std::placeholders::_1));
 		mConnections += view->getSignalDragged().connect(std::bind(&DragAndDropViewController::viewDraggedHandler, this, std::placeholders::_1));
@@ -133,25 +137,47 @@ namespace po { namespace scene {
 		}
 	}
 
+	bool DragAndDropViewController::setDropZoneHighlightForView(DraggableViewRef view, DropZoneViewRef dropZone) {
+		if (checkForIntersection(view, dropZone)) {
+			dropZone->setHighlighted(true);
+			return true;
+		}
+		else {
+			dropZone->setHighlighted(false);
+			return false;
+		}
+	}
 	void DragAndDropViewController::viewDraggedHandler(DraggableViewRef &view) {
-		for (auto &dropZone : mDropZoneViews) {
-			if (checkForIntersection(view, dropZone)) {
-				dropZone->setHighlighted(true);
-			}
-			else {
-				if(!dropZone->isHoldingViews()) {
-					dropZone->setHighlighted(false);
+		if (mDraggableViewValidDropZones[view] != nullptr) {
+			setDropZoneHighlightForView(view, mDraggableViewValidDropZones[view]);
+		}
+		else {
+			for (auto &dropZone : mDropZoneViews) {
+				if (setDropZoneHighlightForView(view, dropZone)) {
+					return;
 				}
 			}
 		}
 	}
 
 	void DragAndDropViewController::viewDragEndedHandler(DraggableViewRef &view) {
-		for (auto &dropZone : mDropZoneViews) {
+		DropZoneViewRef dropZone = mDraggableViewValidDropZones[view];
+		if (dropZone != nullptr) {
 			if (checkForIntersection(view, dropZone)) {
-				if(dropZone->addDraggableView(view)) {
+				if (dropZone->addDraggableView(view)) {
 					mSignalViewAddedToDropZone.emit(dropZone, view);
 					return;
+				}
+			}
+		}
+		else {
+
+			for (auto &dropZone : mDropZoneViews) {
+				if (checkForIntersection(view, dropZone)) {
+					if (dropZone->addDraggableView(view)) {
+						mSignalViewAddedToDropZone.emit(dropZone, view);
+						return;
+					}
 				}
 			}
 		}
