@@ -16,7 +16,6 @@ namespace po {
 			void test() override {};
 
 			SignalTypeT &getSignal(EventTypeT type) {
-				ci::app::console() << type << std::endl;
 				return mEventSignals[type];
 			}
 
