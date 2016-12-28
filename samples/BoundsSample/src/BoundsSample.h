@@ -1,8 +1,6 @@
 #pragma once
 
 #include "cinder/app/KeyEvent.h"
-
-#include "poScene/ViewContainer.h"
 #include "poScene/ShapeView.h"
 #include "poScene/TextView.h"
 

@@ -18,24 +18,27 @@ class TextSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+	SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void TextSampleApp::setup()
 {
-    scene = Scene::create(TextSample::create());
+	mViewController = ViewController::create();
+	mScene = Scene::create(mViewController);
+	mViewController->getView()->addChild(TextSample::create());
 }
 
 void TextSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void TextSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( TextSampleApp, RendererGl )

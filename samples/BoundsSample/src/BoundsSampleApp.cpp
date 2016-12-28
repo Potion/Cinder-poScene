@@ -3,6 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
+#include "poScene/ViewController.h"
 #include "BoundsSample.h"
 
 using namespace ci;
@@ -18,26 +19,29 @@ class BoundsSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    SceneRef mScene;
+	ViewControllerRef mViewController;
+	
 };
 
 void BoundsSampleApp::setup()
 {
     setWindowSize(800, 600);
-    //ci::gl::enableAlphaBlending();
-    scene = Scene::create(BoundsSample::create());
+	mViewController	= ViewController::create();
+    mScene = Scene::create(mViewController);
+	mViewController->getView()->addChild(BoundsSample::create());
 }
 
 void BoundsSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void BoundsSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0.0, 0.0f, 0.0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( BoundsSampleApp, RendererGl )

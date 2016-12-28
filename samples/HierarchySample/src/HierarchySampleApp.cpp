@@ -3,6 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
+#include "poScene/ViewController.h"
 
 #include "HierarchySample.h"
 
@@ -19,24 +20,27 @@ class HierarchySampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void HierarchySampleApp::setup()
 {
-    scene = Scene::create(HierarchySample::create());
+	mViewController = ViewController::create();
+    mScene = Scene::create(mViewController);
+	mViewController->getView()->addChild(HierarchySample::create());
 }
 
 void HierarchySampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void HierarchySampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( HierarchySampleApp, RendererGl )

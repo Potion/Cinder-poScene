@@ -18,26 +18,29 @@ public:
     void setup();
     void update();
     void draw();
-    
-    SceneRef scene;
+	
+	SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void VideoSampleAdvancedApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(VideoSampleAdvanced::create());
+	mViewController = ViewController::create();
+	mScene = Scene::create(mViewController);
+    mViewController->getView()->addChild(VideoSampleAdvanced::create());
 }
 
 void VideoSampleAdvancedApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void VideoSampleAdvancedApp::draw()
 {
     // clear out the window with black
     gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( VideoSampleAdvancedApp, RendererGl )

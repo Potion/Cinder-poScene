@@ -18,7 +18,6 @@ class AlignmentSample
 {
 public:
     static AlignmentSampleRef create();
-    
     void setup();
     
 protected:

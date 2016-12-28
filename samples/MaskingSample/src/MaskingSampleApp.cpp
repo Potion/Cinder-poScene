@@ -18,26 +18,28 @@ class MaskingSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void MaskingSampleApp::setup()
 {
 	setWindowSize(683, 1024);
-    scene = Scene::create(MaskingSample::create());
+	mViewController = ViewController::create();
+    mScene = Scene::create(mViewController);
+	mViewController->getView()->addChild(MaskingSample::create());
 }
 
 void MaskingSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void MaskingSampleApp::draw()
 {
 	// clear out the window with black
-//	gl::clear( Color( 1, 0, 0 ) );
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( MaskingSampleApp, RendererGl )

@@ -33,7 +33,7 @@ void MaskingSample::setup()
 	ci::gl::TextureRef texture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("cat.jpg")));
 	
 	//	Create the image shape
-	mImage = Image::create(texture);
+	mImage = ImageView::create(texture);
 	addChild(mImage);
 	
 	//	Set the image mask

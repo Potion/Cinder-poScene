@@ -1,7 +1,7 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
-
+#include "poScene/ViewController.h"
 #include "poScene/Scene.h"
 
 #include "ShapeTextureSample.h"
@@ -18,26 +18,29 @@ class ShapeTextureSampleApp
 	void setup();
 	void update();
 	void draw();
-    
-    SceneRef scene;
+	
+	SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void ShapeTextureSampleApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(ShapeTextureSample::create());
+	mViewController = ViewController::create();
+	mScene = Scene::create(mViewController);
+	mViewController->getView()->addChild(ShapeTextureSample::create());
 }
 
 void ShapeTextureSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void ShapeTextureSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( ShapeTextureSampleApp, RendererGl )

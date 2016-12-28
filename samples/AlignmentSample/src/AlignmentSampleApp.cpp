@@ -18,24 +18,27 @@ class AlignmentSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    SceneRef mScene;
+	ViewControllerRef mViewController;
 };
 
 void AlignmentSampleApp::setup()
 {
-    scene = Scene::create(AlignmentSample::create());
+	mViewController = ViewController::create();
+    mScene = Scene::create( mViewController );
+	mViewController->getView()->addChild(AlignmentSample::create());
 }
 
 void AlignmentSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void AlignmentSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( AlignmentSampleApp, RendererGl )

@@ -15,22 +15,24 @@
 		0E44A4DC1B4B2F64009D9DFF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4DB1B4B2F64009D9DFF /* AVFoundation.framework */; };
 		0E44A4DE1B4B2F6B009D9DFF /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4DD1B4B2F6B009D9DFF /* IOKit.framework */; };
 		0E44A4E01B4B342B009D9DFF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4DF1B4B342B009D9DFF /* CoreMedia.framework */; };
-		13B95AD4BE6149AB849DE16F /* poImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EF81F6A24A2241EB9C0DCD91 /* poImage.cpp */; };
-		1C8A8CF135B94445A27EDB8C /* poMatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6A1A5D543C604AC8B6647BF9 /* poMatrixSet.cpp */; };
-		26170BD990B449BBA1FBA6E9 /* poNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4E96D6D93FF4CF6996CE315 /* poNode.cpp */; };
 		3880F36D1B309158008F0AF6 /* Indicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3880F36B1B309158008F0AF6 /* Indicator.cpp */; };
 		3C4D84E5B7744509A190E26C /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = EEEBBE4A25394B6EA298789D /* CinderApp.icns */; };
-		469F15E0D0444DA0B4644559 /* poEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0D45886A4CDB4FE5B2107DF8 /* poEvents.cpp */; };
-		4E8B6173326440CCAC55D6BA /* poEventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E17C0D3BEDE4EB58C086408 /* poEventCenter.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
-		5EA5AD20D8D342C18E261BFA /* poShape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F4585F60DDE04392ACCFF7CC /* poShape.cpp */; };
 		843F3D67F2F1465EB24E5D76 /* ShapeTextureSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 89EC527EB58149DBB811A7A6 /* ShapeTextureSampleApp.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A9D337B2AB9143DB951AB312 /* poNodeContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 987FEF1B3CDB4406A0C92080 /* poNodeContainer.cpp */; };
-		B28DCC76EC2D499FB566D678 /* poTextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A4056C5D71C64CF98C041860 /* poTextBox.cpp */; };
+		AA7ADB211E1421C6008608B4 /* _DragAndDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8BF1E1421C4008608B4 /* _DragAndDrop.cpp */; };
+		AA7ADB221E1421C6008608B4 /* _DraggableView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C01E1421C4008608B4 /* _DraggableView.cpp */; };
+		AA7ADB231E1421C6008608B4 /* _EventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C11E1421C4008608B4 /* _EventCenter.cpp */; };
+		AA7ADB241E1421C6008608B4 /* _Events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C21E1421C4008608B4 /* _Events.cpp */; };
+		AA7ADB251E1421C6008608B4 /* _ImageView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C31E1421C4008608B4 /* _ImageView.cpp */; };
+		AA7ADB261E1421C6008608B4 /* _MatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C41E1421C4008608B4 /* _MatrixSet.cpp */; };
+		AA7ADB271E1421C6008608B4 /* _Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C51E1421C4008608B4 /* _Scene.cpp */; };
+		AA7ADB281E1421C6008608B4 /* _ShapeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C61E1421C4008608B4 /* _ShapeView.cpp */; };
+		AA7ADB291E1421C6008608B4 /* _TextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C71E1421C4008608B4 /* _TextView.cpp */; };
+		AA7ADB2A1E1421C6008608B4 /* _View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8C81E1421C4008608B4 /* _View.cpp */; };
+		AA7ADB2C1E1421C6008608B4 /* _ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AD8CB1E1421C4008608B4 /* _ViewController.cpp */; };
 		CE471E897EFE4482BBD9B36C /* ShapeTextureSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 216C523983DD4DB187DE8DC7 /* ShapeTextureSample.cpp */; };
-		F83C2799F1874878941BE187 /* poScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 83821661D2B540FFBC4D2C62 /* poScene.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,43 +41,48 @@
 		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
-		0D45886A4CDB4FE5B2107DF8 /* poEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEvents.cpp; path = ../../../src/poScene/poEvents.cpp; sourceTree = "<group>"; };
 		0E44A4DB1B4B2F64009D9DFF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		0E44A4DD1B4B2F6B009D9DFF /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		0E44A4DF1B4B342B009D9DFF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		17D1A6278E7543348841E6AC /* poEventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEventCenter.h; path = ../../../src/poScene/poEventCenter.h; sourceTree = "<group>"; };
-		1FB47A5C1973497FA0752F55 /* poImage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poImage.h; path = ../../../src/poScene/poImage.h; sourceTree = "<group>"; };
 		216C523983DD4DB187DE8DC7 /* ShapeTextureSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ShapeTextureSample.cpp; path = ../src/ShapeTextureSample.cpp; sourceTree = "<group>"; };
-		288BDF190DD44887AAE1A4FB /* poScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poScene.h; path = ../../../src/poScene/poScene.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		3880F36B1B309158008F0AF6 /* Indicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indicator.cpp; path = ../src/Indicator.cpp; sourceTree = "<group>"; };
 		3880F36C1B309158008F0AF6 /* Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indicator.h; path = ../src/Indicator.h; sourceTree = "<group>"; };
-		3E17C0D3BEDE4EB58C086408 /* poEventCenter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poEventCenter.cpp; path = ../../../src/poScene/poEventCenter.cpp; sourceTree = "<group>"; };
-		40560B9D99834F6F9148579B /* poEvents.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poEvents.h; path = ../../../src/poScene/poEvents.h; sourceTree = "<group>"; };
 		408344623D7F4C6688406813 /* ShapeTextureSample_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = ShapeTextureSample_Prefix.pch; sourceTree = "<group>"; };
 		475719DA4A6B4845A29DDCD1 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
-		56B1F84A941A4F2BABA12ECB /* poMatrixSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poMatrixSet.h; path = ../../../src/poScene/poMatrixSet.h; sourceTree = "<group>"; };
-		6A1A5D543C604AC8B6647BF9 /* poMatrixSet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poMatrixSet.cpp; path = ../../../src/poScene/poMatrixSet.cpp; sourceTree = "<group>"; };
-		80E386A46F8D4359BDD4A58B /* poTextBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poTextBox.h; path = ../../../src/poScene/poTextBox.h; sourceTree = "<group>"; };
-		83821661D2B540FFBC4D2C62 /* poScene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poScene.cpp; path = ../../../src/poScene/poScene.cpp; sourceTree = "<group>"; };
 		89EC527EB58149DBB811A7A6 /* ShapeTextureSampleApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = ShapeTextureSampleApp.cpp; path = ../src/ShapeTextureSampleApp.cpp; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShapeTextureSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShapeTextureSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		987FEF1B3CDB4406A0C92080 /* poNodeContainer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poNodeContainer.cpp; path = ../../../src/poScene/poNodeContainer.cpp; sourceTree = "<group>"; };
-		993D45F3E99046CE8FBD07FE /* poShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poShape.h; path = ../../../src/poScene/poShape.h; sourceTree = "<group>"; };
-		A4056C5D71C64CF98C041860 /* poTextBox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poTextBox.cpp; path = ../../../src/poScene/poTextBox.cpp; sourceTree = "<group>"; };
-		A4706DBFA021430FB8988E5B /* poNodeContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNodeContainer.h; path = ../../../src/poScene/poNodeContainer.h; sourceTree = "<group>"; };
-		A4E96D6D93FF4CF6996CE315 /* poNode.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poNode.cpp; path = ../../../src/poScene/poNode.cpp; sourceTree = "<group>"; };
-		A7C6976070A04F62A4C86971 /* poVideo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poVideo.h; path = ../../../src/poScene/poVideo.h; sourceTree = "<group>"; };
-		D934969BFC614C3A905C9B22 /* poNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poNode.h; path = ../../../src/poScene/poNode.h; sourceTree = "<group>"; };
-		E6CB4F35963049529A956B67 /* poTextureFit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = poTextureFit.h; path = ../../../src/poScene/poTextureFit.h; sourceTree = "<group>"; };
+		AA7AD8BF1E1421C4008608B4 /* _DragAndDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DragAndDrop.cpp; sourceTree = "<group>"; };
+		AA7AD8C01E1421C4008608B4 /* _DraggableView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DraggableView.cpp; sourceTree = "<group>"; };
+		AA7AD8C11E1421C4008608B4 /* _EventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _EventCenter.cpp; sourceTree = "<group>"; };
+		AA7AD8C21E1421C4008608B4 /* _Events.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _Events.cpp; sourceTree = "<group>"; };
+		AA7AD8C31E1421C4008608B4 /* _ImageView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _ImageView.cpp; sourceTree = "<group>"; };
+		AA7AD8C41E1421C4008608B4 /* _MatrixSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _MatrixSet.cpp; sourceTree = "<group>"; };
+		AA7AD8C51E1421C4008608B4 /* _Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _Scene.cpp; sourceTree = "<group>"; };
+		AA7AD8C61E1421C4008608B4 /* _ShapeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _ShapeView.cpp; sourceTree = "<group>"; };
+		AA7AD8C71E1421C4008608B4 /* _TextView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _TextView.cpp; sourceTree = "<group>"; };
+		AA7AD8C81E1421C4008608B4 /* _View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _View.cpp; sourceTree = "<group>"; };
+		AA7AD8CB1E1421C4008608B4 /* _ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _ViewController.cpp; sourceTree = "<group>"; };
+		AA7AD8CC1E1421C4008608B4 /* DragAndDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragAndDrop.h; sourceTree = "<group>"; };
+		AA7AD8CD1E1421C4008608B4 /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DraggableView.h; sourceTree = "<group>"; };
+		AA7AD8CE1E1421C4008608B4 /* EventCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventCenter.h; sourceTree = "<group>"; };
+		AA7AD8CF1E1421C4008608B4 /* Events.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Events.h; sourceTree = "<group>"; };
+		AA7AD8D01E1421C4008608B4 /* ImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageView.h; sourceTree = "<group>"; };
+		AA7AD8D11E1421C4008608B4 /* MatrixSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatrixSet.h; sourceTree = "<group>"; };
+		AA7AD8D21E1421C4008608B4 /* Scene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scene.h; sourceTree = "<group>"; };
+		AA7AD8D31E1421C4008608B4 /* ShapeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShapeView.h; sourceTree = "<group>"; };
+		AA7AD8D41E1421C4008608B4 /* TextureFit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureFit.h; sourceTree = "<group>"; };
+		AA7AD8D51E1421C4008608B4 /* TextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextView.h; sourceTree = "<group>"; };
+		AA7AD8D61E1421C4008608B4 /* VideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoView.h; sourceTree = "<group>"; };
+		AA7AD8D71E1421C4008608B4 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		AA7AD8D81E1421C4008608B4 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		AA7AD8D91E1421C4008608B4 /* ViewEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewEvents.h; sourceTree = "<group>"; };
 		EDB2A1DAE6CA497BABB60261 /* ShapeTextureSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ShapeTextureSample.h; path = ../src/ShapeTextureSample.h; sourceTree = "<group>"; };
 		EEEBBE4A25394B6EA298789D /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
-		EF81F6A24A2241EB9C0DCD91 /* poImage.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poImage.cpp; path = ../../../src/poScene/poImage.cpp; sourceTree = "<group>"; };
-		F4585F60DDE04392ACCFF7CC /* poShape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = poShape.cpp; path = ../../../src/poScene/poShape.cpp; sourceTree = "<group>"; };
 		FD332EC32D8A41228A7E376C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -104,7 +111,7 @@
 		01B97315FEAEA392516A2CEA /* Blocks */ = {
 			isa = PBXGroup;
 			children = (
-				DEC1C7EA35B64027AC6C10F5 /* poScene */,
+				AA7AD5781E1421C1008608B4 /* Cinder-poScene */,
 			);
 			name = Blocks;
 			sourceTree = "<group>";
@@ -196,47 +203,53 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		37EE4CD9A5A64E088EC042C6 /* src */ = {
+		AA7AD5781E1421C1008608B4 /* Cinder-poScene */ = {
 			isa = PBXGroup;
 			children = (
-				FA8AA947C72C4D868848C2A6 /* poScene */,
+				AA7AD8BD1E1421C4008608B4 /* src */,
 			);
-			name = src;
+			name = "Cinder-poScene";
+			path = ../../..;
 			sourceTree = "<group>";
 		};
-		DEC1C7EA35B64027AC6C10F5 /* poScene */ = {
+		AA7AD8BD1E1421C4008608B4 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				37EE4CD9A5A64E088EC042C6 /* src */,
+				AA7AD8BE1E1421C4008608B4 /* poScene */,
 			);
-			name = poScene;
+			path = src;
 			sourceTree = "<group>";
 		};
-		FA8AA947C72C4D868848C2A6 /* poScene */ = {
+		AA7AD8BE1E1421C4008608B4 /* poScene */ = {
 			isa = PBXGroup;
 			children = (
-				17D1A6278E7543348841E6AC /* poEventCenter.h */,
-				40560B9D99834F6F9148579B /* poEvents.h */,
-				1FB47A5C1973497FA0752F55 /* poImage.h */,
-				56B1F84A941A4F2BABA12ECB /* poMatrixSet.h */,
-				D934969BFC614C3A905C9B22 /* poNode.h */,
-				A4706DBFA021430FB8988E5B /* poNodeContainer.h */,
-				288BDF190DD44887AAE1A4FB /* poScene.h */,
-				993D45F3E99046CE8FBD07FE /* poShape.h */,
-				80E386A46F8D4359BDD4A58B /* poTextBox.h */,
-				E6CB4F35963049529A956B67 /* poTextureFit.h */,
-				A7C6976070A04F62A4C86971 /* poVideo.h */,
-				3E17C0D3BEDE4EB58C086408 /* poEventCenter.cpp */,
-				0D45886A4CDB4FE5B2107DF8 /* poEvents.cpp */,
-				EF81F6A24A2241EB9C0DCD91 /* poImage.cpp */,
-				6A1A5D543C604AC8B6647BF9 /* poMatrixSet.cpp */,
-				A4E96D6D93FF4CF6996CE315 /* poNode.cpp */,
-				987FEF1B3CDB4406A0C92080 /* poNodeContainer.cpp */,
-				83821661D2B540FFBC4D2C62 /* poScene.cpp */,
-				F4585F60DDE04392ACCFF7CC /* poShape.cpp */,
-				A4056C5D71C64CF98C041860 /* poTextBox.cpp */,
+				AA7AD8BF1E1421C4008608B4 /* _DragAndDrop.cpp */,
+				AA7AD8C01E1421C4008608B4 /* _DraggableView.cpp */,
+				AA7AD8C11E1421C4008608B4 /* _EventCenter.cpp */,
+				AA7AD8C21E1421C4008608B4 /* _Events.cpp */,
+				AA7AD8C31E1421C4008608B4 /* _ImageView.cpp */,
+				AA7AD8C41E1421C4008608B4 /* _MatrixSet.cpp */,
+				AA7AD8C51E1421C4008608B4 /* _Scene.cpp */,
+				AA7AD8C61E1421C4008608B4 /* _ShapeView.cpp */,
+				AA7AD8C71E1421C4008608B4 /* _TextView.cpp */,
+				AA7AD8C81E1421C4008608B4 /* _View.cpp */,
+				AA7AD8CB1E1421C4008608B4 /* _ViewController.cpp */,
+				AA7AD8CC1E1421C4008608B4 /* DragAndDrop.h */,
+				AA7AD8CD1E1421C4008608B4 /* DraggableView.h */,
+				AA7AD8CE1E1421C4008608B4 /* EventCenter.h */,
+				AA7AD8CF1E1421C4008608B4 /* Events.h */,
+				AA7AD8D01E1421C4008608B4 /* ImageView.h */,
+				AA7AD8D11E1421C4008608B4 /* MatrixSet.h */,
+				AA7AD8D21E1421C4008608B4 /* Scene.h */,
+				AA7AD8D31E1421C4008608B4 /* ShapeView.h */,
+				AA7AD8D41E1421C4008608B4 /* TextureFit.h */,
+				AA7AD8D51E1421C4008608B4 /* TextView.h */,
+				AA7AD8D61E1421C4008608B4 /* VideoView.h */,
+				AA7AD8D71E1421C4008608B4 /* View.h */,
+				AA7AD8D81E1421C4008608B4 /* ViewController.h */,
+				AA7AD8D91E1421C4008608B4 /* ViewEvents.h */,
 			);
-			name = poScene;
+			path = poScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,17 +316,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				843F3D67F2F1465EB24E5D76 /* ShapeTextureSampleApp.cpp in Sources */,
+				AA7ADB281E1421C6008608B4 /* _ShapeView.cpp in Sources */,
+				AA7ADB261E1421C6008608B4 /* _MatrixSet.cpp in Sources */,
+				AA7ADB231E1421C6008608B4 /* _EventCenter.cpp in Sources */,
+				AA7ADB2C1E1421C6008608B4 /* _ViewController.cpp in Sources */,
+				AA7ADB221E1421C6008608B4 /* _DraggableView.cpp in Sources */,
 				CE471E897EFE4482BBD9B36C /* ShapeTextureSample.cpp in Sources */,
-				4E8B6173326440CCAC55D6BA /* poEventCenter.cpp in Sources */,
+				AA7ADB291E1421C6008608B4 /* _TextView.cpp in Sources */,
+				AA7ADB2A1E1421C6008608B4 /* _View.cpp in Sources */,
+				AA7ADB241E1421C6008608B4 /* _Events.cpp in Sources */,
+				AA7ADB271E1421C6008608B4 /* _Scene.cpp in Sources */,
+				AA7ADB251E1421C6008608B4 /* _ImageView.cpp in Sources */,
+				AA7ADB211E1421C6008608B4 /* _DragAndDrop.cpp in Sources */,
 				3880F36D1B309158008F0AF6 /* Indicator.cpp in Sources */,
-				469F15E0D0444DA0B4644559 /* poEvents.cpp in Sources */,
-				13B95AD4BE6149AB849DE16F /* poImage.cpp in Sources */,
-				1C8A8CF135B94445A27EDB8C /* poMatrixSet.cpp in Sources */,
-				26170BD990B449BBA1FBA6E9 /* poNode.cpp in Sources */,
-				A9D337B2AB9143DB951AB312 /* poNodeContainer.cpp in Sources */,
-				F83C2799F1874878941BE187 /* poScene.cpp in Sources */,
-				5EA5AD20D8D342C18E261BFA /* poShape.cpp in Sources */,
-				B28DCC76EC2D499FB566D678 /* poTextBox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,7 +356,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/Debug/libcinder.a\"";
 				PRODUCT_NAME = ShapeTextureSample;
 				SYMROOT = ./build;
 				WRAPPER_EXTENSION = app;
@@ -370,7 +385,7 @@
 				HEADER_SEARCH_PATHS = "";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/Release/libcinder.a\"";
 				PRODUCT_NAME = ShapeTextureSample;
 				STRIP_INSTALLED_PRODUCT = YES;
 				SYMROOT = ./build;
@@ -391,7 +406,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
 			name = Debug;
 		};
@@ -408,7 +423,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src/poScene";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
 			name = Release;
 		};
