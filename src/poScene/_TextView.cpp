@@ -88,14 +88,14 @@ namespace po { namespace scene {
     
     ci::Rectf TextView::getBounds()
     {
-		return ci::Rectf(ci::vec2(0), mCiTextBox.getSize());
+		//return ci::Rectf(ci::vec2(0), mCiTextBox.getSize());
 
-        //if(mTexture)
-        //{
-        //    return mTexture->getBounds();
-        //} else {
-        //    return ci::Rectf();
-        //}
+        if(mTexture)
+        {
+            return mTexture->getBounds();
+        } else {
+            return ci::Rectf();
+        }
     }
 
 	void TextView::setFormat(ci::gl::Texture::Format format)
