@@ -15,5 +15,5 @@ DragAndDrop::DragAndDrop()
 
 void DragAndDrop::setup() 
 {
-	mView->addChild(po::scene::DraggableView::create());
+	getView()->addChild(po::scene::DraggableView::create());
 }

@@ -118,7 +118,6 @@ namespace po { namespace scene {
 
 			//Check for intersection
 			ci::Rectf intersection = view1GlobalRect.getClipBy(view2GlobalRect);
-
 			return (intersection.getWidth() > 0 && intersection.getHeight() > 0);
 		}
 

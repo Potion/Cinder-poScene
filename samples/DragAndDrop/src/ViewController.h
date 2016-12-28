@@ -1,7 +1,7 @@
 #pragma once
 
 #include "poScene/ViewController.h"
-
+#include "poScene/ShapeView.h"
 #include "poScene/DragAndDrop.h"
 
 namespace sample {
@@ -11,12 +11,12 @@ namespace sample {
 	class ViewController : public po::scene::ViewController {
 	public:
 		static ViewControllerRef create();
+		void onViewAddedToDragZone( po::scene::DropZoneViewRef dropRef, po::scene::DraggableViewRef dragRef );
 
 	private:
+		
 		ViewController();
-
 		void setup();
-
 		po::scene::DragAndDropViewControllerRef mDragAndDropVC;
 	};
 }

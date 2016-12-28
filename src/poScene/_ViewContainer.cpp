@@ -28,7 +28,7 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "ViewContainer.h"
+#include "_ViewContainer.h"
 #include "Scene.h"
 
 namespace po { namespace scene {

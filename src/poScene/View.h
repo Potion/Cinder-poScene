@@ -521,7 +521,7 @@ namespace po { namespace scene {
         //! Get an Event Signal
 
 		template<typename EventT, typename EventTypeT, typename SignalTypeT>
-		std::shared_ptr<ViewEventController<EventT, typename EventTypeT, SignalTypeT> > getCorrectEventController() {
+		std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT> > getCorrectEventController() {
 			// Try to find an appropriate controller
 			for (auto &controller : mEventControllers) {
 				std::shared_ptr<ViewEventController<EventT, EventTypeT, SignalTypeT>> castController = std::dynamic_pointer_cast< ViewEventController<EventT, EventTypeT, SignalTypeT> >(controller);
@@ -641,7 +641,7 @@ namespace po { namespace scene {
 		std::deque<ViewRef> mChildren;
 
 		//  Set a view's parent to this container and the scene to this container's scene
-		void View::setChildParentAndScene(ViewRef view);
+		void setChildParentAndScene(ViewRef view);
 
         // Animation
         //! Initialize our attribute animations

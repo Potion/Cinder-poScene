@@ -52,11 +52,13 @@ namespace po { namespace scene {
 	void DraggableView::mouseEventHandler(po::scene::MouseEvent &event) {
 		switch(event.getType()) {
 			// Start Dragging
-			case po::scene::MouseEvent::DOWN_INSIDE:
+			case po::scene::MouseEvent::DOWN_INSIDE: {
 				mIsDragging = true;
 				mPrevDragPosition = event.getWindowPos();
-				mSignalDragBegan.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+				DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+				mSignalDragBegan.emit(ref);
 				break;
+			}
 
 			// Move if we are dragging
 			case po::scene::MouseEvent::DRAG:
@@ -66,8 +68,8 @@ namespace po { namespace scene {
 						setPosition( getPosition() + ( event.getWindowPos() - mPrevDragPosition ) );
 						mPrevDragPosition = event.getWindowPos();
 					}
-
-					mSignalDragged.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+					DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+					mSignalDragged.emit(ref);
 				}
 				break;
 
@@ -75,7 +77,8 @@ namespace po { namespace scene {
 			case po::scene::MouseEvent::UP:
 				if(mIsDragging) {
 					mIsDragging = false;
-					mSignalDragEnded.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+					DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+					mSignalDragEnded.emit(ref);
 				}
 				break;
 		}
@@ -84,15 +87,15 @@ namespace po { namespace scene {
 	void DraggableView::touchEventHandler(po::scene::TouchEvent &event) {
 		switch (event.getType()) {
 			// Start Dragging
-		case po::scene::TouchEvent::BEGAN_INSIDE:
-			if(mIsDragging) return;
-
-			mIsDragging = true;
-			mDraggingEventID = event.getCiEvent().getId();
-			mPrevDragPosition = event.getWindowPos();
-
-			mSignalDragBegan.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
-			break;
+			case po::scene::TouchEvent::BEGAN_INSIDE: {
+				if(mIsDragging) return;
+				mIsDragging = true;
+				mDraggingEventID = event.getCiEvent().getId();
+				mPrevDragPosition = event.getWindowPos();
+				DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+				mSignalDragBegan.emit(ref);
+				break;
+			}
 
 			// Move if we are dragging
 		case po::scene::TouchEvent::MOVED:
@@ -102,8 +105,8 @@ namespace po { namespace scene {
 					setPosition(getPosition() + (event.getWindowPos() - mPrevDragPosition));
 					mPrevDragPosition = event.getWindowPos();
 				}
-
-				mSignalDragged.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+				DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+				mSignalDragged.emit(ref);
 			}
 			break;
 
@@ -112,7 +115,8 @@ namespace po { namespace scene {
 			if (mIsDragging && event.getCiEvent().getId() == mDraggingEventID) {
 				mIsDragging = false;
 				mDraggingEventID = DRAGGING_EVENT_ID_NONE;
-				mSignalDragEnded.emit(std::static_pointer_cast<DraggableView>(shared_from_this()));
+				DraggableViewRef ref = std::static_pointer_cast<DraggableView>(shared_from_this());
+				mSignalDragEnded.emit(ref);
 			}
 			break;
 		}

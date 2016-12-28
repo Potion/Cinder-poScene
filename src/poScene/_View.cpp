@@ -1036,8 +1036,8 @@ namespace po { namespace scene {
 	
     void View::drawBounds()
     {
-        ci::gl::ScopedColor color(ci::Color(mBoundsColor));
-        
+        ci::gl::ScopedColor color( (ci::Color(mBoundsColor)) );
+		
         //	Draw bounding box
         ci::gl::drawStrokedRect(getBounds());
         
