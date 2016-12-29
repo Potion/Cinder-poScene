@@ -110,7 +110,7 @@ namespace po { namespace scene {
     template<class T>
     ci::Rectf VideoView<T>::getBounds()
     {
-        if (mMovieRef != nullptr) return mMovieRef->getBounds();
+		if (mMovieRef != nullptr) return ci::Rectf(ci::vec2(0), mMovieRef->getTexture()->getSize());
         return ci::Rectf(0, 0, 0, 0);
     }
 	
@@ -126,8 +126,10 @@ namespace po { namespace scene {
     
     //	Template ref and GL ref
     template<class T> using VideoViewRef = std::shared_ptr< VideoView<T> >;
-    
+
+#if ! defined(  CINDER_MSW ) && ! defined( CINDER_LINUX )
     typedef VideoView<ci::qtime::MovieGl> VideoViewGl;
     typedef std::shared_ptr<VideoViewGl> VideoViewGlRef;
+#endif
 	
 } } //  namespace po::scene
