@@ -96,10 +96,6 @@ namespace po { namespace scene {
 	}
 
 	bool DragAndDropViewController::checkForIntersection(ViewRef view1, ViewRef view2) {
-		ci::vec2 windowPos = view1->localToWindow(view1->getBounds().getCenter());
-
-		return view2->pointInside(windowPos);
-
 		if (view1->hasParent() && view2->hasParent()) {
 			ci::vec2 tl = view1->getParent()->localToWindow(view1->getFrame().getUpperLeft());
 			ci::vec2 br = view1->getParent()->localToWindow(view1->getFrame().getLowerRight());

@@ -405,8 +405,7 @@ namespace po { namespace scene {
         // Whole pixel snapping
         // Snap coordinates (position + offset) to whole pixels
         // This does not affect parent View
-        
-        //! Set the matrix order
+
 		virtual View &setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
 		virtual bool getPixelSnapping() { return mPixelSnapping; }
         
@@ -624,7 +623,7 @@ namespace po { namespace scene {
         
     private:
         // Private attributes
-        ci::vec2 mPosition;
+		ci::vec2 mPosition;
         ci::vec2 mScale;
         float mRotation;
         ci::vec2 mOffset;

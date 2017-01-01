@@ -53,9 +53,10 @@ namespace po { namespace scene {
 
         //! Create with a default (blank) ci::TextBox
 		static TextViewRef create();
+
 		//! Create with a ci::TextBox and Texture Format for rendering
 		static TextViewRef create(ci::TextBox ciTextBox, ci::gl::Texture::Format format);
-		
+
         //! Draw the texture generated from the ci::TextBox
 		void draw();
 		
@@ -85,7 +86,6 @@ namespace po { namespace scene {
 		bool mUseTextBounds;
 		ci::gl::Texture::Format mFormat;
 		bool mHasFormat;
-		
 	};
 		
 } } //  namespace po::scene
