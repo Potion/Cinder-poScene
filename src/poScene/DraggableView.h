@@ -44,11 +44,11 @@ namespace po { namespace scene {
 		// Signals
 		DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
 
-	private:
 		void handleDragStartEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
 		void handleDragEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
 		void handleDragEndEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
 
+	private:
 		void mouseEventHandler(po::scene::MouseEvent &event);
 		void touchEventHandler(po::scene::TouchEvent &event);
 
