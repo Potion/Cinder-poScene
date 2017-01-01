@@ -25,6 +25,8 @@ namespace po { namespace scene {
 		void setSnapsBackToPosition(bool snapsBackToPosition) { mSnapsBack = snapsBackToPosition; }
 		bool getSnapsBackToPosition() { return mSnapsBack; }
 
+		ci::vec2 getDragWindowPos() { return localToWindow(mDragPosition); };
+
 		DraggableViewSignal &getSignalDragBegan()	{ return mSignalDragBegan;	};
 		DraggableViewSignal &getSignalDragged()		{ return mSignalDragged;	};
 		DraggableViewSignal &getSignalDragEnded()	{ return mSignalDragEnded;	};
@@ -34,15 +36,18 @@ namespace po { namespace scene {
 		DraggableView(ci::vec2 snapBackPosition);
 
 		bool mIsDragging;
-		ci::vec2 mPrevDragPosition;
+		ci::vec2 mDragPosition, mPrevDragPosition;
 
 		static const int DRAGGING_EVENT_ID_NONE = -1;
-		int mDraggingEventID;
+		int mDraggingEventId;
 
 		// Signals
 		DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
 
 	private:
+		void handleDragStartEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
+		void handleDragEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
+		void handleDragEndEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventID);
 
 		void mouseEventHandler(po::scene::MouseEvent &event);
 		void touchEventHandler(po::scene::TouchEvent &event);
