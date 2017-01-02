@@ -280,10 +280,12 @@ namespace po { namespace scene {
     {
         //	Save the window buffer
         {
-            
             //  Draw ourself into FBO
             ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
             ci::gl::clear(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f));
+			ci::gl::clear();
+
+			ci::gl::ScopedModelMatrix();
             draw();
         }
         
@@ -291,17 +293,15 @@ namespace po { namespace scene {
             //  Draw mask into Masking FBO (replace with Mask buffer in GLNext)
             ci::gl::ScopedFramebuffer buffer(getScene()->getMaskFbo());
             ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
-            ci::gl::pushModelView();
-            //ci::gl::translate(-getPosition());
+			//ci::gl::clear();
+
+			ci::gl::ScopedModelMatrix();
             mMask->drawTree();
-            ci::gl::popModelView();
         }
     }
     
     void View::drawMasked()
-    {
-        ci::gl::enableAlphaBlending();
-        
+    {   
         ci::gl::pushModelView();
         ci::gl::setMatricesWindow(ci::app::getWindowSize());
         
@@ -317,6 +317,9 @@ namespace po { namespace scene {
         mMaskShader->uniform("mask", 1);
 
         //	Draw
+		ci::gl::ScopedBlendAlpha alphaBlendScoped;
+		ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
+
         ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
         
         ci::gl::popModelView();

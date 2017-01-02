@@ -159,6 +159,7 @@ namespace po { namespace scene {
         ci::gl::Fbo::Format format;
         format.setSamples(1);
         format.enableDepthBuffer(false);
+		format.setColorTextureFormat(ci::gl::Texture2d::Format().internalFormat(GL_RGBA32F));
         
         mFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
         mMaskFbo = ci::gl::Fbo::create(ci::app::getWindowWidth(), ci::app::getWindowHeight(), format);
