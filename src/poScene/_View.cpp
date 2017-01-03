@@ -282,8 +282,7 @@ namespace po { namespace scene {
         {
             //  Draw ourself into FBO
             ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
-            ci::gl::clear(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f));
-			ci::gl::clear();
+            ci::gl::clear(ci::ColorA::zero());
 
 			ci::gl::ScopedModelMatrix();
             draw();
@@ -292,8 +291,7 @@ namespace po { namespace scene {
         {
             //  Draw mask into Masking FBO (replace with Mask buffer in GLNext)
             ci::gl::ScopedFramebuffer buffer(getScene()->getMaskFbo());
-            ci::gl::clear(ci::ColorA(0.0f, 0.0f, 0.0f, 0.0f));
-			//ci::gl::clear();
+            ci::gl::clear(ci::ColorA::zero());
 
 			ci::gl::ScopedModelMatrix();
             mMask->drawTree();
