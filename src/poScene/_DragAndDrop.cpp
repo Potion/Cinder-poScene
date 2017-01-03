@@ -137,7 +137,9 @@ namespace po { namespace scene {
 	}
 
 	bool DragAndDropViewController::setDropZoneHighlightForView(DraggableViewRef view, DropZoneViewRef dropZone) {
-		if (checkForIntersection(view, dropZone)) {
+
+		if(dropZone->pointInside(view->getDragWindowPos())) {
+		//if (checkForIntersection(view, dropZone)) {
 			dropZone->setHighlighted(true);
 			return true;
 		}
@@ -162,7 +164,8 @@ namespace po { namespace scene {
 	void DragAndDropViewController::viewDragEndedHandler(DraggableViewRef &view) {
 		DropZoneViewRef dropZone = mDraggableViewValidDropZones[view];
 		if (dropZone != nullptr) {
-			if (checkForIntersection(view, dropZone)) {
+			if (dropZone->pointInside(view->getDragWindowPos())) {
+			//if (checkForIntersection(view, dropZone)) {
 				if (dropZone->addDraggableView(view)) {
 					mSignalViewAddedToDropZone.emit(dropZone, view);
 					return;
@@ -172,7 +175,8 @@ namespace po { namespace scene {
 		else {
 
 			for (auto &dropZone : mDropZoneViews) {
-				if (checkForIntersection(view, dropZone)) {
+				if (dropZone->pointInside(view->getDragWindowPos())) {
+				//if (checkForIntersection(view, dropZone)) {
 					if (dropZone->addDraggableView(view)) {
 						mSignalViewAddedToDropZone.emit(dropZone, view);
 						return;

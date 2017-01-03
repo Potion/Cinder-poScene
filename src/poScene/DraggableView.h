@@ -25,7 +25,7 @@ namespace po { namespace scene {
 		void setSnapsBackToPosition(bool snapsBackToPosition) { mSnapsBack = snapsBackToPosition; }
 		bool getSnapsBackToPosition() { return mSnapsBack; }
 
-		ci::vec2 getDragWindowPos() { return localToWindow(mDragPosition); };
+		ci::vec2 getDragWindowPos() { return mPrevDragPosition; };
 
 		DraggableViewSignal &getSignalDragBegan()	{ return mSignalDragBegan;	};
 		DraggableViewSignal &getSignalDragged()		{ return mSignalDragged;	};

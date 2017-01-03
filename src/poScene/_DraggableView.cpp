@@ -50,7 +50,6 @@ namespace po { namespace scene {
 	}
 
 	void DraggableView::handleDragStartEvent(ci::vec2 localPos, ci::vec2 windowPos, int eventId) {
-		mDragPosition = windowPos;
 		mPrevDragPosition = windowPos;
 		mDraggingEventId = eventId;
 
