@@ -65,6 +65,7 @@ private:
 
 	void setup();
 
+	bool checkForIntersection(DraggableViewRef view, DropZoneViewRef dropZone);
 	bool checkForIntersection(ViewRef view1, ViewRef view2);
 
 	std::vector<DraggableViewRef> mDraggableViews;
