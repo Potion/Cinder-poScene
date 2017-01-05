@@ -52,11 +52,14 @@ public:
 	DragAndDropSignal& getSignalViewAddedToDropZone() { return mSignalViewAddedToDropZone; };
 	DragAndDropSignal& getSignalViewRemovedFromDropZone() { return mSignalViewRemovedFromDropZone; };
 
-	void trackDraggableView(DraggableViewRef view, DropZoneViewRef dropZone = nullptr);
+	void trackDraggableView(DraggableViewRef view, DropZoneViewRef dropZone);
 	void trackDropZoneView(DropZoneViewRef view);
 
 	const std::vector<DraggableViewRef> &getDraggableViews() { return mDraggableViews; };
 	const std::vector<DropZoneViewRef> &getDropZoneViews() { return mDropZoneViews; };
+
+	std::vector<DropZoneViewRef> getValidDropZonesForView(DraggableViewRef view);
+	bool viewIsValidForDropZone(DraggableViewRef view, DropZoneViewRef dropZone);
 
 protected:
 
@@ -71,7 +74,7 @@ private:
 	std::vector<DraggableViewRef> mDraggableViews;
 	std::vector<DropZoneViewRef> mDropZoneViews;
 
-	std::map<DraggableViewRef, DropZoneViewRef> mDraggableViewValidDropZones;
+	std::map<DraggableViewRef, std::vector<DropZoneViewRef> > mDraggableViewValidDropZones;
 
 	bool setDropZoneHighlightForView(DraggableViewRef view, DropZoneViewRef dropZone);
 

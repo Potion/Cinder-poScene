@@ -70,20 +70,15 @@ namespace po { namespace scene {
 	}
 
 	void DragAndDropViewController::trackDraggableView(DraggableViewRef view, DropZoneViewRef dropZone) {
-		if (std::find(mDraggableViews.begin(), mDraggableViews.end(), view) != mDraggableViews.end()) {
-			//Already exists, throw exception or something?
-			return;
+		if (std::find(mDraggableViews.begin(), mDraggableViews.end(), view) == mDraggableViews.end()) {
+			mDraggableViews.push_back(view);
+
+			mConnections += view->getSignalDragBegan().connect(std::bind(&DragAndDropViewController::viewDragBeganHandler, this, std::placeholders::_1));
+			mConnections += view->getSignalDragged().connect(std::bind(&DragAndDropViewController::viewDraggedHandler, this, std::placeholders::_1));
+			mConnections += view->getSignalDragEnded().connect(std::bind(&DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1));
 		}
 
-		mDraggableViews.push_back(view);
-
-		if (dropZone != nullptr) {
-			mDraggableViewValidDropZones[view] = dropZone;
-		}
-
-		mConnections += view->getSignalDragBegan().connect(std::bind(&DragAndDropViewController::viewDragBeganHandler, this, std::placeholders::_1));
-		mConnections += view->getSignalDragged().connect(std::bind(&DragAndDropViewController::viewDraggedHandler, this, std::placeholders::_1));
-		mConnections += view->getSignalDragEnded().connect(std::bind(&DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1));
+		mDraggableViewValidDropZones[view].push_back(dropZone);
 	}
 
 	void DragAndDropViewController::trackDropZoneView(DropZoneViewRef view) {
@@ -94,6 +89,25 @@ namespace po { namespace scene {
 
 		mDropZoneViews.push_back(view);
 	}
+
+	std::vector<DropZoneViewRef> DragAndDropViewController::getValidDropZonesForView(DraggableViewRef view) {
+		if (mDraggableViewValidDropZones.count(view) == 0) {
+			return std::vector<DropZoneViewRef>();
+		}
+		else {
+			return mDraggableViewValidDropZones[view];
+		}
+	}
+	bool DragAndDropViewController::viewIsValidForDropZone(DraggableViewRef view, DropZoneViewRef dropZone) {
+		if (mDraggableViewValidDropZones.count(view) != 0) {
+			if (std::find(mDraggableViewValidDropZones[view].begin(), mDraggableViewValidDropZones[view].end(), dropZone) != mDraggableViewValidDropZones[view].end()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
 	bool DragAndDropViewController::checkForIntersection(DraggableViewRef view, DropZoneViewRef dropZone) {
 		return (dropZone->pointInside(view->getDragWindowPos()));
 	}
@@ -150,11 +164,8 @@ namespace po { namespace scene {
 		}
 	}
 	void DragAndDropViewController::viewDraggedHandler(DraggableViewRef &view) {
-		if (mDraggableViewValidDropZones[view] != nullptr) {
-			setDropZoneHighlightForView(view, mDraggableViewValidDropZones[view]);
-		}
-		else {
-			for (auto &dropZone : mDropZoneViews) {
+		if (mDraggableViewValidDropZones.count(view) != 0) {
+			for (auto &dropZone : mDraggableViewValidDropZones[view]) {
 				if (setDropZoneHighlightForView(view, dropZone)) {
 					return;
 				}
@@ -163,18 +174,8 @@ namespace po { namespace scene {
 	}
 
 	void DragAndDropViewController::viewDragEndedHandler(DraggableViewRef &view) {
-		DropZoneViewRef dropZone = mDraggableViewValidDropZones[view];
-		if (dropZone != nullptr) {
-			if (checkForIntersection(view, dropZone)) {
-				if (dropZone->addDraggableView(view)) {
-					mSignalViewAddedToDropZone.emit(dropZone, view);
-					return;
-				}
-			}
-		}
-		else {
-
-			for (auto &dropZone : mDropZoneViews) {
+		if (mDraggableViewValidDropZones.count(view) != 0) {
+			for (auto &dropZone : mDraggableViewValidDropZones[view]) {
 				if (checkForIntersection(view, dropZone)) {
 					if (dropZone->addDraggableView(view)) {
 						mSignalViewAddedToDropZone.emit(dropZone, view);
