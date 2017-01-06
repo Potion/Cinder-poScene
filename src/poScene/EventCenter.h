@@ -102,7 +102,7 @@ namespace po { namespace scene {
 		{
 			for (ViewRef &view : views) {
 				//	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-				if ( view == nullptr || (!view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType())) ) continue;
+				if ( view == nullptr || !(view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType())) ) continue;
 				
 				event.setPropagationEnabled(true);
 
@@ -116,7 +116,9 @@ namespace po { namespace scene {
 		{
 			//	Go through the draw tree, notifying views that are listening
 			for (ViewRef &view : views) {
-				if ( view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType()) && hitTest(view, event) ) {
+				if ( view->isEligibleForInteractionEvents()
+					&& view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>(event.getType()) 
+					&& hitTest(view, event) ) {
 					view->emitEventT<EventT, EventTypeT, SignalTypeT>(event);
 					if (event.getPropagationEnabled()) {
 						event.setPropagationEnabled(false);

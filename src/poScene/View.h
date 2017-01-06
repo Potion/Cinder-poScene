@@ -564,6 +564,9 @@ namespace po { namespace scene {
 
 		std::vector<ViewEventControllerBaseRef> mEventControllers;
 
+		//! Determine if this View is visible, has a scene and parent, etc.
+		bool isEligibleForInteractionEvents();
+
     protected:
         // Constructor
         View(std::string name = "");
@@ -713,12 +716,7 @@ namespace po { namespace scene {
         uint32_t mDrawOrder;
         uint32_t mUid;
         
-        //------------------------------------
-        //  Interaction Events
-        //------------------------------------
-		
-        //! Determine if this View is visible, has a scene and parent, etc.
-        bool isEligibleForInteractionEvents();
+        
 		
         
         //------------------------------------
