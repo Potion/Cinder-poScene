@@ -174,11 +174,16 @@ namespace po { namespace scene {
         //	Call our update function
         update();
 
-		//	Update children
-		std::deque<ViewRef> children(mChildren);
+		//	Update subviews
+		// TODO: I think this copy is a holdover from the switch to deque from vector
+		// not sure if we still need it 
+		// -SV
+		std::deque<ViewRef> subviews(mSubviews);
 
-		for (ViewRef &childView : children) {
-			if (childView->mVisible && childView->hasParent()) childView->updateTree();
+		for (ViewRef &subview : subviews) {
+			if (subview->mVisible && subview->hasParent()) {
+				subview->updateTree();
+			}
 		}
     }
 
@@ -202,8 +207,8 @@ namespace po { namespace scene {
 
 	void View::draw()
 	{
-		for (ViewRef &childView : mChildren) {
-			childView->drawTree();
+		for (ViewRef &subview : mSubviews) {
+			subview->drawTree();
 		}
 	}
 	
@@ -256,8 +261,8 @@ namespace po { namespace scene {
     {
 		beginDrawTree();
 
-		for (ViewRef &childView : mChildren) {
-			childView->matrixTree();
+		for (ViewRef &subview : mSubviews) {
+			subview->matrixTree();
 		}
 
 		finishDrawTree();
@@ -499,7 +504,7 @@ namespace po { namespace scene {
     
     //
     //	Check if we are visible, and up the scene graph
-	//	Somewhat slow, could be better implementation (i.e. parents set a var on their children like "parentIsVisible")
+	//	Somewhat slow, could be better implementation (i.e. parents set a var on their subviews like "parentIsVisible")
 	//
     bool View::isVisible()
     {
@@ -699,10 +704,10 @@ namespace po { namespace scene {
         mHasScene = mScene.lock() ? true : false;
 
         if (hasScene()) {
-			mScene.lock()->trackChildView(shared_from_this());
+			mScene.lock()->trackView(shared_from_this());
 
-			for (ViewRef &childView : mChildren) {
-				childView->setScene(scene);
+			for (ViewRef &subview : mSubviews) {
+				subview->setScene(scene);
 			}
 		};
     }
@@ -715,10 +720,10 @@ namespace po { namespace scene {
     {
         SceneRef scene = mScene.lock();
         if (scene) {
-			scene->untrackChildView(shared_from_this());
+			scene->untrackView(shared_from_this());
 
-			for (ViewRef &childView : mChildren) {
-				childView->removeScene();
+			for (ViewRef &subview : mSubviews) {
+				subview->removeScene();
 			}
 		}
 
@@ -743,11 +748,11 @@ namespace po { namespace scene {
         mHasParent = false;
     }
 
-	void View::setChildParentAndScene(ViewRef view)
+	void View::setSubviewParentAndScene(ViewRef view)
 	{
-		//	See if the View is already a child of another View.
+		//	See if the View is already a subview of another View.
 		if (view->getParent() != nullptr) {
-			view->getParent()->removeChild(view);
+			view->getParent()->removeSubview(view);
 		}
 
 		//	Assign ourselves as the parent
@@ -758,27 +763,27 @@ namespace po { namespace scene {
 
 
 	//------------------------------------
-	//  Children
+	//  Subviews
 	//------------------------------------
 
 	//
-	//  Add Children
+	//  Add Subview
 	//
 
-	View &View::addChild(ViewRef View)
+	View &View::addSubview(ViewRef view)
 	{
-		setParentAndScene(View);
-		mChildren.push_back(View);
+		setParentAndScene(view);
+		mSubviews.push_back(view);
 		setAlignment(getAlignment());
 		calculateMatrices();
 
 		return *this;
 	}
 
-	View &View::addChildren(std::vector<ViewRef> Views) {
-		for (auto &View : Views) {
-			setParentAndScene(View);
-			mChildren.push_back(View);
+	View &View::addSubviews(std::vector<ViewRef> views) {
+		for (auto &view : views) {
+			setParentAndScene(view);
+			mSubviews.push_back(view);
 		}
 
 		setAlignment(getAlignment());
@@ -787,30 +792,30 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::addChildAt(int index, ViewRef View)
+	View &View::insertSubviewAt(int index, ViewRef view)
 	{
-		setParentAndScene(View);
-		mChildren.insert(mChildren.begin() + index, View);
+		setParentAndScene(view);
+		mSubviews.insert(mSubviews.begin() + index, view);
 		setAlignment(getAlignment());
 		calculateMatrices();
 
 		return *this;
 	}
 
-	View &View::addChildBefore(ViewRef before, ViewRef View)
+	View &View::insertSubviewBefore(ViewRef view, ViewRef before)
 	{
-		setParentAndScene(View);
-		mChildren.insert(mChildren.begin() + getChildIndex(before), View);
+		setParentAndScene(view);
+		mSubviews.insert(mSubviews.begin() + getIndexForSubview(before), view);
 		setAlignment(getAlignment());
 		calculateMatrices();
 
 		return *this;
 	}
 
-	View &View::addChildAfter(ViewRef after, ViewRef View)
+	View &View::insertSubviewAfter(ViewRef view, ViewRef after)
 	{
-		setParentAndScene(View);
-		mChildren.insert(mChildren.begin() + getChildIndex(after) + 1, View);
+		setParentAndScene(view);
+		mSubviews.insert(mSubviews.begin() + getIndexForSubview(after) + 1, view);
 		setAlignment(getAlignment());
 		calculateMatrices();
 
@@ -818,95 +823,94 @@ namespace po { namespace scene {
 	}
 
 	//
-	//  Get Children
+	//  Get Subviews
 	//
 
-	std::deque<ViewRef> View::getChildren()
+	const std::deque<ViewRef>& View::getSubviews()
 	{
-		return mChildren;
+		return mSubviews;
 	};
 
-	std::deque<ViewRef> &View::getChildrenByReference()
+	bool View::hasSubviews()
 	{
-		return mChildren;
+		return (mSubviews.size() != 0);
 	}
 
-	bool View::hasChildren()
-	{
-		return (mChildren.size() != 0);
-	}
-
-	bool View::hasChild(ViewRef view)
+	bool View::hasSubview(ViewRef view)
 	{
 		return view->getParent()->getUID() == getUID();
 	}
 
-	int View::getChildIndex(const ViewRef &child)
+	int View::getIndexForSubview(const ViewRef &view)
 	{
-		std::deque<ViewRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), child);
-		if (iter != mChildren.end()) return (int)std::distance(mChildren.begin(), iter);
-		return INVALID_INDEX;
+		std::deque<ViewRef>::iterator iter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if (iter != mSubviews.end()) return (int)std::distance(mSubviews.begin(), iter);
+		return INVALID_SUBVIEW_INDEX;
 	}
 
-	ViewRef View::getChildByIndex(int index)
+	ViewRef View::getSubviewForIndex(int index)
 	{
-		if ( index < 0 || index >= mChildren.size() ) return ViewRef();
-		return *(mChildren.begin() + index);
+		if ( index < 0 || index >= mSubviews.size() ) return ViewRef();
+		return *(mSubviews.begin() + index);
 	}
 
-	ViewRef View::getChildByUID(uint32_t uid)
+	ViewRef View::getSubviewForUID(uint32_t uid)
 	{
 		//	See if it is us
 		// NOTE: I don't like this so commenting out - Steve
 		//if (mUid == uid) return shared_from_this();
 
 		//	Go through our tree to find any View with UID
-		for (ViewRef &view : mChildren) {
+		for (ViewRef &view : mSubviews) {
 			if(view->getUID() == uid) { 
 				return view;
 			} else {
-				ViewRef foundView = view->getChildByUID(uid);
+				ViewRef foundView = view->getSubviewForUID(uid);
 				if (foundView) return foundView;
 			}
 		}
 
 		//	Not found
-		return ViewRef();
+		return nullptr;
 	}
 
-	ViewRef View::getChildByName(const std::string &name)
+	ViewRef View::getSubviewForName(const std::string &name)
 	{
-		for (ViewRef& View : mChildren) {
-			if (View->getName() == name) return View;
+		for (ViewRef& view : mSubviews) {
+			if (view->getName() == name) return view;
+		}
+		return nullptr;
+	}
+
+	ViewRef View::getFirstSubview()
+	{
+		if (mSubviews.empty()) {
+			return nullptr;
+		}
+		return mSubviews.front();
+	}
+
+	ViewRef View::getLastSubview()
+	{
+		if (mSubviews.empty()) {
+			return nullptr;
 		}
 
-		return ViewRef();
-	}
-
-	ViewRef View::getFirstChild()
-	{
-		if (mChildren.empty()) return ViewRef();
-		return mChildren.front();
-	}
-
-	ViewRef View::getLastChild()
-	{
-		if (mChildren.empty()) return ViewRef();
-		return mChildren.back();
+		return mSubviews.back();
 	}
 
 	//
-	//  Remove Children
+	//  Remove Subview
 	//
 
-	ViewRef View::removeChild(ViewRef view)
+	ViewRef View::removeSubview(ViewRef view)
 	{
-		std::deque<ViewRef>::iterator iter = std::find(mChildren.begin(), mChildren.end(), view);
-		if (iter != mChildren.end()) {
+		std::deque<ViewRef>::iterator iter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if (iter != mSubviews.end()) {
 			(*iter)->removeParent();
 			(*iter)->removeScene();
 
-			mChildren.erase(iter);
+			mSubviews.erase(iter);
 
 			setAlignment(getAlignment());
 
@@ -916,77 +920,77 @@ namespace po { namespace scene {
 		}
 	}
 
-	ViewRef View::removeChildAt(int index)
+	ViewRef View::removeSubviewAtIndex(int index)
 	{
-		if ( index <= 0 || index >= mChildren.size() ) {
+		if ( index <= 0 || index >= mSubviews.size() ) {
 			return nullptr;
 		} else {
-			ViewRef child = mChildren[index];
+			ViewRef subview = mSubviews[index];
 
-			mChildren.erase(mChildren.begin() + index);
+			mSubviews.erase(mSubviews.begin() + index);
 
-			child->removeParent();
-			child->removeScene();
+			subview->removeParent();
+			subview->removeScene();
 
 			setAlignment(getAlignment());
 
-			return child;
+			return subview;
 		}
 	}
 
-	void View::removeAllChildren()
+	void View::removeAllSubviews()
 	{
-		for (ViewRef &view : mChildren) {
+		for (ViewRef &view : mSubviews) {
 			view->removeParent();
 			view->removeScene();
 		}
 
 		setAlignment(getAlignment());
 
-		mChildren.clear();
+		mSubviews.clear();
 	}
 
 	//
-	//  Move Children
+	//  Move Subviews
 	//
 
-	View &View::moveChildToFront(ViewRef View)
+	View &View::moveSubviewToFront(ViewRef view)
 	{
-		auto ViewIter = std::find(mChildren.begin(), mChildren.end(), View);
-		if (ViewIter != mChildren.end()) {
-			mChildren.erase(ViewIter);
-			mChildren.push_back(View);
+		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if (viewIter != mSubviews.end()) {
+			mSubviews.erase(viewIter);
+			mSubviews.push_back(view);
 		}
 
 		return *this;
 	}
 
-	View &View::moveChildForward(ViewRef View)
+	View &View::moveSubviewForward(ViewRef view)
 	{
-		auto ViewIter = std::find(mChildren.begin(), mChildren.end(), View);
-		if ( ViewIter != mChildren.end() && *ViewIter != mChildren.back() ) {
-			std::iter_swap(ViewIter, ++ViewIter);
+		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if ( viewIter != mSubviews.end() && *viewIter != mSubviews.back() ) {
+			std::iter_swap(viewIter, ++viewIter);
 		}
 
 		return *this;
 	}
 
-	View &View::moveChildToBack(ViewRef View)
+	View &View::moveSubviewToBack(ViewRef view)
 	{
-		auto ViewIter = std::find(mChildren.begin(), mChildren.end(), View);
-		if (ViewIter != mChildren.end()) {
-			mChildren.erase(ViewIter);
-			mChildren.push_front(View);
+		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if (viewIter != mSubviews.end()) {
+			mSubviews.erase(viewIter);
+			mSubviews.push_front(view);
 		}
 
 		return *this;
 	}
 
-	View &View::moveChildBackward(ViewRef View)
+	View &View::moveSubviewBackward(ViewRef view)
 	{
-		auto ViewIter = std::find(mChildren.begin(), mChildren.end(), View);
-		if ( ViewIter != mChildren.end() && *ViewIter != mChildren.front() ) {
-			std::iter_swap(ViewIter, --ViewIter);
+		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
+		if ( viewIter != mSubviews.end() && *viewIter != mSubviews.front() ) {
+			std::iter_swap(viewIter, --viewIter);
 		}
 
 		return *this;
@@ -998,9 +1002,9 @@ namespace po { namespace scene {
 			return;
 		}
 
-		//	See if the View is already a child of another View.
+		//	See if the View is already a subview of another View.
 		if (view->getParent() != nullptr) {
-			view->getParent()->removeChild(view);
+			view->getParent()->removeSubview(view);
 		}
 
 		//	Assign ourselves as the parent
@@ -1023,9 +1027,11 @@ namespace po { namespace scene {
 			// Reset Bounds
 			ci::Rectf bounds = ci::Rectf(0, 0, 0, 0);
 
-			// Get bounds from children
-			for (ViewRef &childView : mChildren) {
-				if (childView->mVisible && !childView->getParentShouldIgnoreInBounds()) bounds.include(childView->getFrame());
+			// Get bounds from subviews
+			for (ViewRef &subview : mSubviews) {
+				if (subview->mVisible && !subview->getParentShouldIgnoreInBounds()) {
+					bounds.include(subview->getFrame());
+				}
 			}
 
 			return bounds;

@@ -105,9 +105,9 @@ namespace po { namespace scene {
         EventCenterRef mEventCenter;
         
         //	Internal tracking functions
-        void trackChildView(ViewRef View);
-        void untrackChildView(ViewRef View);
-        std::vector<ViewRef> allChildren;
+        void trackView(ViewRef View);
+        void untrackView(ViewRef View);
+        std::vector<ViewRef> allViews;
         
         // Fbo's for use by Views
         std::shared_ptr<ci::gl::Fbo> getWindowFbo() { return mFbo; };

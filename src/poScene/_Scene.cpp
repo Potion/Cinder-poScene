@@ -67,7 +67,7 @@ namespace po { namespace scene {
     {
         //	Send a copy of all over our children to be processed
         //processTrackingQueue();
-        mEventCenter->processEvents(allChildren);
+        mEventCenter->processEvents(allViews);
         
         mRootViewController->getView()->updateTree();
         
@@ -95,28 +95,27 @@ namespace po { namespace scene {
         }
     }
     
-    
     //------------------------------------
     //	Child View Tracking
 	//------------------------------------
     
-    void Scene::trackChildView(ViewRef View) {
+    void Scene::trackView(ViewRef View) {
         if (View) {
             //mTrackingQueue[View] = true;
             
-            std::vector<ViewRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), View);
-            if (iter == allChildren.end()) {
-                allChildren.push_back(View);
+            std::vector<ViewRef>::iterator iter = std::find(allViews.begin(), allViews.end(), View);
+            if (iter == allViews.end()) {
+                allViews.push_back(View);
             }
         }
     }
     
-    void Scene::untrackChildView(ViewRef View) {
+    void Scene::untrackView(ViewRef View) {
         if (View) {
             //mTrackingQueue[View] = false;
-            std::vector<ViewRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), View);
-            if (iter != allChildren.end()) {
-                allChildren.erase(iter);
+            std::vector<ViewRef>::iterator iter = std::find(allViews.begin(), allViews.end(), View);
+            if (iter != allViews.end()) {
+                allViews.erase(iter);
             }
         }
     }
@@ -125,11 +124,11 @@ namespace po { namespace scene {
     {
         for (auto &kv : mTrackingQueue) {
             if (kv.first) {
-                std::vector<ViewRef>::iterator iter = std::find(allChildren.begin(), allChildren.end(), kv.first);
-                if ( kv.second && iter == allChildren.end() ) {
-                    allChildren.push_back(kv.first);
+                std::vector<ViewRef>::iterator iter = std::find(allViews.begin(), allViews.end(), kv.first);
+                if ( kv.second && iter == allViews.end() ) {
+                    allViews.push_back(kv.first);
                 } else {
-                    if (iter != allChildren.end()) allChildren.erase(iter);
+                    if (iter != allViews.end()) allViews.erase(iter);
                 }
             }
         }
@@ -145,7 +144,7 @@ namespace po { namespace scene {
     
     void Scene::createFbos()
     {
-		// If the window width or height is 0 (proably minimized) we can't create FBOs so return
+		// If the window width or height is 0 (probably minimized) we can't create FBOs so return
 		if (ci::app::getWindowWidth() == 0 | ci::app::getWindowHeight() == 0) {
 			return;
 		}

@@ -19,14 +19,13 @@ class AlignmentSampleApp
 	void draw();
     
     SceneRef mScene;
-	ViewControllerRef mViewController;
+	AlignmentSampleViewControllerRef mViewController;
 };
 
 void AlignmentSampleApp::setup()
 {
-	mViewController = ViewController::create();
-    mScene = Scene::create( mViewController );
-	mViewController->getView()->addChild(AlignmentSample::create());
+	mViewController = AlignmentSampleViewController::create();
+    mScene = Scene::create(mViewController);
 }
 
 void AlignmentSampleApp::update()

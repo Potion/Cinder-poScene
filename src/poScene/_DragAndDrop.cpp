@@ -22,8 +22,8 @@ namespace po { namespace scene {
 	void DropZoneView::setup() {
 		setHighlighted(false);
 
-		addChild(mBackgroundView);
-		addChild(mDraggableViewsHolder);
+		addSubview(mBackgroundView);
+		addSubview(mDraggableViewsHolder);
 	}
 
 	ci::Rectf DropZoneView::getBounds() {
@@ -41,18 +41,18 @@ namespace po { namespace scene {
 	}
 
 	bool DropZoneView::addDraggableView(DraggableViewRef view) {
-		if(!mCanHoldMultipleViews && mDraggableViewsHolder->hasChildren()) {
+		if(!mCanHoldMultipleViews && mDraggableViewsHolder->hasSubviews()) {
 			return false;
 		}
 
 		view->setPosition( viewToLocal(view->getPosition(), view->getParent()) );
-		mDraggableViewsHolder->addChild( view );
+		mDraggableViewsHolder->addSubview( view );
 
 		return true;
 	}
 
 	bool DropZoneView::removeDraggableView(DraggableViewRef view) {
-		return mDraggableViewsHolder->removeChild(view) != nullptr;
+		return mDraggableViewsHolder->removeSubview(view) != nullptr;
 	}
 
 	// -----------------------------------------------
@@ -147,7 +147,7 @@ namespace po { namespace scene {
 		if (dropZone != nullptr) {
 			// If so, remove it and notify
 			view->setPosition( getView()->viewToLocal( view->getPosition(), view->getParent() ) );
-			getView()->addChild( view );
+			getView()->addSubview( view );
 
 			mSignalViewRemovedFromDropZone.emit( dropZone, view );
 		}

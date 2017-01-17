@@ -25,7 +25,7 @@ void Indicator::setup(std::string name)
     //	Set alpha to 0 so we can highlight it later
     mHighlight = ShapeView::createRect(135, 20);
     mHighlight->setFillColor(mColor);
-    addChild(mHighlight);
+    addSubview(mHighlight);
     mHighlight->setAlpha(0);
     
     //	Create a text box
@@ -36,7 +36,7 @@ void Indicator::setup(std::string name)
     
     //	Add it to the text node
     mTextBox = TextView::create(textbox);
-    addChild(mTextBox);
+    addSubview(mTextBox);
     mTextBox->setPosition(5, 5);
 }
 

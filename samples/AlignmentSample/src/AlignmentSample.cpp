@@ -4,18 +4,18 @@
 
 using namespace po::scene;
 
-AlignmentSampleRef AlignmentSample::create() 
+AlignmentSampleViewControllerRef AlignmentSampleViewController::create() 
 {
-    AlignmentSampleRef node(new AlignmentSample());
-    node->setup();
-    return node;
+    AlignmentSampleViewControllerRef ref(new AlignmentSampleViewController());
+    ref->setup();
+    return ref;
 }
 
 
-void AlignmentSample::setup() 
+void AlignmentSampleViewController::setup() 
 {
     //  Cinder method for key events
-	ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&AlignmentSample::keyDown, this, std::placeholders::_1));
+	ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&AlignmentSampleViewController::keyDown, this, std::placeholders::_1));
     
     createIndicators();
     
@@ -26,19 +26,19 @@ void AlignmentSample::setup()
     mShapeView->setAlignment(po::scene::Alignment::NONE)
                 .setFillColor(122.f/255, 201.f/255, 67.4/255)
                 .setPosition(center);
-    addChild(mShapeView);
+    getView()->addSubview(mShapeView);
 
     //  create and add a reference dot to indicate position of mShapeView
     ShapeViewRef dot = ShapeView::createCircle(10);
     dot->setAlignment(po::scene::Alignment::CENTER_CENTER)
         .setFillColor(255.f/255, 123.f/255, 172.f/255)
         .setPosition(center);
-    addChild(dot);
+    getView()->addSubview(dot);
     
     activateIndicator(0);
 }
 
-void AlignmentSample::keyDown(ci::app::KeyEvent &event)
+void AlignmentSampleViewController::keyDown(ci::app::KeyEvent &event)
 {
     //  convert char to int
     int selectedInt = event.getChar() - '0';
@@ -95,7 +95,7 @@ void AlignmentSample::keyDown(ci::app::KeyEvent &event)
     }
 }
 
-void AlignmentSample::createIndicators()
+void AlignmentSampleViewController::createIndicators()
 {
     //  Indicator names same as Alignment type names
     mIndicatorNames = {
@@ -113,7 +113,7 @@ void AlignmentSample::createIndicators()
     
     //  Create a container to hold the indicators
     mIndicatorContainer = View::create();
-    addChild(mIndicatorContainer);
+    getView()->addSubview(mIndicatorContainer);
     mIndicatorContainer->setPosition(10, 10);
     
     //  Create and add indicators to the container
@@ -121,7 +121,7 @@ void AlignmentSample::createIndicators()
     for (int i = 0; i < mIndicatorNames.size(); i++) {
         std::string indicatorText = std::to_string(i) + ": " + mIndicatorNames[i];
         IndicatorRef indicator = Indicator::create(indicatorText);
-        mIndicatorContainer->addChild(indicator);
+        mIndicatorContainer->addSubview(indicator);
         if (i == 0) {
             indicator->setPosition(indicator->getWidth() * 3, i * (indicator->getHeight() + 5));
         } else if (i < 4) {
@@ -136,7 +136,7 @@ void AlignmentSample::createIndicators()
     }
 }
 
-void AlignmentSample::activateIndicator(int num)
+void AlignmentSampleViewController::activateIndicator(int num)
 {
     for (int i = 0; i < mIndicatorNames.size(); i++) {
         if (i == num) {

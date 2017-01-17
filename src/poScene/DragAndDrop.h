@@ -20,7 +20,7 @@ public:
 	bool getCanHoldMultipleViews() { return mCanHoldMultipleViews; };
 	void setCanHoldMultipleViews(bool canHoldMultipleViews) { mCanHoldMultipleViews = canHoldMultipleViews; };
 
-	bool isHoldingViews() { return mDraggableViewsHolder->hasChildren(); };
+	bool isHoldingViews() { return mDraggableViewsHolder->hasSubviews(); };
 	virtual void setHighlighted(bool highlighted=true);
 
 	bool addDraggableView(DraggableViewRef view);

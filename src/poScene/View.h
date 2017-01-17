@@ -47,8 +47,7 @@
 #include "poScene/ViewEvents.h"
 
 namespace po { namespace scene {
-    
-    // Views are the base items in a scene. They are architected to have standardized
+    // Views are the base items in a scene. They are designed to have standardized
     // methods for attributes (position, scale, rotation, etc.), Cinder animation variables that automatically
     // apply to attributes when running, bounds, hit-testing, interaction event handling, updating and drawing,
     // rendering to textures, rendering into an FBO, Masking, point-transformation and a number of other
@@ -122,7 +121,7 @@ namespace po { namespace scene {
         ~View();
 		
 		//! Setup function, used to initialize View
-        /**	Use this to do non-initializing construction of your object, add children, add events, etc.
+        /**	Use this to do non-initializing construction of your object, add Subviews, add events, etc.
             Since we're using shared_ptr's the constructor is a bit worthless, we can't call shared_from_this() or get a shared pointer to "this". **/
         virtual void setup() {};
 		
@@ -178,71 +177,69 @@ namespace po { namespace scene {
         //! Get the height with scaling applied
 		virtual float getScaledHeight() { return getHeight() * getScale().y; };
 
-		// Children
-		static const int INVALID_INDEX = -1;
+		// Subviews
+		static const int INVALID_SUBVIEW_INDEX = -1;
 
-		//! Add a View
-		virtual View &addChild(ViewRef View);
-		//! Add multiple children to this View
-		/** This method should be preferred when adding a large amount of children at the same time. 
-		The View container needs to recalculate it's matrices every time we add a child (to update bounds)
+		//! Add subviews
+		virtual View &addSubview(ViewRef view);
+		//! Add multiple subviews to this View
+		/** This method should be preferred when adding a large amount of subviews at the same time. 
+		The View container needs to recalculate it's matrices every time we add a subview (to update bounds)
 		so using this only causes that to happen once vs n times**/
-		virtual View &addChildren(std::vector<ViewRef> Views);
-		//! Add a child at an index
-		virtual View &addChildAt(int index, ViewRef View);
-		//! Add a child before (below) another View
-		virtual View &addChildBefore(ViewRef before, ViewRef View);
-		//! Add a child after (above) another View
-		virtual View &addChildAfter(ViewRef after, ViewRef View);
+		virtual View &addSubviews(std::vector<ViewRef> views);
+		//! Add a subview at an index
+		virtual View &insertSubviewAt(int index, ViewRef view);
+		//! Add a subview before (below) another View
+		virtual View &insertSubviewBefore(ViewRef view, ViewRef before);
+		//! Add a subview after (above) another View
+		virtual View &insertSubviewAfter(ViewRef view, ViewRef after);
 
-		// Get Children
+		// Get Subviews
 
-		//! Get the total number of children for this View
-		virtual size_t getNumChildren() { return mChildren.size(); };
-		//! Get all this View's children
-		virtual std::deque<ViewRef> getChildren();
-		//! Get a reference to all of this View's children
-		virtual std::deque<ViewRef> &getChildrenByReference();
-		//! Find if the View has any children
-		virtual bool hasChildren();
-		//! See if we have a child.
-		virtual bool hasChild(ViewRef view);
-		//! Get a child at an index. Returns INVALID_INDEX if not found
-		virtual int getChildIndex(const ViewRef &child);
-		//! Get a child by an index. Returns null_ptr if not found.
-		virtual ViewRef getChildByIndex(int index);
-		//! Get a child by it's UID. Returns null_ptr if not found.
-		virtual ViewRef getChildByUID(uint32_t uid);
-		//! Get a child by name. Returns null_ptr if not found.
-		virtual ViewRef getChildByName(const std::string &name);
-		//! Get the first (bottom) child
-		virtual ViewRef getFirstChild();
-		//! Get the last (top) child
-		virtual ViewRef getLastChild();
+		//! Get the total number of subviews for this View
+		virtual size_t getNumSubviews() { return mSubviews.size(); };
+		//! Get all this View's subviews
+		virtual const std::deque<ViewRef>& getSubviews();
+		//! Find if the View has any subviews
+		virtual bool hasSubviews();
+		//! See if we have a subview.
+		virtual bool hasSubview(ViewRef view);
+		//! Get the index of a subview. Returns INVALID_INDEX if not found.
+		virtual int getIndexForSubview(const ViewRef &subview);
+		//! Get a subview by an index. Returns null_ptr if not found.
+		virtual ViewRef getSubviewForIndex(int index);
+		//! Get a subview by it's UID. Returns null_ptr if not found.
+		virtual ViewRef getSubviewForUID(uint32_t uid);
+		//! Get a subview by name. Returns null_ptr if not found.
+		virtual ViewRef getSubviewForName(const std::string &name);
+		//! Get the first (bottom) subview
+		virtual ViewRef getFirstSubview();
+		//! Get the last (top) subview
+		virtual ViewRef getLastSubview();
 
-		// Remove children
+		// Remove Subviews
 
-		//! Remove a child by View reference
-		virtual ViewRef removeChild(ViewRef View);
-		//! Remove a child at a specific index
-		virtual ViewRef removeChildAt(int index);
-		//! Remove all the children from this View.
-		virtual void removeAllChildren();
+		//! Remove a subview by View reference
+		virtual ViewRef removeSubview(ViewRef View);
+		//! Remove a subview at a specific index
+		virtual ViewRef removeSubviewAtIndex(int index);
+		//! Remove all the subviews from this View.
+		virtual void removeAllSubviews();
 
-		// Move Child Views
+		// Move subviews
 
-		//! Move a child to the front (top)
-		virtual View &moveChildToFront(ViewRef View);
-		//! Move a child forward one index
-		virtual View &moveChildForward( ViewRef View);
-		//! Move a child to after (in front of) a View
-		virtual View &moveChildAfter(ViewRef after, ViewRef View) { return addChildAfter(after, View); };
-		//! Move a child to back (bottom)
-		virtual View &moveChildToBack(ViewRef View);
-		//! Move a child backward one index
-		virtual View &moveChildBackward(ViewRef View);
-		//! Move a child to before (behind) another View
-		virtual View &moveChildBefore(ViewRef before, ViewRef View) { return addChildBefore(before, View); };
+		//! Move a subview to the front (top)
+		virtual View &moveSubviewToFront(ViewRef View);
+		//! Move a subview forward one index
+		virtual View &moveSubviewForward( ViewRef View);
+		//! Move a subview to after (in front of) a View
+		virtual View &moveSubviewAfterSubview(ViewRef after, ViewRef View) { return insertSubviewAfter(after, View); };
+		//! Move a subview to before (behind) another View
+		virtual View &moveSubviewBeforeSubview(ViewRef before, ViewRef View) { return insertSubviewBefore(before, View); };
+		//! Move a subview to back (bottom)
+		virtual View &moveSubviewToBack(ViewRef View);
+		//! Move a subview backward one index
+		virtual View &moveSubviewBackward(ViewRef View);
         
         //	Bounds & Frame
         //  The bounds of the View are relative to local space around the top left origin.
@@ -252,7 +249,7 @@ namespace po { namespace scene {
         virtual View &setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
         //! Return the bounds
         virtual ci::Rectf getBounds();
-		//! Enable elastic bounds, which gives bounds containing all child views
+		//! Enable elastic bounds, which gives bounds containing all subviews
 		virtual void setUseElasticBounds(bool useElasticBounds = true) { mUseElasticBounds = useElasticBounds; };
         //! Set the color that the bounds should be drawn in
         virtual View &setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
@@ -639,11 +636,11 @@ namespace po { namespace scene {
         
         bool mPixelSnapping;
 
-		// Children
-		std::deque<ViewRef> mChildren;
+		// Subviews
+		std::deque<ViewRef> mSubviews;
 
 		//  Set a view's parent to this container and the scene to this container's scene
-		void setChildParentAndScene(ViewRef view);
+		void setSubviewParentAndScene(ViewRef view);
 
         // Animation
         //! Initialize our attribute animations
@@ -669,8 +666,8 @@ namespace po { namespace scene {
         Alignment mAlignment;
         
         // Update and Draw trees
-        // These traverse child Views and run
-        // Until they hit an endpoint (View with no children)
+        // These traverse Subviews and run
+        // Until they hit an endpoint (View with no Subviews)
         
         //! Run the update tree
         virtual void updateTree();
@@ -728,7 +725,7 @@ namespace po { namespace scene {
         {
         };
 
-		class ViewInvalidChildException
+		class ViewInvalidSubviewException
 			: public ViewException
 		{
 		};
