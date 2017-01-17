@@ -3,8 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "poScene/ViewController.h"
-#include "BoundsSample.h"
+#include "BoundsSampleViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -20,16 +19,15 @@ class BoundsSampleApp
 	void draw();
     
     SceneRef mScene;
-	ViewControllerRef mViewController;
+	BoundsSampleViewControllerRef mViewController;
 	
 };
 
 void BoundsSampleApp::setup()
 {
     setWindowSize(800, 600);
-	mViewController	= ViewController::create();
+	mViewController	= BoundsSampleViewController::create();
     mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(BoundsSample::create());
 }
 
 void BoundsSampleApp::update()

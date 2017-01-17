@@ -20,12 +20,12 @@ void AnimationSquare::setup(std::string name, ci::Color color)
     mBaseShape = ShapeView::createRect(100, 100);
     mBaseColor = color;
     mBaseShape->setFillColor(color);
-    addChild(mBaseShape);
+    addSubview(mBaseShape);
 
     //  create and add the label
     mIndicator = Indicator::create(name, color);
     mIndicator->setPosition(ci::vec2(0, 125));
-    addChild(mIndicator);
+    addSubview(mIndicator);
     
     //  add a signal to all mouse clicks to activate label
     getSignal(MouseEvent::DOWN_INSIDE).connect(std::bind(&AnimationSquare::showIndicator, this));

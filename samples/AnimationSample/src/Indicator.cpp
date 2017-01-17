@@ -27,7 +27,7 @@ void Indicator::setup(std::string name, ci::Color color)
     //	Set alpha to 0 so we can animate it later
     mHighlight = ShapeView::createRect(100, 20);
     mHighlight->setFillColor(mColor);
-    addChild(mHighlight);
+    addSubview(mHighlight);
     mHighlight->setAlpha(0);
     
     //	Create a text box
@@ -39,7 +39,7 @@ void Indicator::setup(std::string name, ci::Color color)
     
     //	Add it to the text node
     mTextBox = TextView::create(textbox);
-    addChild(mTextBox);
+    addSubview(mTextBox);
     mTextBox->setPosition(5, 5);
 }
 
