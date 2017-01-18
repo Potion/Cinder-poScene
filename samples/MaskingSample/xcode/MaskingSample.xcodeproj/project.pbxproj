@@ -16,9 +16,9 @@
 		0E44A4E41B4D7534009D9DFF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4E31B4D7534009D9DFF /* AVFoundation.framework */; };
 		0E44A4E61B4D753F009D9DFF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E44A4E51B4D753F009D9DFF /* CoreMedia.framework */; };
 		2944CF218BD64B6DBADE541C /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = CAA7BEF3DF1D4226B308EC35 /* CinderApp.icns */; };
+		326716021E30180A00E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326716001E30180A00E87ED6 /* ViewController.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
-		8167B08A6336434F94983EAA /* MaskingSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AE446BCA479043908CE08E31 /* MaskingSample.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AA7ACF5B1E142012008608B4 /* _DragAndDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ACD3B1E142010008608B4 /* _DragAndDrop.cpp */; };
 		AA7ACF5C1E142012008608B4 /* _DraggableView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ACD3C1E142010008608B4 /* _DraggableView.cpp */; };
@@ -46,6 +46,8 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		326716001E30180A00E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326716011E30180A00E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		40FBDBB1B1AA48E9AED31510 /* MaskingSample_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = MaskingSample_Prefix.pch; sourceTree = "<group>"; };
 		452D9BCC0BB2482E8521580A /* MaskingSampleApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MaskingSampleApp.cpp; path = ../src/MaskingSampleApp.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
@@ -77,9 +79,7 @@
 		AA7ACD531E142010008608B4 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		AA7ACD541E142010008608B4 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		AA7ACD551E142010008608B4 /* ViewEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewEvents.h; sourceTree = "<group>"; };
-		AE446BCA479043908CE08E31 /* MaskingSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = MaskingSample.cpp; path = ../src/MaskingSample.cpp; sourceTree = "<group>"; };
 		CAA7BEF3DF1D4226B308EC35 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
-		D0DA65645B1C4A8180EF4991 /* MaskingSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MaskingSample.h; path = ../src/MaskingSample.h; sourceTree = "<group>"; };
 		DF1AE260E7A942AC967FDE6C /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -116,9 +116,9 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				326716001E30180A00E87ED6 /* ViewController.cpp */,
+				326716011E30180A00E87ED6 /* ViewController.h */,
 				452D9BCC0BB2482E8521580A /* MaskingSampleApp.cpp */,
-				D0DA65645B1C4A8180EF4991 /* MaskingSample.h */,
-				AE446BCA479043908CE08E31 /* MaskingSample.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -310,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326716021E30180A00E87ED6 /* ViewController.cpp in Sources */,
 				AA7ACF5B1E142012008608B4 /* _DragAndDrop.cpp in Sources */,
 				AA7ACF601E142012008608B4 /* _MatrixSet.cpp in Sources */,
 				AA7ACF5E1E142012008608B4 /* _Events.cpp in Sources */,
@@ -322,7 +323,6 @@
 				AA7ACF641E142012008608B4 /* _View.cpp in Sources */,
 				AA7ACF621E142012008608B4 /* _ShapeView.cpp in Sources */,
 				AA7ACF5C1E142012008608B4 /* _DraggableView.cpp in Sources */,
-				8167B08A6336434F94983EAA /* MaskingSample.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

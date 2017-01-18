@@ -14,10 +14,10 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		029D1F3AD47D4E8C8E3EC71E /* HierarchySampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CFBA19730D546FEB6BC5DA7 /* HierarchySampleApp.cpp */; };
 		0998543E6EC04E8DBF724F9A /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 85A16CF7C1594BB19BD72C51 /* CinderApp.icns */; };
+		326715FF1E3017F100E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326715FD1E3017F100E87ED6 /* ViewController.cpp */; };
 		32C20B311B28BD7F00634060 /* Square.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 32C20B2F1B28BD7F00634060 /* Square.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
-		69E50B24E9724FDAB3FA5825 /* HierarchySample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 36B1DB59526C4893950F64AE /* HierarchySample.cpp */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		AA547AA51B54199F005BEC40 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA41B54199F005BEC40 /* AVFoundation.framework */; };
 		AA547AA71B5419A6005BEC40 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA547AA61B5419A6005BEC40 /* CoreMedia.framework */; };
@@ -46,9 +46,10 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2E7FD965C6AD4801BFDAC181 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
+		326715FD1E3017F100E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326715FE1E3017F100E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		32C20B2F1B28BD7F00634060 /* Square.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Square.cpp; path = ../src/Square.cpp; sourceTree = "<group>"; };
 		32C20B301B28BD7F00634060 /* Square.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Square.h; path = ../src/Square.h; sourceTree = "<group>"; };
-		36B1DB59526C4893950F64AE /* HierarchySample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = HierarchySample.cpp; path = ../src/HierarchySample.cpp; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		85A16CF7C1594BB19BD72C51 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
@@ -120,7 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				8CFBA19730D546FEB6BC5DA7 /* HierarchySampleApp.cpp */,
-				36B1DB59526C4893950F64AE /* HierarchySample.cpp */,
+				326715FD1E3017F100E87ED6 /* ViewController.cpp */,
+				326715FE1E3017F100E87ED6 /* ViewController.h */,
 				32C20B2F1B28BD7F00634060 /* Square.cpp */,
 				32C20B301B28BD7F00634060 /* Square.h */,
 			);
@@ -315,13 +317,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326715FF1E3017F100E87ED6 /* ViewController.cpp in Sources */,
 				AA7ACA181E141E29008608B4 /* _View.cpp in Sources */,
 				AA7ACA171E141E29008608B4 /* _TextView.cpp in Sources */,
 				AA7ACA1A1E141E29008608B4 /* _ViewController.cpp in Sources */,
 				AA7ACA131E141E29008608B4 /* _ImageView.cpp in Sources */,
 				AA7ACA111E141E29008608B4 /* _EventCenter.cpp in Sources */,
 				029D1F3AD47D4E8C8E3EC71E /* HierarchySampleApp.cpp in Sources */,
-				69E50B24E9724FDAB3FA5825 /* HierarchySample.cpp in Sources */,
 				AA7ACA151E141E29008608B4 /* _Scene.cpp in Sources */,
 				AA7ACA101E141E29008608B4 /* _DraggableView.cpp in Sources */,
 				AA7ACA141E141E29008608B4 /* _MatrixSet.cpp in Sources */,
