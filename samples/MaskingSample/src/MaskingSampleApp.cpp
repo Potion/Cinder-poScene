@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "MaskingSample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,15 +19,14 @@ class MaskingSampleApp
 	void draw();
     
     SceneRef mScene;
-	ViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void MaskingSampleApp::setup()
 {
 	setWindowSize(683, 1024);
-	mViewController = ViewController::create();
+	mViewController = sample::ViewController::create();
     mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(MaskingSample::create());
 }
 
 void MaskingSampleApp::update()

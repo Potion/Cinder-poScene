@@ -145,7 +145,7 @@ namespace po { namespace scene {
     void Scene::createFbos()
     {
 		// If the window width or height is 0 (probably minimized) we can't create FBOs so return
-		if (ci::app::getWindowWidth() == 0 | ci::app::getWindowHeight() == 0) {
+		if ((ci::app::getWindowWidth() == 0) | (ci::app::getWindowHeight() == 0)) {
 			return;
 		}
 		

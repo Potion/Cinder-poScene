@@ -27,13 +27,13 @@ void Scroller::setup()
 	mTrack = ShapeView::createRect(10, ci::app::getWindowHeight() - 40);
 	mTrack->setFillColor(ci::Color(1, 1, 1));
 	mTrack->setAlpha(0.2);
-	addChild(mTrack);
+	addSubview(mTrack);
 	
 	//	Create the scroll thumb
 	mThumb = ShapeView::createRect(10, 100);
 	mThumb->setFillColor(ci::Color(1, 1, 1));
 	mThumb->setAlpha(0.8);
-	addChild(mThumb);
+	addSubview(mThumb);
 	
 	//	Connect the mouse events
 	getSignal(MouseEvent::DOWN_INSIDE).connect(std::bind(&Scroller::onMouseDown, this, std::placeholders::_1));

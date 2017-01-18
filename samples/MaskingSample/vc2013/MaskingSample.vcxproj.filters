@@ -36,40 +36,52 @@
     <ClCompile Include="..\src\MaskingSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MaskingSample.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_Events.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_MatrixSet.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_Scene.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_TextView.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_View.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ViewController.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\EventCenter.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\Events.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\ImageView.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\MatrixSet.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\Scene.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\TextView.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\View.cpp">
-      <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\MaskingSample.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\DraggableView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\EventCenter.h">
       <Filter>Blocks\poScene\src\poScene</Filter>
@@ -100,6 +112,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\View.h">
       <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ViewController.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ViewEvents.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ViewController.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

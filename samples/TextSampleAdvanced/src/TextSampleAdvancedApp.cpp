@@ -3,8 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "poScene/ViewController.h"
-#include "TextSampleAdvanced.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -20,14 +19,13 @@ class TextSampleAdvancedApp
 	void draw();
     
 	SceneRef mScene;
-	ViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void TextSampleAdvancedApp::setup()
 {
-	mViewController = ViewController::create();
+	mViewController = sample::ViewController::create();
 	mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(TextSampleAdvanced::create());
 }
 
 void TextSampleAdvancedApp::update()

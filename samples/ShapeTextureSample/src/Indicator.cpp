@@ -35,8 +35,8 @@ void Indicator::setup(std::string name)
     mTextBox = TextView::create(textbox);
     mTextBox->setPosition(5, 5);
 
-	addChild(mHighlight);
-	addChild(mTextBox);
+	addSubview(mHighlight);
+	addSubview(mTextBox);
 }
 
 void Indicator::showHighlighted()

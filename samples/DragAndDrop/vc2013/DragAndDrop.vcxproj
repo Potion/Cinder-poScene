@@ -93,8 +93,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -119,8 +119,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -145,8 +145,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -174,8 +174,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -193,8 +193,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h" />
     <ClInclude Include="..\..\..\src\poScene\DraggableView.h" />
-    <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
-    <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\..\..\src\poScene\EventCenter.h" />
     <ClInclude Include="..\..\..\src\poScene\Events.h" />
     <ClInclude Include="..\..\..\src\poScene\ImageView.h" />
@@ -205,13 +203,14 @@
     <ClInclude Include="..\..\..\src\poScene\TextView.h" />
     <ClInclude Include="..\..\..\src\poScene\VideoView.h" />
     <ClInclude Include="..\..\..\src\poScene\View.h" />
+    <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
+    <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
+    <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\ViewController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
-    <ClCompile Include="..\src\DragAndDropApp.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_Events.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp" />
@@ -220,6 +219,8 @@
     <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_TextView.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
+    <ClCompile Include="..\src\DragAndDropApp.cpp" />
     <ClCompile Include="..\src\ViewController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

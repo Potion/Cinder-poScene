@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "TextSample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -24,9 +24,8 @@ class TextSampleApp
 
 void TextSampleApp::setup()
 {
-	mViewController = ViewController::create();
+	mViewController = sample::ViewController::create();
 	mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(TextSample::create());
 }
 
 void TextSampleApp::update()

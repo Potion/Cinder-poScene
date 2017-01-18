@@ -28,7 +28,7 @@ void TextComponent::setup()
 	
 	//	Add the ci textbox to the text node
 	mTextBox = TextView::create(mCiTextBox);
-	addChild(mTextBox);
+	addSubview(mTextBox);
 }
 
 std::string TextComponent::generateText()

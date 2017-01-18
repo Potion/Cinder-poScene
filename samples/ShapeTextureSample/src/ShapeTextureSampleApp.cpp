@@ -4,7 +4,7 @@
 #include "poScene/ViewController.h"
 #include "poScene/Scene.h"
 
-#include "ShapeTextureSample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -20,15 +20,14 @@ class ShapeTextureSampleApp
 	void draw();
 	
 	SceneRef mScene;
-	ViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void ShapeTextureSampleApp::setup()
 {
     setWindowSize(1024, 768);
-	mViewController = ViewController::create();
+	mViewController = sample::ViewController::create();
 	mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(ShapeTextureSample::create());
 }
 
 void ShapeTextureSampleApp::update()

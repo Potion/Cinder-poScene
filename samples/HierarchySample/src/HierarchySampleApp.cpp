@@ -3,9 +3,8 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "poScene/ViewController.h"
 
-#include "HierarchySample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -21,14 +20,13 @@ class HierarchySampleApp
 	void draw();
     
     SceneRef mScene;
-	ViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void HierarchySampleApp::setup()
 {
-	mViewController = ViewController::create();
+	mViewController = sample::ViewController::create();
     mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(HierarchySample::create());
 }
 
 void HierarchySampleApp::update()

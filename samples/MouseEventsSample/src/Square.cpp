@@ -27,13 +27,13 @@ void Square::setup()
 	//	Create and add a shape for the active state
 	mActive = ShapeView::createRect(100, 100);
 	mActive->setFillColor(mActiveColor);
-	addChild(mActive);
+	addSubview(mActive);
 	
 	//	Create and add a shape for the selected state
 	//	Set the alpha to 0 so we can animate it
 	mSelected = ShapeView::createRect(100, 100);
 	mSelected->setFillColor(mSelectedColor);
-	addChild(mSelected);
+	addSubview(mSelected);
 	mSelected->setAlpha(0.f);
 	
 	//	Connect to mouse events
