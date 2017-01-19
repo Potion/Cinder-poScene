@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "AnimationSampleViewController.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,12 +19,12 @@ class AnimationSampleApp
 	void draw();
     
     SceneRef mScene;
-	ViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void AnimationSampleApp::setup()
 {
-	mViewController = AnimationSampleViewController::create();
+	mViewController = sample::ViewController::create();
     mScene = Scene::create( mViewController );
 }
 

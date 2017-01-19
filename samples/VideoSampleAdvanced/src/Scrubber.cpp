@@ -23,14 +23,14 @@ void Scrubber::setup()
     mTrack->setFillColor(1, 1, 1);
     mTrack->setAlpha(0.2f);
     mTrack->setName("track");
-    addChild(mTrack);
+    addSubview(mTrack);
     
     //  create and add the scrub handle
     mHandle = ShapeView::createRect(50, 10);
     mHandle->setFillColor(1, 1, 1);
     mHandle->setAlpha(0.8f);
     mHandle->setName("handle");
-    addChild(mHandle);
+    addSubview(mHandle);
     
     mFullLength = mTrack->getWidth() - mHandle->getWidth();
     

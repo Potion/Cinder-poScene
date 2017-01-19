@@ -19,7 +19,7 @@ void MovieThumb::setup(po::scene::VideoViewGlRef movie)
 	// Calls to play/stop required to make movies initially visible in Windows
 	mMovie->getMovieRef()->play();
 	mMovie->getMovieRef()->stop();
-	addChild(mMovie);
+	addSubview(mMovie);
 }
 
 void MovieThumb::animateToPlayer()

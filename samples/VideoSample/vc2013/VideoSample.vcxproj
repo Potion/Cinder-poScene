@@ -64,8 +64,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset)_d.lib;%(AdditionalDependencies);..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies);..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -91,8 +91,8 @@
       <AdditionalIncludeDirectories>"..\..\..\..\..\\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>cinder-$(PlatformToolset).lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\..\..\\lib\msw\$(PlatformTarget)"</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder.lib;%(AdditionalDependencies);..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\CVClient.lib;..\..\..\blocks\QuickTime\lib\msw\$(PlatformTarget)\QTMLClient.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\..\..\..\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;..\..\..\..\..\lib\msw\$(PlatformTarget)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -107,6 +107,8 @@
     <ResourceCompile Include="Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h" />
+    <ClInclude Include="..\..\..\src\poScene\DraggableView.h" />
     <ClInclude Include="..\..\..\src\poScene\EventCenter.h" />
     <ClInclude Include="..\..\..\src\poScene\Events.h" />
     <ClInclude Include="..\..\..\src\poScene\ImageView.h" />
@@ -117,22 +119,27 @@
     <ClInclude Include="..\..\..\src\poScene\TextView.h" />
     <ClInclude Include="..\..\..\src\poScene\VideoView.h" />
     <ClInclude Include="..\..\..\src\poScene\View.h" />
+    <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
+    <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
     <ClInclude Include="..\src\PlayerView.h" />
-    <ClInclude Include="..\src\VideoSample.h" />
+    <ClInclude Include="..\src\ViewController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\poScene\EventCenter.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\Events.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\ImageView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\MatrixSet.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\Scene.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\TextView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\View.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_Events.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_MatrixSet.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_Scene.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_TextView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
     <ClCompile Include="..\src\PlayerView.cpp" />
     <ClCompile Include="..\src\VideoSampleApp.cpp" />
-    <ClCompile Include="..\src\VideoSample.cpp" />
+    <ClCompile Include="..\src\ViewController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

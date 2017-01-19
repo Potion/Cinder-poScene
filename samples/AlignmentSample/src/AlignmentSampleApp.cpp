@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "AlignmentSample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -19,12 +19,12 @@ class AlignmentSampleApp
 	void draw();
     
     SceneRef mScene;
-	AlignmentSampleViewControllerRef mViewController;
+	sample::ViewControllerRef mViewController;
 };
 
 void AlignmentSampleApp::setup()
 {
-	mViewController = AlignmentSampleViewController::create();
+	mViewController = sample::ViewController::create();
     mScene = Scene::create(mViewController);
 }
 
