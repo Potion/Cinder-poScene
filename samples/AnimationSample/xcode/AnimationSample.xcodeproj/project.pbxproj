@@ -14,7 +14,7 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		1428E8B6B10E47CEAC9D53D8 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = A798EDC459ED4EE78687AF05 /* CinderApp.icns */; };
 		1BA622797BBC46719836A5D1 /* AnimationSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */; };
-		326715F91E30164C00E87ED6 /* AnimationSampleViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326715F71E30164C00E87ED6 /* AnimationSampleViewController.cpp */; };
+		326716141E311AD500E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326716121E311AD500E87ED6 /* ViewController.cpp */; };
 		386DC1921B278EF5004A2B24 /* Indicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 386DC1901B278EF5004A2B24 /* Indicator.cpp */; };
 		38C58DF21B27642B00ECFAAC /* AnimationSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -46,8 +46,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2A0D8C60ED3B438FBEF9DD22 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		326715F71E30164C00E87ED6 /* AnimationSampleViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimationSampleViewController.cpp; path = ../src/AnimationSampleViewController.cpp; sourceTree = "<group>"; };
-		326715F81E30164C00E87ED6 /* AnimationSampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnimationSampleViewController.h; path = ../src/AnimationSampleViewController.h; sourceTree = "<group>"; };
+		326716121E311AD500E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326716131E311AD500E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		386DC1901B278EF5004A2B24 /* Indicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indicator.cpp; path = ../src/Indicator.cpp; sourceTree = "<group>"; };
 		386DC1911B278EF5004A2B24 /* Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indicator.h; path = ../src/Indicator.h; sourceTree = "<group>"; };
 		38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimationSquare.cpp; path = ../src/AnimationSquare.cpp; sourceTree = "<group>"; };
@@ -122,8 +122,8 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				326715F71E30164C00E87ED6 /* AnimationSampleViewController.cpp */,
-				326715F81E30164C00E87ED6 /* AnimationSampleViewController.h */,
+				326716121E311AD500E87ED6 /* ViewController.cpp */,
+				326716131E311AD500E87ED6 /* ViewController.h */,
 				C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */,
 				38C58DF11B27642B00ECFAAC /* AnimationSquare.h */,
 				38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */,
@@ -320,6 +320,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326716141E311AD500E87ED6 /* ViewController.cpp in Sources */,
 				AA7AC1081E1417E8008608B4 /* _EventCenter.cpp in Sources */,
 				1BA622797BBC46719836A5D1 /* AnimationSampleApp.cpp in Sources */,
 				AA7AC10B1E1417E8008608B4 /* _MatrixSet.cpp in Sources */,
@@ -331,7 +332,6 @@
 				AA7AC1091E1417E8008608B4 /* _Events.cpp in Sources */,
 				386DC1921B278EF5004A2B24 /* Indicator.cpp in Sources */,
 				AA7AC10A1E1417E8008608B4 /* _ImageView.cpp in Sources */,
-				326715F91E30164C00E87ED6 /* AnimationSampleViewController.cpp in Sources */,
 				AA7AC1071E1417E8008608B4 /* _DraggableView.cpp in Sources */,
 				38C58DF21B27642B00ECFAAC /* AnimationSquare.cpp in Sources */,
 				AA7AC1111E1417E8008608B4 /* _ViewController.cpp in Sources */,

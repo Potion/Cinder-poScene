@@ -13,6 +13,7 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		0EF0368B1B54279F007C4F99 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF0368A1B54279F007C4F99 /* IOSurface.framework */; };
+		3267161A1E311B5000E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326716181E311B5000E87ED6 /* ViewController.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -30,7 +31,6 @@
 		AA7AF0CC1E1426F4008608B4 /* _TextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AED831E1426F0008608B4 /* _TextView.cpp */; };
 		AA7AF0CD1E1426F4008608B4 /* _View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AED841E1426F0008608B4 /* _View.cpp */; };
 		AA7AF0CF1E1426F4008608B4 /* _ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7AED871E1426F0008608B4 /* _ViewController.cpp */; };
-		B21B69FC6EB749088FFAD5F8 /* VideoSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1DF2F40A4384922A820E97D /* VideoSample.cpp */; };
 		CB18B1691BFD4F3EB695A001 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 7232E225EB734CEDB3E0B271 /* CinderApp.icns */; };
 		D11B516C65834C708CFC993C /* VideoSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B144E4BE240D4ED4A285747D /* VideoSampleApp.cpp */; };
 /* End PBXBuildFile section */
@@ -45,10 +45,11 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		326716181E311B5000E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326716191E311B5000E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		3832A9F91B3CA258002AA5DA /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
-		5CC9C5DEF7564A959A9D9659 /* VideoSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VideoSample.h; path = ../src/VideoSample.h; sourceTree = "<group>"; };
 		6AE11820CD474D2B8DC3F657 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		7232E225EB734CEDB3E0B271 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		7D84B74E27D64300B6640772 /* VideoSample_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = VideoSample_Prefix.pch; sourceTree = "<group>"; };
@@ -83,7 +84,6 @@
 		AA7AED951E1426F0008608B4 /* ViewEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewEvents.h; sourceTree = "<group>"; };
 		B144E4BE240D4ED4A285747D /* VideoSampleApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = VideoSampleApp.cpp; path = ../src/VideoSampleApp.cpp; sourceTree = "<group>"; };
 		EF8C83BBB685461F911A5836 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F1DF2F40A4384922A820E97D /* VideoSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = VideoSample.cpp; path = ../src/VideoSample.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,9 +120,9 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				326716181E311B5000E87ED6 /* ViewController.cpp */,
+				326716191E311B5000E87ED6 /* ViewController.h */,
 				B144E4BE240D4ED4A285747D /* VideoSampleApp.cpp */,
-				5CC9C5DEF7564A959A9D9659 /* VideoSample.h */,
-				F1DF2F40A4384922A820E97D /* VideoSample.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -321,6 +321,7 @@
 				AA7AF0C61E1426F4008608B4 /* _EventCenter.cpp in Sources */,
 				AA7AF0CC1E1426F4008608B4 /* _TextView.cpp in Sources */,
 				AA7AF0C81E1426F4008608B4 /* _ImageView.cpp in Sources */,
+				3267161A1E311B5000E87ED6 /* ViewController.cpp in Sources */,
 				D11B516C65834C708CFC993C /* VideoSampleApp.cpp in Sources */,
 				AA7AF0CD1E1426F4008608B4 /* _View.cpp in Sources */,
 				AA7AF0C71E1426F4008608B4 /* _Events.cpp in Sources */,
@@ -328,7 +329,6 @@
 				AA7AF0CA1E1426F4008608B4 /* _Scene.cpp in Sources */,
 				AA7AF0C91E1426F4008608B4 /* _MatrixSet.cpp in Sources */,
 				AA7AF0C41E1426F4008608B4 /* _DragAndDrop.cpp in Sources */,
-				B21B69FC6EB749088FFAD5F8 /* VideoSample.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,7 +398,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
@@ -415,7 +415,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
