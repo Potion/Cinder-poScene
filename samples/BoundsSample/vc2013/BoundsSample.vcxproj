@@ -209,7 +209,7 @@
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\BoundsSampleViewController.h" />
+    <ClInclude Include="..\src\ViewController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
@@ -224,7 +224,7 @@
     <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
     <ClCompile Include="..\src\BoundsSampleApp.cpp" />
-    <ClCompile Include="..\src\BoundsSampleViewController.cpp" />
+    <ClCompile Include="..\src\ViewController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

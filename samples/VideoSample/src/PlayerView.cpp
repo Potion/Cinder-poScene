@@ -30,7 +30,7 @@ void PlayerView::setup()
 	//mTexture->reset();
 
     getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerView::clickVideo, this));
-    addChild(mVideoDisplayer);
+    addSubview(mVideoDisplayer);
 }
 
 void PlayerView::update()

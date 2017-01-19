@@ -36,9 +36,6 @@
     <ClCompile Include="..\src\AlignmentSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\AlignmentSample.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
@@ -75,13 +72,13 @@
     <ClCompile Include="..\src\Indicator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ViewController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\AlignmentSample.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h">
       <Filter>Blocks\poScene\src\poScene</Filter>
@@ -126,6 +123,9 @@
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Indicator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ViewController.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

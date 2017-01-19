@@ -72,8 +72,6 @@ namespace po { namespace scene {
         ci::Rectf getBounds();
         
     protected:
-		VideoView() {};
-		
         void setup();
         void update();
         void draw();
@@ -83,7 +81,8 @@ namespace po { namespace scene {
         std::shared_ptr<T> mMovieRef;
     };
 	
-    //  Template Class Implementation
+	//  Template Class Implementation
+
     template<class T>
     std::shared_ptr< VideoView<T> > VideoView<T>::create()
 	{
@@ -105,12 +104,16 @@ namespace po { namespace scene {
     void VideoView<T>::setup() {}
 	
     template<class T>
-    void VideoView<T>::update() {}
+    void VideoView<T>::update() {
+		if (mMovieRef != nullptr && mMovieRef->getTexture() != nullptr) {
+			setAlignment(getAlignment());
+		}
+	}
 	
     template<class T>
     ci::Rectf VideoView<T>::getBounds()
     {
-		if (mMovieRef != nullptr) return ci::Rectf(ci::vec2(0), mMovieRef->getTexture()->getSize());
+		if (mMovieRef != nullptr && mMovieRef->getTexture() != nullptr) return ci::Rectf(ci::vec2(0), mMovieRef->getTexture()->getSize());
         return ci::Rectf(0, 0, 0, 0);
     }
 	
@@ -127,7 +130,8 @@ namespace po { namespace scene {
     //	Template ref and GL ref
     template<class T> using VideoViewRef = std::shared_ptr< VideoView<T> >;
 
-#if ! defined(  CINDER_MSW ) && ! defined( CINDER_LINUX )
+	// Define VideoViewGL if on 32 bit Windows or OS X
+#if (defined(  CINDER_MSW ) && defined(_WIN64)) || ! defined( CINDER_LINUX )
     typedef VideoView<ci::qtime::MovieGl> VideoViewGl;
     typedef std::shared_ptr<VideoViewGl> VideoViewGlRef;
 #endif

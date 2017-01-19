@@ -209,7 +209,7 @@
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\AlignmentSample.h" />
+    <ClInclude Include="..\src\ViewController.h" />
     <ClInclude Include="..\src\Indicator.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,7 +225,7 @@
     <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
     <ClCompile Include="..\src\AlignmentSampleApp.cpp" />
-    <ClCompile Include="..\src\AlignmentSample.cpp" />
+    <ClCompile Include="..\src\ViewController.cpp" />
     <ClCompile Include="..\src\Indicator.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

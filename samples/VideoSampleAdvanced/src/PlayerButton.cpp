@@ -18,7 +18,7 @@ void PlayerButton::setup(po::scene::ShapeViewRef shape)
 {
     mShape = shape;
     
-    addChild(mShape);
+    addSubview(mShape);
     
     getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&PlayerButton::onMouseEvent, this, std::placeholders::_1));
     getSignal(MouseEvent::Type::UP_INSIDE).connect(std::bind(&PlayerButton::onMouseEvent, this, std::placeholders::_1));

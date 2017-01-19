@@ -3,12 +3,11 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "VideoSample.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace po::scene;
 
 class VideoSampleApp
 : public App
@@ -18,16 +17,15 @@ public:
     void update();
     void draw();
 	
-	SceneRef mScene;
-	ViewControllerRef mViewController;
+	po::scene::SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void VideoSampleApp::setup()
 {
     setWindowSize(1024, 768);
-	mViewController = ViewController::create();
-	mScene = Scene::create(mViewController);
-	mViewController->getView()->addChild(VideoSample::create());
+	mViewController = sample::ViewController::create();
+	mScene = po::scene::Scene::create(mViewController);
 }
 
 void VideoSampleApp::update()

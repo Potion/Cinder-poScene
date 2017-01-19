@@ -39,8 +39,8 @@ void PlayerController::setup()
     mPlayButton->setPosition((640 / 2) - 50 - mPlayButton->getWidth(), 0);
     mPauseButton->setPosition((640 / 2) + 50, 0);
     
-    addChild(mPlayButton);
-    addChild(mPauseButton);
+    addSubview(mPlayButton);
+    addSubview(mPauseButton);
     
     mPlayButton->getButtonSignal().connect(std::bind(&PlayerController::getPlaySignal, this));
     mPauseButton->getButtonSignal().connect(std::bind(&PlayerController::getPauseSignal, this));
@@ -49,7 +49,7 @@ void PlayerController::setup()
     mScrubber = Scrubber::create();
     mScrubber->getScrubberSignal().connect(std::bind(&PlayerController::getScrubberSignal, this, std::placeholders::_1));
     mScrubber->setPosition(0, mPlayButton->getHeight() + 25);
-    addChild(mScrubber);
+    addSubview(mScrubber);
 }
 
 void PlayerController::update()

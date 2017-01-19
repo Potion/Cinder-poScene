@@ -209,7 +209,7 @@
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\AnimationSampleViewController.h" />
+    <ClInclude Include="..\src\ViewController.h" />
     <ClInclude Include="..\src\AnimationSquare.h" />
     <ClInclude Include="..\src\Indicator.h" />
   </ItemGroup>
@@ -226,7 +226,7 @@
     <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
     <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
     <ClCompile Include="..\src\AnimationSampleApp.cpp" />
-    <ClCompile Include="..\src\AnimationSampleViewController.cpp" />
+    <ClCompile Include="..\src\ViewController.cpp" />
     <ClCompile Include="..\src\AnimationSquare.cpp" />
     <ClCompile Include="..\src\Indicator.cpp" />
   </ItemGroup>

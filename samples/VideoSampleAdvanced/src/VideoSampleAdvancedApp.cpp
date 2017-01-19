@@ -4,12 +4,11 @@
 
 #include "poScene/Scene.h"
 
-#include "VideoSampleAdvanced.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace po::scene;
 
 class VideoSampleAdvancedApp
 : public App
@@ -19,16 +18,15 @@ public:
     void update();
     void draw();
 	
-	SceneRef mScene;
-	ViewControllerRef mViewController;
+	po::scene::SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void VideoSampleAdvancedApp::setup()
 {
     setWindowSize(1024, 768);
-	mViewController = ViewController::create();
-	mScene = Scene::create(mViewController);
-    mViewController->getView()->addChild(VideoSampleAdvanced::create());
+	mViewController = sample::ViewController::create();
+	mScene = po::scene::Scene::create(mViewController);
 }
 
 void VideoSampleAdvancedApp::update()
