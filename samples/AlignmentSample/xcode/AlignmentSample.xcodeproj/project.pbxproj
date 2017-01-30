@@ -13,8 +13,8 @@
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		10C5EC907AB84A719CCB49FD /* AlignmentSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 012DF69201AD4B098614153F /* AlignmentSampleApp.cpp */; };
+		326716111E311AA100E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3267160F1E311AA100E87ED6 /* ViewController.cpp */; };
 		38DBC4BA1B2F744000F9FBDD /* Indicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38DBC4B81B2F744000F9FBDD /* Indicator.cpp */; };
-		3CCF9F496F154C16BF7F5DB1 /* AlignmentSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CBE8ED1CD004E5D9B9EE362 /* AlignmentSample.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		5748B1FBB9B64342BF93EC66 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 682AD628895C4438A5284CD7 /* CinderApp.icns */; };
@@ -46,15 +46,15 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3267160F1E311AA100E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326716101E311AA100E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		38DBC4B81B2F744000F9FBDD /* Indicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indicator.cpp; path = ../src/Indicator.cpp; sourceTree = "<group>"; };
 		38DBC4B91B2F744000F9FBDD /* Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indicator.h; path = ../src/Indicator.h; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		682AD628895C4438A5284CD7 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
-		766CD669CF6B4AFF936873C9 /* AlignmentSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AlignmentSample.h; path = ../src/AlignmentSample.h; sourceTree = "<group>"; };
 		8CE509B174EF46A39415F9B2 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* AlignmentSample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlignmentSample.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9CBE8ED1CD004E5D9B9EE362 /* AlignmentSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = AlignmentSample.cpp; path = ../src/AlignmentSample.cpp; sourceTree = "<group>"; };
 		AA295CDA1E1390650050CF59 /* _DragAndDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DragAndDrop.cpp; sourceTree = "<group>"; };
 		AA295CDB1E1390650050CF59 /* _DraggableView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DraggableView.cpp; sourceTree = "<group>"; };
 		AA295CDC1E1390650050CF59 /* _EventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _EventCenter.cpp; sourceTree = "<group>"; };
@@ -120,8 +120,8 @@
 			isa = PBXGroup;
 			children = (
 				012DF69201AD4B098614153F /* AlignmentSampleApp.cpp */,
-				766CD669CF6B4AFF936873C9 /* AlignmentSample.h */,
-				9CBE8ED1CD004E5D9B9EE362 /* AlignmentSample.cpp */,
+				3267160F1E311AA100E87ED6 /* ViewController.cpp */,
+				326716101E311AA100E87ED6 /* ViewController.h */,
 				38DBC4B91B2F744000F9FBDD /* Indicator.h */,
 				38DBC4B81B2F744000F9FBDD /* Indicator.cpp */,
 			);
@@ -315,13 +315,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326716111E311AA100E87ED6 /* ViewController.cpp in Sources */,
 				AA295E121E1390650050CF59 /* _ViewController.cpp in Sources */,
 				AA295E081E1390650050CF59 /* _DraggableView.cpp in Sources */,
 				AA295E0D1E1390650050CF59 /* _Scene.cpp in Sources */,
 				AA295E091E1390650050CF59 /* _EventCenter.cpp in Sources */,
 				AA295E0A1E1390650050CF59 /* _Events.cpp in Sources */,
 				10C5EC907AB84A719CCB49FD /* AlignmentSampleApp.cpp in Sources */,
-				3CCF9F496F154C16BF7F5DB1 /* AlignmentSample.cpp in Sources */,
 				AA295E101E1390650050CF59 /* _View.cpp in Sources */,
 				AA295E0F1E1390650050CF59 /* _TextView.cpp in Sources */,
 				AA295E0C1E1390650050CF59 /* _MatrixSet.cpp in Sources */,
