@@ -13,7 +13,6 @@ namespace po { namespace scene {
 
 	DropZoneView::DropZoneView()
 		: mBackgroundView(View::create())
-		, mDraggableViewsHolder(View::create())
 		, mIsHighlighted(false)
 		, mCanHoldMultipleViews(false)
 	{
@@ -23,7 +22,6 @@ namespace po { namespace scene {
 		setHighlighted(false);
 
 		addSubview(mBackgroundView);
-		addSubview(mDraggableViewsHolder);
 	}
 
 	ci::Rectf DropZoneView::getBounds() {
@@ -41,18 +39,27 @@ namespace po { namespace scene {
 	}
 
 	bool DropZoneView::addDraggableView(DraggableViewRef view) {
-		if(!mCanHoldMultipleViews && mDraggableViewsHolder->hasSubviews()) {
+		if(!mCanHoldMultipleViews && mDroppedViews.size() > 0) {
 			return false;
 		}
 
-		view->setPosition( viewToLocal(view->getPosition(), view->getParent()) );
-		mDraggableViewsHolder->addSubview( view );
+		mDroppedViews.push_back(view);
 
 		return true;
 	}
 
 	bool DropZoneView::removeDraggableView(DraggableViewRef view) {
-		return mDraggableViewsHolder->removeSubview(view) != nullptr;
+		auto it = std::find(mDroppedViews.begin(), mDroppedViews.end(), view);
+		bool found = it != mDroppedViews.end();
+		if (found) {
+			mDroppedViews.erase(it);
+		}
+		return found;
+	}
+
+	bool DropZoneView::hasDraggableView(DraggableViewRef view) {
+		auto it = std::find(mDroppedViews.begin(), mDroppedViews.end(), view);
+		return it != mDroppedViews.end();
 	}
 
 	// -----------------------------------------------
@@ -143,13 +150,13 @@ namespace po { namespace scene {
 
 	void DragAndDropViewController::viewDragBeganHandler(DraggableViewRef &view) {
 		// See if the view has a drop zone
-		DropZoneViewRef dropZone = std::static_pointer_cast<DropZoneView>(view->getParent());
-		if (dropZone != nullptr) {
-			// If so, remove it and notify
-			view->setPosition( getView()->viewToLocal( view->getPosition(), view->getParent() ) );
-			getView()->addSubview( view );
-
-			mSignalViewRemovedFromDropZone.emit( dropZone, view );
+		for (int i = 0; i < mDraggableViewValidDropZones[view].size(); i++) {
+			DropZoneViewRef dropZone = mDraggableViewValidDropZones[view][i];
+			if (dropZone->hasDraggableView(view)) {
+				// If so, remove it and notify
+				dropZone->removeDraggableView(view);
+				mSignalViewRemovedFromDropZone.emit(dropZone, view);
+			}
 		}
 	}
 
