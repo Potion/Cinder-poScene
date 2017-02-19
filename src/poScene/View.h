@@ -181,18 +181,18 @@ namespace po { namespace scene {
 		static const int INVALID_SUBVIEW_INDEX = -1;
 
 		//! Add subviews
-		virtual View &addSubview(ViewRef view);
+		virtual View& addSubview(ViewRef view);
 		//! Add multiple subviews to this View
 		/** This method should be preferred when adding a large amount of subviews at the same time. 
 		The View container needs to recalculate it's matrices every time we add a subview (to update bounds)
 		so using this only causes that to happen once vs n times**/
-		virtual View &addSubviews(std::vector<ViewRef> views);
+		virtual View& addSubviews(std::vector<ViewRef> views);
 		//! Add a subview at an index
-		virtual View &insertSubviewAt(int index, ViewRef view);
+		virtual View& insertSubviewAt(int index, ViewRef view);
 		//! Add a subview before (below) another View
-		virtual View &insertSubviewBefore(ViewRef view, ViewRef before);
+		virtual View& insertSubviewBefore(ViewRef view, ViewRef before);
 		//! Add a subview after (above) another View
-		virtual View &insertSubviewAfter(ViewRef view, ViewRef after);
+		virtual View& insertSubviewAfter(ViewRef view, ViewRef after);
 
 		// Get Subviews
 
@@ -229,36 +229,39 @@ namespace po { namespace scene {
 		// Move subviews
 
 		//! Move a subview to the front (top)
-		virtual View &moveSubviewToFront(ViewRef View);
+		virtual View& moveSubviewToFront(ViewRef View);
 		//! Move a subview forward one index
-		virtual View &moveSubviewForward( ViewRef View);
+		virtual View& moveSubviewForward( ViewRef View);
 		//! Move a subview to after (in front of) a View
-		virtual View &moveSubviewAfterSubview(ViewRef after, ViewRef View) { return insertSubviewAfter(after, View); };
+		virtual View& moveSubviewAfterSubview(ViewRef after, ViewRef View) { return insertSubviewAfter(after, View); };
 		//! Move a subview to before (behind) another View
-		virtual View &moveSubviewBeforeSubview(ViewRef before, ViewRef View) { return insertSubviewBefore(before, View); };
+		virtual View& moveSubviewBeforeSubview(ViewRef before, ViewRef View) { return insertSubviewBefore(before, View); };
 		//! Move a subview to back (bottom)
-		virtual View &moveSubviewToBack(ViewRef View);
+		virtual View& moveSubviewToBack(ViewRef View);
 		//! Move a subview backward one index
-		virtual View &moveSubviewBackward(ViewRef View);
+		virtual View& moveSubviewBackward(ViewRef View);
+
+		// Remove from superview
+		virtual View& removeFromSuperview();
         
         //	Bounds & Frame
         //  The bounds of the View are relative to local space around the top left origin.
         //  The frame is relative to the position of the View
         
         //! Draw a frame around the bounds, useful for debugging
-        virtual View &setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
+        virtual View& setDrawBounds(bool enabled) { mDrawBounds = enabled; return *this; };
         //! Return the bounds
         virtual ci::Rectf getBounds();
 		//! Enable elastic bounds, which gives bounds containing all subviews
 		virtual void setUseElasticBounds(bool useElasticBounds = true) { mUseElasticBounds = useElasticBounds; };
         //! Set the color that the bounds should be drawn in
-        virtual View &setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
+        virtual View& setBoundsColor(ci::Color color) { mBoundsColor = color; return *this; };
         //! Get the current bounds color
         virtual ci::Color getBoundsColor() { return mBoundsColor; };
         //! Get the frame
         virtual ci::Rectf getFrame();
         //! Ignore in the bounds of parent, sometimes useful
-        virtual View &setParentShouldIgnoreInBounds(bool enable) { mParentShouldIgnoreInBounds = enable; return *this;}
+        virtual View& setParentShouldIgnoreInBounds(bool enable) { mParentShouldIgnoreInBounds = enable; return *this;}
         //! Get parentShouldIgnoreInBounds
         virtual bool getParentShouldIgnoreInBounds() { return mParentShouldIgnoreInBounds; };
         
@@ -318,7 +321,7 @@ namespace po { namespace scene {
         // They are not unique and it is up to the user to get right
         
         //! Set the name of the View
-		virtual View &setName(std::string name) { mName = name; return *this; };
+		virtual View& setName(std::string name) { mName = name; return *this; };
 
         //! Get the name of the View
 		virtual std::string getName() const { return mName; }
@@ -326,9 +329,9 @@ namespace po { namespace scene {
         // Position
         // The position that the origin is at within the parent View
         //! Set the position of the View with a ci::vec2
-        virtual View &setPosition(ci::vec2 position) { return setPosition(position.x, position.y); };
+        virtual View& setPosition(ci::vec2 position) { return setPosition(position.x, position.y); };
         //! Set the position of the View, convenience method
-        virtual View &setPosition(float x, float y);
+        virtual View& setPosition(float x, float y);
         //! Get the position of the View
 		virtual ci::vec2 getPosition() { return mPosition; };
         
@@ -336,11 +339,11 @@ namespace po { namespace scene {
         // Scales around the origin of the View
         
 		//! Set the scale to the same in x & y
-		virtual View &setScale(float scale) { return setScale(scale, scale); };
+		virtual View& setScale(float scale) { return setScale(scale, scale); };
         //! Set the scale with a ci::vec2
-        virtual View &setScale(ci::vec2 scale) { return setScale(scale.x, scale.y); };
+        virtual View& setScale(ci::vec2 scale) { return setScale(scale.x, scale.y); };
         //! Set the scale, convenience method
-        virtual View &setScale(float x, float y);
+        virtual View& setScale(float x, float y);
         //! Get the scale
         virtual ci::vec2 getScale() { return mScale; };
         
@@ -349,7 +352,7 @@ namespace po { namespace scene {
         // Expressed in radians
         
         //! Set the rotation (in radians)
-		virtual View &setRotation(float rotation);
+		virtual View& setRotation(float rotation);
         //! Get the rotation (in radians)
 		virtual float getRotation() { return mRotation; };
         
@@ -357,7 +360,7 @@ namespace po { namespace scene {
         // Expressed in range (0.0, 1.0), clamped
         
         //! Set the alpha (0.0, 1.0)
-		virtual View &setAlpha(float alpha);
+		virtual View& setAlpha(float alpha);
         //! Get the alpha
 		virtual float getAlpha() { return mAlpha; };
         
@@ -376,9 +379,9 @@ namespace po { namespace scene {
         // or manually by using one of the below methods
         
         //! Set the offset using a ci::vec2
-		virtual View &setOffset(ci::vec2 offset) { return setOffset(offset.x, offset.y); };
+		virtual View& setOffset(ci::vec2 offset) { return setOffset(offset.x, offset.y); };
         //! Set the offset (convenience method)
-		virtual View &setOffset(float x, float y);
+		virtual View& setOffset(float x, float y);
         //! Get the offset
 		virtual ci::vec2 getOffset() { return mOffset; };
         
@@ -387,7 +390,7 @@ namespace po { namespace scene {
         //  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
         
         //! Set the alignment
-		virtual View &setAlignment(Alignment alignment);
+		virtual View& setAlignment(Alignment alignment);
         //! Get the alignment
 		virtual Alignment getAlignment() { return mAlignment; };
         
@@ -395,7 +398,7 @@ namespace po { namespace scene {
         // Support for different orders of Rotate, Translate and Scale. Default is TRS
         
         //! Set the matrix order
-		virtual View &setMatrixOrder(MatrixOrder order) { mMatrixOrder = order; return *this; }
+		virtual View& setMatrixOrder(MatrixOrder order) { mMatrixOrder = order; return *this; }
         //! Get the matrix order
 		virtual MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
@@ -403,7 +406,7 @@ namespace po { namespace scene {
         // Snap coordinates (position + offset) to whole pixels
         // This does not affect parent View
 
-		virtual View &setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
+		virtual View& setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
 		virtual bool getPixelSnapping() { return mPixelSnapping; }
         
 		// Background
@@ -424,7 +427,7 @@ namespace po { namespace scene {
 		virtual View& setFillColor(float r, float g, float b, float a) { mFillColor = ci::Color(r, g, b); setAlpha(a); return *this; }
 		virtual View& setFillColor(float r, float g, float b) { mFillColor = ci::Color(r, g, b); return *this; }
         //! Enable fill
-		virtual View &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
+		virtual View& fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
         //! Disable fill
 		virtual void setFillEnabled(bool enabled) { mFillEnabled = enabled; };
         //! Get fill enabled
@@ -437,11 +440,11 @@ namespace po { namespace scene {
         // Works similar to fill color, Stroke needs to be supported by inheriting View to have any effect.
         
         //! Set the stroke color with a ci::Color
-		virtual View &setStrokeColor(ci::Color color) { mStrokeColor = color; return *this; }
+		virtual View& setStrokeColor(ci::Color color) { mStrokeColor = color; return *this; }
         //! Set the stroke color (convenience method)
-		virtual View &setStrokeColor(float r, float g, float b) { mStrokeColor = ci::Color(r, g, b); return *this;}
+		virtual View& setStrokeColor(float r, float g, float b) { mStrokeColor = ci::Color(r, g, b); return *this;}
         //! Enable or disable the stroke
-		virtual View &setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; return *this; };
+		virtual View& setStrokeEnabled(bool enabled) { mStrokeEnabled = enabled; return *this; };
         //! Get stroke enabled
 		virtual bool getStrokeEnabled() { return mStrokeEnabled; }
         //! Get the stroke color
@@ -732,7 +735,7 @@ namespace po { namespace scene {
 		
     };
 
-	inline std::ostream &operator<<(std::ostream &os, const po::scene::View &a) {
+	inline std::ostream &operator<<(std::ostream &os, const po::scene::View& a) {
 		os << a.getName();
 		return os;
 	}

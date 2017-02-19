@@ -416,7 +416,7 @@ namespace po { namespace scene {
 	//
 	//	Set the position
 	//
-    View &View::setPosition(float x, float y)
+    View& View::setPosition(float x, float y)
     {
         mPositionAnim.stop();
         mUpdatePositionFromAnim = false;
@@ -429,7 +429,7 @@ namespace po { namespace scene {
 	//
     //	Set the scale
 	//
-    View &View::setScale(float x, float y)
+    View& View::setScale(float x, float y)
     {
         mScaleAnim.stop();
         mUpdateScaleFromAnim = false;
@@ -443,7 +443,7 @@ namespace po { namespace scene {
     //
     //	Set the rotation
 	//
-    View &View::setRotation(float rotation)
+    View& View::setRotation(float rotation)
     {
         
         if(rotation >= M_PI * 2 || rotation <= -M_PI * 2) {
@@ -462,7 +462,7 @@ namespace po { namespace scene {
     //
     //	Set the alpha
 	//
-    View &View::setAlpha(float alpha)
+    View& View::setAlpha(float alpha)
     {
         mAlphaAnim.stop();
         mUpdateAlphaFromAnim = false;
@@ -473,13 +473,13 @@ namespace po { namespace scene {
     
     //
     // Set the fill color
-	View &View::setFillColor(ci::ColorA color) {
+	View& View::setFillColor(ci::ColorA color) {
 		setFillColor(ci::Color(color));
 		setAlpha(color.a);
 		return *this;
 	}
 
-    View &View::setFillColor(ci::Color color)
+    View& View::setFillColor(ci::Color color)
     {
         mFillColor = color;
         mFillColorAnim = mFillColor;
@@ -489,7 +489,7 @@ namespace po { namespace scene {
     //
     //	Offset the whole View from the origin
 	//
-    View &View::setOffset(float x, float y) {
+    View& View::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
         mOffset = ci::vec2(x, y);
@@ -566,7 +566,7 @@ namespace po { namespace scene {
     //  Alignment
 	//------------------------------------
     
-    View &View::setAlignment(Alignment alignment)
+    View& View::setAlignment(Alignment alignment)
     {
         mAlignment = alignment;
         
@@ -760,7 +760,13 @@ namespace po { namespace scene {
 		view->setScene(mScene.lock());
 	}
 
+	View& View::removeFromSuperview() {
+		if (getParent() != nullptr) {
+			getParent()->removeSubview(shared_from_this());
+		}
 
+		return *this;
+	}
 
 	//------------------------------------
 	//  Subviews
@@ -770,7 +776,7 @@ namespace po { namespace scene {
 	//  Add Subview
 	//
 
-	View &View::addSubview(ViewRef view)
+	View& View::addSubview(ViewRef view)
 	{
 		setParentAndScene(view);
 		mSubviews.push_back(view);
@@ -780,7 +786,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::addSubviews(std::vector<ViewRef> views) {
+	View& View::addSubviews(std::vector<ViewRef> views) {
 		for (auto &view : views) {
 			setParentAndScene(view);
 			mSubviews.push_back(view);
@@ -792,7 +798,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::insertSubviewAt(int index, ViewRef view)
+	View& View::insertSubviewAt(int index, ViewRef view)
 	{
 		setParentAndScene(view);
 		mSubviews.insert(mSubviews.begin() + index, view);
@@ -802,7 +808,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::insertSubviewBefore(ViewRef view, ViewRef before)
+	View& View::insertSubviewBefore(ViewRef view, ViewRef before)
 	{
 		setParentAndScene(view);
 		mSubviews.insert(mSubviews.begin() + getIndexForSubview(before), view);
@@ -812,7 +818,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::insertSubviewAfter(ViewRef view, ViewRef after)
+	View& View::insertSubviewAfter(ViewRef view, ViewRef after)
 	{
 		setParentAndScene(view);
 		mSubviews.insert(mSubviews.begin() + getIndexForSubview(after) + 1, view);
@@ -954,7 +960,7 @@ namespace po { namespace scene {
 	//  Move Subviews
 	//
 
-	View &View::moveSubviewToFront(ViewRef view)
+	View& View::moveSubviewToFront(ViewRef view)
 	{
 		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
 		if (viewIter != mSubviews.end()) {
@@ -965,7 +971,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::moveSubviewForward(ViewRef view)
+	View& View::moveSubviewForward(ViewRef view)
 	{
 		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
 		if ( viewIter != mSubviews.end() && *viewIter != mSubviews.back() ) {
@@ -975,7 +981,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::moveSubviewToBack(ViewRef view)
+	View& View::moveSubviewToBack(ViewRef view)
 	{
 		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
 		if (viewIter != mSubviews.end()) {
@@ -986,7 +992,7 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	View &View::moveSubviewBackward(ViewRef view)
+	View& View::moveSubviewBackward(ViewRef view)
 	{
 		auto viewIter = std::find(mSubviews.begin(), mSubviews.end(), view);
 		if ( viewIter != mSubviews.end() && *viewIter != mSubviews.front() ) {
