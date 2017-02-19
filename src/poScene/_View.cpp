@@ -138,13 +138,13 @@ namespace po { namespace scene {
 		, mDrawBounds(false)
 		, mUseElasticBounds(true)
 		, mBoundsColor(1.f, 0, 0)
-		, mParentShouldIgnoreInBounds(false)
+		, mSuperviewShouldIgnoreInBounds(false)
 		, mBoundsDirty(true)
 		, mFrameDirty(true)
 		, mVisible(true)
 		, mInteractionEnabled(true)
 		, mHasScene(false)
-		, mHasParent(false)
+		, mHasSuperview(false)
 		, mIsMasked(false)
 		, mMask(nullptr)
     {
@@ -155,7 +155,7 @@ namespace po { namespace scene {
     View::~View()
 	{
 		//	Make sure to clear the fbo w/Cinder bug fix
-        removeParent();
+        removeSuperview();
         removeScene();
     }
     
@@ -181,7 +181,7 @@ namespace po { namespace scene {
 		std::deque<ViewRef> subviews(mSubviews);
 
 		for (ViewRef &subview : subviews) {
-			if (subview->mVisible && subview->hasParent()) {
+			if (subview->mVisible && subview->hasSuperview()) {
 				subview->updateTree();
 			}
 		}
@@ -218,8 +218,8 @@ namespace po { namespace scene {
         if (hasScene()) mDrawOrder = mScene.lock()->getNextDrawOrder();
         
         //	Set applied alpha
-		if (hasParent()) {
-            mAppliedAlpha = getParent()->getAppliedAlpha() * mAlpha;
+		if (hasSuperview()) {
+            mAppliedAlpha = getSuperview()->getAppliedAlpha() * mAlpha;
 		} else {
             mAppliedAlpha = mAlpha;
 		}
@@ -269,8 +269,8 @@ namespace po { namespace scene {
     }
 
 	void View::calculateMatrices() {
-		if (hasParent()) {
-			getParent()->calculateMatrices();
+		if (hasSuperview()) {
+			getSuperview()->calculateMatrices();
 		} else {
 			matrixTree();
 		}
@@ -504,19 +504,19 @@ namespace po { namespace scene {
     
     //
     //	Check if we are visible, and up the scene graph
-	//	Somewhat slow, could be better implementation (i.e. parents set a var on their subviews like "parentIsVisible")
+	//	Somewhat slow, could be better implementation (i.e. superviews set a var on their subviews like "superviewIsVisible")
 	//
     bool View::isVisible()
     {
         if (!mVisible) return false;
         
-        ViewRef parent = getParent();
-        while (parent) {
-            if (!parent->mVisible) {
+        ViewRef superview = getSuperview();
+        while (superview) {
+            if (!superview->mVisible) {
                 return false;
             }
             
-            parent = parent->getParent();
+            superview = superview->getSuperview();
         }
         
         return true;
@@ -696,7 +696,7 @@ namespace po { namespace scene {
 
     
     //------------------------------------
-    //  Parent + Scene
+    //  Superview + Scene
 	//------------------------------------
     
     void View::setScene(SceneRef scene) {
@@ -731,38 +731,38 @@ namespace po { namespace scene {
         mHasScene = false;
     }
 	
-    void View::setParent(ViewRef containerView)
+    void View::setSuperview(ViewRef containerView)
     {
-        mParent = containerView;
-        mHasParent = mParent.lock() ? true : false;
+        mSuperview = containerView;
+        mHasSuperview = mSuperview.lock() ? true : false;
     }
 	
-    ViewRef View::getParent() const {
-		return mParent.lock();
+    ViewRef View::getSuperview() const {
+		return mSuperview.lock();
 	}
 	
-    bool View::hasParent() { return mHasParent; }
+    bool View::hasSuperview() { return mHasSuperview; }
 	
-    void View::removeParent() {
-        mParent.reset();
-        mHasParent = false;
+    void View::removeSuperview() {
+        mSuperview.reset();
+        mHasSuperview = false;
     }
 
-	void View::setSubviewParentAndScene(ViewRef view)
+	void View::setSubviewSuperviewAndScene(ViewRef view)
 	{
 		//	See if the View is already a subview of another View.
-		if (view->getParent() != nullptr) {
-			view->getParent()->removeSubview(view);
+		if (view->getSuperview() != nullptr) {
+			view->getSuperview()->removeSubview(view);
 		}
 
-		//	Assign ourselves as the parent
-		view->setParent(shared_from_this());
+		//	Assign ourselves as the superview
+		view->setSuperview(shared_from_this());
 		view->setScene(mScene.lock());
 	}
 
 	View& View::removeFromSuperview() {
-		if (getParent() != nullptr) {
-			getParent()->removeSubview(shared_from_this());
+		if (getSuperview() != nullptr) {
+			getSuperview()->removeSubview(shared_from_this());
 		}
 
 		return *this;
@@ -778,7 +778,7 @@ namespace po { namespace scene {
 
 	View& View::addSubview(ViewRef view)
 	{
-		setParentAndScene(view);
+		setSuperviewAndScene(view);
 		mSubviews.push_back(view);
 		setAlignment(getAlignment());
 		calculateMatrices();
@@ -788,7 +788,7 @@ namespace po { namespace scene {
 
 	View& View::addSubviews(std::vector<ViewRef> views) {
 		for (auto &view : views) {
-			setParentAndScene(view);
+			setSuperviewAndScene(view);
 			mSubviews.push_back(view);
 		}
 
@@ -800,7 +800,7 @@ namespace po { namespace scene {
 
 	View& View::insertSubviewAt(int index, ViewRef view)
 	{
-		setParentAndScene(view);
+		setSuperviewAndScene(view);
 		mSubviews.insert(mSubviews.begin() + index, view);
 		setAlignment(getAlignment());
 		calculateMatrices();
@@ -810,7 +810,7 @@ namespace po { namespace scene {
 
 	View& View::insertSubviewBefore(ViewRef view, ViewRef before)
 	{
-		setParentAndScene(view);
+		setSuperviewAndScene(view);
 		mSubviews.insert(mSubviews.begin() + getIndexForSubview(before), view);
 		setAlignment(getAlignment());
 		calculateMatrices();
@@ -820,7 +820,7 @@ namespace po { namespace scene {
 
 	View& View::insertSubviewAfter(ViewRef view, ViewRef after)
 	{
-		setParentAndScene(view);
+		setSuperviewAndScene(view);
 		mSubviews.insert(mSubviews.begin() + getIndexForSubview(after) + 1, view);
 		setAlignment(getAlignment());
 		calculateMatrices();
@@ -844,7 +844,7 @@ namespace po { namespace scene {
 
 	bool View::hasSubview(ViewRef view)
 	{
-		return view->getParent()->getUID() == getUID();
+		return view->getSuperview()->getUID() == getUID();
 	}
 
 	int View::getIndexForSubview(const ViewRef &view)
@@ -913,7 +913,7 @@ namespace po { namespace scene {
 	{
 		std::deque<ViewRef>::iterator iter = std::find(mSubviews.begin(), mSubviews.end(), view);
 		if (iter != mSubviews.end()) {
-			(*iter)->removeParent();
+			(*iter)->removeSuperview();
 			(*iter)->removeScene();
 
 			mSubviews.erase(iter);
@@ -935,7 +935,7 @@ namespace po { namespace scene {
 
 			mSubviews.erase(mSubviews.begin() + index);
 
-			subview->removeParent();
+			subview->removeSuperview();
 			subview->removeScene();
 
 			setAlignment(getAlignment());
@@ -947,7 +947,7 @@ namespace po { namespace scene {
 	void View::removeAllSubviews()
 	{
 		for (ViewRef &view : mSubviews) {
-			view->removeParent();
+			view->removeSuperview();
 			view->removeScene();
 		}
 
@@ -1002,19 +1002,19 @@ namespace po { namespace scene {
 		return *this;
 	}
 
-	void View::setParentAndScene(ViewRef view)
+	void View::setSuperviewAndScene(ViewRef view)
 	{
 		if (view == nullptr) {
 			return;
 		}
 
 		//	See if the View is already a subview of another View.
-		if (view->getParent() != nullptr) {
-			view->getParent()->removeSubview(view);
+		if (view->getSuperview() != nullptr) {
+			view->getSuperview()->removeSubview(view);
 		}
 
-		//	Assign ourselves as the parent
-		view->setParent(shared_from_this());
+		//	Assign ourselves as the superview
+		view->setSuperview(shared_from_this());
 		view->setScene(mScene.lock());
 	}
 	
@@ -1035,7 +1035,7 @@ namespace po { namespace scene {
 
 			// Get bounds from subviews
 			for (ViewRef &subview : mSubviews) {
-				if (subview->mVisible && !subview->getParentShouldIgnoreInBounds()) {
+				if (subview->mVisible && !subview->getSuperviewShouldIgnoreInBounds()) {
 					bounds.include(subview->getFrame());
 				}
 			}

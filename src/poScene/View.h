@@ -138,20 +138,20 @@ namespace po { namespace scene {
         //	Scene graph
 		//------------------------------------
 		
-        //	Scene & Parent
-        //  Views need a scene and a parent to draw.
-        //  Any View that has a scene should have a parent,
-        //  but if the View has a parent (any level up) that does not have a scene
+        //	Scene & Superview
+        //  Views need a scene and a superview to draw.
+        //  Any View that has a scene should have a superview,
+        //  but if the View has a superview (any level up) that does not have a scene
         //  it will not have a scene.
         
         //! Get the scene this View currently belongs to (if any)
 		virtual SceneRef getScene();
         //! Check if this View currently belongs to a scene
 		virtual bool hasScene();
-        //! Get the parent of this View (if any)
-		virtual ViewRef getParent() const;
-        //! Check if this View currently has a parent
-		virtual bool hasParent();	
+        //! Get the superview of this View (if any)
+		virtual ViewRef getSuperview() const;
+        //! Check if this View currently has a superview
+		virtual bool hasSuperview();	
 		
 		//  Differentiate between non-rendering Views and all other Views
 		//   this gets overridden to return false in View
@@ -260,10 +260,10 @@ namespace po { namespace scene {
         virtual ci::Color getBoundsColor() { return mBoundsColor; };
         //! Get the frame
         virtual ci::Rectf getFrame();
-        //! Ignore in the bounds of parent, sometimes useful
-        virtual View& setParentShouldIgnoreInBounds(bool enable) { mParentShouldIgnoreInBounds = enable; return *this;}
-        //! Get parentShouldIgnoreInBounds
-        virtual bool getParentShouldIgnoreInBounds() { return mParentShouldIgnoreInBounds; };
+        //! Ignore in the bounds of superview, sometimes useful
+        virtual View& setSuperviewShouldIgnoreInBounds(bool enable) { mSuperviewShouldIgnoreInBounds = enable; return *this;}
+        //! Get superviewShouldIgnoreInBounds
+        virtual bool getSuperviewShouldIgnoreInBounds() { return mSuperviewShouldIgnoreInBounds; };
         
         //	Interaction
         //  Flag to enable/disable interaction of objects. If it is disabled
@@ -305,7 +305,7 @@ namespace po { namespace scene {
         //! Set visibility on/off
 		virtual void setVisible(bool enabled) { mVisible = enabled; };
         //! Find out if this View is visible.
-        /** This checks not only the View's visibility but also it's parents up the draw tree to make sure it is visible**/
+        /** This checks not only the View's visibility but also it's superviews up the draw tree to make sure it is visible**/
 		virtual bool isVisible();
 		
 		
@@ -327,7 +327,7 @@ namespace po { namespace scene {
 		virtual std::string getName() const { return mName; }
         
         // Position
-        // The position that the origin is at within the parent View
+        // The position that the origin is at within the superview View
         //! Set the position of the View with a ci::vec2
         virtual View& setPosition(ci::vec2 position) { return setPosition(position.x, position.y); };
         //! Set the position of the View, convenience method
@@ -404,7 +404,7 @@ namespace po { namespace scene {
         
         // Whole pixel snapping
         // Snap coordinates (position + offset) to whole pixels
-        // This does not affect parent View
+        // This does not affect superview View
 
 		virtual View& setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
 		virtual bool getPixelSnapping() { return mPixelSnapping; }
@@ -564,17 +564,17 @@ namespace po { namespace scene {
 
 		std::vector<ViewEventControllerBaseRef> mEventControllers;
 
-		//! Determine if this View is visible, has a scene and parent, etc.
+		//! Determine if this View is visible, has a scene and superview, etc.
 		bool isEligibleForInteractionEvents();
 
     protected:
         // Constructor
         View(std::string name = "");
         
-        //! Set the parent for this View
-        void setParent(ViewRef View);
-        //! Remove the parent for this View
-        void removeParent();
+        //! Set the superview for this View
+        void setSuperview(ViewRef View);
+        //! Remove the superview for this View
+        void removeSuperview();
         //! Set the scene for this View
         virtual void setScene(SceneRef scene);
         //! Remove the scene for this View
@@ -642,8 +642,8 @@ namespace po { namespace scene {
 		// Subviews
 		std::deque<ViewRef> mSubviews;
 
-		//  Set a view's parent to this container and the scene to this container's scene
-		void setSubviewParentAndScene(ViewRef view);
+		//  Set a view's superview to this container and the scene to this container's scene
+		void setSubviewSuperviewAndScene(ViewRef view);
 
         // Animation
         //! Initialize our attribute animations
@@ -694,12 +694,12 @@ namespace po { namespace scene {
         std::weak_ptr<Scene> mScene;
         bool mHasScene;
         
-        //	Parent
-        std::weak_ptr<View> mParent;
-        bool mHasParent;
+        //	Superview
+        std::weak_ptr<View> mSuperview;
+        bool mHasSuperview;
 
-		//  Set the parent to this container and the scene to this container's scene
-		void setParentAndScene(ViewRef View);
+		//  Set the superview to this container and the scene to this container's scene
+		void setSuperviewAndScene(ViewRef View);
         
 		// Background Drawing
 		void drawBackground();
@@ -710,7 +710,7 @@ namespace po { namespace scene {
         void drawBounds();
         bool mDrawBounds;
         ci::Color mBoundsColor;
-        bool mParentShouldIgnoreInBounds;
+        bool mSuperviewShouldIgnoreInBounds;
         
         //	Unique identifiers
         uint32_t mDrawOrder;

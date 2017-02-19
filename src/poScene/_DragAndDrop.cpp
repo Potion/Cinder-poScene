@@ -120,15 +120,15 @@ namespace po { namespace scene {
 	}
 
 	bool DragAndDropViewController::checkForIntersection(ViewRef view1, ViewRef view2) {
-		if (view1->hasParent() && view2->hasParent()) {
-			ci::vec2 tl = view1->getParent()->localToWindow(view1->getFrame().getUpperLeft());
-			ci::vec2 br = view1->getParent()->localToWindow(view1->getFrame().getLowerRight());
+		if (view1->hasSuperview() && view2->hasSuperview()) {
+			ci::vec2 tl = view1->getSuperview()->localToWindow(view1->getFrame().getUpperLeft());
+			ci::vec2 br = view1->getSuperview()->localToWindow(view1->getFrame().getLowerRight());
 
 			//Flip rect coords if they are rotated upside down
 			ci::Rectf view1GlobalRect = tl.y > br.y ? ci::Rectf(br, tl) : ci::Rectf(tl, br);
 
-			tl = view2->getParent()->localToWindow(view2->getFrame().getUpperLeft());
-			br = view2->getParent()->localToWindow(view2->getFrame().getLowerRight());
+			tl = view2->getSuperview()->localToWindow(view2->getFrame().getUpperLeft());
+			br = view2->getSuperview()->localToWindow(view2->getFrame().getLowerRight());
 
 			//Flip rect coords if they are rotated upside down
 			ci::Rectf view2GlobalRect = tl.y > br.y ? ci::Rectf(br, tl) : ci::Rectf(tl, br);
