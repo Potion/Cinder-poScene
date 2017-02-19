@@ -14,6 +14,7 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		1428E8B6B10E47CEAC9D53D8 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = A798EDC459ED4EE78687AF05 /* CinderApp.icns */; };
 		1BA622797BBC46719836A5D1 /* AnimationSampleApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */; };
+		326716141E311AD500E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 326716121E311AD500E87ED6 /* ViewController.cpp */; };
 		386DC1921B278EF5004A2B24 /* Indicator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 386DC1901B278EF5004A2B24 /* Indicator.cpp */; };
 		38C58DF21B27642B00ECFAAC /* AnimationSquare.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -33,7 +34,6 @@
 		AA7AC10E1E1417E8008608B4 /* _TextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ABFA31E1417E8008608B4 /* _TextView.cpp */; };
 		AA7AC10F1E1417E8008608B4 /* _View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ABFA41E1417E8008608B4 /* _View.cpp */; };
 		AA7AC1111E1417E8008608B4 /* _ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA7ABFA71E1417E8008608B4 /* _ViewController.cpp */; };
-		E8B276BD8F6340E78615AD5D /* AnimationSample.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E3B5BA36654CEFB41EE233 /* AnimationSample.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,11 +43,11 @@
 		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
 		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		19E3B5BA36654CEFB41EE233 /* AnimationSample.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = AnimationSample.cpp; path = ../src/AnimationSample.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2A0D8C60ED3B438FBEF9DD22 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
-		2E7C7B78674344E2BE57995B /* AnimationSample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AnimationSample.h; path = ../src/AnimationSample.h; sourceTree = "<group>"; };
+		326716121E311AD500E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		326716131E311AD500E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		386DC1901B278EF5004A2B24 /* Indicator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Indicator.cpp; path = ../src/Indicator.cpp; sourceTree = "<group>"; };
 		386DC1911B278EF5004A2B24 /* Indicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Indicator.h; path = ../src/Indicator.h; sourceTree = "<group>"; };
 		38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AnimationSquare.cpp; path = ../src/AnimationSquare.cpp; sourceTree = "<group>"; };
@@ -122,9 +122,9 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				326716121E311AD500E87ED6 /* ViewController.cpp */,
+				326716131E311AD500E87ED6 /* ViewController.h */,
 				C4A12BD9E17049BCBAAED194 /* AnimationSampleApp.cpp */,
-				2E7C7B78674344E2BE57995B /* AnimationSample.h */,
-				19E3B5BA36654CEFB41EE233 /* AnimationSample.cpp */,
 				38C58DF11B27642B00ECFAAC /* AnimationSquare.h */,
 				38C58DF01B27642B00ECFAAC /* AnimationSquare.cpp */,
 				386DC1911B278EF5004A2B24 /* Indicator.h */,
@@ -320,11 +320,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				326716141E311AD500E87ED6 /* ViewController.cpp in Sources */,
 				AA7AC1081E1417E8008608B4 /* _EventCenter.cpp in Sources */,
 				1BA622797BBC46719836A5D1 /* AnimationSampleApp.cpp in Sources */,
 				AA7AC10B1E1417E8008608B4 /* _MatrixSet.cpp in Sources */,
 				AA7AC10F1E1417E8008608B4 /* _View.cpp in Sources */,
-				E8B276BD8F6340E78615AD5D /* AnimationSample.cpp in Sources */,
 				AA7AC1061E1417E8008608B4 /* _DragAndDrop.cpp in Sources */,
 				AA7AC10E1E1417E8008608B4 /* _TextView.cpp in Sources */,
 				AA7AC10C1E1417E8008608B4 /* _Scene.cpp in Sources */,
@@ -407,7 +407,7 @@
 					"\"$(CINDER_PATH)/boost\"",
 					../../../../Box2D/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src";
 			};
@@ -427,7 +427,7 @@
 					"\"$(CINDER_PATH)/boost\"",
 					../../../../Box2D/src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src";
 			};

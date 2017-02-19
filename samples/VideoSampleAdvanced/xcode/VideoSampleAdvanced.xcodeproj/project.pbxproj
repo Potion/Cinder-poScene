@@ -12,7 +12,7 @@
 		00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
 		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
-		02956DC6C00D43F5B90AC12D /* VideoSampleAdvanced.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */; };
+		3267161D1E311B9500E87ED6 /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3267161B1E311B9500E87ED6 /* ViewController.cpp */; };
 		38D2EAC31B430B7000BFE3F3 /* MovieThumb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */; };
 		38D2EAC41B430B7000BFE3F3 /* PlayerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABD1B430B7000BFE3F3 /* PlayerButton.cpp */; };
 		38D2EAC51B430B7000BFE3F3 /* PlayerController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 38D2EABF1B430B7000BFE3F3 /* PlayerController.cpp */; };
@@ -49,6 +49,8 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		3267161B1E311B9500E87ED6 /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		3267161C1E311B9500E87ED6 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
 		3832AA131B3CA399002AA5DA /* QuickTime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickTime.framework; path = System/Library/Frameworks/QuickTime.framework; sourceTree = SDKROOT; };
 		38D2EABB1B430B7000BFE3F3 /* MovieThumb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MovieThumb.cpp; path = ../src/MovieThumb.cpp; sourceTree = "<group>"; };
 		38D2EABC1B430B7000BFE3F3 /* MovieThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MovieThumb.h; path = ../src/MovieThumb.h; sourceTree = "<group>"; };
@@ -62,14 +64,12 @@
 		38F6C73F1B54671E00233296 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		38F6C7411B54673200233296 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		38F6C7431B54673C00233296 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
-		4EF8033602B64B299629DE35 /* VideoSampleAdvanced.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VideoSampleAdvanced.h; path = ../src/VideoSampleAdvanced.h; sourceTree = "<group>"; };
 		4F35C76E8D1E4BF3BEFD4088 /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
 		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
 		5323E6B50EAFCA7E003A9687 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = /System/Library/Frameworks/QTKit.framework; sourceTree = "<absolute>"; };
 		5E00733A727C48BC8D95A15A /* VideoSampleAdvancedApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = VideoSampleAdvancedApp.cpp; path = ../src/VideoSampleAdvancedApp.cpp; sourceTree = "<group>"; };
 		79A704B26DCC4828AA90D230 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* VideoSampleAdvanced.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VideoSampleAdvanced.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = VideoSampleAdvanced.cpp; path = ../src/VideoSampleAdvanced.cpp; sourceTree = "<group>"; };
 		AA7AF5581E142703008608B4 /* _DragAndDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DragAndDrop.cpp; sourceTree = "<group>"; };
 		AA7AF5591E142703008608B4 /* _DraggableView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _DraggableView.cpp; sourceTree = "<group>"; };
 		AA7AF55A1E142703008608B4 /* _EventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = _EventCenter.cpp; sourceTree = "<group>"; };
@@ -141,8 +141,8 @@
 				38D2EAC11B430B7000BFE3F3 /* Scrubber.cpp */,
 				38D2EAC21B430B7000BFE3F3 /* Scrubber.h */,
 				5E00733A727C48BC8D95A15A /* VideoSampleAdvancedApp.cpp */,
-				4EF8033602B64B299629DE35 /* VideoSampleAdvanced.h */,
-				92D08DED1BC545369CC090D4 /* VideoSampleAdvanced.cpp */,
+				3267161B1E311B9500E87ED6 /* ViewController.cpp */,
+				3267161C1E311B9500E87ED6 /* ViewController.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -340,13 +340,13 @@
 				AA7AF8A91E142707008608B4 /* _TextView.cpp in Sources */,
 				AA7AF8A61E142707008608B4 /* _MatrixSet.cpp in Sources */,
 				AA7AF8AA1E142707008608B4 /* _View.cpp in Sources */,
-				02956DC6C00D43F5B90AC12D /* VideoSampleAdvanced.cpp in Sources */,
 				AA7AF8A11E142707008608B4 /* _DragAndDrop.cpp in Sources */,
 				38D2EAC41B430B7000BFE3F3 /* PlayerButton.cpp in Sources */,
 				AA7AF8A31E142707008608B4 /* _EventCenter.cpp in Sources */,
 				AA7AF8A21E142707008608B4 /* _DraggableView.cpp in Sources */,
 				AA7AF8A81E142707008608B4 /* _ShapeView.cpp in Sources */,
 				38D2EAC61B430B7000BFE3F3 /* Scrubber.cpp in Sources */,
+				3267161D1E311B9500E87ED6 /* ViewController.cpp in Sources */,
 				38D2EAC51B430B7000BFE3F3 /* PlayerController.cpp in Sources */,
 				AA7AF8A51E142707008608B4 /* _ImageView.cpp in Sources */,
 				38D2EAC31B430B7000BFE3F3 /* MovieThumb.cpp in Sources */,
@@ -422,7 +422,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
@@ -439,7 +439,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;
 				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include \"$(CINDER_PATH)/blocks/Cinder-poScene/src\"";
 			};
