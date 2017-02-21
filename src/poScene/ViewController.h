@@ -24,6 +24,9 @@ namespace po { namespace scene {
 	protected:
 		ci::signals::ScopedConnection mUpdateConnection;
 
+		// Connections storage
+		ci::signals::ConnectionList mConnections;
+
 	private:
 		ViewRef mView;
 	};
