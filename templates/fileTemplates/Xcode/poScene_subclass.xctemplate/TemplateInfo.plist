@@ -18,7 +18,7 @@
 			<key>Description</key>
 			<string>poScene type to subclass</string>
 			<key>Identifier</key>
-			<string>NodeContainerSubclass</string>
+			<string>ViewControllerSubclass</string>
 			<key>Name</key>
 			<string>Subclass of:</string>
 			<key>Required</key>
@@ -27,8 +27,8 @@
 			<string>popup</string>
 			<key>Values</key>
 			<array>
-				<string>NodeContainer</string>
-				<string>Node</string>
+				<string>ViewController</string>
+				<string>View</string>
 			</array>
 		</dict>
 	</array>
