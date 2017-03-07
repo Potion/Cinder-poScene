@@ -20,11 +20,12 @@ public:
 	bool getCanHoldMultipleViews() { return mCanHoldMultipleViews; };
 	void setCanHoldMultipleViews(bool canHoldMultipleViews) { mCanHoldMultipleViews = canHoldMultipleViews; };
 
-	bool isHoldingViews() { return mDraggableViewsHolder->hasSubviews(); };
+	bool isHoldingViews() { return mDroppedViews.size() > 0; };
 	virtual void setHighlighted(bool highlighted=true);
 
 	bool addDraggableView(DraggableViewRef view);
 	bool removeDraggableView(DraggableViewRef view);
+	bool hasDraggableView(DraggableViewRef view);
 
 	ViewRef getBackgroundView() { return mBackgroundView; };
 
@@ -36,7 +37,7 @@ private:
 	bool mCanHoldMultipleViews;
 	bool mIsHighlighted;
 	ViewRef mBackgroundView;
-	ViewRef mDraggableViewsHolder;
+	std::vector<DraggableViewRef> mDroppedViews;
 };
 
 class DragAndDropViewController;

@@ -70,7 +70,7 @@ namespace po { namespace scene {
         ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 
 		// CB - for calling functions like measure()
-        const ci::TextBox& geCiTextBox() const { return mCiTextBox; };
+        const ci::TextBox& getCiTextBox() const { return mCiTextBox; };
 
 
 		//! Set the texture format to use when rendering to texture
