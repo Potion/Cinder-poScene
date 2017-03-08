@@ -14,7 +14,7 @@
 	<array>
 		<dict>
 			<key>Default</key>
-			<string>0</string>
+			<string>ViewController</string>
 			<key>Description</key>
 			<string>poScene type to subclass</string>
 			<key>Identifier</key>
