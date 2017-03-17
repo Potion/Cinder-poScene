@@ -131,7 +131,7 @@ namespace po { namespace scene {
     template<class T> using VideoViewRef = std::shared_ptr< VideoView<T> >;
 
 	// Define VideoViewGL if on 32 bit Windows or OS X
-#if (defined(  CINDER_MSW ) && defined(_WIN64)) || ! defined( CINDER_LINUX )
+#if (defined(  CINDER_MSW ) && defined(_WIN32)) || (defined( CINDER_MAC ))
     typedef VideoView<ci::qtime::MovieGl> VideoViewGl;
     typedef std::shared_ptr<VideoViewGl> VideoViewGlRef;
 #endif
