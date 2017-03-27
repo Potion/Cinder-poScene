@@ -641,7 +641,7 @@ namespace po
 			mOffsetAnim = mOffset;
 
 			if( preservePositioning ) {
-				setPosition( getPosition() + ( mOffset - mPreviousOffset ) );
+				setPosition( getPosition() + ( mPreviousOffset - mOffset ) );
 			}
 
 			return *this;
