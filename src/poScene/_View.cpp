@@ -588,22 +588,21 @@ namespace po
 		//  Alignment
 		//------------------------------------
 
-		View& View::setAlignment( Alignment alignment )
+		View& View::setAlignment( Alignment alignment, bool preservePositioning )
 		{
 			mAlignment = alignment;
 
+			ci::vec2 mPreviousOffset = mOffset;
+
 			if( mAlignment == Alignment::NONE ) { return *this; }
 
-			if( mAlignment == Alignment::TOP_LEFT )  {
-				mOffset = ci::vec2( 0, 0 );
-				return *this;
-			}
 
 			ci::Rectf bounds = getBounds();
 
 			switch( mAlignment ) {
 				case Alignment::NONE:
 				case Alignment::TOP_LEFT:
+					mOffset = ci::vec2( 0, 0 );
 					break;
 
 				case Alignment::TOP_CENTER:
@@ -640,6 +639,10 @@ namespace po
 			}
 
 			mOffsetAnim = mOffset;
+
+			if( preservePositioning ) {
+				setPosition( getPosition() + ( mOffset - mPreviousOffset ) );
+			}
 
 			return *this;
 		}
@@ -827,6 +830,8 @@ namespace po
 
 		View& View::addSubview( ViewRef view )
 		{
+			CI_ASSERT_MSG( view != shared_from_this(), "po::Scene: Attempting to add view to self, not allowed." );
+
 			setSuperviewAndScene( view );
 			mSubviews.push_back( view );
 			setAlignment( getAlignment() );

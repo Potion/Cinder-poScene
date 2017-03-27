@@ -437,7 +437,7 @@ namespace po
 				//  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
 
 				//! Set the alignment
-				virtual View& setAlignment( Alignment alignment );
+				virtual View& setAlignment( Alignment alignment, bool preservePositioning = false );
 				//! Get the alignment
 				virtual Alignment getAlignment() { return mAlignment; };
 
@@ -448,6 +448,10 @@ namespace po
 				virtual View& setMatrixOrder( MatrixOrder order ) { mMatrixOrder = order; return *this; }
 				//! Get the matrix order
 				virtual MatrixOrder getMatrixOrder() { return mMatrixOrder; }
+
+				//! Calculate the matrices only, use when you need to update position + bounds before a draw
+				//! or adding children
+				virtual void calculateMatrices();
 
 				// Whole pixel snapping
 				// Snap coordinates (position + offset) to whole pixels
@@ -734,9 +738,6 @@ namespace po
 
 				//! Run through just the matrix tree to update positions and bounds
 				virtual void matrixTree();
-
-				//! Calculate the matrices only
-				virtual void calculateMatrices();
 
 				//	Transformation Matrix
 				MatrixSet mMatrix;
