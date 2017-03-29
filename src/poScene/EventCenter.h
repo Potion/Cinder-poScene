@@ -108,7 +108,7 @@ namespace po
 				{
 					for( ViewRef& view : views ) {
 						//	Check if it is valid (the item hasn't been deleted) and if it is enabled for events
-						if( view == nullptr ) { continue; }
+						if( view == nullptr || !( view->isEligibleForInteractionEventT<EventT, EventTypeT, SignalTypeT>( event.getType() ) ) ) { continue; }
 
 						event.setPropagationEnabled( true );
 
