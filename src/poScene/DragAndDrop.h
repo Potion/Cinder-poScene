@@ -77,6 +77,8 @@ namespace po
 				bool checkForIntersection( DraggableViewRef view, DropZoneViewRef dropZone );
 				bool checkForIntersection( ViewRef view1, ViewRef view2 );
 
+				void setDraggingEnabled( bool enabled );
+
 				std::vector<DraggableViewRef> mDraggableViews;
 				std::vector<DropZoneViewRef> mDropZoneViews;
 
@@ -88,6 +90,7 @@ namespace po
 				void viewDragBeganHandler( DraggableViewRef& view );
 				void viewDraggedHandler( DraggableViewRef& view );
 				void viewDragEndedHandler( DraggableViewRef& view );
+				void viewDragCancelledHandler( DraggableViewRef& view );
 
 				ci::signals::ConnectionList mConnections;
 

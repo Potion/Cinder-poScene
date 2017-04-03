@@ -56,6 +56,32 @@ namespace po
 			mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &DraggableView::mouseEventHandler, this, std::placeholders::_1 ) );
 		}
 
+		void DraggableView::setInteractionEnabled( bool enabled )
+		{
+			bool isEnabled = isInteractionEnabled();
+
+			if( isEnabled == enabled ) {
+				return;
+			}
+
+			po::scene::View::setInteractionEnabled( enabled );
+
+			if( enabled ) {
+				connectEvents();
+			}
+			else {
+				mConnections.clear();
+
+				bool isDragging = mIsDragging;
+				mIsDragging = false;
+
+				if( isDragging ) {
+					DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
+					mSignalDragCancelled.emit( ref );
+				}
+			}
+		}
+
 		void DraggableView::handleDragStartEvent( ci::vec2 localPos, ci::vec2 windowPos, int eventId )
 		{
 			mPrevDragPosition = windowPos;
