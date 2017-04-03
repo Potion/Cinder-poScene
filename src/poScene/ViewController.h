@@ -22,6 +22,8 @@ namespace po
 				virtual void setup() {};
 				virtual void update() {};
 
+				virtual void doLayout() {};
+
 				virtual void setView( ViewRef view ) { mView = view; };
 				virtual ViewRef getView() { return mView; };
 
