@@ -594,8 +594,18 @@ namespace po
 
 			ci::vec2 mPreviousOffset = mOffset;
 
-			if( mAlignment == Alignment::NONE ) { return *this; }
+			calculateOffset();
 
+			if( preservePositioning ) {
+				setPosition( getPosition() + ( ( mPreviousOffset - mOffset ) * mScale ) );
+			}
+
+			return *this;
+		}
+
+		View& View::calculateOffset()
+		{
+			if( mAlignment == Alignment::NONE ) { return *this; }
 
 			ci::Rectf bounds = getBounds();
 
@@ -639,10 +649,6 @@ namespace po
 			}
 
 			mOffsetAnim = mOffset;
-
-			if( preservePositioning ) {
-				setPosition( getPosition() + ( ( mPreviousOffset - mOffset ) * mScale ) );
-			}
 
 			return *this;
 		}
@@ -1095,6 +1101,7 @@ namespace po
 		{
 			mUseElasticBounds = false;
 			mBounds = ci::Rectf( 0, 0, size.x, size.y );
+			calculateOffset();
 		}
 
 		ci::Rectf View::getBounds()

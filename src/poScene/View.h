@@ -431,6 +431,8 @@ namespace po
 				virtual View& setOffset( float x, float y );
 				//! Get the offset
 				virtual ci::vec2 getOffset() { return mOffset; };
+				//! Forces the offset to be re-calculated if using alignment
+				virtual View& calculateOffset();
 
 				//	Alignment
 				//  Alignments set automatic offset based on the bounds of the View
