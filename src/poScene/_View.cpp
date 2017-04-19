@@ -834,9 +834,13 @@ namespace po
 		//  Add Subview
 		//
 
-		View& View::addSubview( ViewRef view )
+		View& View::addSubview( ViewRef view, bool localize )
 		{
 			CI_ASSERT_MSG( view != shared_from_this(), "po::Scene: Attempting to add view to self, not allowed." );
+
+			if( localize ) {
+				view->setPosition( viewToLocal( view->getPosition(), view->getSuperview() ) );
+			}
 
 			setSuperviewAndScene( view );
 			mSubviews.push_back( view );
@@ -846,9 +850,13 @@ namespace po
 			return *this;
 		}
 
-		View& View::addSubviews( std::vector<ViewRef> views )
+		View& View::addSubviews( std::vector<ViewRef> views, bool localize )
 		{
 			for( auto& view : views ) {
+				if( localize ) {
+					view->setPosition( viewToLocal( view->getPosition(), view->getSuperview() ) );
+				}
+
 				setSuperviewAndScene( view );
 				mSubviews.push_back( view );
 			}
@@ -859,8 +867,12 @@ namespace po
 			return *this;
 		}
 
-		View& View::insertSubviewAt( int index, ViewRef view )
+		View& View::insertSubviewAt( int index, ViewRef view, bool localize )
 		{
+			if( localize ) {
+				view->setPosition( viewToLocal( view->getPosition(), view->getSuperview() ) );
+			}
+
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + index, view );
 			setAlignment( getAlignment() );
@@ -869,8 +881,12 @@ namespace po
 			return *this;
 		}
 
-		View& View::insertSubviewBefore( ViewRef view, ViewRef before )
+		View& View::insertSubviewBefore( ViewRef view, ViewRef before, bool localize )
 		{
+			if( localize ) {
+				view->setPosition( viewToLocal( view->getPosition(), view->getSuperview() ) );
+			}
+
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( before ), view );
 			setAlignment( getAlignment() );
@@ -879,8 +895,12 @@ namespace po
 			return *this;
 		}
 
-		View& View::insertSubviewAfter( ViewRef view, ViewRef after )
+		View& View::insertSubviewAfter( ViewRef view, ViewRef after, bool localize )
 		{
+			if( localize ) {
+				view->setPosition( viewToLocal( view->getPosition(), view->getSuperview() ) );
+			}
+
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( after ) + 1, view );
 			setAlignment( getAlignment() );

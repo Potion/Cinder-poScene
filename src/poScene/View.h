@@ -213,6 +213,9 @@ namespace po
 				virtual void setSize( ci::vec2 size );
 				//! Get the width + height
 				virtual ci::vec2 getSize() { return getBounds().getSize(); }
+				//! Get the size with a scale applied
+				virtual ci::vec2 getSizeForScale( ci::vec2 scale ) { return getSize() * scale; }
+				virtual ci::vec2 getSizeForScale( float scale ) { return getSize() * scale; }
 				//! Get the absolute (unscaled) width of the View
 				virtual float getWidth() { return getBounds().getWidth(); };
 				//! Get the absolute (unscaled) height of the View
@@ -228,18 +231,18 @@ namespace po
 				static const int INVALID_SUBVIEW_INDEX = -1;
 
 				//! Add subviews
-				virtual View& addSubview( ViewRef view );
+				virtual View& addSubview( ViewRef view, bool localize = false );
 				//! Add multiple subviews to this View
 				/** This method should be preferred when adding a large amount of subviews at the same time.
 				The View container needs to recalculate it's matrices every time we add a subview (to update bounds)
 				so using this only causes that to happen once vs n times**/
-				virtual View& addSubviews( std::vector<ViewRef> views );
+				virtual View& addSubviews( std::vector<ViewRef> views, bool localize = false );
 				//! Add a subview at an index
-				virtual View& insertSubviewAt( int index, ViewRef view );
+				virtual View& insertSubviewAt( int index, ViewRef view, bool localize = false );
 				//! Add a subview before (below) another View
-				virtual View& insertSubviewBefore( ViewRef view, ViewRef before );
+				virtual View& insertSubviewBefore( ViewRef view, ViewRef before, bool localize = false );
 				//! Add a subview after (above) another View
-				virtual View& insertSubviewAfter( ViewRef view, ViewRef after );
+				virtual View& insertSubviewAfter( ViewRef view, ViewRef after, bool localize = false );
 
 				// Get Subviews
 
