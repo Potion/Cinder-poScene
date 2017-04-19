@@ -21,6 +21,10 @@ namespace po
 				void setup() override;
 
 				virtual void connectEvents();
+
+				virtual void setInteractionEnabled( bool enabled ) override;
+
+
 				virtual void snapBackToPosition() { setPosition( mSnapPosition ); };
 
 				void setSnapBackPosition( ci::vec2 snapBackPosition );
@@ -34,6 +38,7 @@ namespace po
 				DraggableViewSignal& getSignalDragBegan()	{ return mSignalDragBegan;	};
 				DraggableViewSignal& getSignalDragged()		{ return mSignalDragged;	};
 				DraggableViewSignal& getSignalDragEnded()	{ return mSignalDragEnded;	};
+				DraggableViewSignal& getSignalDragCancelled() { return mSignalDragCancelled; };
 
 			protected:
 				DraggableView();
@@ -46,7 +51,7 @@ namespace po
 				int mDraggingEventId;
 
 				// Signals
-				DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded;
+				DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded, mSignalDragCancelled;
 
 				void handleDragStartEvent( ci::vec2 localPos, ci::vec2 windowPos, int eventID );
 				void handleDragEvent( ci::vec2 localPos, ci::vec2 windowPos, int eventID );

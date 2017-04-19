@@ -100,6 +100,7 @@ namespace po
 				mConnections += view->getSignalDragBegan().connect( std::bind( &DragAndDropViewController::viewDragBeganHandler, this, std::placeholders::_1 ) );
 				mConnections += view->getSignalDragged().connect( std::bind( &DragAndDropViewController::viewDraggedHandler, this, std::placeholders::_1 ) );
 				mConnections += view->getSignalDragEnded().connect( std::bind( &DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1 ) );
+				mConnections += view->getSignalDragCancelled().connect( std::bind( &DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1 ) );
 			}
 
 			mDraggableViewValidDropZones[view].push_back( dropZone );
@@ -170,6 +171,13 @@ namespace po
 			return false;
 		}
 
+		void DragAndDropViewController::setDraggingEnabled( bool enabled )
+		{
+			for( auto& draggableView : mDraggableViews ) {
+				draggableView->setInteractionEnabled( enabled );
+			}
+		}
+
 		void DragAndDropViewController::viewDragBeganHandler( DraggableViewRef& view )
 		{
 			// See if the view has a drop zone
@@ -219,6 +227,14 @@ namespace po
 				}
 			}
 
+			// Snap it back if needed
+			if( view->getSnapsBackToPosition() ) {
+				view->snapBackToPosition();
+			}
+		}
+
+		void DragAndDropViewController::viewDragCancelledHandler( DraggableViewRef& view )
+		{
 			// Snap it back if needed
 			if( view->getSnapsBackToPosition() ) {
 				view->snapBackToPosition();
