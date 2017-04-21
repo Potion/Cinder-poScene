@@ -48,7 +48,7 @@ Moving any branch of a tree will also move all of its connected branches and lea
 
 Nodes are the basic building blocks of a scene. The po::scene::Node class is a base class that can not be used on its own, but is instead extended by a variety of inheriting classes that make up po::scene.
 		
-###Attributes
+### Attributes
 Nodes have a number of built in attributes that relate to how they appear in the scene:
 
 + `position` The coordinate of the Node's origin within it's parent or the scene. This is where 0,0 will be within the node's own coordinate space.
@@ -69,7 +69,7 @@ These attributes use setters and getters that allow the Node to internally keep 
 	node->setRotation(45.0f);
 	node->setAlignment(Alignment::CENTER_CENTER);
 	
-###Chaining
+### Chaining
 All Node attributes should return by reference, allowing for easy chaining when setting several parameters at once. Here is a more convenient way to write the above example:
 	
 	using namespace po::scene;
@@ -82,7 +82,7 @@ All Node attributes should return by reference, allowing for easy chaining when 
 
 	
 
-###Animations
+### Animations
 All Node attributes have corresponding ci::Anim objects. These animations can be set and they will be automatically applied to the Node's internal attributes. 
 
 	// Animate a node from 0,0 to 50,50
@@ -93,7 +93,7 @@ Setting any Node attributes at any time during an animation will cancel the anim
 	//Stop animation and retain current position
 	node->setPosition(node->getPosition());
 
-###Transformations
+### Transformations
 Every `po::scene::Node` has its own coordinate space. All `po::scene::Node` members contain functions for translating back and forth between various coordinate spaces. There are three main spaces:
 
 + `window` The origin of the application's window, as used by Cinder for all screen-based events.
@@ -106,7 +106,7 @@ There are several Node functions that can be used to translate between coordinat
 + `sceneToLocal`/`localToScene` Translate from/to scene space.
 + `nodeToLocal`/`localToNode` Translate from one Node's space into another Node's space. Equivalent to `node1->windowToLocal(node2->localToWindow(...))`.
 
-###Events
+### Events
 All Nodes can respond to mouse and touch interaction events. These events come through as `po::scene::MouseEvent` and `po::scene::TouchEvent` class members. 
 
 These events inherit from `po::scene::Event`, which in turn wraps Cinder's built-in `ci::app::Event` events while adding po::scene specific information.
@@ -120,7 +120,7 @@ All `po::scene` Events have the following information:
 + `scenePos` The position of the Event in the source Node's Scene.
 + `localPos` The position of the Event within the source Node.
 
-#####Cinder Events
+##### Cinder Events
 `po::scene` wraps the following built-in global (window) Cinder Events for convenience and consistency:
 
 + Mouse Down, Mouse Move, Mouse Drag, Mouse Up
@@ -128,13 +128,13 @@ All `po::scene` Events have the following information:
 
 These Events will fire on all subscribing Nodes, in the order of the draw tree (bottom-up), regardless of the Node's bounds.
 
-#####Node Events
+##### Node Events
 `po::scene` adds additional Events that add interactivity to all Nodes. These Events are fired on the top-most Node first, and will only pass through Nodes if the `propagationEnabled` variable is set to `true`.
 
 + Mouse Down Inside, Mouse Move Inside, Mouse Drag Inside, Mouse Up Inside
 + Touch Began Inside, Touch Moved Inside, Touch Ended Inside
 
-####Subscribing to events
+#### Subscribing to events
 `po::scene::Node` Events are signal-based, and can be retrieved using the `getSignal(SignalType)` syntax:
 	
 	using namespace po::scene;
@@ -143,7 +143,7 @@ These Events will fire on all subscribing Nodes, in the order of the draw tree (
 	node->getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&ThisClass::mouseHandler, this, std::placeholders::_1);
 	
 	
-###Visibility/Interaction
+### Visibility/Interaction
 `po::scene::Node` contains two variables that affect interactivity. The `setVisible(bool enabled)` method allows the Node to stay in the Node hierarchy, but it will not render and it will not be considered in interaction events. It is a quick way to turn a Node on/off without having to add and remove it. 
 
 `setInteractionEnabled(bool enabled)` sets a Node to be ignored for events, but still render to the screen.
