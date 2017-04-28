@@ -180,6 +180,7 @@ namespace po
 				    when this function begins **/
 				virtual void draw();
 
+				virtual void layoutSubviews() {};
 
 				//------------------------------------
 				//	Scene graph
@@ -683,6 +684,9 @@ namespace po
 				//	Name (optional, helps identify Views when debugging)
 				std::string mName;
 				//friend std::ostream& operator<<(std::ostream &os, ViewRef &a);
+
+				// Connections storage
+				ci::signals::ConnectionList mConnections;
 
 			private:
 				// Private attributes
