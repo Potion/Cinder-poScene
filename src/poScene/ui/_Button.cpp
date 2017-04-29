@@ -19,7 +19,7 @@ namespace po
 				: mState( State::NORMAL )
 				, mPressId( -1 )
 				, mId( 0 )
-				, mIsToggled( false )
+				, mType( Type::NORMAL )
 			{
 				setSize( ci::vec2( 50, 50 ) );
 
@@ -55,17 +55,55 @@ namespace po
 					mTitleTextView->setFillColor( mTintColors[state] );
 				}
 
-				if( mBackgroundImages.count( state ) != 0 ) {
-					mBackgroundImageView->setTexture( mBackgroundImages[state] );
+
+				// Background image
+				{
+					ci::gl::TextureRef backgroundTexture = nullptr;
+
+					if( mBackgroundImages.count( state ) != 0 ) {
+						backgroundTexture = mBackgroundImages[state];
+					}
+
+					else if( mBackgroundImages.count( State::NORMAL ) != 0 ) {
+						backgroundTexture = mBackgroundImages[State::NORMAL];
+					}
+
+					mBackgroundImageView->setTexture( backgroundTexture );
+					mBackgroundImageView->setVisible( backgroundTexture != nullptr ? true : false );
 				}
 
-				if( mImages.count( state ) != 0 ) {
-					mImageView->setTexture( mImages[state] );
+				// Image
+				{
+					ci::gl::TextureRef imageTexture = nullptr;
+
+					if( mImages.count( state ) != 0 ) {
+						imageTexture = mImages[state];
+					}
+
+					else if( mImages.count( State::NORMAL ) != 0 ) {
+						imageTexture = mImages[State::NORMAL];
+					}
+
+					mImageView->setTexture( imageTexture );
+					mImageView->setVisible( imageTexture != nullptr ? true : false );
 				}
 
-				if( mTitles.count( state ) != 0 ) {
-					mTitleText.setText( mTitles[state] );
+				// Title
+				{
+					std::string title = "";
+
+					if( mTitles.count( state ) != 0 ) {
+						title = mTitles[state];
+					}
+
+
+					else if( mTitles.count( State::NORMAL ) != 0 ) {
+						title = mTitles[State::NORMAL];
+					}
+
+					mTitleText.setText( title );
 					mTitleTextView->setCiTextBox( mTitleText );
+					mTitleTextView->setVisible( title != "" ? true : false );
 				}
 
 				// Set cur state
@@ -136,7 +174,6 @@ namespace po
 						// Toggle switch State
 						else {
 							setState( mPressStartState == State::NORMAL ? State::SELECTED : State::NORMAL );
-
 							mSignalToggled.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
 						}
 					}

@@ -85,7 +85,6 @@ namespace po
 					ci::vec2 mPressStartPos;
 					State mPressStartState;
 
-					bool mIsToggled;
 					ButtonSignal mSignalPressed, mSignalToggled;
 
 					void touchBeganInside( po::scene::TouchEvent& event );

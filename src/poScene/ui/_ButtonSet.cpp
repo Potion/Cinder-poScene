@@ -16,6 +16,7 @@ namespace po
 			}
 
 			ButtonSet::ButtonSet()
+				: mType( Type::RADIO )
 			{
 
 			}
@@ -26,16 +27,21 @@ namespace po
 			}
 
 			// Add Buttons
-			void ButtonSet::addButton( ButtonRef button )
+			void ButtonSet::addButton( ButtonRef button, bool addToView )
 			{
+				button->setType( Button::Type::TOGGLE );
 				mButtons.push_back( button );
 				mButtonConnections[button] += button->getSignalToggled().connect( std::bind( &ButtonSet::buttonToggledHandler, this, ::_1 ) );
+
+				if( addToView ) {
+					getView()->addSubview( button );
+				}
 			}
 
-			void ButtonSet::addButtons( const std::vector<ButtonRef>& buttons )
+			void ButtonSet::addButtons( const std::vector<ButtonRef>& buttons, bool addToView )
 			{
 				for( auto& button : buttons ) {
-					addButton( button );
+					addButton( button, addToView );
 				}
 			}
 
@@ -47,6 +53,10 @@ namespace po
 				if( iter != mButtons.end() ) {
 					mButtons.erase( iter );
 					mButtonConnections.erase( *iter );
+
+					if( button->getSuperview() == getView() ) {
+						button->removeFromSuperview();
+					}
 				}
 			}
 
@@ -74,10 +84,6 @@ namespace po
 
 			void ButtonSet::selectButton( ButtonRef button )
 			{
-				if( button->getState() == Button::State::SELECTED ) {
-					return;
-				}
-
 				if( mType == Type::RADIO ) {
 					deselectAllButtons();
 				}

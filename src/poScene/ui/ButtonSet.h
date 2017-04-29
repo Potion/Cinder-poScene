@@ -34,8 +34,8 @@ namespace po
 
 					void setDelegate( ButtonSetDelegateRef delegate ) { mDelegate = delegate; };
 
-					void addButton( ButtonRef button );
-					void addButtons( const std::vector<ButtonRef>& buttons );
+					void addButton( ButtonRef button, bool andAddToView = true );
+					void addButtons( const std::vector<ButtonRef>& buttons, bool andAddToView = true );
 
 					void removeButton( ButtonRef button );
 					void removeButtons( const std::vector<ButtonRef>& buttons );
