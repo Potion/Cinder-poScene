@@ -16,8 +16,10 @@ namespace po
 			}
 
 			Button::Button()
-				: mCurState( State::NORMAL )
+				: mState( State::NORMAL )
 				, mPressId( -1 )
+				, mId( 0 )
+				, mIsToggled( false )
 			{
 				setSize( ci::vec2( 50, 50 ) );
 
@@ -67,33 +69,33 @@ namespace po
 				}
 
 				// Set cur state
-				mCurState = state;
+				mState = state;
 			}
 
 
 			void Button::setTint( ci::Color color, State forState )
 			{
 				mTintColors[forState] = color;
-				setState( mCurState );
+				setState( mState );
 			}
 
 
 			void Button::setBackgroundImage( ci::gl::TextureRef image, State forState )
 			{
 				mBackgroundImages[forState] = image;
-				setState( mCurState );
+				setState( mState );
 			}
 
 			void Button::setImage( ci::gl::TextureRef image, State forState )
 			{
 				mImages[forState] = image;
-				setState( mCurState );
+				setState( mState );
 			}
 
 			void Button::setTitle( std::string title, State forState )
 			{
 				mTitles[forState] = title;
-				setState( mCurState );
+				setState( mState );
 			}
 
 
@@ -104,6 +106,7 @@ namespace po
 				if( mPressId == -1 ) {
 					mPressId = event.getId();
 					mPressStartPos = event.getWindowPos();
+					mPressStartState = mState;
 					setState( State::HIGHLIGHTED );
 				}
 			}
@@ -124,12 +127,23 @@ namespace po
 			{
 				if( mPressId == event.getId() ) {
 					if( pointInside( event.getWindowPos() ) ) {
-						mSignalPressed.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
-					}
-				}
+						// Normal just send pressed
+						if( mType == Type::NORMAL ) {
+							setState( State::NORMAL );
+							mSignalPressed.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
+						}
 
-				setState( State::NORMAL );
-				mPressId = -1;
+						// Toggle switch State
+						else {
+							setState( mPressStartState == State::NORMAL ? State::SELECTED : State::NORMAL );
+
+							mSignalToggled.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
+						}
+					}
+
+
+					mPressId = -1;
+				}
 			}
 		}
 	}
