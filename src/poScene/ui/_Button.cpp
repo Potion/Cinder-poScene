@@ -49,40 +49,27 @@ namespace po
 			void Button::setState( State state )
 			{
 				// Update text + images
-				if( mTintColors.count( state ) != 0 ) {
-					mBackgroundImageView->setFillColor( mTintColors[state] );
-					mImageView->setFillColor( mTintColors[state] );
-					mTitleTextView->setFillColor( mTintColors[state] );
-				}
-
 
 				// Background image
 				{
-					ci::gl::TextureRef backgroundTexture = nullptr;
+					// Tint + Offset
+					setTintAndOffsetForState( mBackgroundImageView, mBackgroundImageTints, mBackgroundImageOffsets, state );
 
-					if( mBackgroundImages.count( state ) != 0 ) {
-						backgroundTexture = mBackgroundImages[state];
-					}
-
-					else if( mBackgroundImages.count( State::NORMAL ) != 0 ) {
-						backgroundTexture = mBackgroundImages[State::NORMAL];
-					}
-
+					// Image
+					ci::gl::TextureRef backgroundTexture;
+					getItemForState<ci::gl::TextureRef>( backgroundTexture, mBackgroundImages, state );
 					mBackgroundImageView->setTexture( backgroundTexture );
 					mBackgroundImageView->setVisible( backgroundTexture != nullptr ? true : false );
 				}
 
 				// Image
 				{
+					// Tint + Offset
+					setTintAndOffsetForState( mImageView, mImageTints, mImageOffsets, state );
+
+					// Image
 					ci::gl::TextureRef imageTexture = nullptr;
-
-					if( mImages.count( state ) != 0 ) {
-						imageTexture = mImages[state];
-					}
-
-					else if( mImages.count( State::NORMAL ) != 0 ) {
-						imageTexture = mImages[State::NORMAL];
-					}
+					getItemForState<ci::gl::TextureRef>( imageTexture, mImages, state );
 
 					mImageView->setTexture( imageTexture );
 					mImageView->setVisible( imageTexture != nullptr ? true : false );
@@ -90,18 +77,18 @@ namespace po
 
 				// Title
 				{
+					// Tint + Offset
+					setTintAndOffsetForState( mTitleTextView, mTitleTints, mTitleOffsets, state );
+
+					// Text
 					std::string title = "";
-
-					if( mTitles.count( state ) != 0 ) {
-						title = mTitles[state];
-					}
-
-
-					else if( mTitles.count( State::NORMAL ) != 0 ) {
-						title = mTitles[State::NORMAL];
-					}
-
+					getItemForState<std::string>( title, mTitles, state );
 					mTitleText.setText( title );
+
+					ci::Font font = font.getDefault();
+					getItemForState<ci::Font>( font, mTitleFonts, state );
+					mTitleText.setFont( font );
+
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
@@ -110,33 +97,39 @@ namespace po
 				mState = state;
 			}
 
-
-			void Button::setTint( ci::Color color, State forState )
+			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets,  State state )
 			{
-				mTintColors[forState] = color;
-				setState( mState );
+				ci::Color color( 1.f, 1.f, 1.f );
+				getItemForState<ci::Color>( color, tints, state );
+				view->setFillColor( color );
+
+				ci::vec2 offset( 0.f );
+				getItemForState<ci::vec2>( offset, offsets, state );
+				view->setPosition( offset );
 			}
 
 
-			void Button::setBackgroundImage( ci::gl::TextureRef image, State forState )
+			// Image, text, color and offset setters
+			void Button::setBackgroundImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mBackgroundImages, state ); }
+			void Button::setBackgroundImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mBackgroundImageOffsets, state ); }
+			void Button::setBackgroundImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mBackgroundImageTints, state ); }
+
+			void Button::setImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mImages, state ); }
+			void Button::setImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mImageOffsets, state ); }
+			void Button::setImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mImageTints, state ); }
+
+			void Button::setTitle( std::string title, State state ) { setItemForState < std::string > ( title, mTitles, state ); }
+			void Button::setTitleFont( ci::Font font, State state ) { setItemForState < ci::Font >( font, mTitleFonts, state ); }
+
+			void Button::setTitleOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mTitleOffsets, state ); }
+			void Button::setTitleTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mTitleTints, state ); }
+
+			void Button::setTint( ci::Color color, State state )
 			{
-				mBackgroundImages[forState] = image;
-				setState( mState );
+				setBackgroundImageTint( color, state );
+				setImageTint( color, state );
+				setTitleTint( color, state );
 			}
-
-			void Button::setImage( ci::gl::TextureRef image, State forState )
-			{
-				mImages[forState] = image;
-				setState( mState );
-			}
-
-			void Button::setTitle( std::string title, State forState )
-			{
-				mTitles[forState] = title;
-				setState( mState );
-			}
-
-
 
 			// Event listeners
 			void Button::touchBeganInside( po::scene::TouchEvent& event )
