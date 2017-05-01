@@ -82,16 +82,28 @@ namespace po
 				return selectedButtons;
 			}
 
-			void ButtonSet::selectButton( ButtonRef button )
+			void ButtonSet::selectButton( ButtonRef selectedButton )
 			{
 				if( mType == Type::RADIO ) {
-					deselectAllButtons();
+					for( auto& button : mButtons ) {
+						if( button->getState() == Button::State::SELECTED && button != selectedButton ) {
+							button->setState( Button::State::NORMAL );
+
+							if( !mDelegate.expired() ) {
+								ButtonSetRef self = std::dynamic_pointer_cast<ButtonSet>( shared_from_this() );
+								mDelegate.lock()->buttonSetDidDeselectButton( self, button );
+							}
+						}
+					}
 				}
 
-				button->setState( Button::State::SELECTED );
+				if( selectedButton->getState() != Button::State::SELECTED ) {
+					selectedButton->setState( Button::State::SELECTED );
+				}
 
 				if( !mDelegate.expired() ) {
-					mDelegate.lock()->buttonWasSelected( button );
+					ButtonSetRef self = std::dynamic_pointer_cast<ButtonSet>( shared_from_this() );
+					mDelegate.lock()->buttonSetDidSelectButton( self, selectedButton );
 				}
 			}
 
@@ -106,15 +118,7 @@ namespace po
 
 			void ButtonSet::deselectAllButtons()
 			{
-				for( auto& button : mButtons ) {
-					if( button->getState() == Button::State::SELECTED ) {
-						button->setState( Button::State::NORMAL );
 
-						if( !mDelegate.expired() ) {
-							mDelegate.lock()->buttonWasDeselected( button );
-						}
-					}
-				}
 			}
 
 			// -------------------------------

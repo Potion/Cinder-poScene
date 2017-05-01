@@ -18,8 +18,8 @@ namespace po
 			class ButtonSetDelegate
 			{
 				public:
-					virtual void buttonWasSelected( ButtonRef button ) = 0;
-					virtual void buttonWasDeselected( ButtonRef button ) = 0;
+					virtual void buttonSetDidSelectButton( ButtonSetRef buttonSet, ButtonRef button ) = 0;
+					virtual void buttonSetDidDeselectButton( ButtonSetRef buttonSet, ButtonRef button ) = 0;
 			};
 
 			class ButtonSet : public po::scene::ViewController

@@ -48,6 +48,9 @@ namespace po
 
 			void Button::setState( State state )
 			{
+				// Set cur state
+				mState = state;
+
 				// Update text + images
 
 				// Background image
@@ -92,9 +95,6 @@ namespace po
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
-
-				// Set cur state
-				mState = state;
 			}
 
 			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets,  State state )
