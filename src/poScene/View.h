@@ -154,6 +154,8 @@ namespace po
 
 		typedef std::shared_ptr<class View> ViewRef;
 
+		typedef ci::signals::Signal<void( ViewRef )> ViewSignal;
+
 		class View
 			: public std::enable_shared_from_this<View>
 		{
@@ -180,7 +182,8 @@ namespace po
 				    when this function begins **/
 				virtual void draw();
 
-				virtual void layoutSubviews() {};
+				virtual void layoutSubviews();
+				virtual void layoutIfNeeded();
 
 				//------------------------------------
 				//	Scene graph
@@ -628,6 +631,9 @@ namespace po
 				//! Determine if this View is visible, has a scene and superview, etc.
 				bool isEligibleForInteractionEvents();
 
+				//! View Events
+				ViewSignal& getSignalWillLayoutSubviews() { return mSignalWillLayoutSubviews; }
+
 			protected:
 				// Constructor
 				View( std::string name = "" );
@@ -777,7 +783,9 @@ namespace po
 				uint32_t mDrawOrder;
 				uint32_t mUid;
 
-
+				// Layout
+				bool mNeedsLayout;
+				ViewSignal mSignalWillLayoutSubviews;
 
 
 				//------------------------------------

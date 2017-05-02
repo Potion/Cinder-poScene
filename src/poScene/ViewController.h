@@ -25,13 +25,19 @@ namespace po
 				virtual void doLayout() {};
 
 				virtual void setView( ViewRef view ) { mView = view; };
-				virtual ViewRef getView() { return mView; };
+				virtual ViewRef getView() { return mView; }
 
 			protected:
 				ci::signals::ScopedConnection mUpdateConnection;
 
 				// Connections storage
 				ci::signals::ConnectionList mConnections;
+
+				// View Events
+				virtual void viewWillLayoutSubviews() {};
+
+				void connectViewEvents();
+				ci::signals::ConnectionList mViewConnections;
 
 			private:
 				ViewRef mView;

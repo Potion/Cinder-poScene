@@ -151,6 +151,7 @@ namespace po
 			, mHasSuperview( false )
 			, mIsMasked( false )
 			, mMask( nullptr )
+			, mNeedsLayout( false )
 		{
 			//	Initialize our animations
 			initAttrAnimations();
@@ -174,6 +175,9 @@ namespace po
 			updateAttributeAnimations();
 
 			if( mIsMasked ) { mMask->updateTree(); }
+
+			// Layout subviews
+			layoutIfNeeded();
 
 			//	Call our update function
 			update();
@@ -846,6 +850,7 @@ namespace po
 			mSubviews.push_back( view );
 			setAlignment( getAlignment() );
 			calculateMatrices();
+			mNeedsLayout = true;
 
 			return *this;
 		}
@@ -863,6 +868,7 @@ namespace po
 
 			setAlignment( getAlignment() );
 			calculateMatrices();
+			mNeedsLayout = true;
 
 			return *this;
 		}
@@ -877,6 +883,7 @@ namespace po
 			mSubviews.insert( mSubviews.begin() + index, view );
 			setAlignment( getAlignment() );
 			calculateMatrices();
+			mNeedsLayout = true;
 
 			return *this;
 		}
@@ -891,6 +898,7 @@ namespace po
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( before ), view );
 			setAlignment( getAlignment() );
 			calculateMatrices();
+			mNeedsLayout = true;
 
 			return *this;
 		}
@@ -905,13 +913,26 @@ namespace po
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( after ) + 1, view );
 			setAlignment( getAlignment() );
 			calculateMatrices();
+			mNeedsLayout = true;
 
 			return *this;
 		}
 
-		//
-		//  Get Subviews
-		//
+		//	-------------------------------
+		//  Subviews
+
+		void View::layoutSubviews()
+		{
+			mNeedsLayout = false;
+			mSignalWillLayoutSubviews.emit( shared_from_this() );
+		}
+
+		void View::layoutIfNeeded()
+		{
+			if( mNeedsLayout ) {
+				layoutSubviews();
+			}
+		}
 
 		const std::deque<ViewRef>& View::getSubviews()
 		{
@@ -1120,8 +1141,12 @@ namespace po
 		void View::setSize( ci::vec2 size )
 		{
 			mUseElasticBounds = false;
-			mBounds = ci::Rectf( 0, 0, size.x, size.y );
-			calculateOffset();
+
+			if( size != getSize() ) {
+				mBounds = ci::Rectf( 0, 0, size.x, size.y );
+				calculateOffset();
+				layoutSubviews();
+			}
 		}
 
 		ci::Rectf View::getBounds()

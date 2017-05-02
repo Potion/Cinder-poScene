@@ -1,5 +1,7 @@
 #include "ViewController.h"
 
+using namespace std::placeholders;
+
 namespace po
 {
 	namespace scene
@@ -25,6 +27,16 @@ namespace po
 		{
 			// Subscribe to update loop
 			mUpdateConnection = ci::app::App::get()->getSignalUpdate().connect( std::bind( &ViewController::update, this ) );
+			connectViewEvents();
+		}
+
+		void ViewController::connectViewEvents()
+		{
+			mViewConnections.clear();
+
+			mViewConnections += mView->getSignalWillLayoutSubviews().connect( [this]( ViewRef view ) {
+				viewWillLayoutSubviews();
+			} );
 		}
 	}
 }
