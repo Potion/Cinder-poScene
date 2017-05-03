@@ -925,6 +925,12 @@ namespace po
 		{
 			mNeedsLayout = false;
 			mSignalWillLayoutSubviews.emit( shared_from_this() );
+
+			for( auto& subview : mSubviews ) {
+				subview->layoutIfNeeded();
+			}
+
+			mSignalDidLayoutSubviews.emit( shared_from_this() );
 		}
 
 		void View::layoutIfNeeded()

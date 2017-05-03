@@ -35,6 +35,7 @@ namespace po
 
 				// View Events
 				virtual void viewWillLayoutSubviews() {};
+				virtual void viewDidLayoutSubviews() {};
 
 				void connectViewEvents();
 				ci::signals::ConnectionList mViewConnections;

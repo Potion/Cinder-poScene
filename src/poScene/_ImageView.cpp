@@ -56,6 +56,10 @@ namespace po
 				ci::gl::GlslProgRef textureShader = ci::gl::getStockShader( ci::gl::ShaderDef().texture().color() );
 				mTextureBatch = ci::gl::Batch::create( ci::geom::Rect( ci::Rectf( 0, 0, 1, 1 ) ), textureShader );
 			}
+
+			//auto mesh = ci::geom::Rect( ci::Rectf( 0, 0, 1, 1 ) ) >> ci::geom::AttribFn<ci::vec2, ci::vec2>( ci::geom::TEX_COORD_0, ci::geom::TEX_COORD_0, []( const ci::vec2 & uv ) {
+			//	return uv * 2.0f;
+			//} );
 		}
 
 		void ImageView::draw()

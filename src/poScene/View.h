@@ -633,6 +633,7 @@ namespace po
 
 				//! View Events
 				ViewSignal& getSignalWillLayoutSubviews() { return mSignalWillLayoutSubviews; }
+				ViewSignal& getSignalDidLayoutSubviews() { return mSignalDidLayoutSubviews; }
 
 			protected:
 				// Constructor
@@ -786,6 +787,7 @@ namespace po
 				// Layout
 				bool mNeedsLayout;
 				ViewSignal mSignalWillLayoutSubviews;
+				ViewSignal mSignalDidLayoutSubviews;
 
 
 				//------------------------------------
