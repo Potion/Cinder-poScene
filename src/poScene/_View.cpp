@@ -409,8 +409,12 @@ namespace po
 			ci::gl::clear( ci::ColorA( 1.f, 1.f, 1.f, 0.f ) );
 
 			//	Draw into the FBO
+			float curAppliedAlpha = mAppliedAlpha;
+			mAppliedAlpha = mAlpha;
+
 			draw();
 
+			mAppliedAlpha = curAppliedAlpha;
 			//	Set the camera up for the window
 			ci::gl::popMatrices();
 
@@ -848,7 +852,8 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.push_back( view );
-			setAlignment( getAlignment() );
+
+			calculateOffset();
 			calculateMatrices();
 			mNeedsLayout = true;
 
@@ -866,7 +871,7 @@ namespace po
 				mSubviews.push_back( view );
 			}
 
-			setAlignment( getAlignment() );
+			calculateOffset();
 			calculateMatrices();
 			mNeedsLayout = true;
 
@@ -881,7 +886,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + index, view );
-			setAlignment( getAlignment() );
+			calculateOffset();
 			calculateMatrices();
 			mNeedsLayout = true;
 
@@ -896,7 +901,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( before ), view );
-			setAlignment( getAlignment() );
+			calculateOffset();
 			calculateMatrices();
 			mNeedsLayout = true;
 
@@ -911,7 +916,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( after ) + 1, view );
-			setAlignment( getAlignment() );
+			calculateOffset();
 			calculateMatrices();
 			mNeedsLayout = true;
 
