@@ -1156,7 +1156,7 @@ namespace po
 			if( size != getSize() ) {
 				mBounds = ci::Rectf( 0, 0, size.x, size.y );
 				calculateOffset();
-				layoutSubviews();
+				mNeedsLayout = true;
 			}
 		}
 
