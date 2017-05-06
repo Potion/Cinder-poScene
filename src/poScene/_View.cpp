@@ -435,11 +435,20 @@ namespace po
 		//
 		View& View::setPosition( float x, float y )
 		{
+			ci::vec2 newPos( x, y );
+
 			mPositionAnim.stop();
+			mPositionAnim = newPos;
 			mUpdatePositionFromAnim = false;
-			mPosition = ci::vec2( x, y );
-			mPositionAnim = ci::vec2( x, y );
-			mFrameDirty = true;
+
+			if( newPos != mPosition ) {
+				mPosition = newPos;
+
+				if( hasSuperview() ) {
+					mSuperview.lock()->setNeedsLayout();
+				}
+			}
+
 			return *this;
 		}
 
@@ -448,12 +457,20 @@ namespace po
 		//
 		View& View::setScale( float x, float y )
 		{
+			ci::vec2 newScale( x, y );
+
 			mScaleAnim.stop();
 			mUpdateScaleFromAnim = false;
-			mScale = ci::vec2( x, y );
-			mScaleAnim = ci::vec2( x, y );
-			mFrameDirty = true;
-			mBoundsDirty = true;
+			mScaleAnim = newScale;
+
+			if( newScale != mScale ) {
+				mScale = newScale;
+
+				if( hasSuperview() ) {
+					mSuperview.lock()->setNeedsLayout();
+				}
+			}
+
 			return *this;
 		}
 
@@ -462,17 +479,22 @@ namespace po
 		//
 		View& View::setRotation( float rotation )
 		{
-
 			if( rotation >= M_PI * 2 || rotation <= -M_PI * 2 ) {
 				rotation = fmodf( rotation, ( float )( M_PI * 2 ) );
 			}
 
 			mRotationAnim.stop();
 			mUpdateRotationFromAnim = false;
-			mRotation = rotation;
 			mRotationAnim = rotation;
-			mFrameDirty = true;
-			mBoundsDirty = true;
+
+			if( mRotation != rotation ) {
+				mRotation = rotation;
+
+				if( hasSuperview() ) {
+					mSuperview.lock()->setNeedsLayout();
+				}
+			}
+
 			return *this;
 		}
 
@@ -565,17 +587,17 @@ namespace po
 		{
 			//	See if a tween is in progress, if so we want to use that value
 			//	Setting an attribute calls stop(), so that will override this
-			if( !mPositionAnim.isComplete() ) { mUpdatePositionFromAnim = true; }
+			if( !mPositionAnim.isComplete() )	{ mUpdatePositionFromAnim = true; }
 
-			if( !mScaleAnim.isComplete() ) { mUpdateScaleFromAnim = true; }
+			if( !mScaleAnim.isComplete() )		{ mUpdateScaleFromAnim = true; }
 
-			if( !mRotationAnim.isComplete() ) { mUpdateRotationFromAnim = true; }
+			if( !mRotationAnim.isComplete() )	{ mUpdateRotationFromAnim = true; }
 
-			if( !mAlphaAnim.isComplete() ) { mUpdateAlphaFromAnim = true; }
+			if( !mAlphaAnim.isComplete() )		{ mUpdateAlphaFromAnim = true; }
 
-			if( !mOffsetAnim.isComplete() ) { mUpdateOffsetFromAnim = true; }
+			if( !mOffsetAnim.isComplete() )		{ mUpdateOffsetFromAnim = true; }
 
-			if( !mFillColorAnim.isComplete() ) { mUpdateFillColorFromAnim = true; }
+			if( !mFillColorAnim.isComplete() )	{ mUpdateFillColorFromAnim = true; }
 
 			//	Update Anims if we care
 			if( mUpdatePositionFromAnim ) { mPosition = mPositionAnim; }
@@ -589,6 +611,12 @@ namespace po
 			if( mUpdateOffsetFromAnim ) { mOffset = mOffsetAnim; }
 
 			if( mUpdateFillColorFromAnim ) { mFillColor = mFillColorAnim; }
+
+			if( mUpdatePositionFromAnim || mUpdateScaleFromAnim || mUpdateRotationFromAnim || mUpdateOffsetFromAnim ) {
+				if( mHasSuperview ) {
+					mSuperview.lock()->setNeedsLayout();
+				}
+			}
 		}
 
 
@@ -689,11 +717,13 @@ namespace po
 
 		ci::vec2 View::viewToLocal( const ci::vec2& point, ViewRef View )
 		{
+			calculateMatrices();
 			return windowToLocal( View->localToWindow( point ) );
 		}
 
 		ci::vec2 View::localToView( const ci::vec2& point, ViewRef View )
 		{
+			calculateMatrices();
 			return View->windowToLocal( localToWindow( point ) );
 		}
 
@@ -701,7 +731,10 @@ namespace po
 		{
 			SceneRef scene = getScene();
 
-			if( scene != nullptr ) { return scene->getRootView()->localToView( scenePoint, shared_from_this() ); }
+			if( scene != nullptr ) {
+				calculateMatrices();
+				return scene->getRootView()->localToView( scenePoint, shared_from_this() );
+			}
 
 			return ci::vec2();
 		}
@@ -710,7 +743,10 @@ namespace po
 		{
 			SceneRef scene = getScene();
 
-			if( scene != nullptr ) { return localToView( point, scene->getRootView() ); }
+			if( scene != nullptr ) {
+				calculateMatrices();
+				return localToView( point, scene->getRootView() );
+			}
 
 			return ci::vec2();
 		}
@@ -719,7 +755,10 @@ namespace po
 		{
 			SceneRef scene = getScene();
 
-			if( scene != nullptr ) { return scene->getRootView()->localToWindow( point ); }
+			if( scene != nullptr ) {
+				calculateMatrices();
+				return scene->getRootView()->localToWindow( point );
+			}
 
 			return point;
 		}
@@ -728,19 +767,26 @@ namespace po
 		{
 			SceneRef scene = getScene();
 
-			if( scene != nullptr ) { return scene->getRootView()->windowToLocal( point ); }
+			if( scene != nullptr ) {
+				calculateMatrices();
+				return scene->getRootView()->windowToLocal( point );
+			}
 
 			return ci::vec2();
 		}
 
 		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
 		{
+			calculateMatrices();
 			return mMatrix.globalToLocal( windowPoint );
 		}
 
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
-			if( mHasScene ) { return mMatrix.localToGlobal( scenePoint ); }
+			if( mHasScene ) {
+				calculateMatrices();
+				return mMatrix.localToGlobal( scenePoint );
+			}
 
 			return ci::vec2();
 		}

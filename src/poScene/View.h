@@ -183,6 +183,7 @@ namespace po
 				virtual void draw();
 
 				virtual void layoutSubviews();
+				virtual void setNeedsLayout( bool needsLayout = true ) { mNeedsLayout = needsLayout; }
 				virtual void layoutIfNeeded();
 
 				//------------------------------------
