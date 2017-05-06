@@ -768,6 +768,7 @@ namespace po
 		//
 		bool View::pointInside( const ci::vec2& point )
 		{
+			calculateMatrices();
 			ci::vec2 pos = windowToLocal( point );
 			return getBounds().contains( pos );
 		}

@@ -54,11 +54,9 @@ namespace po
 		void EventCenter::processEvents( std::vector<ViewRef> views )
 		{
 			//	Sort views to be top down
-			std::sort( views.begin(), views.end(),
-			[&views]( const ViewRef & a, const ViewRef & b ) {
+			std::sort( views.begin(), views.end(), [&views]( const ViewRef & a, const ViewRef & b ) {
 				return a->getDrawOrder() > b->getDrawOrder();
-			}
-			         );
+			} );
 
 			//	Process them
 			for( auto& processor : mEventProcessors ) {
