@@ -132,12 +132,6 @@ namespace po
 			, mStrokeColor( 255, 255, 255 )
 			, mStrokeEnabled( false )
 			, mPixelSnapping( false )
-			, mUpdatePositionFromAnim( false )
-			, mUpdateScaleFromAnim( false )
-			, mUpdateRotationFromAnim( false )
-			, mUpdateOffsetFromAnim( false )
-			, mUpdateAlphaFromAnim( false )
-			, mUpdateFillColorFromAnim( false )
 			, mBounds( ci::Rectf::zero() )
 			, mDrawBounds( false )
 			, mUseElasticBounds( true )
@@ -439,7 +433,6 @@ namespace po
 
 			mPositionAnim.stop();
 			mPositionAnim = newPos;
-			mUpdatePositionFromAnim = false;
 
 			if( newPos != mPosition ) {
 				mPosition = newPos;
@@ -460,7 +453,6 @@ namespace po
 			ci::vec2 newScale( x, y );
 
 			mScaleAnim.stop();
-			mUpdateScaleFromAnim = false;
 			mScaleAnim = newScale;
 
 			if( newScale != mScale ) {
@@ -484,7 +476,6 @@ namespace po
 			}
 
 			mRotationAnim.stop();
-			mUpdateRotationFromAnim = false;
 			mRotationAnim = rotation;
 
 			if( mRotation != rotation ) {
@@ -504,7 +495,6 @@ namespace po
 		View& View::setAlpha( float alpha )
 		{
 			mAlphaAnim.stop();
-			mUpdateAlphaFromAnim = false;
 			mAlpha = ci::math<float>::clamp( alpha, 0.f, 1.f );
 			mAlphaAnim = mAlpha;
 			return *this;
@@ -532,7 +522,6 @@ namespace po
 		View& View::setOffset( float x, float y )
 		{
 			mOffsetAnim.stop();
-			mUpdateOffsetFromAnim = false;
 			mOffset = ci::vec2( x, y );
 			mOffsetAnim = mOffset;
 			mFrameDirty = true;
@@ -585,34 +574,16 @@ namespace po
 		//
 		void View::updateAttributeAnimations()
 		{
-			//	See if a tween is in progress, if so we want to use that value
-			//	Setting an attribute calls stop(), so that will override this
-			if( !mPositionAnim.isComplete() )	{ mUpdatePositionFromAnim = true; }
+			bool frameChanged = ( mPosition != mPositionAnim.value() || mScale != mScaleAnim.value() || mRotation != mRotationAnim.value() || mOffset != mOffsetAnim.value() );
 
-			if( !mScaleAnim.isComplete() )		{ mUpdateScaleFromAnim = true; }
+			mPosition	= mPositionAnim;
+			mScale		= mScaleAnim;
+			mRotation	= mRotationAnim;
+			mOffset		= mOffsetAnim;
+			mAlpha		= mAlphaAnim;
+			mFillColor	= mFillColorAnim;
 
-			if( !mRotationAnim.isComplete() )	{ mUpdateRotationFromAnim = true; }
-
-			if( !mAlphaAnim.isComplete() )		{ mUpdateAlphaFromAnim = true; }
-
-			if( !mOffsetAnim.isComplete() )		{ mUpdateOffsetFromAnim = true; }
-
-			if( !mFillColorAnim.isComplete() )	{ mUpdateFillColorFromAnim = true; }
-
-			//	Update Anims if we care
-			if( mUpdatePositionFromAnim ) { mPosition = mPositionAnim; }
-
-			if( mUpdateScaleFromAnim ) { mScale = mScaleAnim; }
-
-			if( mUpdateRotationFromAnim ) { mRotation = mRotationAnim; }
-
-			if( mUpdateAlphaFromAnim ) { mAlpha = mAlphaAnim; }
-
-			if( mUpdateOffsetFromAnim ) { mOffset = mOffsetAnim; }
-
-			if( mUpdateFillColorFromAnim ) { mFillColor = mFillColorAnim; }
-
-			if( mUpdatePositionFromAnim || mUpdateScaleFromAnim || mUpdateRotationFromAnim || mUpdateOffsetFromAnim ) {
+			if( frameChanged ) {
 				if( mHasSuperview ) {
 					mSuperview.lock()->setNeedsLayout();
 				}

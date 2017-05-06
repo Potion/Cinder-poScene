@@ -730,13 +730,6 @@ namespace po
 				ci::Anim<ci::vec2> mOffsetAnim;
 				ci::Anim<ci::Color> mFillColorAnim;
 
-				bool  mUpdatePositionFromAnim
-				, mUpdateScaleFromAnim
-				, mUpdateRotationFromAnim
-				, mUpdateOffsetFromAnim
-				, mUpdateAlphaFromAnim
-				, mUpdateFillColorFromAnim;
-
 				// Alignment
 				Alignment mAlignment;
 
