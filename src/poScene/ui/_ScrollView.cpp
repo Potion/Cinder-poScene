@@ -16,7 +16,8 @@ namespace po
 			}
 
 			ScrollView::ScrollView()
-				: mTouchId( -1 )
+				: po::scene::View( "UI Scroll View" )
+				, mTouchId( -1 )
 				, mMaxAccel( 0.1 )
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
@@ -27,7 +28,7 @@ namespace po
 			void ScrollView::setup()
 			{
 				// Create content view
-				mContentView = po::scene::View::create();
+				mContentView = po::scene::View::create( "UI Scroll View Content View" );
 				addSubview( mContentView );
 
 				// Subscribe to events
