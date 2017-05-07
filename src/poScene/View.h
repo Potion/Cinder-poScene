@@ -633,6 +633,7 @@ namespace po
 				bool isEligibleForInteractionEvents();
 
 				//! View Events
+				ViewSignal& getSignalWillAppear() { return mSignalWillAppear; }
 				ViewSignal& getSignalWillLayoutSubviews() { return mSignalWillLayoutSubviews; }
 				ViewSignal& getSignalDidLayoutSubviews() { return mSignalDidLayoutSubviews; }
 
@@ -712,6 +713,7 @@ namespace po
 				bool mPixelSnapping;
 
 				// Subviews
+				void subviewAdded();
 				std::deque<ViewRef> mSubviews;
 
 				//  Set a view's superview to this container and the scene to this container's scene
@@ -782,6 +784,7 @@ namespace po
 				bool mNeedsLayout;
 				ViewSignal mSignalWillLayoutSubviews;
 				ViewSignal mSignalDidLayoutSubviews;
+				ViewSignal mSignalWillAppear;
 
 
 				//------------------------------------

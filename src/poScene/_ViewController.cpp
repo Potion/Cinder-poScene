@@ -6,28 +6,36 @@ namespace po
 {
 	namespace scene
 	{
-		ViewControllerRef ViewController::create()
+		ViewControllerRef ViewController::create( )
 		{
-			return create( po::scene::View::create() );
-		}
-
-		ViewControllerRef ViewController::create( ViewRef view )
-		{
-			ViewControllerRef ref( new ViewController( view ) );
+			ViewControllerRef ref( new ViewController() );
 			ref->setup();
 			return ref;
 		}
 
 		ViewController::ViewController()
-			: ViewController( po::scene::View::create() )
-		{}
-
-		ViewController::ViewController( ViewRef view )
-			: mView( view )
 		{
 			// Subscribe to update loop
 			mUpdateConnection = ci::app::App::get()->getSignalUpdate().connect( std::bind( &ViewController::update, this ) );
+		}
+
+		ViewRef ViewController::getView()
+		{
+			if( mView == nullptr ) {
+				loadView();
+			}
+
+			return mView;
+		}
+
+		void ViewController::loadView()
+		{
+			if( mView == nullptr ) {
+				mView = po::scene::View::create();
+			}
+
 			connectViewEvents();
+			viewDidLoad();
 		}
 
 		void ViewController::connectViewEvents()
@@ -36,6 +44,14 @@ namespace po
 
 			mViewConnections += mView->getSignalWillLayoutSubviews().connect( [this]( ViewRef view ) {
 				viewWillLayoutSubviews();
+			} );
+
+			mViewConnections += mView->getSignalDidLayoutSubviews().connect( [this]( ViewRef view ) {
+				viewDidLayoutSubviews();
+			} );
+
+			mViewConnections += mView->getSignalWillAppear().connect( [this]( ViewRef view ) {
+				viewWillAppear();
 			} );
 		}
 	}

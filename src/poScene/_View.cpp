@@ -790,6 +790,8 @@ namespace po
 					subview->setScene( scene );
 				}
 			};
+
+			mSignalWillAppear.emit( shared_from_this() );
 		}
 
 		SceneRef View::getScene() { return mScene.lock(); }
@@ -871,9 +873,7 @@ namespace po
 			setSuperviewAndScene( view );
 			mSubviews.push_back( view );
 
-			calculateOffset();
-			calculateMatrices();
-			mNeedsLayout = true;
+			subviewAdded();
 
 			return *this;
 		}
@@ -889,9 +889,7 @@ namespace po
 				mSubviews.push_back( view );
 			}
 
-			calculateOffset();
-			calculateMatrices();
-			mNeedsLayout = true;
+			subviewAdded();
 
 			return *this;
 		}
@@ -904,9 +902,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + index, view );
-			calculateOffset();
-			calculateMatrices();
-			mNeedsLayout = true;
+			subviewAdded();
 
 			return *this;
 		}
@@ -919,9 +915,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( before ), view );
-			calculateOffset();
-			calculateMatrices();
-			mNeedsLayout = true;
+			subviewAdded();
 
 			return *this;
 		}
@@ -934,15 +928,20 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( after ) + 1, view );
-			calculateOffset();
-			calculateMatrices();
-			mNeedsLayout = true;
+			subviewAdded();
 
 			return *this;
 		}
 
+		void View::subviewAdded()
+		{
+			calculateOffset();
+			calculateMatrices();
+			mNeedsLayout = true;
+		}
+
 		//	-------------------------------
-		//  Subviews
+		//  Layout Subviews
 
 		void View::layoutSubviews()
 		{

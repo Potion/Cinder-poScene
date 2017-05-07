@@ -14,18 +14,15 @@ namespace po
 		{
 			public:
 				static ViewControllerRef create();
-				static ViewControllerRef create( ViewRef view );
 
 				ViewController();
-				ViewController( ViewRef view );
 
 				virtual void setup() {};
 				virtual void update() {};
 
 				virtual void doLayout() {};
 
-				virtual void setView( ViewRef view ) { mView = view; };
-				virtual ViewRef getView() { return mView; }
+				virtual ViewRef getView();
 
 			protected:
 				ci::signals::ScopedConnection mUpdateConnection;
@@ -34,6 +31,10 @@ namespace po
 				ci::signals::ConnectionList mConnections;
 
 				// View Events
+				virtual void loadView();
+				virtual void viewDidLoad() {};
+				virtual void viewWillAppear() {};
+
 				virtual void viewWillLayoutSubviews() {};
 				virtual void viewDidLayoutSubviews() {};
 
