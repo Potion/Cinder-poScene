@@ -73,17 +73,20 @@ namespace po
 				ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
 
 				// CB - for calling functions like measure()
-				const ci::TextBox& getCiTextBox() const { return mCiTextBox; };
+				ci::TextBox& getCiTextBox() { return mCiTextBox; };
 
 
 				//! Set the texture format to use when rendering to texture
 				void setFormat( ci::gl::Texture::Format format );
 
+				//! Renders the text box and stores the texture
+				//! called automatically when using setCiTextBox
+				void render();
+
 			protected:
 				TextView( ci::TextBox ciTextBox );
 
 			private:
-				void render();
 				ci::TextBox mCiTextBox;
 				ci::gl::TextureRef mTexture;
 				bool mUseTextBounds;

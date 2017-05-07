@@ -780,6 +780,10 @@ namespace po
 
 		void View::setScene( SceneRef scene )
 		{
+			//if( mHasScene && mScene.lock() == scene ) {
+			//	return;
+			//}
+
 			mScene = scene;
 			mHasScene = mScene.lock() ? true : false;
 
@@ -789,9 +793,9 @@ namespace po
 				for( ViewRef& subview : mSubviews ) {
 					subview->setScene( scene );
 				}
-			};
 
-			mSignalWillAppear.emit( shared_from_this() );
+				mSignalWillAppear.emit( shared_from_this() );
+			};
 		}
 
 		SceneRef View::getScene() { return mScene.lock(); }
@@ -1154,7 +1158,7 @@ namespace po
 
 			//	See if the View is already a subview of another View.
 			if( view->getSuperview() != nullptr ) {
-				view->getSuperview()->removeSubview( view );
+				view->removeFromSuperview();
 			}
 
 			//	Assign ourselves as the superview
