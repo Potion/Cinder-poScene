@@ -512,6 +512,7 @@ namespace po
 		View& View::setFillColor( ci::Color color )
 		{
 			mFillColor = color;
+			mFillColorAnim.stop();
 			mFillColorAnim = mFillColor;
 			return *this;
 		}

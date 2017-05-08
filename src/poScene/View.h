@@ -484,9 +484,8 @@ namespace po
 				//! Set the fill color
 				virtual View& setFillColor( ci::ColorA color );
 				virtual View& setFillColor( ci::Color color );
-				//! Get the fill color
-				virtual View& setFillColor( float r, float g, float b, float a ) { mFillColor = ci::Color( r, g, b ); setAlpha( a ); return *this; }
-				virtual View& setFillColor( float r, float g, float b ) { mFillColor = ci::Color( r, g, b ); return *this; }
+				virtual View& setFillColor( float r, float g, float b, float a ) { setFillColor( ci::ColorA( r, g, b, a ) ); return *this; }
+				virtual View& setFillColor( float r, float g, float b ) { setFillColor( ci::Color( r, g, b ) ); return *this; }
 				//! Enable fill
 				virtual View& fillEnabled( bool enabled ) { setFillEnabled( enabled ); return *this; }
 				//! Disable fill

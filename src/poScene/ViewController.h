@@ -41,7 +41,6 @@ namespace po
 				void connectViewEvents();
 				ci::signals::ConnectionList mViewConnections;
 
-			private:
 				ViewRef mView;
 		};
 	}
