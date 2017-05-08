@@ -56,8 +56,6 @@ namespace po
 				protected:
 					ButtonSet();
 
-					void setup() override;
-
 					std::weak_ptr<ButtonSetDelegate> mDelegate;
 
 					Type mType;

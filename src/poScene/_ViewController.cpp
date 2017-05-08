@@ -8,9 +8,7 @@ namespace po
 	{
 		ViewControllerRef ViewController::create( )
 		{
-			ViewControllerRef ref( new ViewController() );
-			ref->setup();
-			return ref;
+			return ViewControllerRef( new ViewController() );
 		}
 
 		ViewController::ViewController()

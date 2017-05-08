@@ -10,18 +10,11 @@ namespace po
 		{
 			ButtonSetRef ButtonSet::create()
 			{
-				ButtonSetRef ref( new ButtonSet() );
-				ref->setup();
-				return ref;
+				return ButtonSetRef( new ButtonSet() );
 			}
 
 			ButtonSet::ButtonSet()
 				: mType( Type::RADIO )
-			{
-
-			}
-
-			void ButtonSet::setup()
 			{
 
 			}

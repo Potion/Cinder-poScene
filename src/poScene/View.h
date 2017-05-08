@@ -712,7 +712,7 @@ namespace po
 				bool mPixelSnapping;
 
 				// Subviews
-				void subviewAdded();
+				void subviewsChanged();
 				std::deque<ViewRef> mSubviews;
 
 				//  Set a view's superview to this container and the scene to this container's scene

@@ -878,7 +878,7 @@ namespace po
 			setSuperviewAndScene( view );
 			mSubviews.push_back( view );
 
-			subviewAdded();
+			subviewsChanged();
 
 			return *this;
 		}
@@ -894,7 +894,7 @@ namespace po
 				mSubviews.push_back( view );
 			}
 
-			subviewAdded();
+			subviewsChanged();
 
 			return *this;
 		}
@@ -907,7 +907,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + index, view );
-			subviewAdded();
+			subviewsChanged();
 
 			return *this;
 		}
@@ -920,7 +920,7 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( before ), view );
-			subviewAdded();
+			subviewsChanged();
 
 			return *this;
 		}
@@ -933,12 +933,12 @@ namespace po
 
 			setSuperviewAndScene( view );
 			mSubviews.insert( mSubviews.begin() + getIndexForSubview( after ) + 1, view );
-			subviewAdded();
+			subviewsChanged();
 
 			return *this;
 		}
 
-		void View::subviewAdded()
+		void View::subviewsChanged()
 		{
 			calculateOffset();
 			calculateMatrices();
@@ -1060,8 +1060,7 @@ namespace po
 				( *iter )->removeScene();
 
 				mSubviews.erase( iter );
-
-				setAlignment( getAlignment() );
+				subviewsChanged();
 
 				return view;
 			}
@@ -1083,7 +1082,7 @@ namespace po
 				subview->removeSuperview();
 				subview->removeScene();
 
-				setAlignment( getAlignment() );
+				subviewsChanged();
 
 				return subview;
 			}
@@ -1096,7 +1095,7 @@ namespace po
 				view->removeScene();
 			}
 
-			setAlignment( getAlignment() );
+			subviewsChanged();
 
 			mSubviews.clear();
 		}

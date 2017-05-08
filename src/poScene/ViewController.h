@@ -17,10 +17,7 @@ namespace po
 
 				ViewController();
 
-				virtual void setup() {};
 				virtual void update() {};
-
-				virtual void doLayout() {};
 
 				virtual ViewRef getView();
 
