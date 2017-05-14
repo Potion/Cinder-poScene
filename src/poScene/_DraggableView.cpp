@@ -66,12 +66,7 @@ namespace po
 
 			po::scene::View::setInteractionEnabled( enabled );
 
-			if( enabled ) {
-				connectEvents();
-			}
-			else {
-				mConnections.clear();
-
+			if( !enabled ) {
 				bool isDragging = mIsDragging;
 				mIsDragging = false;
 
