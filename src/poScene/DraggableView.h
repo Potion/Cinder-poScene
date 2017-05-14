@@ -33,7 +33,7 @@ namespace po
 				void setSnapsBackToPosition( bool snapsBackToPosition ) { mSnapsBack = snapsBackToPosition; }
 				bool getSnapsBackToPosition() { return mSnapsBack; }
 
-				ci::vec2 getDragWindowPos() { return mPrevDragPosition; };
+				ci::vec2 getDragWindowPos() { return mWindowDragPosition; };
 
 				DraggableViewSignal& getSignalDragBegan()	{ return mSignalDragBegan;	};
 				DraggableViewSignal& getSignalDragged()		{ return mSignalDragged;	};
@@ -46,6 +46,7 @@ namespace po
 
 				bool mIsDragging;
 				ci::vec2 mDragPosition, mPrevDragPosition;
+				ci::vec2 mWindowDragPosition;
 
 				static const int DRAGGING_EVENT_ID_NONE = -1;
 				int mDraggingEventId;

@@ -82,6 +82,7 @@ namespace po
 			ci::vec2 parentPos = getSuperview()->windowToLocal( windowPos );
 
 			mPrevDragPosition = parentPos;
+			mWindowDragPosition = windowPos;
 			mDraggingEventId = eventId;
 
 			DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
@@ -97,6 +98,7 @@ namespace po
 
 				setPosition( getPosition() + ( parentPos - mPrevDragPosition ) );
 				mPrevDragPosition = parentPos;
+				mWindowDragPosition = windowPos;
 
 				DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
 				mSignalDragged.emit( ref );
