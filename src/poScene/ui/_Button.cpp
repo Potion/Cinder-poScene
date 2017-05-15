@@ -96,6 +96,10 @@ namespace po
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
 			}
+			
+			
+			
+			
 
 			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets,  State state )
 			{
@@ -131,6 +135,18 @@ namespace po
 				setTitleTint( color, state );
 			}
 
+			void Button::setTitleSize( ci::vec2 size )
+			{
+				mTitleText.setSize( size );
+				mTitleTextView->setCiTextBox(mTitleText);
+			}
+			
+			void Button::setTitleWidth( float width )
+			{
+				mTitleText.setSize( mTitleText.getSize() + ci::ivec2(width,0) );
+				mTitleTextView->setCiTextBox(mTitleText);
+			}
+			
 			// Event listeners
 			void Button::touchBeganInside( po::scene::TouchEvent& event )
 			{
