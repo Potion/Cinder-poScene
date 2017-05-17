@@ -25,7 +25,8 @@ namespace po
 					static ScrollViewRef create();
 
 					void setContentOffset( ci::vec2 offset );
-
+					void setScrollTargetPosition( ci::vec2 target ) { mScrollTargetPos = target; };
+				
 					po::scene::ViewRef getContentView() { return mContentView; }
 					ci::vec2 getContentOffset() { return mContentView->getPosition(); }
 
