@@ -92,6 +92,10 @@ namespace po
 					getItemForState<ci::Font>( font, mTitleFonts, state );
 					mTitleText.setFont( font );
 
+					ci::vec2 size = mTitleText.getSize();
+					getItemForState<ci::vec2>(size,mTitleSizes, state );
+					mTitleText.setSize(size);
+					
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
@@ -134,17 +138,15 @@ namespace po
 				setImageTint( color, state );
 				setTitleTint( color, state );
 			}
-
-			void Button::setTitleSize( ci::vec2 size )
+			
+			void Button::setTitleSize( ci::vec2 size, State forState )
 			{
-				mTitleText.setSize( size );
-				mTitleTextView->setCiTextBox(mTitleText);
+				setItemForState<ci::vec2>(size,mTitleSizes, forState );
 			}
 			
-			void Button::setTitleWidth( float width )
+			void Button::setTitleWidth( float width, State forState )
 			{
-				mTitleText.setSize( mTitleText.getSize() + ci::ivec2(width,0) );
-				mTitleTextView->setCiTextBox(mTitleText);
+				setTitleSize( mTitleText.getSize() + ci::ivec2(width,0), forState );
 			}
 			
 			// Event listeners

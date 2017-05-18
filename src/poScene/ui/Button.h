@@ -61,10 +61,9 @@ namespace po
 					void setTitleFont( ci::Font font, State forState = State::NORMAL );
 					void setTitleOffset( ci::vec2 offset, State forState = State::NORMAL );
 					void setTitleTint( ci::Color color, State forState = State::NORMAL );
-					void setTitleSize( ci::vec2 size );
-				
-					void setTitleWidth( float width );
-				
+					void setTitleSize( ci::vec2 size, State forState = State::NORMAL );
+					void setTitleWidth( float width, State forState = State::NORMAL );
+
 					ci::vec2 getTitleSize() { return mTitleTextView->getSize(); }
 
 					void setId( int id ) { mId = id; }
@@ -123,6 +122,7 @@ namespace po
 					std::map<State, ci::Font> mTitleFonts;
 					std::map<State, ci::vec2> mTitleOffsets;
 					std::map<State, ci::Color> mTitleTints;
+					std::map<State, ci::vec2> mTitleSizes;
 
 					// Id
 					int mId;
