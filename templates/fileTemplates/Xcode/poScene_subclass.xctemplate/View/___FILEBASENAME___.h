@@ -1,6 +1,6 @@
 #pragma once
 
-#include "poView.h"
+#include "poScene/View.h"
 
 class ___FILEBASENAME___;
 typedef std::shared_ptr<___FILEBASENAME___> ___FILEBASENAME___Ref;
