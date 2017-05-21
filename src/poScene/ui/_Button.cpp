@@ -17,7 +17,7 @@ namespace po
 
 			Button::Button()
 				: mState( State::NORMAL )
-				, mPressId( -1 )
+				, mEventId( -1 )
 				, mId( 0 )
 				, mType( Type::NORMAL )
 			{
@@ -37,6 +37,10 @@ namespace po
 				addSubview( mTitleTextView );
 
 				// Add event listeners
+				mConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &Button::mouseDownInside, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::MOVE ).connect( std::bind( &Button::mouseMove, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &Button::mouseUp, this, ::_1 ) );
+
 				mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &Button::touchBeganInside, this, ::_1 ) );
 				mConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &Button::touchMoved, this, ::_1 ) );
 				mConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &Button::touchEnded, this, ::_1 ) );
@@ -97,7 +101,7 @@ namespace po
 				}
 			}
 
-			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets,  State state )
+			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state )
 			{
 				ci::Color color( 1.f, 1.f, 1.f );
 				getItemForState<ci::Color>( color, tints, state );
@@ -118,7 +122,7 @@ namespace po
 			void Button::setImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mImageOffsets, state ); }
 			void Button::setImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mImageTints, state ); }
 
-			void Button::setTitle( std::string title, State state ) { setItemForState < std::string > ( title, mTitles, state ); }
+			void Button::setTitle( std::string title, State state ) { setItemForState < std::string >( title, mTitles, state ); }
 			void Button::setTitleFont( ci::Font font, State state ) { setItemForState < ci::Font >( font, mTitleFonts, state ); }
 
 			void Button::setTitleOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mTitleOffsets, state ); }
@@ -132,20 +136,20 @@ namespace po
 			}
 
 			// Event listeners
-			void Button::touchBeganInside( po::scene::TouchEvent& event )
+			void Button::eventBeganInside( int id, ci::vec2 windowPos )
 			{
-				if( mPressId == -1 ) {
-					mPressId = event.getId();
-					mPressStartPos = event.getWindowPos();
-					mPressStartState = mState;
+				if( mEventId == -1 ) {
+					mEventId = id;
+					mEventStartPos = windowPos;
+					mEventStartState = mState;
 					setState( State::HIGHLIGHTED );
 				}
 			}
 
-			void Button::touchMoved( po::scene::TouchEvent& event )
+			void Button::eventMoved( int id, ci::vec2 windowPos )
 			{
-				if( mPressId == event.getId() ) {
-					if( pointInside( event.getWindowPos() ) ) {
+				if( mEventId == id ) {
+					if( pointInside( windowPos ) ) {
 						setState( State::HIGHLIGHTED );
 					}
 					else {
@@ -154,10 +158,10 @@ namespace po
 				}
 			}
 
-			void Button::touchEnded( po::scene::TouchEvent& event )
+			void Button::eventEnded( int id, ci::vec2 windowPos )
 			{
-				if( mPressId == event.getId() ) {
-					if( pointInside( event.getWindowPos() ) ) {
+				if( mEventId == id ) {
+					if( pointInside( windowPos ) ) {
 						// Normal just send pressed
 						if( mType == Type::NORMAL ) {
 							setState( State::NORMAL );
@@ -166,14 +170,44 @@ namespace po
 
 						// Toggle switch State
 						else {
-							setState( mPressStartState == State::NORMAL ? State::SELECTED : State::NORMAL );
+							setState( mEventStartState == State::NORMAL ? State::SELECTED : State::NORMAL );
 							mSignalToggled.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
 						}
 					}
 
-
-					mPressId = -1;
+					mEventId = -1;
 				}
+			}
+
+			void Button::mouseDownInside( po::scene::MouseEvent& event )
+			{
+				eventBeganInside( 0, event.getWindowPos() );
+			}
+
+			void Button::mouseMove( po::scene::MouseEvent& event )
+			{
+				eventMoved( 0, event.getWindowPos() );
+			}
+
+			void Button::mouseUp( po::scene::MouseEvent& event )
+			{
+				eventEnded( 0, event.getWindowPos() );
+			}
+
+
+			void Button::touchBeganInside( po::scene::TouchEvent& event )
+			{
+				eventBeganInside( event.getId(), event.getWindowPos() );
+			}
+
+			void Button::touchMoved( po::scene::TouchEvent& event )
+			{
+				eventMoved( event.getId(), event.getWindowPos() );
+			}
+
+			void Button::touchEnded( po::scene::TouchEvent& event )
+			{
+				eventEnded( event.getId(), event.getWindowPos() );
 			}
 		}
 	}

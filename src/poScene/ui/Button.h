@@ -124,11 +124,19 @@ namespace po
 					int mId;
 
 					// Event listeners
-					int mPressId;
-					ci::vec2 mPressStartPos;
-					State mPressStartState;
+					int mEventId;
+					ci::vec2 mEventStartPos;
+					State mEventStartState;
 
 					ButtonSignal mSignalPressed, mSignalToggled;
+
+					void eventBeganInside( int id, ci::vec2 windowPos );
+					void eventMoved( int id, ci::vec2 windowPos );
+					void eventEnded( int id, ci::vec2 windowPos );
+
+					void mouseDownInside( po::scene::MouseEvent& event );
+					void mouseMove( po::scene::MouseEvent& event );
+					void mouseUp( po::scene::MouseEvent& event );
 
 					void touchBeganInside( po::scene::TouchEvent& event );
 					void touchMoved( po::scene::TouchEvent& event );
