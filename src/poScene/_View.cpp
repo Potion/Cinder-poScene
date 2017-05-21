@@ -689,13 +689,11 @@ namespace po
 
 		ci::vec2 View::viewToLocal( const ci::vec2& point, ViewRef View )
 		{
-			calculateMatrices();
 			return windowToLocal( View->localToWindow( point ) );
 		}
 
 		ci::vec2 View::localToView( const ci::vec2& point, ViewRef View )
 		{
-			calculateMatrices();
 			return View->windowToLocal( localToWindow( point ) );
 		}
 
@@ -704,7 +702,6 @@ namespace po
 			SceneRef scene = getScene();
 
 			if( scene != nullptr ) {
-				calculateMatrices();
 				return scene->getRootView()->localToView( scenePoint, shared_from_this() );
 			}
 
@@ -716,7 +713,6 @@ namespace po
 			SceneRef scene = getScene();
 
 			if( scene != nullptr ) {
-				calculateMatrices();
 				return localToView( point, scene->getRootView() );
 			}
 
@@ -728,7 +724,6 @@ namespace po
 			SceneRef scene = getScene();
 
 			if( scene != nullptr ) {
-				calculateMatrices();
 				return scene->getRootView()->localToWindow( point );
 			}
 
@@ -740,7 +735,6 @@ namespace po
 			SceneRef scene = getScene();
 
 			if( scene != nullptr ) {
-				calculateMatrices();
 				return scene->getRootView()->windowToLocal( point );
 			}
 
@@ -749,14 +743,12 @@ namespace po
 
 		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
 		{
-			calculateMatrices();
 			return mMatrix.globalToLocal( windowPoint );
 		}
 
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
 			if( mHasScene ) {
-				calculateMatrices();
 				return mMatrix.localToGlobal( scenePoint );
 			}
 
@@ -769,7 +761,6 @@ namespace po
 		//
 		bool View::pointInside( const ci::vec2& point )
 		{
-			calculateMatrices();
 			ci::vec2 pos = windowToLocal( point );
 			return getBounds().contains( pos );
 		}
