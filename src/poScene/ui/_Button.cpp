@@ -20,6 +20,7 @@ namespace po
 				, mEventId( -1 )
 				, mId( 0 )
 				, mType( Type::NORMAL )
+				, mPropagationEnabled( false )
 			{
 				setSize( ci::vec2( 50, 50 ) );
 
@@ -38,7 +39,7 @@ namespace po
 
 				// Add event listeners
 				mConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &Button::mouseDownInside, this, ::_1 ) );
-				mConnections += getSignal( po::scene::MouseEvent::MOVE ).connect( std::bind( &Button::mouseMove, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::DRAG ).connect( std::bind( &Button::mouseDrag, this, ::_1 ) );
 				mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &Button::mouseUp, this, ::_1 ) );
 
 				mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &Button::touchBeganInside, this, ::_1 ) );
@@ -59,8 +60,9 @@ namespace po
 
 				// Background image
 				{
-					// Tint + Offset
+					// Tint, offset, scale
 					setTintAndOffsetForState( mBackgroundImageView, mBackgroundImageTints, mBackgroundImageOffsets, state );
+					setScaleForState( mBackgroundImageView, mBackgroundImageScales, state );
 
 					// Image
 					ci::gl::TextureRef backgroundTexture;
@@ -71,8 +73,9 @@ namespace po
 
 				// Image
 				{
-					// Tint + Offset
+					// Tint, offset, scale
 					setTintAndOffsetForState( mImageView, mImageTints, mImageOffsets, state );
+					setScaleForState( mImageView, mImageScales, state );
 
 					// Image
 					ci::gl::TextureRef imageTexture = nullptr;
@@ -97,17 +100,13 @@ namespace po
 					mTitleText.setFont( font );
 
 					ci::vec2 size = mTitleText.getSize();
-					getItemForState<ci::vec2>(size,mTitleSizes, state );
-					mTitleText.setSize(size);
-					
+					getItemForState<ci::vec2>( size, mTitleSizes, state );
+					mTitleText.setSize( size );
+
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
 			}
-			
-			
-			
-			
 
 			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state )
 			{
@@ -120,14 +119,42 @@ namespace po
 				view->setPosition( offset );
 			}
 
+			void Button::setScaleForState( ViewRef view, std::map<State, ci::vec2> scales, State state )
+			{
+				ci::vec2 scale( 1.f );
+				getItemForState<ci::vec2>( scale, scales, state );
+				view->setScale( scale );
+			}
+
+
+			// Image getters
+			ci::gl::TextureRef Button::getBackgroundImage( State forState )
+			{
+				if( mBackgroundImages.count( forState ) == 0 ) {
+					return nullptr;
+				}
+
+				return mBackgroundImages[forState];
+			}
+
+			ci::gl::TextureRef Button::getImage( State forState )
+			{
+				if( mImages.count( forState ) == 0 ) {
+					return nullptr;
+				}
+
+				return mImages[forState];
+			}
 
 			// Image, text, color and offset setters
 			void Button::setBackgroundImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mBackgroundImages, state ); }
 			void Button::setBackgroundImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mBackgroundImageOffsets, state ); }
+			void Button::setBackgroundImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mBackgroundImageScales, state ); }
 			void Button::setBackgroundImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mBackgroundImageTints, state ); }
 
 			void Button::setImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mImages, state ); }
 			void Button::setImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mImageOffsets, state ); }
+			void Button::setImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mImageScales, state ); }
 			void Button::setImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mImageTints, state ); }
 
 			void Button::setTitle( std::string title, State state ) { setItemForState < std::string >( title, mTitles, state ); }
@@ -142,23 +169,23 @@ namespace po
 				setImageTint( color, state );
 				setTitleTint( color, state );
 			}
-			
+
 			void Button::setTitleSize( ci::vec2 size, State forState )
 			{
-				setItemForState<ci::vec2>(size,mTitleSizes, forState );
+				setItemForState<ci::vec2>( size, mTitleSizes, forState );
 			}
-			
+
 			void Button::setTitleWidth( float width, State forState )
 			{
-				setTitleSize( mTitleText.getSize() + ci::ivec2(width,0), forState );
+				setTitleSize( mTitleText.getSize() + ci::ivec2( width, 0 ), forState );
 			}
-			
+
 			// Event listeners
 			void Button::eventBeganInside( int id, ci::vec2 windowPos )
 			{
 				if( mEventId == -1 ) {
 					mEventId = id;
-					mEventStartPos = windowPos;
+					mEventStartPos = windowToLocal( windowPos );
 					mEventStartState = mState;
 					setState( State::HIGHLIGHTED );
 				}
@@ -199,32 +226,37 @@ namespace po
 
 			void Button::mouseDownInside( po::scene::MouseEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventBeganInside( 0, event.getWindowPos() );
 			}
 
-			void Button::mouseMove( po::scene::MouseEvent& event )
+			void Button::mouseDrag( po::scene::MouseEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventMoved( 0, event.getWindowPos() );
 			}
 
 			void Button::mouseUp( po::scene::MouseEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventEnded( 0, event.getWindowPos() );
 			}
 
-
 			void Button::touchBeganInside( po::scene::TouchEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventBeganInside( event.getId(), event.getWindowPos() );
 			}
 
 			void Button::touchMoved( po::scene::TouchEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventMoved( event.getId(), event.getWindowPos() );
 			}
 
 			void Button::touchEnded( po::scene::TouchEvent& event )
 			{
+				event.setPropagationEnabled( mPropagationEnabled );
 				eventEnded( event.getId(), event.getWindowPos() );
 			}
 		}

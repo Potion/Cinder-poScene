@@ -35,6 +35,8 @@ namespace po
 
 					void layoutSubviews() override;
 
+					ci::gl::TextureRef getBackgroundImage( State forState = State::NORMAL );
+					ci::gl::TextureRef getImage( State forState = State::NORMAL );
 					ci::TextBox& getTitleTextBox() { return mTitleText; }
 
 					ButtonSignal& getSignalPressed() { return mSignalPressed; }
@@ -51,10 +53,12 @@ namespace po
 
 					void setBackgroundImage( ci::gl::TextureRef image, State forState = State::NORMAL );
 					void setBackgroundImageOffset( ci::vec2 offset, State forState = State::NORMAL );
+					void setBackgroundImageScale( ci::vec2 scale, State forState = State::NORMAL );
 					void setBackgroundImageTint( ci::Color color, State forState = State::NORMAL );
 
 					void setImage( ci::gl::TextureRef image, State forState = State::NORMAL );
 					void setImageOffset( ci::vec2 offset, State forState = State::NORMAL );
+					void setImageScale( ci::vec2 scale, State forState = State::NORMAL );
 					void setImageTint( ci::Color color, State forState = State::NORMAL );
 
 					void setTitle( std::string title, State forState = State::NORMAL );
@@ -65,6 +69,9 @@ namespace po
 					void setTitleWidth( float width, State forState = State::NORMAL );
 
 					ci::vec2 getTitleSize() { return mTitleTextView->getSize(); }
+
+					void setPropagationEnabled( bool enabled ) { mPropagationEnabled = enabled; }
+					bool getPropagationEnabled() { return mPropagationEnabled; }
 
 					void setId( int id ) { mId = id; }
 					int getId() { return mId; }
@@ -102,17 +109,20 @@ namespace po
 					}
 
 					void setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state );
+					void setScaleForState( ViewRef view, std::map<State, ci::vec2> scales, State state );
 
 					// Background Images
 					po::scene::ImageViewRef mBackgroundImageView;
 					std::map<State, ci::gl::TextureRef> mBackgroundImages;
 					std::map<State, ci::vec2> mBackgroundImageOffsets;
+					std::map<State, ci::vec2> mBackgroundImageScales;
 					std::map<State, ci::Color> mBackgroundImageTints;
 
 					// Images
 					po::scene::ImageViewRef mImageView;
 					std::map<State, ci::gl::TextureRef> mImages;
 					std::map<State, ci::vec2> mImageOffsets;
+					std::map<State, ci::vec2> mImageScales;
 					std::map<State, ci::Color> mImageTints;
 
 					// Titles
@@ -132,14 +142,16 @@ namespace po
 					ci::vec2 mEventStartPos;
 					State mEventStartState;
 
+					bool mPropagationEnabled;
+
 					ButtonSignal mSignalPressed, mSignalToggled;
 
-					void eventBeganInside( int id, ci::vec2 windowPos );
-					void eventMoved( int id, ci::vec2 windowPos );
-					void eventEnded( int id, ci::vec2 windowPos );
+					void eventBeganInside( int id, ci::vec2 pos );
+					void eventMoved( int id, ci::vec2 pos );
+					void eventEnded( int id, ci::vec2 pos );
 
 					void mouseDownInside( po::scene::MouseEvent& event );
-					void mouseMove( po::scene::MouseEvent& event );
+					void mouseDrag( po::scene::MouseEvent& event );
 					void mouseUp( po::scene::MouseEvent& event );
 
 					void touchBeganInside( po::scene::TouchEvent& event );
