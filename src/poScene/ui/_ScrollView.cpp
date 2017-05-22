@@ -48,10 +48,11 @@ namespace po
 				}
 			}
 
-			void ScrollView::setContentOffset( ci::vec2 offset )
+			void ScrollView::setContentOffset( ci::vec2 offset, bool bAnimate )
 			{
 				mScrollTargetPos = offset;
-				mContentView->setPosition( offset );
+				if( !bAnimate)
+					mContentView->setPosition( offset );
 			}
 
 			ci::vec2 ScrollView::getSnapPos( ci::vec2 pos )
@@ -124,6 +125,12 @@ namespace po
 					// Cleanup
 					mIsScrolling = false;
 					mTouchId = -1;
+					
+					
+					if( !mDelegate.expired() ) {
+						ScrollViewRef self = std::dynamic_pointer_cast<ScrollView>( shared_from_this() );
+						mDelegate.lock()->didFinishScrolling( self );
+					}
 				}
 			}
 		}

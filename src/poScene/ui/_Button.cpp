@@ -96,10 +96,18 @@ namespace po
 					getItemForState<ci::Font>( font, mTitleFonts, state );
 					mTitleText.setFont( font );
 
+					ci::vec2 size = mTitleText.getSize();
+					getItemForState<ci::vec2>(size,mTitleSizes, state );
+					mTitleText.setSize(size);
+					
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
 			}
+			
+			
+			
+			
 
 			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state )
 			{
@@ -134,7 +142,17 @@ namespace po
 				setImageTint( color, state );
 				setTitleTint( color, state );
 			}
-
+			
+			void Button::setTitleSize( ci::vec2 size, State forState )
+			{
+				setItemForState<ci::vec2>(size,mTitleSizes, forState );
+			}
+			
+			void Button::setTitleWidth( float width, State forState )
+			{
+				setTitleSize( mTitleText.getSize() + ci::ivec2(width,0), forState );
+			}
+			
 			// Event listeners
 			void Button::eventBeganInside( int id, ci::vec2 windowPos )
 			{

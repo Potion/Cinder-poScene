@@ -1,6 +1,6 @@
 #pragma once
 
-#include "poViewController.h"
+#include "poScene/ViewController.h"
 
 class ___FILEBASENAME___;
 typedef std::shared_ptr<___FILEBASENAME___> ___FILEBASENAME___Ref;
@@ -12,7 +12,7 @@ public:
 	static ___FILEBASENAME___Ref create();
 	virtual ~___FILEBASENAME___();
 
-	void setup() override;
+	void viewDidLoad() override;
 
 protected:
 	___FILEBASENAME___();
