@@ -26,12 +26,12 @@ namespace po
 					static ScrollViewRef create();
 
 					void setContentOffset( ci::vec2 offset, bool bAnimate = false );
-//					void setScrollTargetPosition( ci::vec2 target ) { mScrollTargetPos = target; };
-				
+					//					void setScrollTargetPosition( ci::vec2 target ) { mScrollTargetPos = target; };
+
 					po::scene::ViewRef getContentView() { return mContentView; }
 					ci::vec2 getContentOffset() { return mContentView->getPosition(); }
 					void setDelegate( ScrollViewDelegateRef delegate ) { mDelegate = delegate; };
-				
+
 				protected:
 					ScrollView();
 
@@ -45,17 +45,25 @@ namespace po
 
 					bool mHorizontalScrollingEnabled, mVerticalScrollingEnabled;
 
-					int mTouchId;
-					ci::vec2 mStartTouchPos, mCurTouchPos, mPrevTouchPos;
+					int mEventId;
+					ci::vec2 mStartEventPos, mCurEventPos, mPrevEventPos;
 					bool mIsScrolling;
 					ci::vec2 mScrollTargetPos;
 					float mMaxAccel;
 					float mDecel;
 
 					std::weak_ptr<ScrollViewDelegate> mDelegate;
-				
-				
+
+
 					// Event handlers
+					void eventBeganInside( int id, ci::vec2 pos );
+					void eventMoved( int id, ci::vec2 pos );
+					void eventEnded( int id, ci::vec2 pos );
+
+					void mouseDownInside( po::scene::MouseEvent& event );
+					void mouseDrag( po::scene::MouseEvent& event );
+					void mouseUp( po::scene::MouseEvent& event );
+
 					void touchBeganInside( po::scene::TouchEvent& event );
 					void touchMoved( po::scene::TouchEvent& event );
 					void touchEnded( po::scene::TouchEvent& event );

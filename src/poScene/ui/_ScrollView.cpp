@@ -17,7 +17,7 @@ namespace po
 
 			ScrollView::ScrollView()
 				: po::scene::View( "UI Scroll View" )
-				, mTouchId( -1 )
+				, mEventId( -1 )
 				, mMaxAccel( 0.1 )
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
@@ -32,9 +32,13 @@ namespace po
 				addSubview( mContentView );
 
 				// Subscribe to events
-				mConnections += mContentView->getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
-				mConnections += mContentView->getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
-				mConnections += mContentView->getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &ScrollView::mouseDownInside, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::DRAG ).connect( std::bind( &ScrollView::mouseDrag, this, ::_1 ) );
+				mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &ScrollView::mouseUp, this, ::_1 ) );
+
+				//mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
+				//mConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
+				//mConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
 			}
 
 			void ScrollView::update()
@@ -51,8 +55,10 @@ namespace po
 			void ScrollView::setContentOffset( ci::vec2 offset, bool bAnimate )
 			{
 				mScrollTargetPos = offset;
-				if( !bAnimate)
+
+				if( !bAnimate ) {
 					mContentView->setPosition( offset );
+				}
 			}
 
 			ci::vec2 ScrollView::getSnapPos( ci::vec2 pos )
@@ -66,24 +72,24 @@ namespace po
 			}
 
 			// Event handlers
-			void ScrollView::touchBeganInside( po::scene::TouchEvent& event )
+
+			void ScrollView::eventBeganInside( int id, ci::vec2 pos )
 			{
-				if( mTouchId == -1 ) {
-					mTouchId = event.getId();
+				if( mEventId == -1 ) {
+					mEventId = id;
 					mIsScrolling = true;
-					mStartTouchPos = event.getWindowPos();
-					mCurTouchPos = event.getWindowPos();
-					mPrevTouchPos = event.getWindowPos();
+					mStartEventPos = pos;
+					mCurEventPos = pos;
+					mPrevEventPos = pos;
 				}
 			}
 
-			void ScrollView::touchMoved( po::scene::TouchEvent& event )
+			void ScrollView::eventMoved( int id, ci::vec2 pos )
 			{
-
-				if( event.getId() == mTouchId ) {
-					ci::vec2 diff = event.getWindowPos() - mPrevTouchPos;
-					mPrevTouchPos = mCurTouchPos;
-					mCurTouchPos = event.getWindowPos();
+				if( id == mEventId ) {
+					ci::vec2 diff = pos - mCurEventPos;
+					mPrevEventPos = mCurEventPos;
+					mCurEventPos = pos;
 
 					ci::vec2 newPos = mContentView->getPosition();
 
@@ -99,10 +105,10 @@ namespace po
 				}
 			}
 
-			void ScrollView::touchEnded( po::scene::TouchEvent& event )
+			void ScrollView::eventEnded( int id, ci::vec2 pos )
 			{
-				if( event.getId() == mTouchId ) {
-					ci::vec2 accel = mCurTouchPos - mPrevTouchPos;
+				if( id == mEventId ) {
+					ci::vec2 accel = mCurEventPos - mPrevEventPos;
 					// Get normalized based on maximum distance you can scroll
 					// Maybe should be based on the size of this view vs window?
 					accel = accel / ci::vec2( ci::app::getWindowSize() );
@@ -124,14 +130,50 @@ namespace po
 
 					// Cleanup
 					mIsScrolling = false;
-					mTouchId = -1;
-					
-					
+					mEventId = -1;
+
 					if( !mDelegate.expired() ) {
 						ScrollViewRef self = std::dynamic_pointer_cast<ScrollView>( shared_from_this() );
 						mDelegate.lock()->didFinishScrolling( self );
 					}
 				}
+			}
+
+
+			void ScrollView::mouseDownInside( po::scene::MouseEvent& event )
+			{
+				eventBeganInside( 0, event.getLocalPos() );
+			}
+
+			void ScrollView::mouseDrag( po::scene::MouseEvent& event )
+			{
+				ci::app::console() << "-------------------------------------" << std::endl;
+				ci::app::console() << "Window Pos: " << event.getWindowPos() << std::endl;
+				ci::app::console() << "Local Pos: " << event.getLocalPos() << std::endl;
+				ci::app::console() << std::endl;
+
+				eventMoved( 0, event.getLocalPos() );
+			}
+
+			void ScrollView::mouseUp( po::scene::MouseEvent& event )
+			{
+				eventEnded( 0, event.getLocalPos() );
+			}
+
+
+			void ScrollView::touchBeganInside( po::scene::TouchEvent& event )
+			{
+				eventBeganInside( event.getId(), event.getLocalPos() );
+			}
+
+			void ScrollView::touchMoved( po::scene::TouchEvent& event )
+			{
+				eventMoved( event.getId(), windowToLocal( event.getLocalPos() ) );
+			}
+
+			void ScrollView::touchEnded( po::scene::TouchEvent& event )
+			{
+				eventEnded( event.getId(), windowToLocal( event.getLocalPos() ) );
 			}
 		}
 	}
