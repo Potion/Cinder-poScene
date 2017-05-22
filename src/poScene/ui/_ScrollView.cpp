@@ -22,6 +22,7 @@ namespace po
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
+				, mInitialized( false )
 			{
 			}
 
@@ -36,9 +37,17 @@ namespace po
 				mConnections += getSignal( po::scene::MouseEvent::DRAG ).connect( std::bind( &ScrollView::mouseDrag, this, ::_1 ) );
 				mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &ScrollView::mouseUp, this, ::_1 ) );
 
-				//mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
-				//mConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
-				//mConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
+				mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
+				mConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
+				mConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
+
+				mInitialized = true;
+			}
+
+			View& ScrollView::addSubview( ViewRef view, bool localize )
+			{
+				CI_ASSERT_MSG( !mInitialized, "Can not add subview directly to ScrollView, get the content view and add to it." );
+				return po::scene::View::addSubview( view );
 			}
 
 			void ScrollView::update()

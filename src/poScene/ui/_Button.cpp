@@ -21,10 +21,9 @@ namespace po
 				, mId( 0 )
 				, mType( Type::NORMAL )
 				, mPropagationEnabled( false )
+				, mEventMaxMoveDist( -1 )
 			{
 				setSize( ci::vec2( 50, 50 ) );
-
-
 			}
 
 			void Button::setup()
@@ -181,6 +180,23 @@ namespace po
 			}
 
 			// Event listeners
+			bool Button::posIsWithinMaxMoveLimits( ci::vec2 pos )
+			{
+				if( mEventMaxMoveDist.x >= 0 || mEventMaxMoveDist.y >= 0 ) {
+					ci::vec2 moveDist = pos - mEventStartPos;
+
+					if( mEventMaxMoveDist.x >= 0 && fabs( moveDist.x ) > mEventMaxMoveDist.x ) {
+						return false;
+					}
+					else if( mEventMaxMoveDist.y >= 0 && fabs( moveDist.y ) > mEventMaxMoveDist.y ) {
+						return false;
+					}
+				}
+
+				return true;
+			}
+
+
 			void Button::eventBeganInside( int id, ci::vec2 windowPos )
 			{
 				if( mEventId == -1 ) {
@@ -194,6 +210,14 @@ namespace po
 			void Button::eventMoved( int id, ci::vec2 windowPos )
 			{
 				if( mEventId == id ) {
+					// Check to see if we've gone past max move dist
+					if( !posIsWithinMaxMoveLimits( windowToLocal( windowPos ) ) ) {
+						mEventId = -1;
+						setState( mEventStartState );
+						return;
+					}
+
+					// If we're good, keep on showing
 					if( pointInside( windowPos ) ) {
 						setState( State::HIGHLIGHTED );
 					}

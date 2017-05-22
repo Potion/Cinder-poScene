@@ -48,6 +48,8 @@ namespace po
 					const State& getState() { return mState; }
 					void setState( State state );
 
+					void setEventMaxMoveDist( ci::vec2 maxMoveDist ) { mEventMaxMoveDist = maxMoveDist; }
+
 					// Sets the tint for all views
 					void setTint( ci::Color tintColor, State forState = State::NORMAL );
 
@@ -137,14 +139,18 @@ namespace po
 					// Id
 					int mId;
 
-					// Event listeners
+					// Events
 					int mEventId;
 					ci::vec2 mEventStartPos;
 					State mEventStartState;
 
+					ci::vec2 mEventMaxMoveDist;
+
 					bool mPropagationEnabled;
 
 					ButtonSignal mSignalPressed, mSignalToggled;
+
+					bool posIsWithinMaxMoveLimits( ci::vec2 pos );
 
 					void eventBeganInside( int id, ci::vec2 pos );
 					void eventMoved( int id, ci::vec2 pos );
