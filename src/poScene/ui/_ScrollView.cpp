@@ -22,6 +22,8 @@ namespace po
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
+				, mTouchEventsEnabled( true )
+				, mMouseEventsEnabled( true )
 				, mInitialized( false )
 			{
 			}
@@ -33,13 +35,9 @@ namespace po
 				addSubview( mContentView );
 
 				// Subscribe to events
-				mConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &ScrollView::mouseDownInside, this, ::_1 ) );
-				mConnections += getSignal( po::scene::MouseEvent::DRAG ).connect( std::bind( &ScrollView::mouseDrag, this, ::_1 ) );
-				mConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &ScrollView::mouseUp, this, ::_1 ) );
+				if( mMouseEventsEnabled ) { enableMouseEvents(); }
 
-				mConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
-				mConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
-				mConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
+				if( mTouchEventsEnabled ) { enableTouchEvents(); }
 
 				mInitialized = true;
 			}
@@ -48,6 +46,37 @@ namespace po
 			{
 				CI_ASSERT_MSG( !mInitialized, "Can not add subview directly to ScrollView, get the content view and add to it." );
 				return po::scene::View::addSubview( view );
+			}
+
+			void ScrollView::enableMouseEvents()
+			{
+				mMouseConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &ScrollView::mouseDownInside, this, ::_1 ) );
+				mMouseConnections += getSignal( po::scene::MouseEvent::DRAG ).connect( std::bind( &ScrollView::mouseDrag, this, ::_1 ) );
+				mMouseConnections += getSignal( po::scene::MouseEvent::UP ).connect( std::bind( &ScrollView::mouseUp, this, ::_1 ) );
+
+				mMouseEventsEnabled = true;
+			}
+
+			void ScrollView::disableMouseEvents()
+			{
+				mMouseConnections.clear();
+				mMouseEventsEnabled = false;
+			}
+
+			void ScrollView::enableTouchEvents()
+			{
+				mTouchConnections += getSignal( po::scene::TouchEvent::BEGAN_INSIDE ).connect( std::bind( &ScrollView::touchBeganInside, this, ::_1 ) );
+				mTouchConnections += getSignal( po::scene::TouchEvent::MOVED ).connect( std::bind( &ScrollView::touchMoved, this, ::_1 ) );
+				mTouchConnections += getSignal( po::scene::TouchEvent::ENDED ).connect( std::bind( &ScrollView::touchEnded, this, ::_1 ) );
+
+				mTouchEventsEnabled = true;
+			}
+
+			void ScrollView::disableTouchEvents()
+			{
+				mTouchConnections.clear();
+
+				mTouchEventsEnabled = false;
 			}
 
 			void ScrollView::update()
@@ -75,8 +104,19 @@ namespace po
 				ci::vec2 maxPos = ci::vec2( 0.f );
 				ci::vec2 minPos = getSize() - mContentView->getSize();
 
+				//ci::app::console() << "----------------------------------------" <<  std::endl;
+				//ci::app::console() << "Pos: " << minPos << std::endl;
+				//ci::app::console() << "Scroll View Size: " << getSize() << std::endl;
+				//ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
+
 				pos.x = ci::clamp<float>( pos.x, minPos.x, maxPos.x );
 				pos.y = ci::clamp<float>( pos.y, minPos.y, maxPos.y );
+
+				//ci::app::console() << std::endl;
+				//ci::app::console() << "Min Pos: " << minPos << std::endl;
+				//ci::app::console() << "New Pos " << pos << std::endl;
+				//ci::app::console() << std::endl;
+
 				return pos;
 			}
 
@@ -97,6 +137,7 @@ namespace po
 			{
 				if( id == mEventId ) {
 					ci::vec2 diff = pos - mCurEventPos;
+
 					mPrevEventPos = mCurEventPos;
 					mCurEventPos = pos;
 
@@ -111,13 +152,17 @@ namespace po
 					}
 
 					mContentView->setPosition( newPos );
+
+
+					ci::app::console() << "Drag Pos: " << pos << std::endl;
 				}
 			}
 
 			void ScrollView::eventEnded( int id, ci::vec2 pos )
 			{
 				if( id == mEventId ) {
-					ci::vec2 accel = mCurEventPos - mPrevEventPos;
+					ci::vec2 accel = pos - mPrevEventPos;
+
 					// Get normalized based on maximum distance you can scroll
 					// Maybe should be based on the size of this view vs window?
 					accel = accel / ci::vec2( ci::app::getWindowSize() );
@@ -135,7 +180,15 @@ namespace po
 
 					// Set our target pos, considering snapping so we don't throw out of the view
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
+
 					mScrollTargetPos = getSnapPos( targetPos );
+
+					ci::app::console() << "----------------------------------------" << std::endl;
+					ci::app::console() << "Pos: " << pos << std::endl;
+					ci::app::console() << "Prev Pos: " << mPrevEventPos << std::endl;
+					ci::app::console() << "Direction: " << direction << std::endl;
+					ci::app::console() << "Throw Distance: " << throwDistance << std::endl;
+					ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
 
 					// Cleanup
 					mIsScrolling = false;
@@ -156,10 +209,6 @@ namespace po
 
 			void ScrollView::mouseDrag( po::scene::MouseEvent& event )
 			{
-				ci::app::console() << "-------------------------------------" << std::endl;
-				ci::app::console() << "Window Pos: " << event.getWindowPos() << std::endl;
-				ci::app::console() << "Local Pos: " << event.getLocalPos() << std::endl;
-				ci::app::console() << std::endl;
 
 				eventMoved( 0, event.getLocalPos() );
 			}
@@ -177,12 +226,12 @@ namespace po
 
 			void ScrollView::touchMoved( po::scene::TouchEvent& event )
 			{
-				eventMoved( event.getId(), windowToLocal( event.getLocalPos() ) );
+				eventMoved( event.getId(), event.getLocalPos() );
 			}
 
 			void ScrollView::touchEnded( po::scene::TouchEvent& event )
 			{
-				eventEnded( event.getId(), windowToLocal( event.getLocalPos() ) );
+				eventEnded( event.getId(), event.getLocalPos() );
 			}
 		}
 	}

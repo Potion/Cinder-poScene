@@ -111,6 +111,7 @@ namespace po
 		View::View( std::string name )
 			: mUid( OBJECT_UID++ )
 			, mName( name )
+			, mTag( -1 )
 			, mDrawOrder( 0 )
 			, mPosition( 0.f, 0.f )
 			, mScale( 1.f, 1.f )

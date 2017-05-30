@@ -33,6 +33,11 @@ namespace po
 
 					View& addSubview( ViewRef view, bool localize = false ) override;
 
+					void enableMouseEvents();
+					void disableMouseEvents();
+					void enableTouchEvents();
+					void disableTouchEvents();
+
 				protected:
 					ScrollView();
 
@@ -63,10 +68,14 @@ namespace po
 					void eventMoved( int id, ci::vec2 pos );
 					void eventEnded( int id, ci::vec2 pos );
 
+					ci::signals::ConnectionList mMouseConnections;
+					bool mMouseEventsEnabled;
 					void mouseDownInside( po::scene::MouseEvent& event );
 					void mouseDrag( po::scene::MouseEvent& event );
 					void mouseUp( po::scene::MouseEvent& event );
 
+					ci::signals::ConnectionList mTouchConnections;
+					bool mTouchEventsEnabled;
 					void touchBeganInside( po::scene::TouchEvent& event );
 					void touchMoved( po::scene::TouchEvent& event );
 					void touchEnded( po::scene::TouchEvent& event );
