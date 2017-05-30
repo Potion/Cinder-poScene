@@ -381,6 +381,12 @@ namespace po
 				//! Get the name of the View
 				virtual std::string getName() const { return mName; }
 
+				//! Set the tag of the view
+				virtual View& setTag( unsigned int tag ) { mTag = tag; return *this; }
+
+				//! Get the tag of the view
+				virtual int getTag() const { return mTag; }
+
 				// Position
 				// The position that the origin is at within the superview View
 				//! Set the position of the View with a ci::vec2
@@ -670,27 +676,12 @@ namespace po
 				po::scene::ViewRef mMask;
 				bool mIsMasked;
 
-
-				//        //! Generate an FBO to draw into
-				//        bool createFbo();
-				//        //! Render our drawTree into the FBO
-				//        void captureFbo();
-				//        //! Clear our FBO and reset it (using Cinder hack with depth buffer to avoid memory leak)
-				//		void resetFbos();
-				//
-				//        //! Draw our FBO
-				//        virtual void drawFbo();
-				//        bool mIsCapturingFbo;
-				//        bool mCacheToFbo;
-				//
-				//        // Masking
-				//        //! Draw with mask applied to FBO
-				//        void drawMasked();
-				//        ShapeRef mMask;
-				//        bool mIsMasked;
-
 				//	Name (optional, helps identify Views when debugging)
 				std::string mName;
+
+				// Tag (optional, helps identify views and tie them to enums)
+				unsigned int mTag;
+
 				//friend std::ostream& operator<<(std::ostream &os, ViewRef &a);
 
 				// Connections storage
@@ -778,6 +769,7 @@ namespace po
 				//	Unique identifiers
 				uint32_t mDrawOrder;
 				uint32_t mUid;
+
 
 				// Layout
 				bool mNeedsLayout;
