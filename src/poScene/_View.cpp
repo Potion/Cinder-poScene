@@ -133,6 +133,7 @@ namespace po
 			, mStrokeColor( 255, 255, 255 )
 			, mStrokeEnabled( false )
 			, mPixelSnapping( false )
+			, mIsPremultiplied( false )
 			, mBounds( ci::Rectf::zero() )
 			, mDrawBounds( false )
 			, mUseElasticBounds( true )

@@ -57,16 +57,19 @@ namespace po
 					void setBackgroundImageOffset( ci::vec2 offset, State forState = State::NORMAL );
 					void setBackgroundImageScale( ci::vec2 scale, State forState = State::NORMAL );
 					void setBackgroundImageTint( ci::Color color, State forState = State::NORMAL );
+					void setBackgroundImageAlpha( float alpha, State forState = State::NORMAL );
 
 					void setImage( ci::gl::TextureRef image, State forState = State::NORMAL );
 					void setImageOffset( ci::vec2 offset, State forState = State::NORMAL );
 					void setImageScale( ci::vec2 scale, State forState = State::NORMAL );
 					void setImageTint( ci::Color color, State forState = State::NORMAL );
+					void setImageAlpha( float alpha, State forState = State::NORMAL );
 
 					void setTitle( std::string title, State forState = State::NORMAL );
 					void setTitleFont( ci::Font font, State forState = State::NORMAL );
 					void setTitleOffset( ci::vec2 offset, State forState = State::NORMAL );
 					void setTitleTint( ci::Color color, State forState = State::NORMAL );
+					void setTitleAlpha( float alpha, State forState = State::NORMAL );
 					void setTitleSize( ci::vec2 size, State forState = State::NORMAL );
 					void setTitleWidth( float width, State forState = State::NORMAL );
 
@@ -110,7 +113,7 @@ namespace po
 						return false;
 					}
 
-					void setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state );
+					void setTintOffsetAndAlphaForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, std::map<State, float> alphas, State state );
 					void setScaleForState( ViewRef view, std::map<State, ci::vec2> scales, State state );
 
 					// Background Images
@@ -119,6 +122,7 @@ namespace po
 					std::map<State, ci::vec2> mBackgroundImageOffsets;
 					std::map<State, ci::vec2> mBackgroundImageScales;
 					std::map<State, ci::Color> mBackgroundImageTints;
+					std::map<State, float> mBackgroundImageAlphas;
 
 					// Images
 					po::scene::ImageViewRef mImageView;
@@ -126,6 +130,7 @@ namespace po
 					std::map<State, ci::vec2> mImageOffsets;
 					std::map<State, ci::vec2> mImageScales;
 					std::map<State, ci::Color> mImageTints;
+					std::map<State, float> mImageAlphas;
 
 					// Titles
 					ci::TextBox mTitleText;
@@ -134,6 +139,7 @@ namespace po
 					std::map<State, ci::Font> mTitleFonts;
 					std::map<State, ci::vec2> mTitleOffsets;
 					std::map<State, ci::Color> mTitleTints;
+					std::map<State, float> mTitleAlphas;
 					std::map<State, ci::vec2> mTitleSizes;
 
 					// Id

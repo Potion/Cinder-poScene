@@ -60,7 +60,7 @@ namespace po
 				// Background image
 				{
 					// Tint, offset, scale
-					setTintAndOffsetForState( mBackgroundImageView, mBackgroundImageTints, mBackgroundImageOffsets, state );
+					setTintOffsetAndAlphaForState( mBackgroundImageView, mBackgroundImageTints, mBackgroundImageOffsets, mBackgroundImageAlphas, state );
 					setScaleForState( mBackgroundImageView, mBackgroundImageScales, state );
 
 					// Image
@@ -73,7 +73,7 @@ namespace po
 				// Image
 				{
 					// Tint, offset, scale
-					setTintAndOffsetForState( mImageView, mImageTints, mImageOffsets, state );
+					setTintOffsetAndAlphaForState( mImageView, mImageTints, mImageOffsets, mImageAlphas, state );
 					setScaleForState( mImageView, mImageScales, state );
 
 					// Image
@@ -87,7 +87,7 @@ namespace po
 				// Title
 				{
 					// Tint + Offset
-					setTintAndOffsetForState( mTitleTextView, mTitleTints, mTitleOffsets, state );
+					setTintOffsetAndAlphaForState( mTitleTextView, mTitleTints, mTitleOffsets, mTitleAlphas, state );
 
 					// Text
 					std::string title = "";
@@ -107,7 +107,7 @@ namespace po
 				}
 			}
 
-			void Button::setTintAndOffsetForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, State state )
+			void Button::setTintOffsetAndAlphaForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, std::map<State, float> alphas, State state )
 			{
 				ci::Color color( 1.f, 1.f, 1.f );
 				getItemForState<ci::Color>( color, tints, state );
@@ -116,6 +116,10 @@ namespace po
 				ci::vec2 offset( 0.f );
 				getItemForState<ci::vec2>( offset, offsets, state );
 				view->setPosition( offset );
+
+				float alpha( 1.f );
+				getItemForState<float>( alpha, alphas, state );
+				view->setAlpha( alpha );
 			}
 
 			void Button::setScaleForState( ViewRef view, std::map<State, ci::vec2> scales, State state )
@@ -150,17 +154,20 @@ namespace po
 			void Button::setBackgroundImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mBackgroundImageOffsets, state ); }
 			void Button::setBackgroundImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mBackgroundImageScales, state ); }
 			void Button::setBackgroundImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mBackgroundImageTints, state ); }
+			void Button::setBackgroundImageAlpha( float alpha, State state ) { setItemForState<float>( alpha, mBackgroundImageAlphas, state ); }
 
 			void Button::setImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mImages, state ); }
 			void Button::setImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mImageOffsets, state ); }
 			void Button::setImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mImageScales, state ); }
 			void Button::setImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mImageTints, state ); }
+			void Button::setImageAlpha( float alpha, State state ) { setItemForState<float>( alpha, mImageAlphas, state ); }
 
 			void Button::setTitle( std::string title, State state ) { setItemForState < std::string >( title, mTitles, state ); }
 			void Button::setTitleFont( ci::Font font, State state ) { setItemForState < ci::Font >( font, mTitleFonts, state ); }
 
 			void Button::setTitleOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mTitleOffsets, state ); }
 			void Button::setTitleTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mTitleTints, state ); }
+			void Button::setTitleAlpha( float alpha, State state ) { setItemForState<float>( alpha, mTitleAlphas, state ); }
 
 			void Button::setTint( ci::Color color, State state )
 			{
