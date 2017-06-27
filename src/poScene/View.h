@@ -476,6 +476,10 @@ namespace po
 				virtual View& setPixelSnapping( bool pixelSnapping ) { mPixelSnapping = pixelSnapping; return *this; };
 				virtual bool getPixelSnapping() { return mPixelSnapping; }
 
+				// Premultiplied Blending
+				virtual bool getIsPremultiplied() { return mIsPremultiplied; }
+				virtual void setIsPremultiplied( bool isPremultiplied ) { mIsPremultiplied = isPremultiplied; }
+
 				// Background
 				// Color the background,based on the bounds of the view.
 				// If the alpha is set to 0.0 the draw call does not execute.
@@ -701,6 +705,8 @@ namespace po
 				MatrixOrder mMatrixOrder;
 
 				bool mPixelSnapping;
+
+				bool mIsPremultiplied;
 
 				// Subviews
 				void subviewsChanged();
