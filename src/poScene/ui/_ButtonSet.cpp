@@ -99,7 +99,18 @@ namespace po
 					mDelegate.lock()->buttonSetDidSelectButton( self, selectedButton );
 				}
 			}
-
+			
+			
+			void ButtonSet::deselectButton( ButtonRef deSelectedButton )
+			{
+				deSelectedButton->setState( Button::State::NORMAL );
+				
+				if( !mDelegate.expired() ) {
+					ButtonSetRef self = std::dynamic_pointer_cast<ButtonSet>( shared_from_this() );
+					mDelegate.lock()->buttonSetDidDeselectButton( self, deSelectedButton );
+				}
+			}
+			
 			void ButtonSet::selectAllButtons()
 			{
 				CI_ASSERT_MSG( mType == Type::CHECKBOX, "You can not select all buttons in a radio button set." );
@@ -111,7 +122,9 @@ namespace po
 
 			void ButtonSet::deselectAllButtons()
 			{
-
+				for( auto& button : mButtons ) {
+					deselectButton( button );
+				}
 			}
 
 			// -------------------------------
