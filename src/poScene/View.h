@@ -467,7 +467,7 @@ namespace po
 
 				//! Calculate the matrices only, use when you need to update position + bounds before a draw
 				//! or adding children
-				virtual void calculateMatrices();
+				virtual void calculateMatrices( bool calcluateSuperViews );
 
 				// Whole pixel snapping
 				// Snap coordinates (position + offset) to whole pixels

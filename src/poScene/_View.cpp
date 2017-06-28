@@ -274,9 +274,9 @@ namespace po
 			finishDrawTree();
 		}
 
-		void View::calculateMatrices()
+		void View::calculateMatrices( bool calcluateParents )
 		{
-			if( hasSuperview() ) {
+			if( calcluateParents && hasSuperview() ) {
 				getSuperview()->calculateMatrices();
 			}
 			else {
@@ -746,14 +746,14 @@ namespace po
 		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
 		{
 
-			calculateMatrices();
+			//calculateMatrices();
 			return mMatrix.globalToLocal( windowPoint );
 		}
 
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
 			if( mHasScene ) {
-				calculateMatrices();
+				//calculateMatrices();
 				return mMatrix.localToGlobal( scenePoint );
 			}
 
