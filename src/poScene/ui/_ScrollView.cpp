@@ -154,7 +154,7 @@ namespace po
 					mContentView->setPosition( newPos );
 
 
-					ci::app::console() << "Drag Pos: " << pos << std::endl;
+					//ci::app::console() << "Drag Pos: " << pos << std::endl;
 				}
 			}
 
@@ -182,14 +182,16 @@ namespace po
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
 
 					mScrollTargetPos = getSnapPos( targetPos );
-
+					
+					/*
 					ci::app::console() << "----------------------------------------" << std::endl;
 					ci::app::console() << "Pos: " << pos << std::endl;
 					ci::app::console() << "Prev Pos: " << mPrevEventPos << std::endl;
 					ci::app::console() << "Direction: " << direction << std::endl;
 					ci::app::console() << "Throw Distance: " << throwDistance << std::endl;
 					ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
-
+					*/
+					
 					// Cleanup
 					mIsScrolling = false;
 					mEventId = -1;

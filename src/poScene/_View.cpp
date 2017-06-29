@@ -274,9 +274,9 @@ namespace po
 			finishDrawTree();
 		}
 
-		void View::calculateMatrices( bool calcluateParents )
+		void View::calculateMatrices( bool calcluateSuperViews )
 		{
-			if( calcluateParents && hasSuperview() ) {
+			if( calcluateSuperViews && hasSuperview() ) {
 				getSuperview()->calculateMatrices();
 			}
 			else {
