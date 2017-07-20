@@ -25,6 +25,7 @@ namespace po
 				, mTouchEventsEnabled( true )
 				, mMouseEventsEnabled( true )
 				, mInitialized( false )
+				, mIsScrolling( false )
 			{
 			}
 
