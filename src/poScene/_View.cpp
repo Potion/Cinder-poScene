@@ -402,7 +402,7 @@ namespace po
 			ci::gl::setMatricesWindow( fbo->getWidth(), fbo->getHeight() );
 
 			//	Clear the FBO
-			ci::gl::clear( ci::ColorA( 1.f, 1.f, 1.f, 0.f ) );
+			ci::gl::clear( ci::ColorA( 0.f, 0.f, 0.f, 0.f ) );
 
 			//	Draw into the FBO
 			float curAppliedAlpha = mAppliedAlpha;
