@@ -42,6 +42,8 @@ namespace po
 				bool mIsHighlighted;
 				ViewRef mBackgroundView;
 				std::vector<DraggableViewRef> mDroppedViews;
+
+
 		};
 
 		class DragAndDropViewController;
@@ -53,7 +55,7 @@ namespace po
 		class DragAndDropViewController : public ViewController
 		{
 			public:
-				static DragAndDropViewControllerRef create();
+				static DragAndDropViewControllerRef create( bool hoverEnabled = false, float hoverTime = 0.f );
 
 				DragAndDropSignal& getSignalViewAddedToDropZone() { return mSignalViewAddedToDropZone; };
 				DragAndDropSignal& getSignalViewRemovedFromDropZone() { return mSignalViewRemovedFromDropZone; };
@@ -72,7 +74,7 @@ namespace po
 			private:
 				DragAndDropViewController();
 
-				void setup();
+				void setup( bool hoverEnabled = false, float hoverTime = 0.f );
 
 				bool checkForIntersection( DraggableViewRef view, DropZoneViewRef dropZone );
 				bool checkForIntersection( ViewRef view1, ViewRef view2 );
@@ -95,6 +97,10 @@ namespace po
 				ci::signals::ConnectionList mConnections;
 
 				DragAndDropSignal mSignalViewAddedToDropZone, mSignalViewRemovedFromDropZone;
+				// Hover
+				bool mIsHoverEnabled;
+				float mHoverDelayTime;
+
 		};
 	}
 }

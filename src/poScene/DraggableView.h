@@ -19,6 +19,7 @@ namespace po
 				static DraggableViewRef create( ci::vec2 snapBackPosition );
 
 				void setup() override;
+				void update() override;
 
 				virtual void connectEvents();
 
@@ -39,6 +40,11 @@ namespace po
 				DraggableViewSignal& getSignalDragged()		{ return mSignalDragged;	};
 				DraggableViewSignal& getSignalDragEnded()	{ return mSignalDragEnded;	};
 				DraggableViewSignal& getSignalDragCancelled() { return mSignalDragCancelled; };
+				DraggableViewSignal& getSignalDragHoverTimersUp() { return mSignalDragHoverTimersUp; };
+
+				void startHoverTimer( float seconds );
+				void stopHoverTimer();
+				bool getIsTimerStopped() { return !mIsUsingTimer; }
 
 			protected:
 				DraggableView();
@@ -52,7 +58,7 @@ namespace po
 				int mDraggingEventId;
 
 				// Signals
-				DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded, mSignalDragCancelled;
+				DraggableViewSignal mSignalDragBegan, mSignalDragged, mSignalDragEnded, mSignalDragCancelled, mSignalDragHoverTimersUp;
 
 				void handleDragStartEvent( ci::vec2 localPos, ci::vec2 windowPos, int eventID );
 				void handleDragEvent( ci::vec2 localPos, ci::vec2 windowPos, int eventID );
@@ -65,6 +71,12 @@ namespace po
 				bool mSnapsBack;
 				ci::vec2 mSnapPosition;
 				ci::signals::ConnectionList	mConnections;
+
+				// Time
+				float mPreviousTime;
+				float mHoverLastedTime;
+				bool  mIsUsingTimer;
+				float mTimerDuration;
 		};
 	}
 }

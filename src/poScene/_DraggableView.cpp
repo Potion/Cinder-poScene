@@ -22,12 +22,32 @@ namespace po
 			return ref;
 		}
 
+		void DraggableView::startHoverTimer( float seconds )
+		{
+			if( !mIsUsingTimer ) {
+				mPreviousTime = ci::app::getElapsedSeconds();
+				mIsUsingTimer = true;
+			}
+
+			mTimerDuration = seconds;
+
+		}
+
+		void DraggableView::stopHoverTimer()
+		{
+			if( mIsUsingTimer ) {
+				mIsUsingTimer = false;
+			}
+
+			mHoverLastedTime = 0.f;
+		}
+
 		DraggableView::DraggableView()
 			: mIsDragging( false )
 			, mDraggingEventId( DraggableView::DRAGGING_EVENT_ID_NONE )
 			, mSnapsBack( false )
+			, mIsUsingTimer( false )
 		{
-			connectEvents();
 		}
 
 		DraggableView::DraggableView( ci::vec2 snapBackPosition )
@@ -37,10 +57,34 @@ namespace po
 			, mSnapPosition( snapBackPosition )
 		{
 			setPosition( snapBackPosition );
+
+		}
+
+		void DraggableView::setup()
+		{
 			connectEvents();
 		}
 
-		void DraggableView::setup() {}
+		void DraggableView::update()
+		{
+			po::scene::View::update();
+
+			if( !mIsUsingTimer ) {
+				mPreviousTime = ci::app::getElapsedSeconds();
+			}
+			else {
+				mHoverLastedTime = ci::app::getElapsedSeconds() - mPreviousTime;
+			}
+
+			if( mHoverLastedTime > 1.f ) {
+				stopHoverTimer();
+				DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
+				mSignalDragHoverTimersUp.emit( ref );
+				mIsDragging = false;
+			}
+
+			ci::app::console() << mHoverLastedTime << std::endl;
+		}
 
 		void DraggableView::setSnapBackPosition( ci::vec2 snapBackPosition )
 		{
@@ -109,7 +153,6 @@ namespace po
 		{
 			if( mIsDragging ) {
 				mIsDragging = false;
-
 				DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
 				mSignalDragEnded.emit( ref );
 			}

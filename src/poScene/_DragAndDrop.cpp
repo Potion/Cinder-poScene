@@ -77,19 +77,24 @@ namespace po
 
 		// -----------------------------------------------
 		// View Controller
-		DragAndDropViewControllerRef DragAndDropViewController::create()
+		DragAndDropViewControllerRef DragAndDropViewController::create( bool hoverEnabled, float hoverTime )
 		{
 			DragAndDropViewControllerRef ref( new DragAndDropViewController() );
-			ref->setup();
+			ref->setup( hoverEnabled, hoverTime );
 			return ref;
 		}
 
 		DragAndDropViewController::DragAndDropViewController()
+			: mIsHoverEnabled( false ),
+			  mHoverDelayTime( 0.f )
 		{
 		}
 
-		void DragAndDropViewController::setup()
+		void DragAndDropViewController::setup( bool hoverEnabled, float hoverTime )
 		{
+			mIsHoverEnabled = hoverEnabled;
+			mHoverDelayTime = hoverTime;
+
 		}
 
 		void DragAndDropViewController::trackDraggableView( DraggableViewRef view, DropZoneViewRef dropZone )
@@ -101,6 +106,8 @@ namespace po
 				mConnections += view->getSignalDragged().connect( std::bind( &DragAndDropViewController::viewDraggedHandler, this, std::placeholders::_1 ) );
 				mConnections += view->getSignalDragEnded().connect( std::bind( &DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1 ) );
 				mConnections += view->getSignalDragCancelled().connect( std::bind( &DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1 ) );
+				mConnections += view->getSignalDragHoverTimersUp().connect( std::bind( &DragAndDropViewController::viewDragEndedHandler, this, std::placeholders::_1 ) );
+
 			}
 
 			mDraggableViewValidDropZones[view].push_back( dropZone );
@@ -208,6 +215,12 @@ namespace po
 			if( mDraggableViewValidDropZones.count( view ) != 0 ) {
 				for( auto& dropZone : mDraggableViewValidDropZones[view] ) {
 					if( setDropZoneHighlightForView( view, dropZone ) ) {
+						if( !mIsHoverEnabled ) { return; }
+
+						if( view->getIsTimerStopped() ) {
+							view->startHoverTimer( mHoverDelayTime );
+						}
+
 						return;
 					}
 				}
@@ -220,7 +233,13 @@ namespace po
 				for( auto& dropZone : mDraggableViewValidDropZones[view] ) {
 					if( checkForIntersection( view, dropZone ) ) {
 						if( dropZone->addDraggableView( view ) ) {
+							if( !view->getIsTimerStopped() && mIsHoverEnabled ) {
+								view->stopHoverTimer();
+							}
+
 							mSignalViewAddedToDropZone.emit( dropZone, view );
+
+
 							return;
 						}
 					}
