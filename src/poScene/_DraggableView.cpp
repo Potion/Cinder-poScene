@@ -83,7 +83,7 @@ namespace po
 				mIsDragging = false;
 			}
 
-			ci::app::console() << mHoverLastedTime << std::endl;
+			//ci::app::console() << mHoverLastedTime << std::endl;
 		}
 
 		void DraggableView::setSnapBackPosition( ci::vec2 snapBackPosition )
