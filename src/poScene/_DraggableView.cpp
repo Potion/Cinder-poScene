@@ -80,6 +80,7 @@ namespace po
 				stopHoverTimer();
 				DraggableViewRef ref = std::static_pointer_cast<DraggableView>( shared_from_this() );
 				mSignalDragHoverTimersUp.emit( ref );
+				mSignalDragEnded.emit( ref );
 				mIsDragging = false;
 			}
 
