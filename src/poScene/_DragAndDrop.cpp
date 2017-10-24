@@ -19,13 +19,13 @@ namespace po
 			: mBackgroundView( View::create() )
 			, mIsHighlighted( false )
 			, mCanHoldMultipleViews( false )
+			, mIsHighlightingEnabled( true )
 		{
 		}
 
 		void DropZoneView::setup()
 		{
 			setHighlighted( false );
-
 			addSubview( mBackgroundView );
 		}
 
@@ -36,6 +36,8 @@ namespace po
 
 		void DropZoneView::setHighlighted( bool highlighted )
 		{
+			if( !mIsHighlightingEnabled ) { return; }
+
 			if( highlighted ) {
 				mBackgroundView->setAlpha( 1.0f );
 			}

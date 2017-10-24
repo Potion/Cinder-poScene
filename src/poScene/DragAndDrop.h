@@ -30,6 +30,11 @@ namespace po
 				bool addDraggableView( DraggableViewRef view );
 				bool removeDraggableView( DraggableViewRef view );
 				bool hasDraggableView( DraggableViewRef view );
+				void setEnableHighlight( bool enable )
+				{
+					mIsHighlightingEnabled = enable;
+					mBackgroundView->setAlpha( 1.0f );
+				};
 
 				ViewRef getBackgroundView() { return mBackgroundView; };
 
@@ -40,6 +45,7 @@ namespace po
 			private:
 				bool mCanHoldMultipleViews;
 				bool mIsHighlighted;
+				bool mIsHighlightingEnabled;
 				ViewRef mBackgroundView;
 				std::vector<DraggableViewRef> mDroppedViews;
 
