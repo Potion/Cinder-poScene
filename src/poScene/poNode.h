@@ -30,13 +30,14 @@
 
 #pragma once
 
-#include "boost/signals2.hpp"
 #include "cinder/Cinder.h"
 #include "cinder/gl/Fbo.h"
 #include "cinder/gl/GlslProg.h"
 #include "cinder/CinderMath.h"
 #include "cinder/Timeline.h"
 #include "cinder/Exception.h"
+#include "cinder/Signals.h"
+
 #include "poMatrixSet.h"
 #include "poEvents.h"
 
@@ -63,11 +64,37 @@ namespace po { namespace scene {
         BOTTOM_RIGHT,
         NONE
     };
+	
+	inline std::ostream &operator<< (std::ostream &os, Alignment a)  {
+		switch (a) {
+			case Alignment::TOP_LEFT: os << "TOP_LEFT"; break;
+			case Alignment::TOP_CENTER: os << "TOP_CENTER"; break;
+			case Alignment::TOP_RIGHT: os << "TOP_RIGHT"; break;
+			case Alignment::CENTER_LEFT: os << "CENTER_LEFT"; break;
+			case Alignment::CENTER_CENTER: os << "CENTER_CENTER"; break;
+			case Alignment::CENTER_RIGHT: os << "CENTER_RIGHT"; break;
+			case Alignment::BOTTOM_LEFT: os << "BOTTOM_LEFT"; break;
+			case Alignment::BOTTOM_CENTER: os << "BOTTOM_CENTER"; break;
+			case Alignment::BOTTOM_RIGHT: os << "BOTTOM_RIGHT"; break;
+			case Alignment::NONE: os << "NONE"; break;
+			default: os << "UNKNOWN"; break;
+		}
+		return os;
+	}
     
     enum class MatrixOrder {
         TRS, //	standard order
         RST //	orbit order
     };
+	
+	inline std::ostream &operator<< (std::ostream &os, MatrixOrder m)  {
+		switch (m) {
+			case MatrixOrder::TRS: os << "TRS"; break;
+			case MatrixOrder::RST: os << "RST"; break;
+			default: os << "UNKNOWN"; break;
+		}
+		return os;
+	}
     
     //	Forward declare Scene + NodeContainer
     class Scene;
@@ -111,7 +138,7 @@ namespace po { namespace scene {
         //! Called automatically once per scene draw, do any OpenGL here
         /** All matrix transformations take place before this call, so you are automatically in local space
             when this function begins **/
-        virtual void draw() = 0;
+		virtual void draw() {};
 		
 		
         //------------------------------------
@@ -132,6 +159,10 @@ namespace po { namespace scene {
         NodeContainerRef getParent() const;
         //! Check if this node currently has a parent
         bool hasParent();
+		
+		//  Differentiate between non-rendering NodeContainers and all other nodes
+		//   this gets overridden to return false in NodeContainer
+		virtual bool isRenderable (void) const { return true; }
         
         //	Dimensions
         //  Dimensions are determined by the getBounds() function
@@ -227,8 +258,9 @@ namespace po { namespace scene {
         
         //! Set the name of the node
         Node &setName(std::string name) { mName = name; return *this; };
+
         //! Get the name of the node
-        std::string getName() { return mName; }
+        std::string getName() const { return mName; }
         
         // Position
         // The position that the origin is at within the parent node
@@ -242,6 +274,8 @@ namespace po { namespace scene {
         // Scale
         // Scales around the origin of the node
         
+		//! Set the scale to the same in x & y
+		Node &setScale(float scale) { return setScale(scale, scale); };
         //! Set the scale with a ci::vec2
         Node &setScale(ci::vec2 scale) { return setScale(scale.x, scale.y); };
         //! Set the scale, convenience method
@@ -251,11 +285,11 @@ namespace po { namespace scene {
         
         // Rotation
         // Rotates around the origin of the node
-        // Expressed in degrees
+        // Expressed in radians
         
-        //! Set the rotation (in degrees)
+        //! Set the rotation (in radians)
         Node &setRotation(float rotation);
-        //! Get the rotation (in degrees)
+        //! Get the rotation (in radians)
         float getRotation() { return mRotation; };
         
         // Alpha
@@ -292,7 +326,7 @@ namespace po { namespace scene {
         //  based on the origin. Examples include CENTER_CENTER, TOP_CENTER, etc.
         
         //! Set the alignment
-        Node &setAlignment(Alignment alignment);\
+        Node &setAlignment(Alignment alignment);
         //! Get the alignment
         Alignment getAlignment() { return mAlignment; };
         
@@ -304,14 +338,24 @@ namespace po { namespace scene {
         //! Get the matrix order
         MatrixOrder getMatrixOrder() { return mMatrixOrder; }
         
+        // Whole pixel snapping
+        // Snap coordinates (position + offset) to whole pixels
+        // This does not affect parent node
+        
+        //! Set the matrix order
+        Node &setPixelSnapping(bool pixelSnapping) { mPixelSnapping = pixelSnapping; return *this; };
+        bool getPixelSnapping() { return mPixelSnapping; }
+        
         // Fill
         // This is the color used when drawing the node,
         // in general when creating a Node class you should use this color
         // but you can ignore it if doing something custom
         
         //! Set the fill color
+		Node &setFillColor(ci::ColorA color);
         Node &setFillColor(ci::Color color);
         //! Get the fill color
+		Node &setFillColor(float r, float g, float b, float a) { mFillColor = ci::Color(r, g, b); setAlpha(a); return *this; }
         Node &setFillColor(float r, float g, float b) { mFillColor = ci::Color(r, g, b); return *this; }
         //! Enable fill
         Node &fillEnabled(bool enabled) { setFillEnabled(enabled); return *this; }
@@ -461,18 +505,24 @@ namespace po { namespace scene {
 //        void drawMasked();
 //        ShapeRef mMask;
 //        bool mIsMasked;
+
+		//	Name (optional, helps identify nodes when debugging)
+		std::string mName;
+		//friend std::ostream& operator<<(std::ostream &os, NodeRef &a);
         
     private:
         // Private attributes
         ci::vec2 mPosition;
         ci::vec2 mScale;
-        float     mRotation;
+        float mRotation;
         ci::vec2 mOffset;
         ci::Color mFillColor;
         ci::Color mStrokeColor;
         bool mFillEnabled, mStrokeEnabled;
         float mAlpha, mAppliedAlpha;
         MatrixOrder mMatrixOrder;
+        
+        bool mPixelSnapping;
         
         // Animation
         //! Initialize our attribute animations
@@ -537,9 +587,6 @@ namespace po { namespace scene {
         uint32_t mDrawOrder;
         uint32_t mUid;
         
-        //	Name (optional, helps identify nodes when debugging)
-        std::string mName;
-        
         //------------------------------------
         //  Interaction Events
         //------------------------------------
@@ -568,5 +615,15 @@ namespace po { namespace scene {
         };
 		
     };
+
+	inline std::ostream &operator<<(std::ostream &os, const po::scene::Node &a) {
+		os << a.getName();
+		return os;
+	}
+
+	inline std::ostream &operator<<(std::ostream &os, const po::scene::NodeRef &a) {
+		os << *a;
+		return os;
+	}
 	
 } } //  namespace po::scene

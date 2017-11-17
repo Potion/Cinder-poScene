@@ -52,6 +52,8 @@ namespace po { namespace scene {
 		static TextBoxRef create(ci::TextBox ciTextBox);
         //! Create with a default (blank) ci::TextBox
 		static TextBoxRef create();
+		//! Create with a ci::TextBox and Texture Format for rendering
+		static TextBoxRef create(ci::TextBox ciTextBox, ci::gl::Texture::Format format);
 		
         //! Draw the texture generated from the ci::TextBox
 		void draw();
@@ -61,8 +63,16 @@ namespace po { namespace scene {
         
         //! Set the ci::TextBox object (by copying) and render to a texture
         void setCiTextBox(ci::TextBox &ciTextBox);
+		
         //! Get a copy of the backing ci::TextBox for manipulation
         ci::TextBox getCiTextBoxCopy() { return mCiTextBox; };
+
+		// CB - for calling functions like measure()
+        const ci::TextBox& getCiTextBox() const { return mCiTextBox; };
+
+
+		//! Set the texture format to use when rendering to texture
+		void setFormat(ci::gl::Texture::Format format);
 		
 	protected:
 		TextBox(ci::TextBox ciTextBox);
@@ -72,6 +82,8 @@ namespace po { namespace scene {
 		ci::TextBox mCiTextBox;
 		ci::gl::TextureRef mTexture;
 		bool mUseTextBounds;
+		ci::gl::Texture::Format mFormat;
+		bool mHasFormat;
 		
 	};
 		

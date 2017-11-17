@@ -1,5 +1,5 @@
 #include "MaskingSample.h"
-#include "cinder/imageIo.h"
+#include "cinder/ImageIo.h"
 
 //	photo credit: <a href="http://www.flickr.com/photos/37539977@N00/600757415">slowly getting into the box</a> via <a href="http://photopin.com">photopin</a> <a href="https://creativecommons.org/licenses/by/2.0/">(license)</a>
 
@@ -19,7 +19,7 @@ void MaskingSample::setup()
     ci::app::getWindow()->getSignalKeyUp().connect(std::bind(&MaskingSample::keyUp, this, std::placeholders::_1));
 	
 	//	Load the mask texture
-	ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("circle_mask_blurred.jpg")));
+	ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("circle_mask_blurred.png")));
 	
 	//	Create the mask shape
 	//mMask = Shape::create(maskTexture);
@@ -38,6 +38,10 @@ void MaskingSample::setup()
 	
 	//	Set the image mask
 	setMask(mMask);
+
+	// CB - test masking with alpha
+	setAlpha(0.5f);
+	mMask->setAlpha(0.5f);
 	
 	//	Connect mouse event
 	getSignal(MouseEvent::MOVE).connect(std::bind(&MaskingSample::onMouseMove, this, std::placeholders::_1));

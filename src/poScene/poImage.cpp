@@ -29,6 +29,7 @@
  */
 
 #include "poImage.h"
+#include "cinder/gl/gl.h"
 
 namespace po { namespace scene {
     
@@ -51,8 +52,8 @@ namespace po { namespace scene {
     void Image::draw()
     {
         if (mTexture) {
-            ci::gl::enableAlphaBlending();
-            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
+			ci::gl::ScopedBlendAlpha alphaBlendScoped;
+			ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
             ci::gl::draw(mTexture);
         }
     }

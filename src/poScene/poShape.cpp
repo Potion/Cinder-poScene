@@ -54,10 +54,13 @@ namespace po { namespace scene {
     //
     //	Rect
 	//
-    ShapeRef Shape::createRect(float width, float height)
+    ShapeRef Shape::createRect(float width, float height, float rad )
     {
+		
+		if ( rad > 0.f )
+			return createRoundedRect( width, height, rad );
+		
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
-        
         ci::Shape2d shape;
         shape.moveTo(0, 0);
         shape.lineTo(width, 0);
@@ -66,10 +69,51 @@ namespace po { namespace scene {
         shape.close();
 		
         s->setCiShape2d(shape);
-        
         return s;
     }
-    
+	
+	//
+	//	Rounded Rect
+	//
+	ShapeRef Shape::createRoundedRect(float width, float height, float rad)
+	{
+		std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
+		
+		// points
+		ci::vec2 p1( rad,0 );
+		ci::vec2 p2( width-rad,0 );
+		ci::vec2 p3( width,rad );
+		ci::vec2 p4( width,height-rad );
+		ci::vec2 p5( width-rad,height );
+		ci::vec2 p6( rad,height );
+		ci::vec2 p7( 0,height-rad );
+		ci::vec2 p8( 0,rad );
+
+		// tangents
+		ci::vec2 t1( width,0 );
+		ci::vec2 t2( width,height );
+		ci::vec2 t3( 0,height );
+		ci::vec2 t4( 0,0 );
+		
+		ci::Shape2d shape;
+		shape.moveTo( p1 );
+		shape.lineTo( p2 );
+		shape.arcTo( p3,t1,rad );
+		shape.lineTo( p4 );
+		shape.arcTo( p5,t2,rad );
+		shape.lineTo( p6 );
+		shape.arcTo( p7,t3,rad );
+		shape.lineTo( p8 );
+		shape.arcTo( p1,t4,rad );
+		shape.close();
+		
+		s->setCiShape2d(shape);
+
+		return s;
+		
+	}
+	
+	
     ShapeRef Shape::createSquare(float size)
     {
         return createRect(size, size);
@@ -83,7 +127,7 @@ namespace po { namespace scene {
         std::shared_ptr<Shape> s = std::shared_ptr<Shape>(new Shape());
         
         //	Adapted from http://stackoverflow.com/questions/2172798/how-to-draw-an-oval-in-html5-canvas
-        float kappa = .5522848;
+        float kappa = .5522848f;
         float x = 0;
         float y = 0;
         float ox = (width / 2) * kappa;		//	control point offset horizontal
@@ -133,8 +177,8 @@ namespace po { namespace scene {
     {
         //Draw fill
         if (getFillEnabled()) {
-            ci::gl::enableAlphaBlending();
-            ci::gl::color(ci::ColorA(getFillColor(), getAppliedAlpha()));
+			ci::gl::ScopedBlendAlpha alphaBlendScoped;
+			ci::gl::ScopedColor fillColorScoped(ci::ColorA(getFillColor(), getAppliedAlpha()));
             
             if (mTexture) {
                 ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color()));
@@ -163,9 +207,9 @@ namespace po { namespace scene {
         //	If we don't have an underlying shape, set it from the texture
         if (!mCiShape2d.getNumContours()) {
             mCiShape2d.moveTo(0, 0);
-            mCiShape2d.lineTo(texture->getWidth(), 0);
-            mCiShape2d.lineTo(texture->getWidth(), texture->getHeight());
-            mCiShape2d.lineTo(0, texture->getHeight());
+            mCiShape2d.lineTo((float)texture->getWidth(), 0);
+            mCiShape2d.lineTo((float)texture->getWidth(), (float)texture->getHeight());
+            mCiShape2d.lineTo(0, (float)texture->getHeight());
             mCiShape2d.close();
         }
         
@@ -198,7 +242,7 @@ namespace po { namespace scene {
         format.mTexCoords0Dims      = 2;
         format.mPositionsDims       = 2;
         format.mNormalsDims         = 3;
-        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
+        ci::TriMeshRef triMesh = ci::TriMesh::create( ci::Triangulator(mCiShape2d, (float)mPrecision).calcMesh(ci::Triangulator::WINDING_POSITIVE), format );
         
         if( mTexture )
         {

@@ -1,7 +1,7 @@
 #include "cinder/qtime/QuickTimeGl.h"
 #include "VideoSample.h"
 #include "poShape.h"
-#include "cinder/imageIo.h"
+#include "cinder/ImageIo.h"
 #include "cinder/Utilities.h"
 
 using namespace po::scene;

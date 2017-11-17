@@ -310,10 +310,12 @@ namespace po { namespace scene {
     void NodeContainer::setParentAndScene(NodeRef node)
     {
         //	See if the node is already a child of another node.
-        if (node->getParent()) node->getParent()->removeChild(node);
+		if (node->getParent() != nullptr) {
+			node->getParent()->removeChild(node);
+		}
         
         //	Assign ourselves as the parent
-        node->setParent(std::dynamic_pointer_cast<NodeContainer>(shared_from_this()));
+        node->setParent(std::static_pointer_cast<NodeContainer>(shared_from_this()));
         node->setScene(mScene.lock());
     }
     

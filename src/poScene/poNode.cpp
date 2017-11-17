@@ -43,7 +43,8 @@
 #endif
 
 #include "cinder/CinderMath.h"
-#include "Resources.h"
+#include "cinder/app/App.h"
+
 #include "poNode.h"
 #include "poNodeContainer.h"
 #include "poShape.h"
@@ -87,7 +88,7 @@ namespace po { namespace scene {
             vec4 alphaValue     = texture(mask, c0);
             
             color.rgb     = rgbValue.rgb;
-            color.a       = alphaValue.a;
+            color.a       = alphaValue.a * rgbValue.a;
         }
     );
 
@@ -113,6 +114,7 @@ namespace po { namespace scene {
     , mFillEnabled(true)
     , mStrokeColor(255, 255, 255)
     , mStrokeEnabled(false)
+    , mPixelSnapping(false)
     , mUpdatePositionFromAnim(false)
     , mUpdateScaleFromAnim(false)
     , mUpdateRotationFromAnim(false)
@@ -178,7 +180,6 @@ namespace po { namespace scene {
     void Node::drawTree()
     {
         if (mVisible) {
-            
             //  Draw
             beginDrawTree();
             
@@ -220,7 +221,7 @@ namespace po { namespace scene {
             
             //  Draw ourself into FBO
             ci::gl::ScopedFramebuffer buffer(getScene()->getWindowFbo());
-            ci::gl::clear();
+            ci::gl::clear(ci::ColorA(1.0f, 1.0f, 1.0f, 0.0f));
             draw();
         }
         
@@ -239,12 +240,15 @@ namespace po { namespace scene {
     {
         ci::gl::enableAlphaBlending();
         
+        ci::gl::pushModelView();
+        ci::gl::setMatricesWindow(ci::app::getWindowSize());
+        
         // Bind FBO textures
         ci::gl::ScopedTextureBind fboBind(getScene()->getWindowFbo()->getColorTexture(), 0);
         ci::gl::ScopedTextureBind maskBind(getScene()->getMaskFbo()->getColorTexture(), 1);
         
         //	Bind Shader
-        mMaskShader->bind();
+		ci::gl::ScopedGlslProg maskShader(mMaskShader);
 
         //	Set uniforms
         mMaskShader->uniform("tex", 0);
@@ -252,6 +256,8 @@ namespace po { namespace scene {
 
         //	Draw
         ci::gl::drawSolidRect(getScene()->getWindowFbo()->getBounds());
+        
+        ci::gl::popModelView();
     }
 	
 	
@@ -308,7 +314,7 @@ namespace po { namespace scene {
         format.enableDepthBuffer(false);
         
         //	Create and Bind the FBO
-        ci::gl::FboRef fbo = ci::gl::Fbo::create(getWidth(), getHeight(), format);
+        ci::gl::FboRef fbo = ci::gl::Fbo::create((int)getWidth(), (int)getHeight(), format);
         ci::gl::ScopedFramebuffer fboBind(fbo);
         
         //	Set the viewport
@@ -373,7 +379,7 @@ namespace po { namespace scene {
     {
         
         if(rotation >= M_PI * 2 || rotation <= -M_PI * 2) {
-            rotation = fmodf(rotation, M_PI * 2);
+            rotation = fmodf(rotation, (float)(M_PI * 2));
         }
         
         mRotationAnim.stop();
@@ -399,6 +405,12 @@ namespace po { namespace scene {
     
     //
     // Set the fill color
+	Node &Node::setFillColor(ci::ColorA color) {
+		setFillColor(ci::Color(color));
+		setAlpha(color.a);
+		return *this;
+	}
+
     Node &Node::setFillColor(ci::Color color)
     {
         mFillColor = color;
@@ -412,10 +424,10 @@ namespace po { namespace scene {
     Node &Node::setOffset(float x, float y) {
         mOffsetAnim.stop();
         mUpdateOffsetFromAnim = false;
-        mOffset - ci::vec2(x, y);
+        mOffset = ci::vec2(x, y);
         mOffsetAnim = mOffset;
         mFrameDirty = true;
-        
+				
 		//	If we are manually setting the offset, we can't have alignment
         setAlignment(Alignment::NONE);
         
@@ -432,7 +444,10 @@ namespace po { namespace scene {
         
         NodeRef parent = getParent();
         while (parent) {
-            if (!parent->mVisible) return false;
+            if (!parent->mVisible) {
+                return false;
+            }
+            
             parent = parent->getParent();
         }
         
@@ -539,18 +554,18 @@ namespace po { namespace scene {
     {
         switch(mMatrixOrder) {
             case MatrixOrder::TRS:
-                ci::gl::translate(mPosition);
+                ci::gl::translate(mPixelSnapping ? round(mPosition) : mPosition);
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
                 break;
             case MatrixOrder::RST:
                 ci::gl::rotate(mRotation);
                 ci::gl::scale(mScale);
-                ci::gl::translate(mPosition);
+                ci::gl::translate(mPixelSnapping ? round(mPosition) : mPosition);
                 break;
         }
         
-        ci::gl::translate(mOffset);
+        ci::gl::translate(mPixelSnapping ? round(mOffset) : mOffset);
         mMatrix.set(ci::gl::getModelMatrix(), ci::gl::getProjectionMatrix(), ci::Area(ci::gl::getViewport().first, ci::gl::getViewport().second));
     }
     
@@ -674,7 +689,7 @@ namespace po { namespace scene {
         ci::gl::pushModelView();
         ci::gl::translate(-mOffset);
         ci::gl::scale(ci::vec2(1.f, 1.f) / mScale);
-        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2, -ORIGIN_SIZE / 2, ORIGIN_SIZE, ORIGIN_SIZE));
+        ci::gl::drawSolidRect(ci::Rectf(-ORIGIN_SIZE / 2.0f, -ORIGIN_SIZE / 2.0f, (float)ORIGIN_SIZE, (float)ORIGIN_SIZE));
         ci::gl::popModelView();
     }
 	
@@ -706,7 +721,15 @@ namespace po { namespace scene {
     
     bool Node::isEligibleForInteractionEvents()
     {
-        if ( !hasScene() || !isInteractionEnabled() || !isVisible() ) return false;
+        if (!hasScene() ||
+            !isInteractionEnabled() ||
+            !isVisible() ||
+            mScale.x == 0.0f ||
+            mScale.y == 0.0f)
+            {
+                return false;
+            }
+        
         return true;
     }
 	
