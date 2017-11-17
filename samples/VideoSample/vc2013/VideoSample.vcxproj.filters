@@ -36,73 +36,43 @@
     <ClCompile Include="..\src\VideoSampleApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="..\src\VideoSample.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClCompile Include="..\src\VideoSample.cpp">
+    <ClCompile Include="..\src\PlayerView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\..\src\poScene\poEventCenter.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poEvents.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poImage.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poMatrixSet.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poNode.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poNodeContainer.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poScene.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poShape.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poTextBox.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poTextureFit.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\poScene\poVideo.h">
-      <Filter>Blocks\poScene\src\poScene</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\..\src\poScene\poEventCenter.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poEvents.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poImage.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poMatrixSet.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_Events.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poNode.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poNodeContainer.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_MatrixSet.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poScene.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_Scene.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poShape.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\poScene\poTextBox.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_TextView.cpp">
       <Filter>Blocks\poScene\src\poScene</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\PlayerNode.cpp">
+    <ClCompile Include="..\..\..\src\poScene\_View.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ViewController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -110,7 +80,52 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\PlayerNode.h">
+    <ClInclude Include="..\src\PlayerView.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\DragAndDrop.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\DraggableView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\EventCenter.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\Events.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ImageView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\MatrixSet.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\Scene.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ShapeView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\TextureFit.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\TextView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\VideoView.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\View.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ViewController.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\poScene\ViewEvents.h">
+      <Filter>Blocks\poScene\src\poScene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ViewController.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

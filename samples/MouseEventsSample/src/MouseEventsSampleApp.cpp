@@ -1,8 +1,9 @@
 #include "cinder/app/App.h"
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
-#include "poScene.h"
-#include "MouseEventsSample.h"
+
+#include "poScene/Scene.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -17,24 +18,26 @@ class MouseEventsSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void MouseEventsSampleApp::setup()
 {
-    scene = Scene::create(MouseEventsSample::create());
+	mViewController = sample::ViewController::create();
+    mScene = Scene::create(mViewController);
 }
 
 void MouseEventsSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void MouseEventsSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( MouseEventsSampleApp, RendererGl )

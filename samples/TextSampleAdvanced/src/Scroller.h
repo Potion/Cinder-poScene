@@ -1,7 +1,7 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -9,7 +9,7 @@ class Scroller;
 typedef std::shared_ptr<Scroller> ScrollerRef;
 
 class Scroller
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
 	static ScrollerRef create();
@@ -25,10 +25,10 @@ protected:
 
 private:
 	//	Scroll thumb
-	ShapeRef mThumb;
+	ShapeViewRef mThumb;
 	
 	//	Scroll track
-	ShapeRef mTrack;
+	ShapeViewRef mTrack;
 	
 	//	Keep track of mouse position for dragging
 	bool mIsPressed;
@@ -36,8 +36,8 @@ private:
 	ci::vec2 mInitialPos;
 	
 	//	Mouse event handlers
-	void onMouseDown(MouseEvent &event);
-	void onMouseDrag(MouseEvent & event);
-	void onMouseUp(MouseEvent &event);
+	void onMouseDown(po::scene::MouseEvent &event);
+	void onMouseDrag(po::scene::MouseEvent & event);
+	void onMouseUp(po::scene::MouseEvent &event);
 	
 };

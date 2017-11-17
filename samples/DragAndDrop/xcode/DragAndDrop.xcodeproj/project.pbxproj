@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720219952D00008149E2 /* AVFoundation.framework */; };
+		006D720519952D00008149E2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 006D720319952D00008149E2 /* CoreMedia.framework */; };
+		0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0091D8F80E81B9330029341E /* OpenGL.framework */; };
+		00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784AF0FF439BC000DE1D7 /* Accelerate.framework */; };
+		00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */; };
+		00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B10FF439BC000DE1D7 /* AudioUnit.framework */; };
+		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
+		00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995581B128DF400A5C623 /* IOKit.framework */; };
+		00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B995591B128DF400A5C623 /* IOSurface.framework */; };
+		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
+		763615B77C284EC69BDF8D9E /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = C5875FF199FC423A94F5921F /* CinderApp.icns */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		AA8458C91E1343A700883AAE /* _EventCenter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C11E1343A700883AAE /* _EventCenter.cpp */; };
+		AA8458CA1E1343A700883AAE /* _Events.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C21E1343A700883AAE /* _Events.cpp */; };
+		AA8458CB1E1343A700883AAE /* _ImageView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C31E1343A700883AAE /* _ImageView.cpp */; };
+		AA8458CC1E1343A700883AAE /* _MatrixSet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C41E1343A700883AAE /* _MatrixSet.cpp */; };
+		AA8458CD1E1343A700883AAE /* _Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C51E1343A700883AAE /* _Scene.cpp */; };
+		AA8458CE1E1343A700883AAE /* _ShapeView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C61E1343A700883AAE /* _ShapeView.cpp */; };
+		AA8458CF1E1343A700883AAE /* _TextView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C71E1343A700883AAE /* _TextView.cpp */; };
+		AA8458D01E1343A700883AAE /* _View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458C81E1343A700883AAE /* _View.cpp */; };
+		AA8458D61E13467400883AAE /* ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458D41E13467400883AAE /* ViewController.cpp */; };
+		AA8458D91E134A5600883AAE /* _ViewController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458D71E134A5600883AAE /* _ViewController.cpp */; };
+		AA8458DC1E134ACD00883AAE /* _DraggableView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458DA1E134ACD00883AAE /* _DraggableView.cpp */; };
+		AA8458DF1E134C4D00883AAE /* _DragAndDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AA8458DD1E134C4D00883AAE /* _DragAndDrop.cpp */; };
+		E9C655F3A2C24DE4868A35C6 /* DragAndDropApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1AFAFE8B256944019E1DB5F1 /* DragAndDropApp.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		006D720219952D00008149E2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		006D720319952D00008149E2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0091D8F80E81B9330029341E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
+		00B784AF0FF439BC000DE1D7 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		00B784B10FF439BC000DE1D7 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		00B784B20FF439BC000DE1D7 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		00B995581B128DF400A5C623 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		00B995591B128DF400A5C623 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		1AFAFE8B256944019E1DB5F1 /* DragAndDropApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.cpp; name = DragAndDropApp.cpp; path = ../src/DragAndDropApp.cpp; sourceTree = "<group>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2BAC516DE16E4057B7DF6FDE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		36FF9B5F07164BC0B6994876 /* TextView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextView.h; path = ../../../src/poScene/TextView.h; sourceTree = "<group>"; };
+		39C1223DEFA1489A90AEF5A4 /* Scene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Scene.h; path = ../../../src/poScene/Scene.h; sourceTree = "<group>"; };
+		3C48BAE68BE94678BF98C873 /* TextureFit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TextureFit.h; path = ../../../src/poScene/TextureFit.h; sourceTree = "<group>"; };
+		4353B8EFFF5E498098F6C6A3 /* DragAndDrop_Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = "\"\""; path = DragAndDrop_Prefix.pch; sourceTree = "<group>"; };
+		48012C0924DE4A9D9C5C25C0 /* ImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ImageView.h; path = ../../../src/poScene/ImageView.h; sourceTree = "<group>"; };
+		5323E6B10EAFCA74003A9687 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = /System/Library/Frameworks/CoreVideo.framework; sourceTree = "<absolute>"; };
+		865EF5B0C4E34D96A6D79758 /* VideoView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VideoView.h; path = ../../../src/poScene/VideoView.h; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* DragAndDrop.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DragAndDrop.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D780D99EB2B4899B8AA3E27 /* MatrixSet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MatrixSet.h; path = ../../../src/poScene/MatrixSet.h; sourceTree = "<group>"; };
+		9B16E98D24A84226845D07E1 /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = View.h; path = ../../../src/poScene/View.h; sourceTree = "<group>"; };
+		A577CDCD767A4581822E979D /* Events.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Events.h; path = ../../../src/poScene/Events.h; sourceTree = "<group>"; };
+		AA8458C11E1343A700883AAE /* _EventCenter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _EventCenter.cpp; path = ../../../src/poScene/_EventCenter.cpp; sourceTree = "<group>"; };
+		AA8458C21E1343A700883AAE /* _Events.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _Events.cpp; path = ../../../src/poScene/_Events.cpp; sourceTree = "<group>"; };
+		AA8458C31E1343A700883AAE /* _ImageView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _ImageView.cpp; path = ../../../src/poScene/_ImageView.cpp; sourceTree = "<group>"; };
+		AA8458C41E1343A700883AAE /* _MatrixSet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _MatrixSet.cpp; path = ../../../src/poScene/_MatrixSet.cpp; sourceTree = "<group>"; };
+		AA8458C51E1343A700883AAE /* _Scene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _Scene.cpp; path = ../../../src/poScene/_Scene.cpp; sourceTree = "<group>"; };
+		AA8458C61E1343A700883AAE /* _ShapeView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _ShapeView.cpp; path = ../../../src/poScene/_ShapeView.cpp; sourceTree = "<group>"; };
+		AA8458C71E1343A700883AAE /* _TextView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _TextView.cpp; path = ../../../src/poScene/_TextView.cpp; sourceTree = "<group>"; };
+		AA8458C81E1343A700883AAE /* _View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _View.cpp; path = ../../../src/poScene/_View.cpp; sourceTree = "<group>"; };
+		AA8458D41E13467400883AAE /* ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ViewController.cpp; path = ../src/ViewController.cpp; sourceTree = "<group>"; };
+		AA8458D51E13467400883AAE /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../src/ViewController.h; sourceTree = "<group>"; };
+		AA8458D71E134A5600883AAE /* _ViewController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _ViewController.cpp; path = ../../../src/poScene/_ViewController.cpp; sourceTree = "<group>"; };
+		AA8458D81E134A5600883AAE /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../../../src/poScene/ViewController.h; sourceTree = "<group>"; };
+		AA8458DA1E134ACD00883AAE /* _DraggableView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _DraggableView.cpp; path = ../../../src/poScene/_DraggableView.cpp; sourceTree = "<group>"; };
+		AA8458DB1E134ACD00883AAE /* DraggableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DraggableView.h; path = ../../../src/poScene/DraggableView.h; sourceTree = "<group>"; };
+		AA8458DD1E134C4D00883AAE /* _DragAndDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = _DragAndDrop.cpp; path = ../../../src/poScene/_DragAndDrop.cpp; sourceTree = "<group>"; };
+		AA8458DE1E134C4D00883AAE /* DragAndDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DragAndDrop.h; path = ../../../src/poScene/DragAndDrop.h; sourceTree = "<group>"; };
+		C5875FF199FC423A94F5921F /* CinderApp.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = CinderApp.icns; path = ../resources/CinderApp.icns; sourceTree = "<group>"; };
+		CE45A28A7EF64969A7EBEED2 /* EventCenter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = EventCenter.h; path = ../../../src/poScene/EventCenter.h; sourceTree = "<group>"; };
+		D70652C4E8D6418F9C186DF0 /* ShapeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ShapeView.h; path = ../../../src/poScene/ShapeView.h; sourceTree = "<group>"; };
+		F6578CDAFAFD4DDCBDB34F61 /* Resources.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Resources.h; path = ../include/Resources.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				006D720419952D00008149E2 /* AVFoundation.framework in Frameworks */,
+				006D720519952D00008149E2 /* CoreMedia.framework in Frameworks */,
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				0091D8F90E81B9330029341E /* OpenGL.framework in Frameworks */,
+				5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */,
+				00B784B30FF439BC000DE1D7 /* Accelerate.framework in Frameworks */,
+				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
+				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
+				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
+				00B9955A1B128DF400A5C623 /* IOKit.framework in Frameworks */,
+				00B9955B1B128DF400A5C623 /* IOSurface.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		01B97315FEAEA392516A2CEA /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				3F4D8D310B054B7B87CAF208 /* poScene */,
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
+		080E96DDFE201D6D7F000001 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				AA8458D41E13467400883AAE /* ViewController.cpp */,
+				AA8458D51E13467400883AAE /* ViewController.h */,
+				1AFAFE8B256944019E1DB5F1 /* DragAndDropApp.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				006D720219952D00008149E2 /* AVFoundation.framework */,
+				006D720319952D00008149E2 /* CoreMedia.framework */,
+				00B784AF0FF439BC000DE1D7 /* Accelerate.framework */,
+				00B784B00FF439BC000DE1D7 /* AudioToolbox.framework */,
+				00B784B10FF439BC000DE1D7 /* AudioUnit.framework */,
+				00B784B20FF439BC000DE1D7 /* CoreAudio.framework */,
+				5323E6B10EAFCA74003A9687 /* CoreVideo.framework */,
+				0091D8F80E81B9330029341E /* OpenGL.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+				00B995581B128DF400A5C623 /* IOKit.framework */,
+				00B995591B128DF400A5C623 /* IOSurface.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* DragAndDrop.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* DragAndDrop */ = {
+			isa = PBXGroup;
+			children = (
+				01B97315FEAEA392516A2CEA /* Blocks */,
+				29B97315FDCFA39411CA2CEA /* Headers */,
+				080E96DDFE201D6D7F000001 /* Source */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = DragAndDrop;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				F6578CDAFAFD4DDCBDB34F61 /* Resources.h */,
+				4353B8EFFF5E498098F6C6A3 /* DragAndDrop_Prefix.pch */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C5875FF199FC423A94F5921F /* CinderApp.icns */,
+				2BAC516DE16E4057B7DF6FDE /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3F4D8D310B054B7B87CAF208 /* poScene */ = {
+			isa = PBXGroup;
+			children = (
+				74AA1806F28E4E85A48301B5 /* src */,
+			);
+			name = poScene;
+			sourceTree = "<group>";
+		};
+		584134555B6D4341A92B32B1 /* poScene */ = {
+			isa = PBXGroup;
+			children = (
+				CE45A28A7EF64969A7EBEED2 /* EventCenter.h */,
+				AA8458C11E1343A700883AAE /* _EventCenter.cpp */,
+				A577CDCD767A4581822E979D /* Events.h */,
+				AA8458C21E1343A700883AAE /* _Events.cpp */,
+				AA8458DE1E134C4D00883AAE /* DragAndDrop.h */,
+				AA8458DD1E134C4D00883AAE /* _DragAndDrop.cpp */,
+				AA8458DB1E134ACD00883AAE /* DraggableView.h */,
+				AA8458DA1E134ACD00883AAE /* _DraggableView.cpp */,
+				48012C0924DE4A9D9C5C25C0 /* ImageView.h */,
+				AA8458C31E1343A700883AAE /* _ImageView.cpp */,
+				8D780D99EB2B4899B8AA3E27 /* MatrixSet.h */,
+				AA8458C41E1343A700883AAE /* _MatrixSet.cpp */,
+				39C1223DEFA1489A90AEF5A4 /* Scene.h */,
+				AA8458C51E1343A700883AAE /* _Scene.cpp */,
+				D70652C4E8D6418F9C186DF0 /* ShapeView.h */,
+				AA8458C61E1343A700883AAE /* _ShapeView.cpp */,
+				3C48BAE68BE94678BF98C873 /* TextureFit.h */,
+				36FF9B5F07164BC0B6994876 /* TextView.h */,
+				AA8458C71E1343A700883AAE /* _TextView.cpp */,
+				865EF5B0C4E34D96A6D79758 /* VideoView.h */,
+				9B16E98D24A84226845D07E1 /* View.h */,
+				AA8458C81E1343A700883AAE /* _View.cpp */,
+				AA8458D81E134A5600883AAE /* ViewController.h */,
+				AA8458D71E134A5600883AAE /* _ViewController.cpp */,
+			);
+			name = poScene;
+			sourceTree = "<group>";
+		};
+		74AA1806F28E4E85A48301B5 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				584134555B6D4341A92B32B1 /* poScene */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* DragAndDrop */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "DragAndDrop" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DragAndDrop;
+			productInstallPath = "$(HOME)/Applications";
+			productName = DragAndDrop;
+			productReference = 8D1107320486CEB800E47090 /* DragAndDrop.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DragAndDrop" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* DragAndDrop */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8D1107260486CEB800E47090 /* DragAndDrop */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				763615B77C284EC69BDF8D9E /* CinderApp.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E9C655F3A2C24DE4868A35C6 /* DragAndDropApp.cpp in Sources */,
+				AA8458D61E13467400883AAE /* ViewController.cpp in Sources */,
+				AA8458DC1E134ACD00883AAE /* _DraggableView.cpp in Sources */,
+				AA8458D91E134A5600883AAE /* _ViewController.cpp in Sources */,
+				AA8458CF1E1343A700883AAE /* _TextView.cpp in Sources */,
+				AA8458C91E1343A700883AAE /* _EventCenter.cpp in Sources */,
+				AA8458CD1E1343A700883AAE /* _Scene.cpp in Sources */,
+				AA8458CC1E1343A700883AAE /* _MatrixSet.cpp in Sources */,
+				AA8458CA1E1343A700883AAE /* _Events.cpp in Sources */,
+				AA8458DF1E134C4D00883AAE /* _DragAndDrop.cpp in Sources */,
+				AA8458CB1E1343A700883AAE /* _ImageView.cpp in Sources */,
+				AA8458CE1E1343A700883AAE /* _ShapeView.cpp in Sources */,
+				AA8458D01E1343A700883AAE /* _View.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = DragAndDrop_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/Debug/libcinder.a\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = DragAndDrop;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_FAST_MATH = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = DragAndDrop_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/macosx/Release/libcinder.a\"";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.libcinder.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = DragAndDrop;
+				STRIP_INSTALLED_PRODUCT = YES;
+				SYMROOT = ./build;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CINDER_PATH = ../../../../..;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				ENABLE_TESTABILITY = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src";
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				CINDER_PATH = ../../../../..;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\"";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../src";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "DragAndDrop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DragAndDrop" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

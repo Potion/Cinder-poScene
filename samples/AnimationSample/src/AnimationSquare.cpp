@@ -1,5 +1,8 @@
 #include "AnimationSquare.h"
-#include "poShape.h"
+
+#include "cinder/app/App.h"
+
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -14,15 +17,15 @@ void AnimationSquare::setup(std::string name, ci::Color color)
 {
 
     //  create and add the shape to the node container
-    mBaseShape = Shape::createRect(100, 100);
+    mBaseShape = ShapeView::createRect(100, 100);
     mBaseColor = color;
     mBaseShape->setFillColor(color);
-    addChild(mBaseShape);
+    addSubview(mBaseShape);
 
     //  create and add the label
     mIndicator = Indicator::create(name, color);
     mIndicator->setPosition(ci::vec2(0, 125));
-    addChild(mIndicator);
+    addSubview(mIndicator);
     
     //  add a signal to all mouse clicks to activate label
     getSignal(MouseEvent::DOWN_INSIDE).connect(std::bind(&AnimationSquare::showIndicator, this));

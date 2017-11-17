@@ -1,8 +1,9 @@
 #pragma once
 
-#include "poNodeContainer.h"
 #include "cinder/Text.h"
-#include "poTextBox.h"
+
+#include "poScene/View.h"
+#include "poScene/TextView.h"
 
 using namespace po::scene;
 
@@ -10,7 +11,7 @@ class TextComponent;
 typedef std::shared_ptr<TextComponent> TextComponentRef;
 
 class TextComponent
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
 	static TextComponentRef create();
@@ -26,7 +27,7 @@ private:
 	ci::TextBox mCiTextBox;
 	
 	//	Reference to the textbox node
-	TextBoxRef mTextBox;
+	TextViewRef mTextBox;
 	
 	//	Get the placeholder text
 	std::string generateText();

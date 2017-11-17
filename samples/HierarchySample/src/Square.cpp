@@ -28,7 +28,7 @@ void Square::setup(int size)
 	mSize = size;
 	
 	//	The square shape
-	mShape = Shape::createRect(mSize, mSize);
+	mShape = ShapeView::createRect(mSize, mSize);
 	mShape->setAlignment(po::scene::Alignment::CENTER_CENTER);
 	
 	//	Change hue based on size
@@ -37,7 +37,7 @@ void Square::setup(int size)
 	mHighlightColor = ci::Color(ci::CM_HSV, 1 - hue, 1, 1);
 	
 	mShape->setFillColor(mColor);
-	addChild(mShape);
+	addSubview(mShape);
 	
 	//	Connect to mouse events
 	getSignal(po::scene::MouseEvent::DOWN_INSIDE).connect(std::bind(&Square::onMouseDown, this, std::placeholders::_1));
@@ -95,7 +95,7 @@ void Square::highlight(bool isHighlighted)
 void Square::highlightChildren(bool isHighlighted)
 {
 	//	Get all the nodes children
-	std::deque<NodeRef> children = getChildren();
+	std::deque<ViewRef> children = getSubviews();
 	
 	if (isHighlighted) {
 		for (auto &child : children) {

@@ -2,7 +2,7 @@
 #include "cinder/app/RendererGl.h"
 #include "cinder/gl/gl.h"
 
-#include "poScene.h"
+#include "poScene/Scene.h"
 #include "_TBOX_PREFIX_.h"
 
 using namespace ci;

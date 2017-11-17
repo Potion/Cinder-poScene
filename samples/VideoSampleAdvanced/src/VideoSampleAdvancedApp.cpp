@@ -2,13 +2,13 @@
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
 
-#include "poScene.h"
-#include "VideoSampleAdvanced.h"
+#include "poScene/Scene.h"
+
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace po::scene;
 
 class VideoSampleAdvancedApp
 : public App
@@ -17,26 +17,28 @@ public:
     void setup();
     void update();
     void draw();
-    
-    SceneRef scene;
+	
+	po::scene::SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void VideoSampleAdvancedApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(VideoSampleAdvanced::create());
+	mViewController = sample::ViewController::create();
+	mScene = po::scene::Scene::create(mViewController);
 }
 
 void VideoSampleAdvancedApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void VideoSampleAdvancedApp::draw()
 {
     // clear out the window with black
     gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( VideoSampleAdvancedApp, RendererGl )

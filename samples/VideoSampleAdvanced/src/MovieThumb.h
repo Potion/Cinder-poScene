@@ -1,20 +1,22 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poVideo.h"
+#include "cinder/Signals.h"
+
+#include "poScene/View.h"
+#include "poScene/VideoView.h"
 
 class MovieThumb;
 typedef std::shared_ptr<MovieThumb> MovieThumbRef;
 
 class MovieThumb
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
     
-    typedef boost::signals2::signal<void(MovieThumbRef)> MovieThumbSignal;
+    typedef ci::signals::Signal<void(MovieThumbRef)> MovieThumbSignal;
     
-    static MovieThumbRef create(po::scene::VideoGlRef movie);
-    void setup(po::scene::VideoGlRef movie);
+    static MovieThumbRef create(po::scene::VideoViewGlRef movie);
+    void setup(po::scene::VideoViewGlRef movie);
     
     void animateToPlayer();
     void animateOutOfPlayerPosition();
@@ -35,7 +37,7 @@ public:
     
     bool getIsHome() { return mIsAtHome; };
     
-    po::scene::VideoGlRef getUnderlyingMovie() { return mMovie; };
+    po::scene::VideoViewGlRef getUnderlyingMovie() { return mMovie; };
     
     
     
@@ -50,7 +52,7 @@ private:
     ci::vec2                mPlayerScale;
     ci::vec2                mThumbnailScale;
     
-    po::scene::VideoGlRef   mMovie;
+    po::scene::VideoViewGlRef   mMovie;
     bool                    mIsAtHome;
 
     void                    finishAnimationToPlayer();

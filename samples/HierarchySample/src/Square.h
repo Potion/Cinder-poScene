@@ -1,7 +1,7 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
 
 using namespace po::scene;
 
@@ -9,7 +9,7 @@ class Square;
 typedef std::shared_ptr<Square> SquareRef;
 
 class Square
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
 	static SquareRef create(int size);
@@ -25,7 +25,7 @@ private:
 	int mSize;
 	
 	//	Square shape
-	ShapeRef mShape;
+	ShapeViewRef mShape;
 	
 	//	Shape color and highlight color
 	ci::Color mColor;

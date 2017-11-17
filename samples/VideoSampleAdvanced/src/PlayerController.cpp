@@ -1,7 +1,10 @@
 #include "PlayerController.h"
-#include "poShape.h"
+
 #include "cinder/ImageIo.h"
 #include "cinder/qtime/QuickTime.h"
+
+#include "poScene/ShapeView.h"
+
 using namespace po::scene;
 
 PlayerControllerRef PlayerController::create()
@@ -20,13 +23,13 @@ void PlayerController::setup()
     //  create reference to video
     //  because will actually be playing thumbnails, don't need to add as a child,
     //  but still need a reference to the videos themselves
-    mVideoReference = VideoGl::create();
+    mVideoReference = VideoViewGl::create();
     
     //  create and add the buttons
     ci::gl::TextureRef playTex = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("play.png")));
     ci::gl::TextureRef pauseTex = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("pause.png")));
-    ShapeRef playShape = Shape::create(playTex);
-    ShapeRef pauseShape = Shape::create(pauseTex);
+    ShapeViewRef playShape = ShapeView::create(playTex);
+    ShapeViewRef pauseShape = ShapeView::create(pauseTex);
     mPlayButton = PlayerButton::create(playShape);
     mPauseButton = PlayerButton::create(pauseShape);
     
@@ -36,8 +39,8 @@ void PlayerController::setup()
     mPlayButton->setPosition((640 / 2) - 50 - mPlayButton->getWidth(), 0);
     mPauseButton->setPosition((640 / 2) + 50, 0);
     
-    addChild(mPlayButton);
-    addChild(mPauseButton);
+    addSubview(mPlayButton);
+    addSubview(mPauseButton);
     
     mPlayButton->getButtonSignal().connect(std::bind(&PlayerController::getPlaySignal, this));
     mPauseButton->getButtonSignal().connect(std::bind(&PlayerController::getPauseSignal, this));
@@ -46,13 +49,11 @@ void PlayerController::setup()
     mScrubber = Scrubber::create();
     mScrubber->getScrubberSignal().connect(std::bind(&PlayerController::getScrubberSignal, this, std::placeholders::_1));
     mScrubber->setPosition(0, mPlayButton->getHeight() + 25);
-    addChild(mScrubber);
+    addSubview(mScrubber);
 }
 
 void PlayerController::update()
 {
-    NodeContainer::update();
-    
     //  if we don't have a movie reference, stop
     if (!mVideoReference->getMovieRef()) return;
 
@@ -73,7 +74,7 @@ void PlayerController::update()
     }
 }
 
-void PlayerController::setPrimaryMovie(po::scene::VideoGlRef video)
+void PlayerController::setPrimaryMovie(po::scene::VideoViewGlRef video)
 {
     //  stop the current video if one's already there
     if (mVideoReference->getMovieRef()) {
