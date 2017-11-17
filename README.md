@@ -1,5 +1,6 @@
-!["po::Scene"](images/logo.jpg)
+[//]: !["po::Scene"](images/logo.jpg)
 
+##** Repo updates in progress **
 
 **po::scene** is [Potion's](http://www.potiondesign.com) 2D [Scene Graph](#scenegraph) block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
@@ -41,13 +42,16 @@ Using a tree metaphor, **po::scene** contains three main classes:
 + `po::scene::ViewController` represents a branch. It can contain any number of other branches, as well as leaves.
 + `po::Scene::View` represents a leaf, or an end point in the scene-graph. These Views are usually the point for any gl drawing.
 
-![Structure diagram](images/diagram.jpg)
+
+!["Structure diagram"](images/diagram.jpg)
 
 *Diagram of po::Scene structure*
 
 
 Moving any branch of a tree will also move all of its connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene:: ViewController ` will transform all of the subViews within it.
-![Bounds example](images/Bounds.png)
+
+!["Bounds example"](images/Bounds.png)
+
 *Screenshot from the bounds example, describing the structure of a scene* 
 ## Views
 
