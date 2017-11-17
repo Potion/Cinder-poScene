@@ -3,6 +3,11 @@
 
 **po::scene** is [Potion's](http://www.potiondesign.com) 2D [Scene Graph](#scenegraph) block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
+
+## Using this Repo
+When pulling down the repo, `develop` is the latest branch, `master` is stable. If you're looking for older versions please checkout the appropriate tags. If you're on poScene v1, you can check out the `v1.0` tag. If you're on an old project with Cinder 0.8.6, you can checkout the `v0.8.6` tag etc.
+
+## About
 The main philosophy behind po::scene is to avoid replacing any of the built-in Cinder functionality at all costs and keep the library as simple as possible.
 
 Some of the key features include:
