@@ -17,6 +17,8 @@ namespace po
 			class ScrollViewDelegate
 			{
 				public:
+					virtual void didStartScrolling( ScrollViewRef scrollView ) = 0;
+					virtual void didScroll( ScrollViewRef scrollView ) = 0;
 					virtual void didFinishScrolling( ScrollViewRef scrollView ) = 0;
 			};
 
