@@ -11,16 +11,14 @@ using namespace po::scene;
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef node(new ViewController());
-		node->setup();
-		return node;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//  create a player that loops video
 		mVideo = po::scene::VideoViewGl::create();

@@ -5,16 +5,14 @@
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef ref(new ViewController());
-		ref->setup();
-		return ref;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//	Create the text component
 		mTextComponent = TextComponent::create();

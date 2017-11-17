@@ -8,12 +8,10 @@ namespace sample {
 	ViewControllerRef ViewController::create()
 	{
 		ViewControllerRef ref(new ViewController());
-		ref->setup();
 		return ref;
 	}
 
-
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//  Cinder method for key events
 		ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&ViewController::keyDown, this, std::placeholders::_1));

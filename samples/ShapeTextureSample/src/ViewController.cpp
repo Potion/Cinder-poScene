@@ -6,9 +6,7 @@
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef node(new ViewController());
-		node->setup();
-		return node;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
@@ -17,7 +15,7 @@ namespace sample {
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//  Cinder method for key events
 		ci::app::getWindow()->getSignalKeyDown().connect(std::bind(&ViewController::keyDown, this, std::placeholders::_1));

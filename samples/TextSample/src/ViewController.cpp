@@ -8,16 +8,14 @@ using namespace po::scene;
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef ref(new ViewController());
-		ref->setup();
-		return ref;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		std::string text = "Have secret plans intrigued by the shower hack up furballs, for kick up litter so loves cheeseburgers, for poop on grasses scamper. Leave hair everywhere stand in front of the computer screen.";
 

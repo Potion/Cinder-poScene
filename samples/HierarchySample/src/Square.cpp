@@ -53,8 +53,8 @@ void Square::onMouseDown(po::scene::MouseEvent &event)
 		
 		//	Set the initial, start and end positions to the window position in the parent
 		mInitialPos = getPosition();
-		mStartPos = getParent()->windowToLocal(event.getWindowPos());
-		mEndPos = getParent()->windowToLocal(event.getWindowPos());
+		mStartPos = getSuperview()->windowToLocal(event.getWindowPos());
+		mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
 		
 		highlight(true);
 		highlightChildren(true);
@@ -65,7 +65,7 @@ void Square::onMouseDragged(po::scene::MouseEvent &event)
 {
 	if (mIsPressed) {
 		//	Update the end position
-		mEndPos = getParent()->windowToLocal(event.getWindowPos());
+		mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
 		
 		//	Set the nodes position
 		ci::vec2 newPosition = mInitialPos + (mEndPos - mStartPos);

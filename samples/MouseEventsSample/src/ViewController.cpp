@@ -10,13 +10,11 @@ namespace sample {
 
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef ref(new ViewController());
-		ref->setup();
-		return ref;
+		return ViewControllerRef(new ViewController());
 	}
 
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		createIndicators();
 		createSquares();

@@ -4,16 +4,14 @@
 
 namespace sample {
 	ViewControllerRef ViewController::create() {
-		ViewControllerRef ref(new ViewController());
-		ref->setup();
-		return ref;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
 	{
 	}
 
-	void ViewController::setup() {
+	void ViewController::viewDidLoad() {
 		mDragAndDropVC = po::scene::DragAndDropViewController::create();
 
 		mDragAndDropVC->getSignalViewAddedToDropZone().connect(std::bind(&ViewController::onViewAddedToDragZone, this, std::placeholders::_1, std::placeholders::_2));

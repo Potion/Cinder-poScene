@@ -16,7 +16,7 @@ namespace sample {
 	private:
 		
 		ViewController();
-		void setup();
+		void viewDidLoad() override;
 		po::scene::DragAndDropViewControllerRef mDragAndDropVC;
 	};
 }

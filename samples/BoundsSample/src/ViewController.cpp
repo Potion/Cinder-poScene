@@ -22,12 +22,10 @@ namespace sample {
 
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef ref(new ViewController());
-		ref->setup();
-		return ref;
+		return ViewControllerRef(new ViewController());
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		// Set up our info text
 		mInfoText.size(200, ci::TextBox::GROW)
@@ -38,35 +36,35 @@ namespace sample {
 		// Scene BG
 		mBG = ShapeView::createRect(1, 1);
 		mBG->setFillColor(ci::Color(ci::CM_HSV, hue, saturation, brightness))
-			.setParentShouldIgnoreInBounds(true);
+			.setSuperviewShouldIgnoreInBounds(true);
 		getView()->addSubview(mBG);
 
 		// Scene text box + window text box
 		mWindowTextBox = TextView::create();
 		mWindowTextBox->setPosition(-250, 0)
-			.setParentShouldIgnoreInBounds(true);
+			.setSuperviewShouldIgnoreInBounds(true);
 		getView()->addSubview(mWindowTextBox);
 
 		mTextView = TextView::create();
 		mTextView->setPosition(5, 5)
-			.setParentShouldIgnoreInBounds(true);
+			.setSuperviewShouldIgnoreInBounds(true);
 		getView()->addSubview(mTextView);
 
 		// Node Container
-		mContainerView = View::create("Node Container");
+		mContainerView = View::create("View Container");
 		mContainerView->setPosition(100, 150)
 			.setDrawBounds(true)
 			.setBoundsColor(boundsColor)
-			.setName("Node Container");
+			.setName("View Container");
 
 		mContainerViewBG = ShapeView::createRect(1, 1);
 		mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness))
-			.setParentShouldIgnoreInBounds(true);
+			.setSuperviewShouldIgnoreInBounds(true);
 
 		mContainerTextView = TextView::create();
 
 		mContainerTextView->setPosition(5, 5)
-			.setParentShouldIgnoreInBounds(true);
+			.setSuperviewShouldIgnoreInBounds(true);
 
 		mContainerView->addSubview(mContainerViewBG)
 			.addSubview(mContainerTextView)
@@ -78,7 +76,7 @@ namespace sample {
 		for (int i = 0; i < 3; i++) {
 			ShapeViewRef s = ShapeView::createRect(100, 100);
 			s->setPosition(i * 125, yPos)
-				.setName("Selected Node")
+				.setName("Selected View")
 				.setDrawBounds(true)
 				.setBoundsColor(boundsColor)
 				.setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness))
@@ -89,7 +87,7 @@ namespace sample {
 		getView()->addSubview(mContainerView);
 
 		// Setup Scene (this class is the root node)
-		getView()->setName("Scene (Scene Root Node)")
+		getView()->setName("Scene (Scene Root View)")
 			.setPosition(ci::vec2(250, 50))
 			.setDrawBounds(true)
 			.setBoundsColor(boundsColor);
@@ -129,7 +127,7 @@ namespace sample {
 				<< "\n To adjust scale press +/-";
 		}
 		else {
-			ss << "\n\n Click a node to select\nand view/change attributes...";
+			ss << "\n\n Click a View to select\nand view/change attributes...";
 		}
 
 		mInfoText.text(ss.str())

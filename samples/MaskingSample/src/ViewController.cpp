@@ -10,16 +10,14 @@ using namespace po::scene;
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef node(new ViewController());
-		node->setup();
-		return node;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//	Load the mask texture
 		ci::gl::TextureRef maskTexture = ci::gl::Texture::create(ci::loadImage(ci::app::loadAsset("circle_mask_blurred.png")));

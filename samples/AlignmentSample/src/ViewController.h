@@ -18,7 +18,7 @@ namespace sample {
 	{
 	public:
 		static ViewControllerRef create();
-		void setup() override;
+		void viewDidLoad() override;
 
 	protected:
 

@@ -9,11 +9,10 @@ namespace sample {
 	ViewControllerRef ViewController::create()
 	{
 		ViewControllerRef ref(new ViewController());
-		ref->setup();
 		return ref;
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		// for offsets, use dimensions of AnimationSquares, which are 100 x 100
 		float xInterval = ci::app::getWindowWidth() / 6.0f;

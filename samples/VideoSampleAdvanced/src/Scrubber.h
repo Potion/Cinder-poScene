@@ -15,7 +15,7 @@ public:
     typedef ci::signals::Signal<void(float pct)> ScrubberSignal;
     
     static ScrubberRef create();
-    void setup();
+    void setup() override;
     
     //	Get the thumb position for text positioning
     ci::vec2 getHandlePosition() { return mHandle->getPosition(); }

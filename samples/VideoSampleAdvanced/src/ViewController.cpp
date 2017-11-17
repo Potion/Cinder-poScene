@@ -5,9 +5,7 @@ using namespace po::scene;
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef node(new ViewController());
-		node->setup();
-		return node;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
@@ -16,7 +14,7 @@ namespace sample {
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//  create and add the main player
 		mPlayer = PlayerController::create();

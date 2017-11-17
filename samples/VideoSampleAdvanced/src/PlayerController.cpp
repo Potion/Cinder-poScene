@@ -54,6 +54,7 @@ void PlayerController::setup()
 
 void PlayerController::update()
 {
+	po::scene::View::update();
     //  if we don't have a movie reference, stop
     if (!mVideoReference->getMovieRef()) return;
 

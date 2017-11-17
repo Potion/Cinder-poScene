@@ -49,8 +49,8 @@ void Scroller::onMouseDown(po::scene::MouseEvent &event)
 		
 		//	Store the initial positions
 		mInitialPos = mThumb->getPosition();
-		mStartPos = getParent()->windowToLocal(event.getWindowPos());
-		mEndPos = getParent()->windowToLocal(event.getWindowPos());
+		mStartPos = getSuperview()->windowToLocal(event.getWindowPos());
+		mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
 		
 		//	Highlight the scroll thumb
 		mThumb->setAlpha(1.0);
@@ -61,7 +61,7 @@ void Scroller::onMouseDrag(po::scene::MouseEvent &event)
 {
 	if (mIsPressed) {
 		//	Get the end window position relative to the parent
-		mEndPos = getParent()->windowToLocal(event.getWindowPos());
+		mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
 		
 		//	Calculate the new position
 		ci::vec2 newPosition = ci::vec2(mInitialPos.x, mInitialPos.y + (mEndPos.y - mStartPos.y));

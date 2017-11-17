@@ -56,8 +56,8 @@ void Scrubber::onMouseDownHandle(MouseEvent &event)
         
         //	Store the initial positions
         mInitialPos = mHandle->getPosition();
-        mStartPos = getParent()->windowToLocal(event.getWindowPos());
-        mEndPos = getParent()->windowToLocal(event.getWindowPos());
+        mStartPos = getSuperview()->windowToLocal(event.getWindowPos());
+        mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
         
         //	Highlight the scroll thumb
         mHandle->setAlpha(1.0);
@@ -69,7 +69,7 @@ void Scrubber::onMouseDownTrack(MouseEvent &event)
     if (!mIsPressed) {
         mIsPressed = true;
         
-        ci::vec2 clickPos = getParent()->windowToLocal(event.getWindowPos());
+        ci::vec2 clickPos = getSuperview()->windowToLocal(event.getWindowPos());
         
         float newXPos = clickPos.x - mHandle->getWidth() / 2;
         if (newXPos < 0) {
@@ -86,8 +86,8 @@ void Scrubber::onMouseDownTrack(MouseEvent &event)
         
         //	With repositioned hadle, store the initial positions
         mInitialPos = mHandle->getPosition();
-        mStartPos = getParent()->windowToLocal(event.getWindowPos());
-        mEndPos = getParent()->windowToLocal(event.getWindowPos());
+        mStartPos = getSuperview()->windowToLocal(event.getWindowPos());
+        mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
         
         //	Highlight the scroll thumb
         mHandle->setAlpha(1.0);
@@ -98,7 +98,7 @@ void Scrubber::onMouseDrag(MouseEvent &event)
 {
     if (mIsPressed) {
         //	Get the end window position relative to the parent
-        mEndPos = getParent()->windowToLocal(event.getWindowPos());
+        mEndPos = getSuperview()->windowToLocal(event.getWindowPos());
         
         //	Calculate the new position
         ci::vec2 newPosition = ci::vec2(mInitialPos.x + (mEndPos.x - mStartPos.x), mInitialPos.y);

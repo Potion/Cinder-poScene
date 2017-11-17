@@ -8,9 +8,7 @@
 namespace sample {
 	ViewControllerRef ViewController::create()
 	{
-		ViewControllerRef node(new ViewController());
-		node->setup();
-		return node;
+		return ViewControllerRef(new ViewController());
 	}
 
 	ViewController::ViewController()
@@ -18,7 +16,7 @@ namespace sample {
 	{
 	}
 
-	void ViewController::setup()
+	void ViewController::viewDidLoad()
 	{
 		//	Number of squares
 		int numSquares = 5;
@@ -49,7 +47,7 @@ namespace sample {
 
 		//	Text box with instructions
 		ci::TextBox ciTextBox = ci::TextBox();
-		ciTextBox.text("Click and drag the squares to highlight child nodes and alter their position within the hierarchy.");
+		ciTextBox.text("Click and drag the squares to highlight subviews and alter their position within the hierarchy.");
 		ciTextBox.size(200, 200);
 		ciTextBox.font(ci::Font("Arial", 12.f));
 		ciTextBox.color(ci::Color(1, 1, 1));

@@ -13,7 +13,7 @@ namespace sample {
 	public:
 		static ViewControllerRef create();
 
-		void setup();
+		void viewDidLoad() override;
 
 	protected:
 		ViewController();

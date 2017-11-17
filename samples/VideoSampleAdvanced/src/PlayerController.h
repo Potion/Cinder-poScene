@@ -14,13 +14,13 @@ class PlayerController
     
 public:
     static PlayerControllerRef  create();
-    void                        setup();
+    void                        setup() override;
     void                        setPrimaryMovie(po::scene::VideoViewGlRef video);
     
 protected:
     PlayerController();
     //  override virtual function from NodeContainer
-    void                    update();
+    void                    update() override;
     
 private:
     po::scene::VideoViewGlRef   mVideoReference;
