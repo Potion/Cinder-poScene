@@ -55,6 +55,8 @@ DerivedData
 *.sdf
 *.opensdf
 *.unsuccessfulbuild
+*.db
+*.opendb
 ipch/
 obj/
 #[Bb]in

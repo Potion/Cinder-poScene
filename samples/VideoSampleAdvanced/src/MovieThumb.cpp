@@ -2,7 +2,7 @@
 
 using namespace po::scene;
 
-MovieThumbRef MovieThumb::create(po::scene::VideoGlRef movie)
+MovieThumbRef MovieThumb::create(po::scene::VideoViewGlRef movie)
 {
     MovieThumbRef ref (new MovieThumb());
     ref->setup(movie);
@@ -13,13 +13,13 @@ MovieThumb::MovieThumb()
 : mIsAtHome(true)
 {}
 
-void MovieThumb::setup(po::scene::VideoGlRef movie)
+void MovieThumb::setup(po::scene::VideoViewGlRef movie)
 {
     mMovie = movie;
 	// Calls to play/stop required to make movies initially visible in Windows
 	mMovie->getMovieRef()->play();
 	mMovie->getMovieRef()->stop();
-	addChild(mMovie);
+	addSubview(mMovie);
 }
 
 void MovieThumb::animateToPlayer()
@@ -41,7 +41,7 @@ void MovieThumb::animateOutOfPlayerPosition()
 void MovieThumb::finishAnimationToPlayer()
 {
     //  when arrive at player, send signal with a reference to itself
-    mAnimationCompleteSignal(std::static_pointer_cast<MovieThumb>(shared_from_this()));
+    mAnimationCompleteSignal.emit(std::static_pointer_cast<MovieThumb>(shared_from_this()));
 }
 
 void MovieThumb::slideUpToHomePosition()

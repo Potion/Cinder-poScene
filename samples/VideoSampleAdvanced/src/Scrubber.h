@@ -1,16 +1,18 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
+#include "cinder/Signals.h"
+
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
 
 class Scrubber;
 typedef std::shared_ptr<Scrubber> ScrubberRef;
 
 class Scrubber
-: public po::scene::NodeContainer {
+: public po::scene::View {
 
 public:
-    typedef boost::signals2::signal<void(float pct)> ScrubberSignal;
+    typedef ci::signals::Signal<void(float pct)> ScrubberSignal;
     
     static ScrubberRef create();
     void setup();
@@ -25,10 +27,10 @@ protected:
     
 private:
     //	Scrub handle
-    po::scene::ShapeRef mHandle;
+    po::scene::ShapeViewRef mHandle;
     
     //	Scroll track
-    po::scene::ShapeRef mTrack;
+    po::scene::ShapeViewRef mTrack;
     
     //	Keep track of mouse position for dragging
     bool mIsPressed;

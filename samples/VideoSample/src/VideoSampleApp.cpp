@@ -2,13 +2,12 @@
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
 
-#include "poScene.h"
-#include "VideoSample.h"
+#include "poScene/Scene.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace po::scene;
 
 class VideoSampleApp
 : public App
@@ -17,26 +16,28 @@ public:
     void setup();
     void update();
     void draw();
-    
-    SceneRef scene;
+	
+	po::scene::SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void VideoSampleApp::setup()
 {
     setWindowSize(1024, 768);
-    scene = Scene::create(VideoSample::create());
+	mViewController = sample::ViewController::create();
+	mScene = po::scene::Scene::create(mViewController);
 }
 
 void VideoSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void VideoSampleApp::draw()
 {
     // clear out the window with black
     gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( VideoSampleApp, RendererGl )

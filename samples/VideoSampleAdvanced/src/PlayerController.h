@@ -1,7 +1,8 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poVideo.h"
+#include "poScene/View.h"
+#include "poScene/VideoView.h"
+
 #include "PlayerButton.h"
 #include "Scrubber.h"
 
@@ -9,12 +10,12 @@ class PlayerController;
 typedef std::shared_ptr<PlayerController> PlayerControllerRef;
 
 class PlayerController
-: public po::scene::NodeContainer {
+: public po::scene::View {
     
 public:
     static PlayerControllerRef  create();
     void                        setup();
-    void                        setPrimaryMovie(po::scene::VideoGlRef video);
+    void                        setPrimaryMovie(po::scene::VideoViewGlRef video);
     
 protected:
     PlayerController();
@@ -22,7 +23,7 @@ protected:
     void                    update();
     
 private:
-    po::scene::VideoGlRef   mVideoReference;
+    po::scene::VideoViewGlRef   mVideoReference;
     float                   mCurrentDuration;
 
     void                    getPlaySignal();

@@ -1,5 +1,7 @@
 #include "TextComponent.h"
 
+#include "cinder/app/App.h"
+
 TextComponentRef TextComponent::create()
 {
 	TextComponentRef ref = std::shared_ptr<TextComponent>(new TextComponent());
@@ -25,8 +27,8 @@ void TextComponent::setup()
 	mCiTextBox.font(ci::Font("Georgia", 14));
 	
 	//	Add the ci textbox to the text node
-	mTextBox = TextBox::create(mCiTextBox);
-	addChild(mTextBox);
+	mTextBox = TextView::create(mCiTextBox);
+	addSubview(mTextBox);
 }
 
 std::string TextComponent::generateText()

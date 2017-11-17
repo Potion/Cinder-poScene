@@ -1,20 +1,22 @@
 #pragma once
 
-#include "poNodeContainer.h"
-#include "poShape.h"
+#include "cinder/Signals.h"
+
+#include "poScene/View.h"
+#include "poScene/ShapeView.h"
 
 
 class PlayerButton;
 typedef std::shared_ptr<PlayerButton> PlayerButtonRef;
 
 class PlayerButton
-: public po::scene::NodeContainer
+: public po::scene::View
 {
 public:
-    typedef boost::signals2::signal<void()> ButtonSignal;
+    typedef ci::signals::Signal<void()> ButtonSignal;
     
-    static PlayerButtonRef  create(po::scene::ShapeRef shape);
-    void                    setup(po::scene::ShapeRef shape);
+    static PlayerButtonRef  create(po::scene::ShapeViewRef shape);
+    void                    setup(po::scene::ShapeViewRef shape);
     ButtonSignal            &getButtonSignal() { return mButtonSignal; };
 
 protected:
@@ -23,7 +25,7 @@ protected:
 private:
     bool                mIsPressed;
     std::string         mName;
-    po::scene::ShapeRef mShape;
+    po::scene::ShapeViewRef mShape;
     
     void                onMouseEvent(po::scene::MouseEvent &event);
     void                doAction();

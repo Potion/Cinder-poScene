@@ -2,13 +2,12 @@
 #include "cinder/gl/gl.h"
 #include "cinder/app/RendererGl.h"
 
-#include "poScene.h"
-#include "BoundsSample.h"
+#include "poScene/Scene.h"
+#include "ViewController.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
-using namespace po::scene;
 
 class BoundsSampleApp
 : public App
@@ -18,26 +17,27 @@ class BoundsSampleApp
 	void update();
 	void draw();
     
-    SceneRef scene;
+    po::scene::SceneRef mScene;
+	sample::ViewControllerRef mViewController;
 };
 
 void BoundsSampleApp::setup()
 {
     setWindowSize(800, 600);
-    //ci::gl::enableAlphaBlending();
-    scene = Scene::create(BoundsSample::create());
+	mViewController	= sample::ViewController::create();
+    mScene = po::scene::Scene::create(mViewController);
 }
 
 void BoundsSampleApp::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void BoundsSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0.0, 0.0f, 0.0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( BoundsSampleApp, RendererGl )

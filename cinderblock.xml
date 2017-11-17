@@ -18,11 +18,11 @@
 		<sourcePattern>src/poScene/*.cpp</sourcePattern>
 
 		<platform os="macosx">
-			<includePath>src/poScene</includePath>
+			<includePath>src</includePath>
 		</platform>
 
 		<platform os="msw">
-			<includePath>src/poScene</includePath>
+			<includePath>src</includePath>
 		</platform>
 
 	</block>

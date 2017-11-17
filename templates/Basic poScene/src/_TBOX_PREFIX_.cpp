@@ -2,9 +2,9 @@
 
 _TBOX_PREFIX_Ref _TBOX_PREFIX_::create() 
 {
-    _TBOX_PREFIX_Ref node(new _TBOX_PREFIX_());
-    node->setup();
-    return node;
+    _TBOX_PREFIX_Ref view(new _TBOX_PREFIX_());
+    view->setup();
+    return view;
 }
 
 _TBOX_PREFIX_::_TBOX_PREFIX_()
