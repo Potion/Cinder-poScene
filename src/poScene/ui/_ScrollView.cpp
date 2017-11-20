@@ -132,6 +132,11 @@ namespace po
 					mCurEventPos = pos;
 					mPrevEventPos = pos;
 				}
+
+				if( !mDelegate.expired() ) {
+					ScrollViewRef self = std::dynamic_pointer_cast<ScrollView>( shared_from_this() );
+					mDelegate.lock()->didStartScrolling( self );
+				}
 			}
 
 			void ScrollView::eventMoved( int id, ci::vec2 pos )
@@ -154,6 +159,12 @@ namespace po
 
 					mContentView->setPosition( newPos );
 
+
+
+					if( !mDelegate.expired() ) {
+						ScrollViewRef self = std::dynamic_pointer_cast<ScrollView>( shared_from_this() );
+						mDelegate.lock()->didScroll( self );
+					}
 
 					//ci::app::console() << "Drag Pos: " << pos << std::endl;
 				}
@@ -183,7 +194,7 @@ namespace po
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
 
 					mScrollTargetPos = getSnapPos( targetPos );
-					
+
 					/*
 					ci::app::console() << "----------------------------------------" << std::endl;
 					ci::app::console() << "Pos: " << pos << std::endl;
@@ -192,7 +203,7 @@ namespace po
 					ci::app::console() << "Throw Distance: " << throwDistance << std::endl;
 					ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
 					*/
-					
+
 					// Cleanup
 					mIsScrolling = false;
 					mEventId = -1;
