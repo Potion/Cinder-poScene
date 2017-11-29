@@ -43,7 +43,7 @@ Using a tree metaphor, **po::scene** contains three main classes:
 + `po::Scene::View` represents a leaf, or an end point in the scene-graph. These Views are usually the point for any gl drawing.
 
 
-!["Structure diagram"](images/diagram.jpg)
+!["Structure diagram"](images/poScene_diagram.jpg)
 
 *Diagram of po::Scene structure*
 
