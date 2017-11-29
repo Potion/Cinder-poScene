@@ -35,9 +35,6 @@ namespace sample {
 			shapeDrop->setAlignment(po::scene::Alignment::CENTER_CENTER);
 			shapeDrop->setFillColor(ci::Color(1,0,0.2));;
 			view->getBackgroundView()->addSubview( shapeDrop );
-			view->setBoundsColor(ci::Color(1,1,1));
-			view->setDrawBounds(true);
-			//ci::app::console() << "frame: " << view->getFrame() <<" bounds: " << view->getBounds() << " " << view->isInteractionEnabled()<< std::endl;
 		}
 		
 		//ci::app::console() << "\n---------------\nDraggableViews: \n";
@@ -47,17 +44,13 @@ namespace sample {
 			shapeDrag->setAlignment(po::scene::Alignment::CENTER_CENTER);
 			shapeDrag->setFillColor(ci::ColorA(0,1,1,.5));
 			view->addSubview( shapeDrag );
-			
-			view->setBoundsColor(ci::Color(1,0,0));
-			view->setDrawBounds(true);
-			//ci::app::console() << "frame: " << view->getFrame() <<" bounds: " << view->getBounds() << std::endl;
 		}
 		
 	}
 	
 	void ViewController::onViewAddedToDragZone( po::scene::DropZoneViewRef dropRef, po::scene::DraggableViewRef dragRef )
 	{
-		dragRef->setPosition(ci::vec2());
+		dragRef->setPosition( dropRef->getPosition() );
 	}
 	
 }
