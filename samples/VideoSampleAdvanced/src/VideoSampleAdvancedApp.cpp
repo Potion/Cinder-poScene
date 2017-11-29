@@ -26,8 +26,7 @@ void VideoSampleAdvancedApp::setup()
 {
     setWindowSize(1024, 768);
 	mViewController = sample::ViewController::create();
-	mScene = po::scene::Scene::create();
-	mScene->getRootViewController()->getView()->addSubview( mViewController->getView() );
+	mScene = po::scene::Scene::create(mViewController);
 }
 
 void VideoSampleAdvancedApp::update()

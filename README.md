@@ -39,16 +39,15 @@ Some of the key features include:
 Using a tree metaphor, **po::scene** contains three main classes:
 
 + `po::scene::Scene` is the root system of the tree. It contains the trunk of the tree (the root ViewController ), which in turn contains all branches and leaves.
-+ `po::scene::ViewController` represents a branch. It can contain any number of other branches, as well as leaves.
++ `po::scene::ViewController` represents a branch. It can contain any number of other branches, as well as leaves. a ViewController contains a root view, to which leaves may be added.
 + `po::Scene::View` represents a leaf, or an end point in the scene-graph. These Views are usually the point for any gl drawing.
 
-
+ 
 !["Structure diagram"](images/poScene_diagram.jpg)
 
 *Diagram of po::Scene structure*
 
-
-Moving any branch of a tree will also move all of its connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene:: ViewController ` will transform all of the subViews within it.
+Moving any branch of a tree will also move all of its connected branches and leaves. In po::scene moving, scaling, rotating or manipulating a `po::scene::View ` will transform all of the subViews within it.
 
 !["Bounds example"](images/Bounds.png)
 
@@ -161,14 +160,21 @@ On the other hand, to set a View to be considered for interactive events but not
 
 ## ViewControllers
 
-ViewControllers inherit from the View class and can contain any number of Views or other ViewControllers. These are the branches of the scene, and they allow for hierarchy, grouping, and complex layouts. 
+ViewControllers are designed to control and contain subviews.
+they can contain any number of Views or other ViewControllers. These are the branches of the scene, and they allow for hierarchy, grouping, and complex layouts. 
 
-Adjusting any attributes of a ViewController also affects every View that it contains.
+A ViewController contains main View, to which subviews can be added.
+The ViewController is set up upon loading it's main view - ViewController::viewDidLoad();
 
-A ViewController's bounds are determined by its subViews.
+Here are some of the virtual functions that construct a ViewController
+`
 
-ViewController Events are based on all of the container's subViews. For example, if a ViewController subscribes to the `MouseEvent::Type::DOWN_INSIDE` event and the mouse is pressed, all of it's subViews will be checked. If the mouse is down inside any of them, the event will fire.
-
+	virtual void loadView()  
+	virtual void viewDidLoad()  
+	virtual void viewWillAppear()  
+	virtual void viewWillLayoutSubviews()  
+	virtual void viewDidLayoutSubviews()  
+`
 
 ## Scene
 
@@ -181,15 +187,15 @@ To create a Scene, you can either start with an empty (auto-created) root View
 	using namespace po::scene;
 	SceneRef myScene = Scene::create();
 	
-You could then add subViews to this root View using the `getRootView()` function of `po::scene::ViewController`.
+You could then add subViews to this root View using the `getRootViewController()->getView()` function of `po::scene::ViewController`.
 	
 	ViewRef myRootView = MyRootViewClass::create();
-	myScene->getRootViewController()->addSubView(myRootView);
+	myScene->getRootViewController()->getView()->addSubView(myRootView);
 	
- or (more common) extend `po::scene::ViewController` and provide that as the root View.
+ or (more common) extend `po::scene::ViewController` and provide that as the root ViewContrlooer.
  
 	using namespace po::scene;
-	SceneRef myScene = Scene::create(MyRootViewClass::create());
+	SceneRef myScene = Scene::create(MyRootViewControllerClass::create());
 
 The Scene's `update()` and `draw()` functions need to be called each frame from Cinder's `update()` and `draw()` functions.
 
@@ -211,21 +217,21 @@ This in turn will traverse the View tree, automatically triggering the `update()
 
 po::scene provides a number of convenient wrappers around Cinder classes that allow users to attach various renderable objects rather than trying to extend these or re-implement these classes. These allow renderable Cinder objects to gain hit-testing, matrix transforms, animations, and everything else provided by the `po::scene::View` class.
 
-### po::scene::Image
+### po::scene::ImageView
 
-`po::scene::Image` provides a simple View that displays a `ci::gl::TextureRef`.
+`po::scene::ImageView` provides a simple View that displays a `ci::gl::TextureRef`.
 
-### po::scene::Shape
+### po::scene::ShapeView
 
-`po::scene::Shape` is a more complex wrapper for both the `ci::Shape2d` class as well as the `ci::gl::TextureRef` class. 
+`po::scene::ShapeView` is a more complex wrapper for both the `ci::Shape2d` class as well as the `ci::gl::TextureRef` class. 
 
-The first way to use a `po::scene::Shape` is as a solid-filled shape. `po::scene::Shape` provides number of convenience methods for this purpose:
+The first way to use a `po::scene::ShapeView` is as a solid-filled shape. `po::scene::ShapeView` provides number of convenience methods for this purpose:
 
 	using namespace po::scene;
-	ShapeRef myRect = Shape::createRect(100,200);
-	ShapeRef mySquare = Shape::createSquare(100);
-	ShapeRef myEllipse = Shape::createEllipse(100,200);
-	ShapeRef myCircle = Shape::createCircle(100);
+	ShapeViewRef myRect = ShapeView::createRect(100,200);
+	ShapeViewRef mySquare = ShapeView::createSquare(100);
+	ShapeViewRef myEllipse = ShapeView::createEllipse(100,200);
+	ShapeViewRef myCircle = ShapeView::createCircle(100);
 	
 
 ![Shapes example](images/exampleShapes.png)<br>
@@ -236,16 +242,16 @@ These create and set the backing `ci::Shape2d`. This can be replaced at any time
 
 This shape will be drawn using the `po::scene::View` fillColor attribute, and hit-testing will be done using the built in `ci::Shape2d` contains method.
 
-In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Shape` and mapped using a number of alignments.
+In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::ShapeView` and mapped using a number of alignments.
 
 
 ![Texture example](images/exampleTextureShape.png)<br>
 *Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
-### po::scene::Video
-`po::scene::Video` provides a View that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoGl` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
+### po::scene::VideoView
+`po::scene::Video` provides a View that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoView` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
 
-	po::scene::VideoGLRef poVideo = po::scene::VideoGl::create();
+	po::scene::VideoViewRef poVideo = po::scene::VideoView::create();
 	 
 	//	create the Cinder movie reference
 	ci::fs::path moviePath = ci::app::getAssetPath("path_to_movie");
@@ -256,15 +262,15 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 	poVideo->getMovieRef()->play();
 	
 
-### po::scene::TextBox
+### po::scene::TextView
 
-`po::scene::TextBox` wraps the `ci::TextBox` class.
+`po::scene::TextBox` wraps the `ci::TextView` class.
 
-You can create a `po::scene::TextBox` with an preexisting `ci::TextBox`; alternatively, `po::scene::TextBox::create()` will return a `po::scene::TextBox` wrapping a newly created `ci::TextBox`.
+You can create a `po::scene::TextView` with an preexisting `ci::TextBox`; alternatively, `po::scene::TextView::create()` will return a `po::scene:: TextView` wrapping a newly created `ci::TextBox`.
 
-To set the `ci::TextBox` member of the `po::scene::TextBox`, call the `setCiTextBox` method. This automatically renders the Cinder TextBox and creates a new texture reference.
+To set the `ci::TextBox` member of the `po::scene::TextView`, call the `setCiTextBox` method. This automatically renders the Cinder TextBox and creates a new texture reference.
 
-The bounds of a `po::scene::TextBox` View are the bounds of that texture or, if no texture has been created, `getBounds()` returns a new `ci::Rectf`.
+The bounds of a `po::scene::TextView` View are the bounds of that texture or, if no texture has been created, `getBounds()` returns a new `ci::Rectf`.
 
 To manipulate the underlying `ci::TextBox`, call `getCiTextBoxCopy()`.
 
@@ -283,7 +289,7 @@ To create a View, extend this class and implement the following methods:
 		}
 		
 
-Custom ViewControllers are often convenient, but they will draw their subViews automatically and calculate their bounds, so it is not necessary to override any of the above methods.
+Custom ViewControllers are often convenient but does not have a draw method, that is handled by the contained view, often methods to override would be `update()` and `viewDidLoad()`.
 
 ## History
 
