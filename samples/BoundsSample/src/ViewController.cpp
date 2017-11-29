@@ -8,8 +8,8 @@ namespace sample {
 	float hueIncrement = 0.05f;
 
 	float hue = 0.5f;
-	float nodeContainerHue = hue + hueIncrement;
-	float nodeHue = nodeContainerHue + hueIncrement;
+	float ContainerHue = hue + hueIncrement;
+	float subviewHue = ContainerHue + hueIncrement;
 
 	float brightness = 0.65f;
 	float selectedBrightness = 1.0f;
@@ -58,7 +58,7 @@ namespace sample {
 			.setName("View Container");
 
 		mContainerViewBG = ShapeView::createRect(1, 1);
-		mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness))
+		mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, ContainerHue, saturation, brightness))
 			.setSuperviewShouldIgnoreInBounds(true);
 
 		mContainerTextView = TextView::create();
@@ -79,7 +79,7 @@ namespace sample {
 				.setName("Selected View")
 				.setDrawBounds(true)
 				.setBoundsColor(boundsColor)
-				.setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness))
+				.setFillColor(ci::Color(ci::CM_HSV, subviewHue, saturation, brightness))
 				.getSignal(MouseEvent::Type::DOWN_INSIDE).connect(std::bind(&ViewController::nodeMouseOver, this, std::placeholders::_1));
 			mContainerView->addSubview(s);
 		}
@@ -142,19 +142,19 @@ namespace sample {
 		if (mSelectedView)
 		{
 			if (mSelectedView == mContainerView) {
-				mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, brightness));
+				mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, ContainerHue, saturation, brightness));
 			}
 			else {
-				mSelectedView->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, brightness));
+				mSelectedView->setFillColor(ci::Color(ci::CM_HSV, subviewHue, saturation, brightness));
 			}
 		}
 
 		mSelectedView = event.getSource();
 		if (mSelectedView == mContainerView) {
-			mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, nodeContainerHue, saturation, selectedBrightness));
+			mContainerViewBG->setFillColor(ci::Color(ci::CM_HSV, ContainerHue, saturation, selectedBrightness));
 		}
 		else {
-			mSelectedView->setFillColor(ci::Color(ci::CM_HSV, nodeHue, saturation, selectedBrightness));
+			mSelectedView->setFillColor(ci::Color(ci::CM_HSV, subviewHue, saturation, selectedBrightness));
 		}
 	}
 
