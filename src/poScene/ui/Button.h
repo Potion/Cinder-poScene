@@ -28,7 +28,8 @@ namespace po
 					enum class State {
 						NORMAL = 0,
 						HIGHLIGHTED,
-						SELECTED
+						SELECTED,
+						INACTIVE
 					};
 
 					static ButtonRef create();
@@ -78,6 +79,9 @@ namespace po
 					void setPropagationEnabled( bool enabled ) { mPropagationEnabled = enabled; }
 					bool getPropagationEnabled() { return mPropagationEnabled; }
 
+					void activate();
+					void deactivate();
+
 					void setId( int id ) { mId = id; }
 					int getId() { return mId; }
 
@@ -87,6 +91,7 @@ namespace po
 
 					// Type + State tracking
 					State mState;
+					State mActiveState;
 					Type mType;
 
 					// Template functions to update state vars

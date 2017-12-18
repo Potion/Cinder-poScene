@@ -15,8 +15,28 @@ namespace po
 				return ref;
 			}
 
+			void Button::activate()
+			{
+				if( mState != State::INACTIVE ) {
+					return;
+				}
+
+				setState( mActiveState );
+			}
+
+			void Button::deactivate()
+			{
+				if( mState == State::INACTIVE ) {
+					return;
+				}
+
+				mActiveState = mState;
+				setState( State::INACTIVE );
+			}
+
 			Button::Button()
 				: mState( State::NORMAL )
+				, mActiveState( State::NORMAL )
 				, mEventId( -1 )
 				, mId( 0 )
 				, mType( Type::NORMAL )
@@ -206,6 +226,10 @@ namespace po
 
 			void Button::eventBeganInside( int id, ci::vec2 windowPos )
 			{
+				if( mState == State::INACTIVE ) {
+					return;
+				}
+
 				if( mEventId == -1 ) {
 					mEventId = id;
 					mEventStartPos = windowToLocal( windowPos );
@@ -216,6 +240,10 @@ namespace po
 
 			void Button::eventMoved( int id, ci::vec2 windowPos )
 			{
+				if( mState == State::INACTIVE ) {
+					return;
+				}
+
 				if( mEventId == id ) {
 					// Check to see if we've gone past max move dist
 					if( !posIsWithinMaxMoveLimits( windowToLocal( windowPos ) ) ) {
@@ -236,6 +264,10 @@ namespace po
 
 			void Button::eventEnded( int id, ci::vec2 windowPos )
 			{
+				if( mState == State::INACTIVE ) {
+					return;
+				}
+
 				if( mEventId == id ) {
 					if( pointInside( windowPos ) ) {
 						// Normal just send pressed
