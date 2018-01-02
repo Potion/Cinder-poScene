@@ -4,7 +4,7 @@
  *	Copyright ___YEAR___ ___ORGANIZATIONNAME___. All rights reserved.
  */
 
-#include "poNodeContainer.h"
+#include "poScene/ViewController.h"
 
 namespace po { 
 	namespace scene {
@@ -12,17 +12,14 @@ namespace po {
 		class ___FILEBASENAME___;
 		typedef std::shared_ptr< ___FILEBASENAME___ > ___FILEBASENAME___Ref;
 
-		class ___FILEBASENAME___ : public po::scene::NodeContainer
+		class ___FILEBASENAME___ : public po::scene::ViewController
 		{
 		public:
 			static ___FILEBASENAME___Ref create();
-			virtual void setup();
+			void viewDidLoad() override;
 
 		protected:
 			 ___FILEBASENAME___();
-			virtual void update();
-		    virtual void draw();
-		    virtual ~___FILEBASENAME___();
 		 
 		};
 

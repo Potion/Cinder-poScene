@@ -3,6 +3,7 @@
 #include "cinder/gl/gl.h"
 
 #include "poScene/Scene.h"
+#include "poScene/ViewController.h"
 #include "_TBOX_PREFIX_.h"
 
 using namespace ci;
@@ -18,24 +19,25 @@ class _TBOX_PREFIX_App
 	void update() override;
 	void draw() override;
     
-    SceneRef scene;
+    SceneRef mScene;
+    ViewController mController;
 };
 
 void _TBOX_PREFIX_App::setup()
 {
-    scene = Scene::create(_TBOX_PREFIX_::create());
+    mScene = Scene::create(_TBOX_PREFIX_::create());
 }
 
 void _TBOX_PREFIX_App::update()
 {
-    scene->update();
+    mScene->update();
 }
 
 void _TBOX_PREFIX_App::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    scene->draw();
+    mScene->draw();
 }
 
 CINDER_APP( _TBOX_PREFIX_App, RendererGl )

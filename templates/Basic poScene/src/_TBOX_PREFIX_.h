@@ -6,12 +6,12 @@ class _TBOX_PREFIX_;
 typedef std::shared_ptr<_TBOX_PREFIX_> _TBOX_PREFIX_Ref;
 
 class _TBOX_PREFIX_
-: public po::scene::View
+: public po::scene::Viewcontroller
 {
 public:
     static _TBOX_PREFIX_Ref create();
     
-    void setup();
+    void viewDidLoad() override;
     
 protected:
 	_TBOX_PREFIX_();

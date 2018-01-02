@@ -2,16 +2,14 @@
 
 _TBOX_PREFIX_Ref _TBOX_PREFIX_::create() 
 {
-    _TBOX_PREFIX_Ref view(new _TBOX_PREFIX_());
-    view->setup();
-    return view;
+     return _TBOX_PREFIX_Ref(new _TBOX_PREFIX_());
 }
 
 _TBOX_PREFIX_::_TBOX_PREFIX_()
 {
 }
 
-void _TBOX_PREFIX_::setup() 
+void _TBOX_PREFIX_::viewDidLoad() 
 {
 
 }
