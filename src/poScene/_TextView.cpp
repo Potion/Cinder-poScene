@@ -81,11 +81,18 @@ namespace po
 
 		void TextView::render()
 		{
-			if( mHasFormat ) {
-				mTexture = ci::gl::Texture::create( mCiTextBox.render(), mFormat );
+
+			try {
+
+				if( mHasFormat ) {
+					mTexture = ci::gl::Texture::create( mCiTextBox.render(), mFormat );
+				}
+				else {
+					mTexture = ci::gl::Texture::create( mCiTextBox.render() );
+				}
 			}
-			else {
-				mTexture = ci::gl::Texture::create( mCiTextBox.render() );
+			catch( ... ) {
+				ci::app::console() << "TextView: Failed to render string: \n" << mCiTextBox.getText() << std::endl;
 			}
 		}
 
