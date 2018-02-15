@@ -975,7 +975,12 @@ namespace po
 
 		bool View::hasSubview( ViewRef view )
 		{
-			return view->getSuperview()->getUID() == getUID();
+			if( view->hasSuperview() ) {
+				return view->getSuperview()->getUID() == getUID();
+			}
+			else {
+				return false;
+			}
 		}
 
 		int View::getIndexForSubview( const ViewRef& view )
