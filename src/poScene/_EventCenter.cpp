@@ -53,6 +53,9 @@ namespace po
 		//	Process all the event queues for this scene
 		void EventCenter::processEvents( std::vector<ViewRef> views )
 		{
+			// remove any empty views
+			views.erase(std::remove(views.begin(), views.end(), nullptr), views.end());
+			
 			//	Sort views to be top down
 			std::sort( views.begin(), views.end(), [&views]( const ViewRef & a, const ViewRef & b ) {
 				return a->getDrawOrder() > b->getDrawOrder();
