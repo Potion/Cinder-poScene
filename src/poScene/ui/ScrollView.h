@@ -28,10 +28,11 @@ namespace po
 					static ScrollViewRef create();
 
 					void setContentOffset( ci::vec2 offset, bool bAnimate = false );
+					void setDelegate( ScrollViewDelegateRef delegate ) { mDelegate = delegate; };
 
 					po::scene::ViewRef getContentView() { return mContentView; }
 					ci::vec2 getContentOffset() { return mContentView->getPosition(); }
-					void setDelegate( ScrollViewDelegateRef delegate ) { mDelegate = delegate; };
+					ci::vec2 getScrollTagetPos() { return mScrollTargetPos; }
 
 					View& addSubview( ViewRef view, bool localize = false ) override;
 
