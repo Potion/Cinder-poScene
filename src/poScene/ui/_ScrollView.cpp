@@ -22,6 +22,8 @@ namespace po
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
+				, mHorizontalScrollingLocked( false )
+				, mVerticalScrollingLocked( false )
 				, mTouchEventsEnabled( true )
 				, mMouseEventsEnabled( true )
 				, mInitialized( false )
@@ -47,6 +49,16 @@ namespace po
 			{
 				CI_ASSERT_MSG( !mInitialized, "Can not add subview directly to ScrollView, get the content view and add to it." );
 				return po::scene::View::addSubview( view );
+			}
+
+			void ScrollView::setHorizontalScrollingLocked( bool shouldLock )
+			{
+				mHorizontalScrollingLocked = shouldLock;
+			}
+
+			void ScrollView::setVerticalScrollingLocked( bool shouldLock )
+			{
+				mVerticalScrollingLocked = shouldLock;
 			}
 
 			void ScrollView::enableMouseEvents()
@@ -82,8 +94,8 @@ namespace po
 
 			void ScrollView::update()
 			{
-				mHorizontalScrollingEnabled = mContentView->getWidth() > getWidth();
-				mVerticalScrollingEnabled = mContentView->getHeight() > getHeight();
+				mHorizontalScrollingEnabled = ( mContentView->getWidth() > getWidth() ) && !mHorizontalScrollingLocked;
+				mVerticalScrollingEnabled = ( mContentView->getHeight() > getHeight() ) && !mVerticalScrollingLocked;
 
 				if( !mIsScrolling ) {
 					ci::vec2 newPos = ( mScrollTargetPos - mContentView->getPosition() ) * mDecel;
