@@ -36,6 +36,9 @@ namespace po
 
 					View& addSubview( ViewRef view, bool localize = false ) override;
 
+					void setHorizontalScrollingLocked( bool shouldLock );
+					void setVerticalScrollingLocked( bool shouldLock );
+
 					void enableMouseEvents();
 					void disableMouseEvents();
 					void enableTouchEvents();
@@ -55,6 +58,7 @@ namespace po
 					ci::vec2 getSnapPos( ci::vec2 pos );
 
 					bool mHorizontalScrollingEnabled, mVerticalScrollingEnabled;
+					bool mHorizontalScrollingLocked, mVerticalScrollingLocked;
 
 					int mEventId;
 					ci::vec2 mStartEventPos, mCurEventPos, mPrevEventPos;

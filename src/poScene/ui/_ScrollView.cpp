@@ -49,6 +49,16 @@ namespace po
 				return po::scene::View::addSubview( view );
 			}
 
+			void ScrollView::setHorizontalScrollingLocked( bool shouldLock )
+			{
+				mHorizontalScrollingLocked = shouldLock;
+			}
+
+			void ScrollView::setVerticalScrollingLocked( bool shouldLock )
+			{
+				mVerticalScrollingLocked = shouldLock;
+			}
+
 			void ScrollView::enableMouseEvents()
 			{
 				mMouseConnections += getSignal( po::scene::MouseEvent::DOWN_INSIDE ).connect( std::bind( &ScrollView::mouseDownInside, this, ::_1 ) );
@@ -82,8 +92,8 @@ namespace po
 
 			void ScrollView::update()
 			{
-				mHorizontalScrollingEnabled = mContentView->getWidth() > getWidth();
-				mVerticalScrollingEnabled = mContentView->getHeight() > getHeight();
+				mHorizontalScrollingEnabled = ( mContentView->getWidth() > getWidth() ) && !mHorizontalScrollingLocked;
+				mVerticalScrollingEnabled = ( mContentView->getHeight() > getHeight() ) && !mVerticalScrollingLocked;
 
 				if( !mIsScrolling ) {
 					ci::vec2 newPos = ( mScrollTargetPos - mContentView->getPosition() ) * mDecel;
