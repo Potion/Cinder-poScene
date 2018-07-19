@@ -22,6 +22,8 @@ namespace po
 				, mDecel( 0.25 )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
+				, mHorizontalScrollingLocked( false )
+				, mVerticalScrollingLocked( false )
 				, mTouchEventsEnabled( true )
 				, mMouseEventsEnabled( true )
 				, mInitialized( false )
