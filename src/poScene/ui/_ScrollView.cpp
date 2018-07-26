@@ -117,18 +117,8 @@ namespace po
 				ci::vec2 maxPos = ci::vec2( 0.f );
 				ci::vec2 minPos = getSize() - mContentView->getSize();
 
-				//ci::app::console() << "----------------------------------------" <<  std::endl;
-				//ci::app::console() << "Pos: " << minPos << std::endl;
-				//ci::app::console() << "Scroll View Size: " << getSize() << std::endl;
-				//ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
-
 				pos.x = ci::clamp<float>( pos.x, minPos.x, maxPos.x );
 				pos.y = ci::clamp<float>( pos.y, minPos.y, maxPos.y );
-
-				//ci::app::console() << std::endl;
-				//ci::app::console() << "Min Pos: " << minPos << std::endl;
-				//ci::app::console() << "New Pos " << pos << std::endl;
-				//ci::app::console() << std::endl;
 
 				return pos;
 			}
@@ -171,14 +161,10 @@ namespace po
 
 					mContentView->setPosition( newPos );
 
-
-
 					if( !mDelegate.expired() ) {
 						ScrollViewRef self = std::dynamic_pointer_cast<ScrollView>( shared_from_this() );
 						mDelegate.lock()->didScroll( self );
 					}
-
-					//ci::app::console() << "Drag Pos: " << pos << std::endl;
 				}
 			}
 
@@ -206,15 +192,6 @@ namespace po
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
 
 					mScrollTargetPos = getSnapPos( targetPos );
-
-					/*
-					ci::app::console() << "----------------------------------------" << std::endl;
-					ci::app::console() << "Pos: " << pos << std::endl;
-					ci::app::console() << "Prev Pos: " << mPrevEventPos << std::endl;
-					ci::app::console() << "Direction: " << direction << std::endl;
-					ci::app::console() << "Throw Distance: " << throwDistance << std::endl;
-					ci::app::console() << "Scroll View Content Size: " << mContentView->getSize() << std::endl;
-					*/
 
 					// Cleanup
 					mIsScrolling = false;

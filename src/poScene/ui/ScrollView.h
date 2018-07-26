@@ -69,7 +69,6 @@ namespace po
 
 					std::weak_ptr<ScrollViewDelegate> mDelegate;
 
-
 					// Event handlers
 					void eventBeganInside( int id, ci::vec2 pos );
 					void eventMoved( int id, ci::vec2 pos );
