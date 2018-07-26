@@ -38,6 +38,7 @@ namespace po
 
 					void setHorizontalScrollingLocked( bool shouldLock );
 					void setVerticalScrollingLocked( bool shouldLock );
+					void setThrowFactor( ci::vec2 throwFactor ) {mThrowFactor = throwFactor;}
 
 					void enableMouseEvents();
 					void disableMouseEvents();
@@ -66,9 +67,9 @@ namespace po
 					ci::vec2 mScrollTargetPos;
 					float mMaxAccel;
 					float mDecel;
+					ci::vec2 mThrowFactor;
 
 					std::weak_ptr<ScrollViewDelegate> mDelegate;
-
 
 					// Event handlers
 					void eventBeganInside( int id, ci::vec2 pos );
