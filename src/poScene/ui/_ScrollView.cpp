@@ -20,6 +20,7 @@ namespace po
 				, mEventId( -1 )
 				, mMaxAccel( 0.1 )
 				, mDecel( 0.25 )
+				, mThrowFactor( 2.0 )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
 				, mHorizontalScrollingLocked( false )
@@ -182,11 +183,11 @@ namespace po
 					accel = ci::vec2( fabs( accel.x ), fabs( accel.y ) );
 
 					// Calculate how far to throw
-					ci::vec2 maxThrowDistance = getSize() * ci::vec2( 2.0 );
+					ci::vec2 maxThrowDistance = getSize() * mThrowFactor;
 					ci::vec2 throwDistance = ci::lmap<ci::vec2>( accel, ci::vec2( 0.0f ), ci::vec2( mMaxAccel ), ci::vec2( 0.0f ), maxThrowDistance );
 
 					// Apply direction to throw distance
-					throwDistance *= direction;
+					throwDistance *= direction * ci::vec2( mHorizontalScrollingEnabled, mVerticalScrollingEnabled );
 
 					// Set our target pos, considering snapping so we don't throw out of the view
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
