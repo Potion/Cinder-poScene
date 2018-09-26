@@ -8,7 +8,7 @@
 ## Using this Repo
 When pulling down the repo, `develop` is the latest branch, `master` is stable. If you're looking for older versions please checkout the appropriate tags - if you're on an old project with Cinder 0.8.6, you can checkout the `v0.8.6` tag.
 
-If you have cpp files with the same name as any of the poScene cpp files, it might compile but fails to link. Building po::scene as a library could prevent this. 
+If you have cpp files with the same name as any of the po::scene cpp files, it might compile but fails to link. Building po::scene as a library could prevent this. 
 
 ## About
 The main philosophy behind po::scene is to avoid replacing any of the built-in Cinder functionality at all costs and keep the library as simple as possible.
