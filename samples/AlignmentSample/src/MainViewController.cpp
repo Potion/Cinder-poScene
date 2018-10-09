@@ -1,4 +1,4 @@
-#include "ViewController.h"
+#include "MainViewController.h"
 
 #include "cinder/app/App.h"
 

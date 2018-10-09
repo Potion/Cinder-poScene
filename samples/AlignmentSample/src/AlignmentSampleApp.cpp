@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "ViewController.h"
+#include "MainViewController.h"
 
 using namespace ci;
 using namespace ci::app;
