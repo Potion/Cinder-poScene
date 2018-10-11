@@ -5,7 +5,7 @@
 #include "poScene/Scene.h"
 #include "poScene/DragAndDrop.h"
 
-#include "ViewController.h"
+#include "MainViewController.h"
 
 using namespace ci;
 using namespace ci::app;
