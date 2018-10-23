@@ -43,7 +43,7 @@ namespace po
 				, mPropagationEnabled( false )
 				, mEventMaxMoveDist( -1 )
 			{
-				setSize( ci::vec2( 50, 50 ) );
+				setSize( ci::vec2( 0, 0 ) );
 			}
 
 			void Button::setup()
@@ -170,13 +170,13 @@ namespace po
 			}
 
 			// Image, text, color and offset setters
-			void Button::setBackgroundImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mBackgroundImages, state ); }
+			void Button::setBackgroundImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mBackgroundImages, state ); setSize( image->getSize() ); }
 			void Button::setBackgroundImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mBackgroundImageOffsets, state ); }
 			void Button::setBackgroundImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mBackgroundImageScales, state ); }
 			void Button::setBackgroundImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mBackgroundImageTints, state ); }
 			void Button::setBackgroundImageAlpha( float alpha, State state ) { setItemForState<float>( alpha, mBackgroundImageAlphas, state ); }
 
-			void Button::setImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mImages, state ); }
+			void Button::setImage( ci::gl::TextureRef image, State state ) { setItemForState<ci::gl::TextureRef>( image, mImages, state ); setSize( image->getSize() ); }
 			void Button::setImageOffset( ci::vec2 offset, State state ) { setItemForState<ci::vec2>( offset, mImageOffsets, state ); }
 			void Button::setImageScale( ci::vec2 scale, State state ) { setItemForState<ci::vec2>( scale, mImageScales, state ); }
 			void Button::setImageTint( ci::Color color, State state ) { setItemForState<ci::Color>( color, mImageTints, state ); }
