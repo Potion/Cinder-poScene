@@ -3,7 +3,7 @@
 #include "cinder/app/RendererGl.h"
 
 #include "poScene/Scene.h"
-#include "ViewController.h"
+#include "MainViewController.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,34 +11,34 @@ using namespace std;
 using namespace po::scene;
 
 class MaskingSampleApp
-: public App
+	: public App
 {
-  public:
-	void setup();
-	void update();
-	void draw();
-    
-    SceneRef mScene;
-	sample::ViewControllerRef mViewController;
+	public:
+		void setup();
+		void update();
+		void draw();
+
+		SceneRef mScene;
+		sample::ViewControllerRef mViewController;
 };
 
 void MaskingSampleApp::setup()
 {
-	setWindowSize(683, 1024);
+	setWindowSize( 683, 1024 );
 	mViewController = sample::ViewController::create();
-    mScene = Scene::create(mViewController);
+	mScene = Scene::create( mViewController );
 }
 
 void MaskingSampleApp::update()
 {
-    mScene->update();
+	mScene->update();
 }
 
 void MaskingSampleApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-    mScene->draw();
+	mScene->draw();
 }
 
 CINDER_APP( MaskingSampleApp, RendererGl )

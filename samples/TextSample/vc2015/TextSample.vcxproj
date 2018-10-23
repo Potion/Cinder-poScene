@@ -209,22 +209,22 @@
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\ViewController.h" />
+    <ClInclude Include="..\src\MainViewController.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_Events.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_MatrixSet.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_Scene.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_TextView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\DragAndDrop.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\DraggableView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\EventCenter.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\Events.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ImageView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\MatrixSet.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\Scene.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\TextView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\View.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ViewController.cpp" />
     <ClCompile Include="..\src\TextSampleApp.cpp" />
-    <ClCompile Include="..\src\ViewController.cpp" />
+    <ClCompile Include="..\src\MainViewController.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

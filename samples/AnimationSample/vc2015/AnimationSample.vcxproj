@@ -79,7 +79,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\..\..\src;..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -106,7 +106,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\..\..\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\..\..\src;..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -132,7 +132,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\blocks\poScene\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\blocks\poScene\src;..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -161,7 +161,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\blocks\poScene\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;..\..\..\..\..\\include;..\..\..\..\..\\boost;..\..\..\..\Box2D\src;..\blocks\poScene\src;..\..\..\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;_WIN32_WINNT=0x0502;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -209,24 +209,24 @@
     <ClInclude Include="..\..\..\src\poScene\ViewController.h" />
     <ClInclude Include="..\..\..\src\poScene\ViewEvents.h" />
     <ClInclude Include="..\include\Resources.h" />
-    <ClInclude Include="..\src\ViewController.h" />
+    <ClInclude Include="..\src\MainViewController.h" />
     <ClInclude Include="..\src\AnimationSquare.h" />
     <ClInclude Include="..\src\Indicator.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\poScene\_DragAndDrop.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_DraggableView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_EventCenter.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_Events.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ImageView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_MatrixSet.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_Scene.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ShapeView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_TextView.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_View.cpp" />
-    <ClCompile Include="..\..\..\src\poScene\_ViewController.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\DragAndDrop.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\DraggableView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\EventCenter.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\Events.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ImageView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\MatrixSet.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\Scene.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ShapeView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\TextView.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\View.cpp" />
+    <ClCompile Include="..\..\..\src\poScene\ViewController.cpp" />
     <ClCompile Include="..\src\AnimationSampleApp.cpp" />
-    <ClCompile Include="..\src\ViewController.cpp" />
+    <ClCompile Include="..\src\MainViewController.cpp" />
     <ClCompile Include="..\src\AnimationSquare.cpp" />
     <ClCompile Include="..\src\Indicator.cpp" />
   </ItemGroup>
