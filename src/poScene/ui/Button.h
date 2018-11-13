@@ -47,7 +47,7 @@ namespace po
 					void setType( Type type ) { mType = type; }
 
 					const State& getState() { return mState; }
-					void setState( State state );
+					virtual void setState( State state );
 
 					void setEventMaxMoveDist( ci::vec2 maxMoveDist ) { mEventMaxMoveDist = maxMoveDist; }
 
