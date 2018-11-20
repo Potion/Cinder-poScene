@@ -44,7 +44,8 @@ namespace po
 				EXACT,
 				WIDTH,
 				HEIGHT,
-				INSIDE
+				INSIDE,
+				OUTSIDE
 			};
 
 			static ci::vec2 alignInRect( ci::vec2 max, ci::Rectf rect, Alignment align )
@@ -198,6 +199,16 @@ namespace po
 
 						break;
 					}
+
+					case Type::OUTSIDE:
+						if( tex->getHeight() > tex->getWidth() ) {
+							textureFitHorizontal( rect, tex, align, points, coords );
+						}
+						else {
+							textureFitVertical( rect, tex, align, points, coords );
+						}
+
+						break;
 
 					default:
 						break;
