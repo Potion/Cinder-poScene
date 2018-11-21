@@ -65,9 +65,8 @@ namespace po
 		void ImageView::draw()
 		{
 			if( mTexture ) {
-				ci::gl::ScopedBlendAlpha alphaBlendScoped;
 				ci::gl::ScopedColor fillColorScoped( ci::ColorA( getFillColor(), getAppliedAlpha() ) );
-
+				ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 				ci::gl::ScopedTextureBind texBind( mTexture );
 				ci::gl::ScopedModelMatrix mModelView;
 				ci::gl::scale( ci::vec2( mTexture->getWidth(), mTexture->getHeight() ) );

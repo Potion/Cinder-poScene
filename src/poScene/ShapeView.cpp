@@ -182,15 +182,16 @@ namespace po
 		{
 			//Draw fill
 			if( getFillEnabled() ) {
-				ci::gl::ScopedBlendAlpha alphaBlendScoped;
 				ci::gl::ScopedColor fillColorScoped( ci::ColorA( getFillColor(), getAppliedAlpha() ) );
 
 				if( mTexture ) {
+					ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 					ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().texture().color() ) );
 					ci::gl::ScopedTextureBind texBind( mTexture );
 					ci::gl::draw( mVboMesh );
 				}
 				else {
+					ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 					ci::gl::ScopedGlslProg shaderScp( ci::gl::getStockShader( ci::gl::ShaderDef().color() ) );
 					ci::gl::draw( mVboMesh );
 				}

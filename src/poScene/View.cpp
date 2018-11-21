@@ -328,7 +328,7 @@ namespace po
 			mMaskShader->uniform( "mask", 1 );
 
 			//	Draw
-			ci::gl::ScopedBlendAlpha alphaBlendScoped;
+			ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 			ci::gl::ScopedColor fillColorScoped( ci::ColorA( getFillColor(), getAppliedAlpha() ) );
 
 			ci::gl::drawSolidRect( getScene()->getWindowFbo()->getBounds() );
