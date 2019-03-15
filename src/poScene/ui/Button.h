@@ -42,6 +42,7 @@ namespace po
 
 					ButtonSignal& getSignalPressed() { return mSignalPressed; }
 					ButtonSignal& getSignalToggled() { return mSignalToggled; }
+					ButtonSignal& getSignalStateSet() { return mSignalStateSet; }
 
 					const Type& getType() { return mType; }
 					void setType( Type type ) { mType = type; }
@@ -159,7 +160,7 @@ namespace po
 
 					bool mPropagationEnabled;
 
-					ButtonSignal mSignalPressed, mSignalToggled;
+					ButtonSignal mSignalPressed, mSignalToggled, mSignalStateSet;
 
 					bool posIsWithinMaxMoveLimits( ci::vec2 pos );
 

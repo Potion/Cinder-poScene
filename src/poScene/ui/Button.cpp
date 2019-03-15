@@ -125,6 +125,9 @@ namespace po
 					mTitleTextView->setCiTextBox( mTitleText );
 					mTitleTextView->setVisible( title != "" ? true : false );
 				}
+
+				//	Send signal state has been set
+				mSignalStateSet.emit( std::dynamic_pointer_cast<Button>( shared_from_this() ) );
 			}
 
 			void Button::setTintOffsetAndAlphaForState( ViewRef view, std::map<State, ci::Color> tints, std::map<State, ci::vec2> offsets, std::map<State, float> alphas, State state )
