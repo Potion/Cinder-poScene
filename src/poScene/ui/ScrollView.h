@@ -32,7 +32,7 @@ namespace po
 
 					po::scene::ViewRef getContentView() { return mContentView; }
 					ci::vec2 getContentOffset() { return mContentView->getPosition(); }
-					ci::vec2 getScrollTagetPos() { return mScrollTargetPos; }
+					ci::vec2 getScrollTargetPos() { return mScrollTargetPos; }
 
 					View& addSubview( ViewRef view, bool localize = false ) override;
 
