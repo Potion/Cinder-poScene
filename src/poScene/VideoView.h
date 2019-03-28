@@ -126,7 +126,7 @@ namespace po
 		void VideoView<T>::draw()
 		{
 			if( mMovieRef != nullptr && mMovieRef->getTexture() ) {
-				ci::gl::ScopedBlendAlpha alphaBlendScoped;
+				ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 				ci::gl::ScopedColor fillColorScoped( ci::ColorA( getFillColor(), getAppliedAlpha() ) );
 				ci::gl::draw( mMovieRef->getTexture() );
 			}

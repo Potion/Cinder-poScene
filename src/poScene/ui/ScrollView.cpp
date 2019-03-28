@@ -1,5 +1,5 @@
 #include "poScene/ui/ScrollView.h"
-
+#include "cinder/Log.h"
 using namespace std::placeholders;
 
 namespace po
@@ -48,7 +48,10 @@ namespace po
 
 			View& ScrollView::addSubview( ViewRef view, bool localize )
 			{
-				CI_ASSERT_MSG( !mInitialized, "Can not add subview directly to ScrollView, get the content view and add to it." );
+				if( mContentView->getSubviews().size() == 0 ) {
+					CI_ASSERT_MSG( !mInitialized, "Can not add subview directly to ScrollView, add to mContentView first." );
+				}
+
 				return po::scene::View::addSubview( view );
 			}
 

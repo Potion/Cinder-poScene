@@ -32,7 +32,7 @@ namespace po
 
 					po::scene::ViewRef getContentView() { return mContentView; }
 					ci::vec2 getContentOffset() { return mContentView->getPosition(); }
-					ci::vec2 getScrollTagetPos() { return mScrollTargetPos; }
+					ci::vec2 getScrollTargetPos() { return mScrollTargetPos; }
 
 					View& addSubview( ViewRef view, bool localize = false ) override;
 
@@ -72,9 +72,13 @@ namespace po
 					std::weak_ptr<ScrollViewDelegate> mDelegate;
 
 					// Event handlers
-					void eventBeganInside( int id, ci::vec2 pos );
-					void eventMoved( int id, ci::vec2 pos );
-					void eventEnded( int id, ci::vec2 pos );
+					// Note: in some cases, eventMoved pos is same as eventEnded
+					// override and calculate the accel when eventMoved
+					// then apply when eventEnded
+
+					virtual void eventBeganInside( int id, ci::vec2 pos );
+					virtual void eventMoved( int id, ci::vec2 pos );
+					virtual void eventEnded( int id, ci::vec2 pos );
 
 					ci::signals::ConnectionList mMouseConnections;
 					bool mMouseEventsEnabled;
