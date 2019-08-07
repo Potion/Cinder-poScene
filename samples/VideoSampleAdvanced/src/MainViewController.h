@@ -25,8 +25,8 @@ namespace sample
 
 		private:
 
-			PlayerControllerRef     mPlayer;
-			MovieThumbRef           mMovies[3];
+			PlayerControllerRef     mPlayerController;
+			MovieThumbRef           mMoviePlayer[3];
 
 			const int               mNumMovies;
 			void                    setUpMovies();
