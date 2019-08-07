@@ -22,7 +22,7 @@ namespace sample
 		mPlayerController = PlayerController::create();
 		mPlayerController->setAlignment( po::scene::Alignment::TOP_CENTER );
 		mPlayerController->setPosition( ci::app::getWindowWidth() / 2, -mPlayerController->getHeight() / 2 ); // centered, just above screen
-		mPlayerController->setAlpha( 0.f );
+		mPlayerController->setAlpha( 0.0f );
 		getView()->addSubview( mPlayerController );
 
 		//  set location for top/center of primary display
@@ -30,7 +30,7 @@ namespace sample
 
 		try {
 			//  load the three videos
-			ci::fs::path moviePath[3];
+			ci::fs::path moviePath[mNumMovies];
 			moviePath[0] = ci::app::getAssetPath( "Placeholder_Video-RH3i7qONrT4.mp4" );
 			moviePath[1] = ci::app::getAssetPath( "Placeholder_Video-ScMzIvxBSi4.mp4" );
 			moviePath[2] = ci::app::getAssetPath( "Video-lBP2Ij86Ua4.mp4" );
@@ -40,7 +40,7 @@ namespace sample
 				auto qtMovie = ci::qtime::MovieGl::create( moviePath[i] );
 				auto poVideoView = VideoViewGl::create();
 				poVideoView->setMovieRef( qtMovie );
-				mMoviePlayer[i] = MovieThumb::create( poVideoView );
+				mMoviePlayer.push_back( MovieThumb::create( poVideoView ) );
 				//mMovies[i]->setDrawBounds(true);
 				getView()->addSubview( mMoviePlayer[i] );
 			}
@@ -53,27 +53,30 @@ namespace sample
 		}        
 	}
 
+    void ViewController::update()
+    {
+        for( int i = 0; i < mMoviePlayer.size(); i++ ) {
+            // due to how the videoView's current implementation, movieView(inside mMoviewPlayer) size remains at 0 on movie load
+            // enforcing alignment here
+            
+            mMoviePlayer[i]->setAlignment( po::scene::Alignment::TOP_CENTER );
+            mMoviePlayer[i]->setDrawBounds( true );
+        }
+    }
 	void ViewController::setUpMovies()
 	{
 		float thumbnailScale = 0.2f;
 		float screenInterval = ci::app::getWindowWidth() / ( mNumMovies * 2 );
 
-		for( int i = 0; i < mNumMovies; i++ ) {
-
-            mMoviePlayer[i]->setAlignment( po::scene::Alignment::CENTER_CENTER );
-
-			//  set scale and position of movie when it's the main one being displayed
-
+		for( int i = 0; i < mMoviePlayer.size(); i++ ) {
 			//  set scale of movie so it plays at width of 640 px (same as mPlayer width)
 			float actualWidth = mMoviePlayer[i]->getUnderlyingMovie()->getMovieRef()->getWidth();
 			float scale = mPlayerController->getWidth() / actualWidth;
             
-//            CI_LOG_I("actualWidth: " << mMoviePlayer[i]->getUnderlyingMovie()->getWidth() << " ,scale: " << scale );
-            
 			mMoviePlayer[i]->setPlayerScale( ci::vec2( scale, scale ) );
 
 			//  set position based on its height
-			float yOffsetForPlayer = ( mMoviePlayer[i]->getUnderlyingMovie()->getHeight() * scale ) * 0.5;
+			float yOffsetForPlayer = ( mMoviePlayer[i]->getUnderlyingMovie()->getHeight() * scale ) * 0.5f;
 			ci::vec2 playerPosition( mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer );
 			mMoviePlayer[i]->setPlayerPos( playerPosition );
 
@@ -83,8 +86,8 @@ namespace sample
 
 			//  calculate the thumbnail position, then set appropriate variable in mMovie object
 			float xPos = ( ( i * 2 ) + 1 ) * screenInterval;
-			mMoviePlayer[i]->setThumbnailPos( ci::vec2( xPos, ci::app::getWindowHeight() * 0.8 ) );
-			mMoviePlayer[i]->setPosition( mMoviePlayer[i]->getThumbnailPos() );
+			mMoviePlayer[i]->setThumbnailPos( ci::vec2( xPos, ci::app::getWindowHeight() * 0.8f ) );
+            mMoviePlayer[i]->setPosition( mMoviePlayer[i]->getThumbnailPos() );
 
 			//  add listeners
 			mMoviePlayer[i]->getSignal( MouseEvent::Type::DOWN_INSIDE ).connect( std::bind( &ViewController::onThumbnailClick, this, std::placeholders::_1 ) );
@@ -95,11 +98,11 @@ namespace sample
 	void ViewController::onThumbnailClick( MouseEvent& event )
 	{
 		ViewRef view = event.getSource();
-		MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>( view );
+		MovieThumbRef playerView = std::static_pointer_cast<MovieThumb>( view );
 
 		for( int i = 0; i < mNumMovies; i++ ) {
 
-			if( mMoviePlayer[i] == thumbnail ) {
+			if( mMoviePlayer[i] == playerView ) {
 
 				//  begin animation to primary displayer position, adjusted for center alignment
 				mMoviePlayer[i]->animateToPlayer();
