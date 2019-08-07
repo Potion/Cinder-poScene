@@ -1,4 +1,4 @@
-[//]: !["po::Scene"](images/logo.jpg)
+!["po::Scene"](images/logo_new.png)
 
 ## ** Repo updates in progress **
 
