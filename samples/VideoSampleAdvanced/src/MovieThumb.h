@@ -37,7 +37,7 @@ public:
     
     bool getIsHome() { return mIsAtHome; };
     
-    po::scene::VideoViewGlRef& getUnderlyingMovie() { return mMovie; };
+    po::scene::VideoViewGlRef getUnderlyingMovie() { return mMovie; };
     
     
     
