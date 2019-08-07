@@ -1,4 +1,5 @@
 #include "MainViewController.h"
+#include "cinder/Log.h"
 
 using namespace po::scene;
 
@@ -18,32 +19,30 @@ namespace sample
 	void ViewController::viewDidLoad()
 	{
 		//  create and add the main player
-		mPlayer = PlayerController::create();
-		mPlayer->setAlignment( po::scene::Alignment::TOP_CENTER );
-		mPlayer->setPosition( ci::app::getWindowWidth() / 2, -mPlayer->getHeight() / 2 ); // centered, just above screen
-		mPlayer->setAlpha( 0.f );
-		getView()->addSubview( mPlayer );
+		mPlayerController = PlayerController::create();
+		mPlayerController->setAlignment( po::scene::Alignment::TOP_CENTER );
+		mPlayerController->setPosition( ci::app::getWindowWidth() / 2, -mPlayerController->getHeight() / 2 ); // centered, just above screen
+		mPlayerController->setAlpha( 0.0f );
+		getView()->addSubview( mPlayerController );
 
 		//  set location for top/center of primary display
 		mPrimaryDisplayerPosition = ci::vec2( ci::app::getWindowWidth() / 2, 50 );
 
 		try {
 			//  load the three videos
-			ci::fs::path moviePath[3];
+			ci::fs::path moviePath[mNumMovies];
 			moviePath[0] = ci::app::getAssetPath( "Placeholder_Video-RH3i7qONrT4.mp4" );
 			moviePath[1] = ci::app::getAssetPath( "Placeholder_Video-ScMzIvxBSi4.mp4" );
 			moviePath[2] = ci::app::getAssetPath( "Video-lBP2Ij86Ua4.mp4" );
 
-			ci::qtime::MovieGlRef qtMovie[3];
-
 			//  load the movies, create po::scene movie references, then create MovieThumb objects
 			for( int i = 0; i < mNumMovies; i++ ) {
-				qtMovie[i] = ci::qtime::MovieGl::create( moviePath[i] );
-				VideoViewGlRef poMovie = VideoViewGl::create();
-				poMovie->setMovieRef( qtMovie[i] );
-				mMovies[i] = MovieThumb::create( poMovie );
+				auto qtMovie = ci::qtime::MovieGl::create( moviePath[i] );
+				auto poVideoView = VideoViewGl::create();
+				poVideoView->setMovieRef( qtMovie );
+				mMoviePlayers.push_back( MovieThumb::create( poVideoView ) );
 				//mMovies[i]->setDrawBounds(true);
-				getView()->addSubview( mMovies[i] );
+				getView()->addSubview( mMoviePlayers[i] );
 			}
 
 			setUpMovies();
@@ -51,79 +50,85 @@ namespace sample
 		}
 		catch( ... ) {
 			std::cout << "Videos did not load successfully";
-		}
+		}        
 	}
 
+    void ViewController::update()
+    {
+        for( int i = 0; i < mMoviePlayers.size(); i++ ) {
+            // due to how the videoView's current implementation, movieView(inside mMoviewPlayer) size remains at 0 on movie load
+            // enforcing alignment here
+            
+            mMoviePlayers[i]->setAlignment( po::scene::Alignment::TOP_CENTER );
+            mMoviePlayers[i]->setDrawBounds( true );
+        }
+    }
 	void ViewController::setUpMovies()
 	{
 		float thumbnailScale = 0.2f;
 		float screenInterval = ci::app::getWindowWidth() / ( mNumMovies * 2 );
 
-		for( int i = 0; i < mNumMovies; i++ ) {
-
-			mMovies[i]->setAlignment( po::scene::Alignment::CENTER_CENTER );
-
-			//  set scale and position of movie when it's the main one being displayed
-
+		for( int i = 0; i < mMoviePlayers.size(); i++ ) {
 			//  set scale of movie so it plays at width of 640 px (same as mPlayer width)
-			float actualWidth = mMovies[i]->getUnderlyingMovie()->getWidth();
-			float scale = mPlayer->getWidth() / actualWidth;
-			mMovies[i]->setPlayerScale( ci::vec2( scale, scale ) );
+			float actualWidth = mMoviePlayers[i]->getUnderlyingMovie()->getMovieRef()->getWidth();
+			float scale = mPlayerController->getWidth() / actualWidth;
+            
+			mMoviePlayers[i]->setPlayerScale( ci::vec2( scale, scale ) );
 
 			//  set position based on its height
-			float yOffsetForPlayer = ( mMovies[i]->getUnderlyingMovie()->getHeight() * scale ) * 0.5;
+			float yOffsetForPlayer = ( mMoviePlayers[i]->getUnderlyingMovie()->getHeight() * scale ) * 0.5f;
 			ci::vec2 playerPosition( mPrimaryDisplayerPosition.x, mPrimaryDisplayerPosition.y + yOffsetForPlayer );
-			mMovies[i]->setPlayerPos( playerPosition );
+			mMoviePlayers[i]->setPlayerPos( playerPosition );
 
 			//  calculate the thumbnail scale, then set appropriate variable in mMovie object
-			mMovies[i]->setThumbnailScale( mMovies[i]->getPlayerScale() * thumbnailScale );
-			mMovies[i]->setScale( mMovies[i]->getThumbnailScale() );
+			mMoviePlayers[i]->setThumbnailScale( mMoviePlayers[i]->getPlayerScale() * thumbnailScale );
+			mMoviePlayers[i]->setScale( mMoviePlayers[i]->getThumbnailScale() );
 
 			//  calculate the thumbnail position, then set appropriate variable in mMovie object
 			float xPos = ( ( i * 2 ) + 1 ) * screenInterval;
-			mMovies[i]->setThumbnailPos( ci::vec2( xPos, ci::app::getWindowHeight() * 0.8 ) );
-			mMovies[i]->setPosition( mMovies[i]->getThumbnailPos() );
+			mMoviePlayers[i]->setThumbnailPos( ci::vec2( xPos, ci::app::getWindowHeight() * 0.8f ) );
+            mMoviePlayers[i]->setPosition( mMoviePlayers[i]->getThumbnailPos() );
 
 			//  add listeners
-			mMovies[i]->getSignal( MouseEvent::Type::DOWN_INSIDE ).connect( std::bind( &ViewController::onThumbnailClick, this, std::placeholders::_1 ) );
-			mMovies[i]->getSignalAnimationComplete().connect( std::bind( &ViewController::onAnimationComplete, this, std::placeholders::_1 ) );
+			mMoviePlayers[i]->getSignal( MouseEvent::Type::DOWN_INSIDE ).connect( std::bind( &ViewController::onThumbnailClick, this, std::placeholders::_1 ) );
+			mMoviePlayers[i]->getSignalAnimationComplete().connect( std::bind( &ViewController::onAnimationComplete, this, std::placeholders::_1 ) );
 		}
 	}
 
 	void ViewController::onThumbnailClick( MouseEvent& event )
 	{
 		ViewRef view = event.getSource();
-		MovieThumbRef thumbnail = std::static_pointer_cast<MovieThumb>( view );
+		MovieThumbRef playerView = std::static_pointer_cast<MovieThumb>( view );
 
 		for( int i = 0; i < mNumMovies; i++ ) {
 
-			if( mMovies[i] == thumbnail ) {
+			if( mMoviePlayers[i] == playerView ) {
 
 				//  begin animation to primary displayer position, adjusted for center alignment
-				mMovies[i]->animateToPlayer();
-				animateControllerToPos( mMovies[i] );
+				mMoviePlayers[i]->animateToPlayer();
+				animateControllerToPos( mMoviePlayers[i] );
 
 				//  move primary movie to top position
-				getView()->moveSubviewToFront( mMovies[i] );
+				getView()->moveSubviewToFront( mMoviePlayers[i] );
 			}
-			else if( !mMovies[i]->getIsHome() ) {
+			else if( !mMoviePlayers[i]->getIsHome() ) {
 
 				//  move other movies back if they're not in their home positions
-				mMovies[i]->animateOutOfPlayerPosition();
+				mMoviePlayers[i]->animateOutOfPlayerPosition();
 			}
 		}
 	}
 
 	void ViewController::onAnimationComplete( MovieThumbRef thumbnail )
 	{
-		mPlayer->setPrimaryMovie( thumbnail->getUnderlyingMovie() );
+		mPlayerController->setPrimaryMovie( thumbnail->getUnderlyingMovie() );
 	}
 
 	void ViewController::animateControllerToPos( MovieThumbRef movie )
 	{
 		//  animate player controller to 50 px below the movie
 
-		float x = mPlayer->getPosition().x;
+		float x = mPlayerController->getPosition().x;
 		//  find the height of the new movie when fully expanded
 		float movieHeight = movie->getUnderlyingMovie()->getHeight() * movie->getPlayerScale().y;
 		//  push the controller to 50 px below that
@@ -131,15 +136,15 @@ namespace sample
 		ci::vec2 newPos( x, y );
 
 		if( !mIsControllerInPosition ) {
-			ci::app::timeline().apply( &mPlayer->getPositionAnim(), newPos, 2.f, ci::EaseOutBounce() );
+			ci::app::timeline().apply( &mPlayerController->getPositionAnim(), newPos, 2.f, ci::EaseOutBounce() );
 		}
 		else {
-			ci::app::timeline().apply( &mPlayer->getPositionAnim(), newPos, 2.f );
+			ci::app::timeline().apply( &mPlayerController->getPositionAnim(), newPos, 2.f );
 		}
 
 		//  fade player in if it's transparent
 		if( !mIsControllerInPosition ) {
-			ci::app::timeline().apply( &mPlayer->getAlphaAnim(), 1.f, 2.f );
+			ci::app::timeline().apply( &mPlayerController->getAlphaAnim(), 1.f, 2.f );
 			mIsControllerInPosition = true;
 		}
 	}

@@ -19,14 +19,15 @@ namespace sample
 			static ViewControllerRef create();
 
 			void viewDidLoad() override;
+            void update() override;
 
 		protected:
 			ViewController();
 
 		private:
 
-			PlayerControllerRef     mPlayer;
-			MovieThumbRef           mMovies[3];
+			PlayerControllerRef     mPlayerController;
+            std::vector<MovieThumbRef>           mMoviePlayers;
 
 			const int               mNumMovies;
 			void                    setUpMovies();

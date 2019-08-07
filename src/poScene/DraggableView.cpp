@@ -176,6 +176,8 @@ namespace po
 				case po::scene::MouseEvent::UP:
 					handleDragEndEvent( event.getLocalPos(), event.getWindowPos(), 0 );
 					break;
+                default:
+                    break;
 			}
 		}
 
@@ -196,6 +198,8 @@ namespace po
 				case po::scene::TouchEvent::ENDED:
 					handleDragEndEvent( event.getLocalPos(), event.getWindowPos(), event.getId() );
 					break;
+                default:
+                    break;
 			}
 		}
 	}
