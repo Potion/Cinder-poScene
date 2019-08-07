@@ -27,7 +27,7 @@ namespace sample
 		private:
 
 			PlayerControllerRef     mPlayerController;
-            std::vector<MovieThumbRef>           mMoviePlayer;
+            std::vector<MovieThumbRef>           mMoviePlayers;
 
 			const int               mNumMovies;
 			void                    setUpMovies();
