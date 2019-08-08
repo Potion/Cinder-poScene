@@ -1,12 +1,10 @@
 !["po::Scene"](images/logo_new.png)
 
-## ** Repo updates in progress **
-
 **po::scene** is [Potion's](http://www.potiondesign.com) 2D [Scene Graph](#scenegraph) block for working with layout, animation and interaction of multiple objects and views within [Cinder](http://libcinder.org). It is at its most useful when used with applications that contain a large amount of interactive objects with various states and attributes. po::scene is released under the [BSD New License](./LICENSE).
 
 
 ## Using this Repo
-When pulling down the repo, `develop` is the latest branch, `master` is stable. If you're looking for older versions please checkout the appropriate tags - if you're on an old project with Cinder 0.8.6, you can checkout the `v0.8.6` tag.
+When pulling down the repo, `develop` is the latest dev branch tested working with Cinder v0.9.1, `master` is stable. If you're looking for older versions please checkout the appropriate tags - if you're on an old project with Cinder 0.8.6, you can checkout the `v0.8.6` tag.
 
 If you have cpp files with the same name as any of the po::scene cpp files, it might compile but fails to link. Building po::scene as a library could prevent this. 
 
@@ -40,8 +38,8 @@ Some of the key features include:
 
 Using a tree metaphor, **po::scene** contains three main classes:
 
-+ `po::scene::Scene` is the root system of the tree. It contains the trunk of the tree (the root ViewController ), which in turn contains all branches and leaves.
-+ `po::scene::ViewController` represents a branch. It can contain any number of other branches, as well as leaves. a ViewController contains a root view, to which leaves may be added.
++ `po::scene::Scene` is the root system of the tree. It contains the trunk of the tree ( the root ViewController ), which in turn contains all branches and leaves.
++ `po::scene::ViewController` represents a branch. It can contain any number of other branches, as well as leaves. a ViewController will always contains a view, to which leaves may be added.
 + `po::Scene::View` represents a leaf, or an end point in the scene-graph. These Views are usually the point for any gl drawing.
 
  
@@ -250,7 +248,11 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 ![Texture example](images/exampleTextureShape.png)<br>
 *Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
-### po::scene::VideoView
+### po::scene::VideoView 
+*Related sample only tested working on Mac.  
+Quicktime has deprecated on Windows.  
+For playing video on Windows, there are many options available, such as: [Cinder-WMFVideo](https://github.com/Potion/Cinder-WMFVideo).*
+
 `po::scene::Video` provides a View that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoView` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
 
 	po::scene::VideoViewRef poVideo = po::scene::VideoView::create();
