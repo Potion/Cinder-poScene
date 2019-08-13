@@ -5,14 +5,15 @@ using namespace po::scene;
 
 namespace sample
 {
+	static const int               mNumMovies = 3;
+
 	ViewControllerRef ViewController::create()
 	{
 		return ViewControllerRef( new ViewController() );
 	}
 
 	ViewController::ViewController()
-		: mNumMovies( 3 )
-		, mIsControllerInPosition( false )
+		: mIsControllerInPosition( false )
 	{
 	}
 
@@ -30,7 +31,7 @@ namespace sample
 
 		try {
 			//  load the three videos
-			ci::fs::path moviePath[mNumMovies];
+			ci::fs::path moviePath[3];
 			moviePath[0] = ci::app::getAssetPath( "Placeholder_Video-RH3i7qONrT4.mp4" );
 			moviePath[1] = ci::app::getAssetPath( "Placeholder_Video-ScMzIvxBSi4.mp4" );
 			moviePath[2] = ci::app::getAssetPath( "Video-lBP2Ij86Ua4.mp4" );
@@ -50,19 +51,19 @@ namespace sample
 		}
 		catch( ... ) {
 			std::cout << "Videos did not load successfully";
-		}        
+		}
 	}
 
-    void ViewController::update()
-    {
-        for( int i = 0; i < mMoviePlayers.size(); i++ ) {
-            // due to how the videoView's current implementation, movieView(inside mMoviewPlayer) size remains at 0 on movie load
-            // enforcing alignment here
-            
-            mMoviePlayers[i]->setAlignment( po::scene::Alignment::TOP_CENTER );
-            mMoviePlayers[i]->setDrawBounds( true );
-        }
-    }
+	void ViewController::update()
+	{
+		for( int i = 0; i < mMoviePlayers.size(); i++ ) {
+			// due to how the videoView's current implementation, movieView(inside mMoviewPlayer) size remains at 0 on movie load
+			// enforcing alignment here
+
+			mMoviePlayers[i]->setAlignment( po::scene::Alignment::TOP_CENTER );
+			mMoviePlayers[i]->setDrawBounds( true );
+		}
+	}
 	void ViewController::setUpMovies()
 	{
 		float thumbnailScale = 0.2f;
@@ -72,7 +73,7 @@ namespace sample
 			//  set scale of movie so it plays at width of 640 px (same as mPlayer width)
 			float actualWidth = mMoviePlayers[i]->getUnderlyingMovie()->getMovieRef()->getWidth();
 			float scale = mPlayerController->getWidth() / actualWidth;
-            
+
 			mMoviePlayers[i]->setPlayerScale( ci::vec2( scale, scale ) );
 
 			//  set position based on its height
@@ -87,7 +88,7 @@ namespace sample
 			//  calculate the thumbnail position, then set appropriate variable in mMovie object
 			float xPos = ( ( i * 2 ) + 1 ) * screenInterval;
 			mMoviePlayers[i]->setThumbnailPos( ci::vec2( xPos, ci::app::getWindowHeight() * 0.8f ) );
-            mMoviePlayers[i]->setPosition( mMoviePlayers[i]->getThumbnailPos() );
+			mMoviePlayers[i]->setPosition( mMoviePlayers[i]->getThumbnailPos() );
 
 			//  add listeners
 			mMoviePlayers[i]->getSignal( MouseEvent::Type::DOWN_INSIDE ).connect( std::bind( &ViewController::onThumbnailClick, this, std::placeholders::_1 ) );
@@ -108,8 +109,12 @@ namespace sample
 				mMoviePlayers[i]->animateToPlayer();
 				animateControllerToPos( mMoviePlayers[i] );
 
-				//  move primary movie to top position
+				// move primary movie to top
 				getView()->moveSubviewToFront( mMoviePlayers[i] );
+
+				// making sure controller is always on top of the primary movie
+				getView()->moveSubviewToFront( mPlayerController );
+
 			}
 			else if( !mMoviePlayers[i]->getIsHome() ) {
 
