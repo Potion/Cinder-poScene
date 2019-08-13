@@ -192,7 +192,7 @@ You could then add subViews to this root View using the `getRootViewController()
 	ViewRef myRootView = MyRootViewClass::create();
 	myScene->getRootViewController()->getView()->addSubView(myRootView);
 	
- or (more common) extend `po::scene::ViewController` and provide that as the root ViewContrlooer.
+ or (more common) extend `po::scene::ViewController` and provide that as the root ViewController.
  
 	using namespace po::scene;
 	SceneRef myScene = Scene::create(MyRootViewControllerClass::create());
@@ -249,7 +249,7 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 *Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
 ### po::scene::VideoView 
-*Related sample only tested working on Mac.  
+*Related samples only tested working on Mac.  
 Quicktime has deprecated on Windows.  
 For playing video on Windows, there are many options available, such as: [Cinder-WMFVideo](https://github.com/Potion/Cinder-WMFVideo).*
 
