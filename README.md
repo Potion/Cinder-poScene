@@ -249,9 +249,10 @@ In addition, a `ci::gl::TextureRef` can be attached to it to any `po::scene::Sha
 *Texture drawn on an ellipse; see the ShapeTextureSample for changes in alignment and additional shapes* 
 
 ### po::scene::VideoView 
-*Related samples only tested working on Mac.  
-Quicktime has deprecated on Windows.  
-For playing video on Windows, there are many options available, such as: [Cinder-WMFVideo](https://github.com/Potion/Cinder-WMFVideo).*
+Related samples only tested working on Mac, and on Windows with [Quicktime 7](https://support.apple.com/downloads/quicktime-windows) installed.   
+
+*Quicktime has deprecated on Windows.*   
+*For playing video on Windows, there are many other options available, such as: [Cinder-WMFVideo](https://github.com/Potion/Cinder-WMFVideo).*
 
 `po::scene::Video` provides a View that wraps a Cinder movie player. Because there are numerous Cinder video players, it was created as a generic wrapper. It provides a `po::scene::VideoView` type, which uses the Cinder Quicktime player. You can access or change the Cinder movie and texture reference by calling `setMovieRef` and `getMovieRef`.
 
