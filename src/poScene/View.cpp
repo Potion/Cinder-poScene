@@ -115,6 +115,7 @@ namespace po
 			, mDrawOrder( 0 )
 			, mPosition( 0.f, 0.f )
 			, mScale( 1.f, 1.f )
+			, mAppliedScale( ci::vec2( 1.0f ) )
 			, mRotation( 0 )
 			, mOffset( 0.f, 0.f )
 			, mAlpha( 1.f )
@@ -224,9 +225,11 @@ namespace po
 			//	Set applied alpha
 			if( hasSuperview() ) {
 				mAppliedAlpha = getSuperview()->getAppliedAlpha() * mAlpha;
+				mAppliedScale = getSuperview()->getAppliedScale() * mScale;
 			}
 			else {
 				mAppliedAlpha = mAlpha;
+				mAppliedScale = mScale;
 			}
 
 			//	Push our Matrix

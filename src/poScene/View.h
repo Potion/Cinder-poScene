@@ -408,6 +408,15 @@ namespace po
 				//! Get the scale
 				virtual ci::vec2 getScale() { return mScale; };
 
+				// Applied Scale
+				// This represents the scale of the View * all of the scale's above it
+				// in the scene graph. This is the actual expected scale that will be displayed
+				// on screen.
+				// Use this method when drawing custom Views
+
+				//! Get the applied scale
+				virtual ci::vec2 getAppliedScale() { return mAppliedScale; };
+
 				// Rotation
 				// Rotates around the origin of the View
 				// Expressed in radians
@@ -694,7 +703,7 @@ namespace po
 			private:
 				// Private attributes
 				ci::vec2 mPosition;
-				ci::vec2 mScale;
+				ci::vec2 mScale, mAppliedScale;
 				float mRotation;
 				ci::vec2 mOffset;
 				ci::ColorA mBackgroundColor;
