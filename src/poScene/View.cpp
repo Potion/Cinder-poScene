@@ -132,6 +132,7 @@ namespace po
 			, mFillColor( 1.f, 1.f, 1.f )
 			, mFillColorAnim( ci::Color( 1.f, 1.f, 1.f ) )
 			, mFillEnabled( true )
+			, mShouldIgnoreSuperviewAppliedAlpha( false )
 			, mStrokeColor( 255, 255, 255 )
 			, mStrokeEnabled( false )
 			, mPixelSnapping( false )
@@ -223,7 +224,7 @@ namespace po
 			//	Update our draw order
 			if( hasScene() ) { mDrawOrder = mScene.lock()->getNextDrawOrder(); }
 
-			//	Set applied alpha
+			//	Set applied properties
 			if( hasSuperview() ) {
 				mAppliedAlpha = getSuperview()->getAppliedAlpha() * mAlpha;
 				mAppliedScale = getSuperview()->getAppliedScale() * mScale;
@@ -233,6 +234,11 @@ namespace po
 				mAppliedAlpha = mAlpha;
 				mAppliedScale = mScale;
 				mAppliedRotation = mRotation;
+			}
+
+			//  Ignore applied alpha if specified for custom draw
+			if( mShouldIgnoreSuperviewAppliedAlpha ) {
+				mAppliedAlpha = mAlpha;
 			}
 
 			//	Push our Matrix

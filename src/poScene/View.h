@@ -451,6 +451,10 @@ namespace po
 
 				//! Get the applied alpha
 				virtual float getAppliedAlpha() { return mAppliedAlpha; }
+				//! Get if should ignore SuperView's appliedAlpha for custom draw purpose
+				virtual bool getIsIgnoringSuperViewAppliedAlpha() { return mShouldIgnoreSuperviewAppliedAlpha; }
+				//! Set if should ignore SuperView's appliedAlpha for custom draw purpose
+				virtual void setShouldIgnoreSuperViewAppliedAlpha( bool enabled ) { mShouldIgnoreSuperviewAppliedAlpha = enabled; }
 
 				// Offset
 				// The offset of drawing, relative to the origin.
@@ -720,6 +724,7 @@ namespace po
 				ci::Color mStrokeColor;
 				bool mFillEnabled, mStrokeEnabled;
 				float mAlpha, mAppliedAlpha;
+				bool mShouldIgnoreSuperviewAppliedAlpha;
 				MatrixOrder mMatrixOrder;
 
 				bool mPixelSnapping;
