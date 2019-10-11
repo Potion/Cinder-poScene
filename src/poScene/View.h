@@ -409,7 +409,7 @@ namespace po
 				virtual ci::vec2 getScale() { return mScale; };
 
 				// Applied Scale
-				// This represents the scale of the View * all of the scale's above it
+				// This represents the scale of the View * all of the scales above it
 				// in the scene graph. This is the actual expected scale that will be displayed
 				// on screen.
 				// Use this method when drawing custom Views
@@ -426,6 +426,15 @@ namespace po
 				//! Get the rotation (in radians)
 				virtual float getRotation() { return mRotation; };
 
+				// Applied Rotation
+				// This represents the rotation of the View + all of the rotations above it
+				// in the scene graph. This is the actual expected rotation that will be displayed
+				// on screen.
+				// Use this method when drawing custom Views
+
+				//! Get the applied rotation
+				virtual float getAppliedRotation() { return mAppliedRotation; }
+
 				// Alpha
 				// Expressed in range (0.0, 1.0), clamped
 
@@ -435,7 +444,7 @@ namespace po
 				virtual float getAlpha() { return mAlpha; };
 
 				// Applied Alpha
-				// This represents the alpha of the View * all of the alpha's above it
+				// This represents the alpha of the View * all of the alphas above it
 				// in the scene graph. This is the actual expected alpha that will be displayed
 				// on screen.
 				// Use this method when drawing custom Views
@@ -704,7 +713,7 @@ namespace po
 				// Private attributes
 				ci::vec2 mPosition;
 				ci::vec2 mScale, mAppliedScale;
-				float mRotation;
+				float mRotation, mAppliedRotation;
 				ci::vec2 mOffset;
 				ci::ColorA mBackgroundColor;
 				ci::Color mFillColor;

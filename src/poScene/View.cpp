@@ -117,6 +117,7 @@ namespace po
 			, mScale( 1.f, 1.f )
 			, mAppliedScale( ci::vec2( 1.0f ) )
 			, mRotation( 0 )
+			, mAppliedRotation( 0 )
 			, mOffset( 0.f, 0.f )
 			, mAlpha( 1.f )
 			, mAppliedAlpha( 1.f )
@@ -226,10 +227,12 @@ namespace po
 			if( hasSuperview() ) {
 				mAppliedAlpha = getSuperview()->getAppliedAlpha() * mAlpha;
 				mAppliedScale = getSuperview()->getAppliedScale() * mScale;
+				mAppliedRotation = getSuperview()->getAppliedRotation() + mRotation;
 			}
 			else {
 				mAppliedAlpha = mAlpha;
 				mAppliedScale = mScale;
+				mAppliedRotation = mRotation;
 			}
 
 			//	Push our Matrix
