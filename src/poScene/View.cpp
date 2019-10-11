@@ -132,7 +132,7 @@ namespace po
 			, mFillColor( 1.f, 1.f, 1.f )
 			, mFillColorAnim( ci::Color( 1.f, 1.f, 1.f ) )
 			, mFillEnabled( true )
-			, mShouldIgnoreSuperviewAppliedAlpha( false )
+			, mIgnoreAppliedAlpha( false )
 			, mStrokeColor( 255, 255, 255 )
 			, mStrokeEnabled( false )
 			, mPixelSnapping( false )
@@ -237,7 +237,7 @@ namespace po
 			}
 
 			//  Ignore applied alpha if specified for custom draw
-			if( mShouldIgnoreSuperviewAppliedAlpha ) {
+			if( mIgnoreAppliedAlpha ) {
 				mAppliedAlpha = mAlpha;
 			}
 
