@@ -451,6 +451,10 @@ namespace po
 
 				//! Get the applied alpha
 				virtual float getAppliedAlpha() { return mAppliedAlpha; }
+				//! Get if ignoring SuperView's appliedAlph
+				virtual bool getIsIgnoringAppliedAlpha() { return mIgnoreAppliedAlpha; }
+				//! Set if should ignore SuperView's appliedAlpha for custom draw purposes
+				virtual void setIgnoreAppliedAlpha( bool enabled ) { mIgnoreAppliedAlpha = enabled; }
 
 				// Offset
 				// The offset of drawing, relative to the origin.
@@ -503,6 +507,7 @@ namespace po
 				// If the alpha is set to 0.0 the draw call does not execute.
 				virtual View& setBackgroundColor( ci::ColorA color ) { mBackgroundColor = color; return *this; };
 				virtual View& setBackgroundColor( ci::Color color ) { return setBackgroundColor( ci::ColorA( color, 1.0 ) ); };
+				virtual ci::ColorA getBackgroundColor() { return mBackgroundColor; };
 
 				// Fill
 				// This is the color used when drawing the View,
@@ -720,6 +725,7 @@ namespace po
 				ci::Color mStrokeColor;
 				bool mFillEnabled, mStrokeEnabled;
 				float mAlpha, mAppliedAlpha;
+				bool mIgnoreAppliedAlpha;
 				MatrixOrder mMatrixOrder;
 
 				bool mPixelSnapping;

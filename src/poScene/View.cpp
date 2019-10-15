@@ -92,7 +92,8 @@ namespace po
 			vec4 alphaValue     = texture( mask, c0 );
 
 			color.rgb     = rgbValue.rgb;
-			color.a       = alphaValue.a * rgbValue.a;
+			// same as GL_ONE, GL_ONE_MINUS_SRC_ALPHA
+			color.a       = alphaValue.a  + alphaValue.a * ( 1.0 - rgbValue.a );
 		}
 		                                           );
 
@@ -132,6 +133,7 @@ namespace po
 			, mFillColor( 1.f, 1.f, 1.f )
 			, mFillColorAnim( ci::Color( 1.f, 1.f, 1.f ) )
 			, mFillEnabled( true )
+			, mIgnoreAppliedAlpha( false )
 			, mStrokeColor( 255, 255, 255 )
 			, mStrokeEnabled( false )
 			, mPixelSnapping( false )
@@ -223,7 +225,7 @@ namespace po
 			//	Update our draw order
 			if( hasScene() ) { mDrawOrder = mScene.lock()->getNextDrawOrder(); }
 
-			//	Set applied alpha
+			//	Set applied properties
 			if( hasSuperview() ) {
 				mAppliedAlpha = getSuperview()->getAppliedAlpha() * mAlpha;
 				mAppliedScale = getSuperview()->getAppliedScale() * mScale;
@@ -233,6 +235,11 @@ namespace po
 				mAppliedAlpha = mAlpha;
 				mAppliedScale = mScale;
 				mAppliedRotation = mRotation;
+			}
+
+			//  Ignore applied alpha if specified for custom draw
+			if( mIgnoreAppliedAlpha ) {
+				mAppliedAlpha = mAlpha;
 			}
 
 			//	Push our Matrix
