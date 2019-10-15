@@ -507,6 +507,7 @@ namespace po
 				// If the alpha is set to 0.0 the draw call does not execute.
 				virtual View& setBackgroundColor( ci::ColorA color ) { mBackgroundColor = color; return *this; };
 				virtual View& setBackgroundColor( ci::Color color ) { return setBackgroundColor( ci::ColorA( color, 1.0 ) ); };
+				virtual ci::ColorA getBackgroundColor() { return mBackgroundColor; };
 
 				// Fill
 				// This is the color used when drawing the View,
