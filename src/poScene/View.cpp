@@ -92,7 +92,8 @@ namespace po
 			vec4 alphaValue     = texture( mask, c0 );
 
 			color.rgb     = rgbValue.rgb;
-			color.a       = alphaValue.a * rgbValue.a;
+			// same as GL_ONE, GL_ONE_MINUS_SRC_ALPHA
+			color.a       = alphaValue.a  + alphaValue.a * ( 1.0 - rgbValue.a );
 		}
 		                                           );
 
