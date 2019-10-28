@@ -206,7 +206,7 @@ namespace po
 				mBackgroundBatch = ci::gl::Batch::create( ci::geom::Rect( ci::Rectf( 0, 0, 1, 1 ) ), shader );
 			}
 
-			ci::gl::ScopedColor color( mBackgroundColor );
+			ci::gl::ScopedColor color( ci::ColorA( mBackgroundColor, getAppliedAlpha() ) );
 
 			ci::gl::ScopedModelMatrix mModelView;
 			ci::gl::scale( ci::vec2( getBounds().getSize() ) );
