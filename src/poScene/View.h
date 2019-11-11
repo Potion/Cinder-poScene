@@ -697,11 +697,30 @@ namespace po
 				ci::Rectf mFrame;
 				bool mUseElasticBounds, mBoundsDirty, mFrameDirty;
 
+				// Update and Draw trees
+				// These traverse Subviews and run
+				// Until they hit an endpoint (View with no Subviews)
+
+				//! Run the update tree
+				virtual void updateTree();
+				//! Start the draw tree, push transformations and settings, etc.
+				virtual void beginDrawTree();
+				//! Go through the draw tree
+				virtual void drawTree();
+				//! Finish drawTree, ending our transformations and restoring to previous state
+				virtual void finishDrawTree();
+
+				//! Run through just the matrix tree to update positions and bounds
+				virtual void matrixTree();
+
 				//	Caching/FBO
-				void captureMasked();
-				void drawMasked();
+				virtual void captureMasked();
+				virtual void drawMasked();
 				po::scene::ViewRef mMask;
 				bool mIsMasked;
+
+				// Background Drawing
+				virtual void drawBackground();
 
 				//	Name (optional, helps identify Views when debugging)
 				std::string mName;
@@ -755,22 +774,6 @@ namespace po
 				// Alignment
 				Alignment mAlignment;
 
-				// Update and Draw trees
-				// These traverse Subviews and run
-				// Until they hit an endpoint (View with no Subviews)
-
-				//! Run the update tree
-				virtual void updateTree();
-				//! Start the draw tree, push transformations and settings, etc.
-				virtual void beginDrawTree();
-				//! Go through the draw tree
-				virtual void drawTree();
-				//! Finish drawTree, ending our transformations and restoring to previous state
-				virtual void finishDrawTree();
-
-				//! Run through just the matrix tree to update positions and bounds
-				virtual void matrixTree();
-
 				//	Transformation Matrix
 				MatrixSet mMatrix;
 
@@ -786,7 +789,6 @@ namespace po
 				void setSuperviewAndScene( ViewRef View );
 
 				// Background Drawing
-				void drawBackground();
 				static ci::gl::BatchRef mBackgroundBatch;
 
 				//	Bounds and frame
