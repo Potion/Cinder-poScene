@@ -113,8 +113,8 @@ namespace po
 				std::vector<ViewRef> allViews;
 
 				// Fbo's for use by Views
-				std::shared_ptr<ci::gl::Fbo> getWindowFbo() { return mFbo; };
-				std::shared_ptr<ci::gl::Fbo> getMaskFbo() { return mMaskFbo; };
+				std::shared_ptr<ci::gl::Fbo> getWindowFbo();
+				std::shared_ptr<ci::gl::Fbo> getMaskFbo();
 
 			private:
 				//

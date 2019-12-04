@@ -57,7 +57,11 @@ namespace po
 			, mFbo( nullptr )
 			, mMaskFbo( nullptr )
 		{
-			createFbos();
+			// The two fbos are only used for masking view.
+			// They shouldn't be created by default.
+			// This method requires a huge amount of memory for high resolution apps.
+			// createFbos();
+
 			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
 		}
 
@@ -127,6 +131,18 @@ namespace po
 					allViews.erase( iter );
 				}
 			}
+		}
+
+		std::shared_ptr<ci::gl::Fbo> Scene::getWindowFbo()
+		{
+			createFbos();
+			return mFbo;
+		}
+
+		std::shared_ptr<ci::gl::Fbo> Scene::getMaskFbo()
+		{
+			createFbos();
+			return mMaskFbo;
 		}
 
 		void Scene::processTrackingQueue()
