@@ -62,7 +62,7 @@ namespace po
 			// This method requires a huge amount of memory for high resolution apps.
 			// createFbos();
 
-			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+			//mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
 		}
 
 		Scene::~Scene()
@@ -136,12 +136,14 @@ namespace po
 		std::shared_ptr<ci::gl::Fbo> Scene::getWindowFbo()
 		{
 			createFbos();
+			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
 			return mFbo;
 		}
 
 		std::shared_ptr<ci::gl::Fbo> Scene::getMaskFbo()
 		{
 			createFbos();
+			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
 			return mMaskFbo;
 		}
 
