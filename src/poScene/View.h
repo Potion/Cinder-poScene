@@ -305,6 +305,8 @@ namespace po
 
 				//! Draw a frame around the bounds, useful for debugging
 				virtual View& setDrawBounds( bool enabled ) { mDrawBounds = enabled; return *this; };
+				//! Draw bounds when view is visible, otherwise hide it. For debugging
+				virtual void setShowBoundsOnlyWhenVisible( bool enabled ) { mShowBoundsOnlyWhenVisible = enabled; };
 				//! Return the bounds
 				virtual ci::Rectf getBounds();
 				//! Enable elastic bounds, which gives bounds containing all subviews
@@ -794,7 +796,7 @@ namespace po
 				//	Bounds and frame
 				//! Draw the bounds/frame
 				void drawBounds();
-				bool mDrawBounds;
+				bool mDrawBounds, mShowBoundsOnlyWhenVisible;
 				ci::Color mBoundsColor;
 				bool mSuperviewShouldIgnoreInBounds;
 

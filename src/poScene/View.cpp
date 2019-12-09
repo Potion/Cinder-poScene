@@ -140,6 +140,7 @@ namespace po
 			, mIsPremultiplied( false )
 			, mBounds( ci::Rectf::zero() )
 			, mDrawBounds( false )
+			, mShowBoundsOnlyWhenVisible( false )
 			, mUseElasticBounds( true )
 			, mBoundsColor( 1.f, 0, 0 )
 			, mSuperviewShouldIgnoreInBounds( false )
@@ -1217,6 +1218,10 @@ namespace po
 
 		void View::drawBounds()
 		{
+			if( mShowBoundsOnlyWhenVisible && !isVisible() ) {
+				return;
+			}
+
 			ci::gl::ScopedColor color( ( ci::Color( mBoundsColor ) ) );
 
 			//	Draw bounding box
