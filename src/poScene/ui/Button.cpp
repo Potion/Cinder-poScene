@@ -292,48 +292,36 @@ namespace po
 
 			void Button::mouseDownInside( po::scene::MouseEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventBeganInside( 0, event.getWindowPos() );
 			}
 
 			void Button::mouseDrag( po::scene::MouseEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventMoved( 0, event.getWindowPos() );
 			}
 
 			void Button::mouseUp( po::scene::MouseEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventEnded( 0, event.getWindowPos() );
 			}
 
 			void Button::touchBeganInside( po::scene::TouchEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventBeganInside( event.getId(), event.getWindowPos() );
 			}
 
 			void Button::touchMoved( po::scene::TouchEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventMoved( event.getId(), event.getWindowPos() );
 			}
 
 			void Button::touchEnded( po::scene::TouchEvent& event )
 			{
-				if( !mInteractionEnabled || !isVisible() ) { return; }
-
 				event.setPropagationEnabled( mPropagationEnabled );
 				eventEnded( event.getId(), event.getWindowPos() );
 			}
