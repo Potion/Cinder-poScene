@@ -131,8 +131,8 @@ namespace po
 				//	This lets us pass our children to the event center by reference (copying super slow)
 				//	but not risk modifying the vector during iteration (i.e. add/remove child during event callback)
 				//
-				void processTrackingQueue();
-				std::map<ViewRef, bool> mTrackingQueue;
+				//void processTrackingQueue();
+				//std::map<ViewRef, bool> mTrackingQueue;
 
 				//
 				//  FBOs for caching + masking

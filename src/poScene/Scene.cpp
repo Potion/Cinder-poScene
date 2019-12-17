@@ -147,23 +147,23 @@ namespace po
 			return mMaskFbo;
 		}
 
-		void Scene::processTrackingQueue()
-		{
-			for( auto& kv : mTrackingQueue ) {
-				if( kv.first ) {
-					std::vector<ViewRef>::iterator iter = std::find( allViews.begin(), allViews.end(), kv.first );
+		//void Scene::processTrackingQueue()
+		//{
+		//	for( auto& kv : mTrackingQueue ) {
+		//		if( kv.first ) {
+		//			std::vector<ViewRef>::iterator iter = std::find( allViews.begin(), allViews.end(), kv.first );
 
-					if( kv.second && iter == allViews.end() ) {
-						allViews.push_back( kv.first );
-					}
-					else {
-						if( iter != allViews.end() ) { allViews.erase( iter ); }
-					}
-				}
-			}
+		//			if( kv.second && iter == allViews.end() ) {
+		//				allViews.push_back( kv.first );
+		//			}
+		//			else {
+		//				if( iter != allViews.end() ) { allViews.erase( iter ); }
+		//			}
+		//		}
+		//	}
 
-			mTrackingQueue.clear();
-		}
+		//	mTrackingQueue.clear();
+		//}
 
 
 
