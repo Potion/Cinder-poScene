@@ -323,7 +323,7 @@ namespace po
 				//	Interaction
 				//  Flag to enable/disable interaction of objects. If it is disabled
 				//  they will not receive events and events will pass through, but they will still draw.
-				virtual void setInteractionEnabled( bool enabled ) { mInteractionEnabled = enabled; };
+				virtual void setInteractionEnabled( bool enabled );
 				virtual bool isInteractionEnabled() { return mInteractionEnabled; };
 
 				//	Hit Testing & Transformation
@@ -358,7 +358,7 @@ namespace po
 				//  set the alpha to 0.0 instead
 
 				//! Set visibility on/off
-				virtual void setVisible( bool enabled ) { mVisible = enabled; };
+				virtual void setVisible( bool enabled );
 				//! Find out if this View is visible.
 				/** This checks not only the View's visibility but also it's superviews up the draw tree to make sure it is visible**/
 				virtual bool isVisible();
@@ -681,6 +681,10 @@ namespace po
 				virtual void setScene( SceneRef scene );
 				//! Remove the scene for this View
 				virtual void removeScene();
+
+				//! Track or untrack subviews based on interaction status, rather than existence as subview
+				void trackForInteraction();
+				void untrackForInteraction();
 
 				//	Tranformation
 				//! Push the transformation matrix based on our attributes

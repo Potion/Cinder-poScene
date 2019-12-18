@@ -548,6 +548,18 @@ namespace po
 			return *this;
 		}
 
+		void po::scene::View::setVisible( bool enabled )
+		{
+			mVisible = enabled;
+
+			if( mVisible ) {
+				trackForInteraction();
+			}
+			else {
+				untrackForInteraction();
+			}
+		}
+
 		//
 		//	Check if we are visible, and up the scene graph
 		//	Somewhat slow, could be better implementation (i.e. superviews set a var on their subviews like "superviewIsVisible")
@@ -773,6 +785,18 @@ namespace po
 			return ci::vec2();
 		}
 
+		void po::scene::View::setInteractionEnabled( bool enabled )
+		{
+			mInteractionEnabled = enabled;
+
+			if( mInteractionEnabled ) {
+				trackForInteraction();
+			}
+			else {
+				untrackForInteraction();
+			}
+		}
+
 		//
 		//  This is used for hit-testing all Views
 		//  Override this function to do any type of custom
@@ -826,6 +850,34 @@ namespace po
 
 			mScene.reset();
 			mHasScene = false;
+		}
+
+		void po::scene::View::trackForInteraction()
+		{
+			SceneRef scene = mScene.lock();
+
+			if( scene ) {
+				scene->trackView( shared_from_this() );
+
+				for( ViewRef& subview : mSubviews ) {
+					if( subview->isEligibleForInteractionEvents() ) {
+						subview->trackForInteraction();
+					}
+				}
+			}
+		}
+
+		void po::scene::View::untrackForInteraction()
+		{
+			SceneRef scene = mScene.lock();
+
+			if( scene ) {
+				scene->untrackView( shared_from_this() );
+
+				for( ViewRef& subview : mSubviews ) {
+					subview->untrackForInteraction();
+				}
+			}
 		}
 
 		void View::setSuperview( ViewRef containerView )
