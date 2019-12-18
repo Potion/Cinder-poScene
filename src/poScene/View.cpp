@@ -44,6 +44,7 @@
 
 #include "cinder/CinderMath.h"
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
 
 #include "poScene/View.h"
 #include "poScene/ShapeView.h"
@@ -550,6 +551,8 @@ namespace po
 
 		void po::scene::View::setVisible( bool enabled )
 		{
+			if( mVisible == enabled ) { return; }
+
 			mVisible = enabled;
 
 			if( mVisible ) {
@@ -787,6 +790,8 @@ namespace po
 
 		void po::scene::View::setInteractionEnabled( bool enabled )
 		{
+			if( mInteractionEnabled == enabled ) { return; }
+
 			mInteractionEnabled = enabled;
 
 			if( mInteractionEnabled ) {
@@ -822,14 +827,14 @@ namespace po
 			mHasScene = mScene.lock() ? true : false;
 
 			if( hasScene() ) {
-				mScene.lock()->trackView( shared_from_this() );
+				//mScene.lock()->trackView( shared_from_this() );
 
 				for( ViewRef& subview : mSubviews ) {
 					subview->setScene( scene );
 				}
 
 				mSignalWillAppear.emit( shared_from_this() );
-			};
+			}
 		}
 
 		SceneRef View::getScene() { return mScene.lock(); }
@@ -862,6 +867,9 @@ namespace po
 				for( ViewRef& subview : mSubviews ) {
 					if( subview->isEligibleForInteractionEvents() ) {
 						subview->trackForInteraction();
+					}
+					else {
+						subview->untrackForInteraction();
 					}
 				}
 			}
@@ -909,6 +917,7 @@ namespace po
 			//	Assign ourselves as the superview
 			view->setSuperview( shared_from_this() );
 			view->setScene( mScene.lock() );
+			view->trackForInteraction();
 		}
 
 		View& View::removeFromSuperview()
@@ -1230,6 +1239,7 @@ namespace po
 			//	Assign ourselves as the superview
 			view->setSuperview( shared_from_this() );
 			view->setScene( mScene.lock() );
+			view->trackForInteraction();
 		}
 
 

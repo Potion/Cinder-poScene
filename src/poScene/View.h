@@ -682,6 +682,7 @@ namespace po
 				//! Remove the scene for this View
 				virtual void removeScene();
 
+
 				//! Track or untrack subviews based on interaction status, rather than existence as subview
 				void trackForInteraction();
 				void untrackForInteraction();

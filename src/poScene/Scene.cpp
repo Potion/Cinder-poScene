@@ -29,6 +29,7 @@
 */
 
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
 
 #include "poScene/Scene.h"
 #include "poScene/View.h"
@@ -101,6 +102,7 @@ namespace po
 				mRootViewController->getView()->removeScene();
 				mRootViewController = viewController;
 				mRootViewController->getView()->setScene( shared_from_this() );
+				mRootViewController->getView()->trackForInteraction();
 			}
 		}
 
