@@ -72,7 +72,9 @@ namespace po
 
 			public:
 				static SceneRef create();
+				static SceneRef create( bool createMouseEventProcessor, bool createTouchEventProcessor );
 				static SceneRef create( ViewControllerRef rootViewController );
+				static SceneRef create( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor );
 				~Scene();
 
 				//! Get this Scene's internal camera
@@ -100,6 +102,7 @@ namespace po
 
 			protected:
 				Scene( ViewControllerRef rootViewController );
+				Scene( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor );
 
 				//	Root View of scene
 				ViewControllerRef mRootViewController;

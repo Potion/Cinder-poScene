@@ -44,9 +44,21 @@ namespace po
 			return create( ViewController::create() );
 		}
 
+		SceneRef Scene::create( bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			return create( ViewController::create(), createMouseEventProcessor, createTouchEventProcessor );
+		}
+
 		SceneRef Scene::create( ViewControllerRef rootViewController )
 		{
 			SceneRef scene( new Scene( rootViewController ) );
+			scene->setRootViewController( rootViewController );
+			return scene;
+		}
+
+		SceneRef Scene::create( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			SceneRef scene( new Scene( rootViewController, createMouseEventProcessor, createTouchEventProcessor ) );
 			scene->setRootViewController( rootViewController );
 			return scene;
 		}
@@ -57,6 +69,7 @@ namespace po
 			, mEventCenter( EventCenter::create() )
 			, mFbo( nullptr )
 			, mMaskFbo( nullptr )
+			, drawOrderCounter( 0 )
 		{
 			// The two fbos are only used for masking view.
 			// They shouldn't be created by default.
@@ -64,6 +77,16 @@ namespace po
 			// createFbos();
 
 			//mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+		}
+
+		Scene::Scene( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor )
+			: mRootViewController( rootViewController )
+			, mAutoCam( true )
+			, mEventCenter( EventCenter::create( createMouseEventProcessor, createTouchEventProcessor ) )
+			, mFbo( nullptr )
+			, mMaskFbo( nullptr )
+			, drawOrderCounter( 0 )
+		{
 		}
 
 		Scene::~Scene()

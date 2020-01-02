@@ -61,6 +61,7 @@ namespace po
 		{
 			public:
 				static EventCenterRef create();
+				static EventCenterRef create( bool createMouseEventProcessor, bool createTouchEventProcessor );
 
 				void addEventProcessor( const EventProcessorBaseRef& processor )
 				{
@@ -72,6 +73,7 @@ namespace po
 
 			private:
 				EventCenter();
+				EventCenter( bool createMouseEventProcessor, bool createTouchEventProcessor );
 
 				std::vector<EventProcessorBaseRef> mEventProcessors;
 		};

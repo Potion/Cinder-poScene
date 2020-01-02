@@ -44,10 +44,26 @@ namespace po
 			return EventCenterRef( new EventCenter() );
 		}
 
+		EventCenterRef EventCenter::create( bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			return EventCenterRef( new EventCenter( createMouseEventProcessor, createTouchEventProcessor ) );
+		}
+
 		EventCenter::EventCenter()
 		{
 			addEventProcessor( EventProcessorBaseRef( new MouseEventProcessor() ) );
 			addEventProcessor( EventProcessorBaseRef( new TouchEventProcessor() ) );
+		}
+
+		EventCenter::EventCenter( bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			if( createMouseEventProcessor ) {
+				addEventProcessor( EventProcessorBaseRef( new MouseEventProcessor() ) );
+			}
+
+			if( createTouchEventProcessor ) {
+				addEventProcessor( EventProcessorBaseRef( new TouchEventProcessor() ) );
+			}
 		}
 
 		//	Process all the event queues for this scene
