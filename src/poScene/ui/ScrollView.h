@@ -39,6 +39,8 @@ namespace po
 					void setHorizontalScrollingLocked( bool shouldLock );
 					void setVerticalScrollingLocked( bool shouldLock );
 					void setThrowFactor( ci::vec2 throwFactor ) {mThrowFactor = throwFactor;}
+					void setHorizontalSnapping( bool shouldSnap ) { mHorizontalSnappingEnabled = shouldSnap; };
+					void setVerticalSnapping( bool shouldSnap ) { mVerticalSnappingEnabled = shouldSnap; };
 
 					void enableMouseEvents();
 					void disableMouseEvents();
@@ -57,6 +59,7 @@ namespace po
 
 					// Scrolling
 					ci::vec2 getSnapPos( ci::vec2 pos );
+					bool mHorizontalSnappingEnabled, mVerticalSnappingEnabled;
 
 					bool mHorizontalScrollingEnabled, mVerticalScrollingEnabled;
 					bool mHorizontalScrollingLocked, mVerticalScrollingLocked;
