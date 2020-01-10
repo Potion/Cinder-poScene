@@ -826,9 +826,7 @@ namespace po
 
 		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
 		{
-			if( hasMask() ) {
-				calculateMatrices();
-			}
+			calculateMatrices();
 
 			return mMatrix.globalToLocal( windowPoint );
 		}
@@ -836,9 +834,7 @@ namespace po
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
 			if( mHasScene ) {
-				if( hasMask() ) {
-					calculateMatrices();
-				}
+				calculateMatrices();
 
 				return mMatrix.localToGlobal( scenePoint );
 			}
