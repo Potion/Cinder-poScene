@@ -29,6 +29,7 @@
 */
 
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
 
 #include "poScene/Scene.h"
 #include "poScene/View.h"
@@ -43,9 +44,21 @@ namespace po
 			return create( ViewController::create() );
 		}
 
+		SceneRef Scene::create( bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			return create( ViewController::create(), createMouseEventProcessor, createTouchEventProcessor );
+		}
+
 		SceneRef Scene::create( ViewControllerRef rootViewController )
 		{
 			SceneRef scene( new Scene( rootViewController ) );
+			scene->setRootViewController( rootViewController );
+			return scene;
+		}
+
+		SceneRef Scene::create( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor )
+		{
+			SceneRef scene( new Scene( rootViewController, createMouseEventProcessor, createTouchEventProcessor ) );
 			scene->setRootViewController( rootViewController );
 			return scene;
 		}
@@ -56,9 +69,24 @@ namespace po
 			, mEventCenter( EventCenter::create() )
 			, mFbo( nullptr )
 			, mMaskFbo( nullptr )
+			, drawOrderCounter( 0 )
 		{
-			createFbos();
-			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+			// The two fbos are only used for masking view.
+			// They shouldn't be created by default.
+			// This method requires a huge amount of memory for high resolution apps.
+			// createFbos();
+
+			//mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+		}
+
+		Scene::Scene( ViewControllerRef rootViewController, bool createMouseEventProcessor, bool createTouchEventProcessor )
+			: mRootViewController( rootViewController )
+			, mAutoCam( true )
+			, mEventCenter( EventCenter::create( createMouseEventProcessor, createTouchEventProcessor ) )
+			, mFbo( nullptr )
+			, mMaskFbo( nullptr )
+			, drawOrderCounter( 0 )
+		{
 		}
 
 		Scene::~Scene()
@@ -97,6 +125,7 @@ namespace po
 				mRootViewController->getView()->removeScene();
 				mRootViewController = viewController;
 				mRootViewController->getView()->setScene( shared_from_this() );
+				mRootViewController->getView()->trackForInteraction();
 			}
 		}
 
@@ -129,23 +158,37 @@ namespace po
 			}
 		}
 
-		void Scene::processTrackingQueue()
+		std::shared_ptr<ci::gl::Fbo> Scene::getWindowFbo()
 		{
-			for( auto& kv : mTrackingQueue ) {
-				if( kv.first ) {
-					std::vector<ViewRef>::iterator iter = std::find( allViews.begin(), allViews.end(), kv.first );
-
-					if( kv.second && iter == allViews.end() ) {
-						allViews.push_back( kv.first );
-					}
-					else {
-						if( iter != allViews.end() ) { allViews.erase( iter ); }
-					}
-				}
-			}
-
-			mTrackingQueue.clear();
+			createFbos();
+			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+			return mFbo;
 		}
+
+		std::shared_ptr<ci::gl::Fbo> Scene::getMaskFbo()
+		{
+			createFbos();
+			mConnWindowResize = ci::app::getWindow()->getSignalResize().connect( std::bind( &Scene::createFbos, this ) );
+			return mMaskFbo;
+		}
+
+		//void Scene::processTrackingQueue()
+		//{
+		//	for( auto& kv : mTrackingQueue ) {
+		//		if( kv.first ) {
+		//			std::vector<ViewRef>::iterator iter = std::find( allViews.begin(), allViews.end(), kv.first );
+
+		//			if( kv.second && iter == allViews.end() ) {
+		//				allViews.push_back( kv.first );
+		//			}
+		//			else {
+		//				if( iter != allViews.end() ) { allViews.erase( iter ); }
+		//			}
+		//		}
+		//	}
+
+		//	mTrackingQueue.clear();
+		//}
 
 
 

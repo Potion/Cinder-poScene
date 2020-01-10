@@ -44,6 +44,7 @@
 
 #include "cinder/CinderMath.h"
 #include "cinder/app/App.h"
+#include "cinder/Log.h"
 
 #include "poScene/View.h"
 #include "poScene/ShapeView.h"
@@ -601,6 +602,20 @@ namespace po
 			return *this;
 		}
 
+		void po::scene::View::setVisible( bool enabled )
+		{
+			if( mVisible == enabled ) { return; }
+
+			mVisible = enabled;
+
+			if( mVisible ) {
+				trackForInteraction();
+			}
+			else {
+				untrackForInteraction();
+			}
+		}
+
 		//
 		//	Check if we are visible, and up the scene graph
 		//	Somewhat slow, could be better implementation (i.e. superviews set a var on their subviews like "superviewIsVisible")
@@ -831,6 +846,20 @@ namespace po
 			return ci::vec2();
 		}
 
+		void po::scene::View::setInteractionEnabled( bool enabled )
+		{
+			if( mInteractionEnabled == enabled ) { return; }
+
+			mInteractionEnabled = enabled;
+
+			if( mInteractionEnabled ) {
+				trackForInteraction();
+			}
+			else {
+				untrackForInteraction();
+			}
+		}
+
 		//
 		//  This is used for hit-testing all Views
 		//  Override this function to do any type of custom
@@ -856,14 +885,14 @@ namespace po
 			mHasScene = mScene.lock() ? true : false;
 
 			if( hasScene() ) {
-				mScene.lock()->trackView( shared_from_this() );
+				//mScene.lock()->trackView( shared_from_this() );
 
 				for( ViewRef& subview : mSubviews ) {
 					subview->setScene( scene );
 				}
 
 				mSignalWillAppear.emit( shared_from_this() );
-			};
+			}
 		}
 
 		SceneRef View::getScene() { return mScene.lock(); }
@@ -884,6 +913,37 @@ namespace po
 
 			mScene.reset();
 			mHasScene = false;
+		}
+
+		void po::scene::View::trackForInteraction()
+		{
+			SceneRef scene = mScene.lock();
+
+			if( scene ) {
+				scene->trackView( shared_from_this() );
+
+				for( ViewRef& subview : mSubviews ) {
+					if( subview->isEligibleForInteractionEvents() ) {
+						subview->trackForInteraction();
+					}
+					else {
+						subview->untrackForInteraction();
+					}
+				}
+			}
+		}
+
+		void po::scene::View::untrackForInteraction()
+		{
+			SceneRef scene = mScene.lock();
+
+			if( scene ) {
+				scene->untrackView( shared_from_this() );
+
+				for( ViewRef& subview : mSubviews ) {
+					subview->untrackForInteraction();
+				}
+			}
 		}
 
 		void View::setSuperview( ViewRef containerView )
@@ -915,6 +975,7 @@ namespace po
 			//	Assign ourselves as the superview
 			view->setSuperview( shared_from_this() );
 			view->setScene( mScene.lock() );
+			view->trackForInteraction();
 		}
 
 		View& View::removeFromSuperview()
@@ -1236,6 +1297,7 @@ namespace po
 			//	Assign ourselves as the superview
 			view->setSuperview( shared_from_this() );
 			view->setScene( mScene.lock() );
+			view->trackForInteraction();
 		}
 
 

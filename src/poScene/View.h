@@ -323,7 +323,7 @@ namespace po
 				//	Interaction
 				//  Flag to enable/disable interaction of objects. If it is disabled
 				//  they will not receive events and events will pass through, but they will still draw.
-				virtual void setInteractionEnabled( bool enabled ) { mInteractionEnabled = enabled; };
+				virtual void setInteractionEnabled( bool enabled );
 				virtual bool isInteractionEnabled() { return mInteractionEnabled; };
 
 				//	Hit Testing & Transformation
@@ -358,7 +358,7 @@ namespace po
 				//  set the alpha to 0.0 instead
 
 				//! Set visibility on/off
-				virtual void setVisible( bool enabled ) { mVisible = enabled; };
+				virtual void setVisible( bool enabled );
 				//! Find out if this View is visible.
 				/** This checks not only the View's visibility but also it's superviews up the draw tree to make sure it is visible**/
 				virtual bool isVisible();
@@ -685,6 +685,11 @@ namespace po
 				//! Remove the scene for this View
 				virtual void removeScene();
 
+
+				//! Track or untrack subviews based on interaction status, rather than existence as subview
+				void trackForInteraction();
+				void untrackForInteraction();
+
 				//	Tranformation
 				//! Push the transformation matrix based on our attributes
 				void setTransformation();
@@ -700,13 +705,32 @@ namespace po
 				ci::Rectf mFrame;
 				bool mUseElasticBounds, mBoundsDirty, mFrameDirty;
 
+				// Update and Draw trees
+				// These traverse Subviews and run
+				// Until they hit an endpoint (View with no Subviews)
+
+				//! Run the update tree
+				virtual void updateTree();
+				//! Start the draw tree, push transformations and settings, etc.
+				virtual void beginDrawTree();
+				//! Go through the draw tree
+				virtual void drawTree();
+				//! Finish drawTree, ending our transformations and restoring to previous state
+				virtual void finishDrawTree();
+
+				//! Run through just the matrix tree to update positions and bounds
+				virtual void matrixTree();
+
 				//	Caching/FBO
-				void captureMasked();
-				void drawMasked();
+				virtual void captureMasked();
+				virtual void drawMasked();
 				po::scene::ViewRef mMask;
 				bool mIsMasked;
 				ci::gl::FboRef mViewFbo;
 				ci::gl::FboRef mMaskFbo;
+
+				// Background Drawing
+				virtual void drawBackground();
 
 				//	Name (optional, helps identify Views when debugging)
 				std::string mName;
@@ -760,22 +784,6 @@ namespace po
 				// Alignment
 				Alignment mAlignment;
 
-				// Update and Draw trees
-				// These traverse Subviews and run
-				// Until they hit an endpoint (View with no Subviews)
-
-				//! Run the update tree
-				virtual void updateTree();
-				//! Start the draw tree, push transformations and settings, etc.
-				virtual void beginDrawTree();
-				//! Go through the draw tree
-				virtual void drawTree();
-				//! Finish drawTree, ending our transformations and restoring to previous state
-				virtual void finishDrawTree();
-
-				//! Run through just the matrix tree to update positions and bounds
-				virtual void matrixTree();
-
 				//	Transformation Matrix
 				MatrixSet mMatrix;
 
@@ -791,7 +799,6 @@ namespace po
 				void setSuperviewAndScene( ViewRef View );
 
 				// Background Drawing
-				void drawBackground();
 				static ci::gl::BatchRef mBackgroundBatch;
 
 				//	Bounds and frame

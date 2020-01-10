@@ -109,6 +109,15 @@ namespace po
 
 			void ScrollView::setContentOffset( ci::vec2 offset, bool bAnimate )
 			{
+				// for vertial scrolls, the limitation here ensures that we don't over scroll
+				if( offset.y > 0 ) {
+					offset = ci::vec2( offset.x, 0 );
+				}
+
+				if( offset.y - getHeight() < -mContentView->getHeight() ) {
+					offset = ci::vec2( offset.x, -mContentView->getHeight() + getHeight() );
+				}
+
 				mScrollTargetPos = offset;
 
 				if( !bAnimate ) {
