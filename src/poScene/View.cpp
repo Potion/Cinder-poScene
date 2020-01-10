@@ -215,9 +215,11 @@ namespace po
 
 		void View::draw()
 		{
+
 			for( ViewRef& subview : mSubviews ) {
 				subview->drawTree();
 			}
+
 		}
 
 		void View::beginDrawTree()
@@ -260,8 +262,8 @@ namespace po
 				}
 				else {
 					captureMasked();
-					finishDrawTree();
 					drawMasked();
+					finishDrawTree();
 				}
 			}
 		}
@@ -304,34 +306,57 @@ namespace po
 
 		void View::captureMasked()
 		{
-			//	Save the window buffer
-			{
-				//  Draw ourself into FBO
-				ci::gl::ScopedFramebuffer buffer( getScene()->getWindowFbo() );
-				ci::gl::clear( ci::ColorA::zero() );
-
-				ci::gl::ScopedModelMatrix();
-				draw();
+			if( !mMaskFbo ) {
+				createFbosForMask();
 			}
 
 			{
-				//  Draw mask into Masking FBO (replace with Mask buffer in GLNext)
-				ci::gl::ScopedFramebuffer buffer( getScene()->getMaskFbo() );
-				ci::gl::clear( ci::ColorA::zero() );
+				// Draw view fbo
+				ci::gl::Fbo::Format format;
+				format.setSamples( 1 );
+				format.enableDepthBuffer( false );
 
-				ci::gl::ScopedModelMatrix();
+				ci::gl::ScopedFramebuffer fboBind( mViewFbo );
+
+				ci::gl::ScopedViewport vp( ci::ivec2( 0 ), mViewFbo->getSize() );
+
+				ci::gl::pushMatrices();
+				ci::gl::setMatricesWindow( mViewFbo->getWidth(), mViewFbo->getHeight() );
+				ci::gl::clear( ci::ColorA( 0.f, 0.f, 0.f, 0.f ) );
+				//ci::gl::ScopedBlend blend( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+				draw();
+				ci::gl::popMatrices();
+
+			}
+
+			{
+				// Draw mask fbo
+				ci::gl::Fbo::Format format;
+				format.setSamples( 1 );
+				format.enableDepthBuffer( false );
+
+				ci::gl::ScopedFramebuffer fboBind( mMaskFbo );
+
+				ci::gl::ScopedViewport vp( ci::ivec2( 0 ), mMaskFbo->getSize() );
+
+				ci::gl::pushMatrices();
+				ci::gl::setMatricesWindow( mMaskFbo->getWidth(), mMaskFbo->getHeight() );
+				ci::gl::clear( ci::ColorA( 0.f, 0.f, 0.f, 0.f ) );
+
 				mMask->drawTree();
+				ci::gl::popMatrices();
+
 			}
 		}
 
 		void View::drawMasked()
 		{
-			ci::gl::pushModelView();
-			ci::gl::setMatricesWindow( ci::app::getWindowSize() );
+			//ci::gl::pushModelView();
+			//ci::gl::setMatricesWindow( ci::app::getWindowSize() );
 
 			// Bind FBO textures
-			ci::gl::ScopedTextureBind fboBind( getScene()->getWindowFbo()->getColorTexture(), 0 );
-			ci::gl::ScopedTextureBind maskBind( getScene()->getMaskFbo()->getColorTexture(), 1 );
+			ci::gl::ScopedTextureBind fboBind( mViewFbo->getColorTexture(), 0 );
+			ci::gl::ScopedTextureBind maskBind( mMaskFbo->getColorTexture(), 1 );
 
 			//	Bind Shader
 			ci::gl::ScopedGlslProg maskShader( mMaskShader );
@@ -344,9 +369,14 @@ namespace po
 			ci::gl::ScopedBlend blend( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
 			ci::gl::ScopedColor fillColorScoped( ci::ColorA( getFillColor(), getAppliedAlpha() ) );
 
-			ci::gl::drawSolidRect( getScene()->getWindowFbo()->getBounds() );
+			//// Compensate local position difference
+			//ci::gl::translate( localToWindow( getPosition() ) );
 
-			ci::gl::popModelView();
+			//// Scale to match SuperView
+			//ci::gl::scale( getMaskedScale() );
+			ci::gl::drawSolidRect( mViewFbo->getBounds() );
+
+			//ci::gl::popModelView();
 		}
 
 
@@ -381,10 +411,33 @@ namespace po
 		ViewRef View::removeMask()
 		{
 			mIsMasked = false;
-
+			mMaskFbo.reset();
+			mViewFbo.reset();
 			ViewRef mask = mMask;
 			mMask.reset();
 			return mask;
+		}
+
+		void po::scene::View::createFbosForMask()
+		{
+			// If the window width or height is 0 (probably minimized) we can't create FBOs so return
+			if( ( ( int )getWidth() == 0 ) | ( ( int )getHeight() == 0 ) ) {
+				return;
+			}
+
+			// If the size is the same as our FBO do nothing (i.e. open window from minimize)
+			if( mViewFbo && getWidth() == mViewFbo->getWidth() && getHeight() == mViewFbo->getHeight() ) {
+				return;
+			}
+
+			//	Create the FBO
+			ci::gl::Fbo::Format format;
+			format.setSamples( 1 );
+			format.enableDepthBuffer( false );
+			format.setColorTextureFormat( ci::gl::Texture2d::Format().internalFormat( GL_RGBA32F ) );
+
+			mViewFbo = ci::gl::Fbo::create( getWidth(), getHeight(), format );
+			mMaskFbo = ci::gl::Fbo::create( getWidth(), getHeight(), format );
 		}
 
 
@@ -758,15 +811,20 @@ namespace po
 
 		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
 		{
+			if( hasMask ) {
+				calculateMatrices();
+			}
 
-			//calculateMatrices();
 			return mMatrix.globalToLocal( windowPoint );
 		}
 
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
 			if( mHasScene ) {
-				//calculateMatrices();
+				if( hasMask ) {
+					calculateMatrices();
+				}
+
 				return mMatrix.localToGlobal( scenePoint );
 			}
 

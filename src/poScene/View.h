@@ -569,6 +569,9 @@ namespace po
 				//! Get the mask object
 				virtual ViewRef getMask() { return mMask; };
 
+				//! Create fbo for masks
+				void createFbosForMask();
+
 				// Identifiers (Assigned from Scene)
 				// Used by the scene to identifier the objects
 				// and find their depth in the scene for hit testing
@@ -702,6 +705,8 @@ namespace po
 				void drawMasked();
 				po::scene::ViewRef mMask;
 				bool mIsMasked;
+				ci::gl::FboRef mViewFbo;
+				ci::gl::FboRef mMaskFbo;
 
 				//	Name (optional, helps identify Views when debugging)
 				std::string mName;
