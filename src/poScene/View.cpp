@@ -259,11 +259,19 @@ namespace po
 
 				if( !mIsMasked ) {
 					draw();
+
+					//	Draw bounds if necessary
+					if( mDrawBounds ) { drawBounds(); }
+
 					finishDrawTree();
 				}
 				else {
 					captureMasked();
 					drawMasked();
+
+					//	Draw bounds if necessary
+					if( mDrawBounds ) { drawBounds(); }
+
 					finishDrawTree();
 				}
 			}
@@ -271,10 +279,6 @@ namespace po
 
 		void View::finishDrawTree()
 		{
-
-			//	Draw bounds if necessary
-			if( mDrawBounds ) { drawBounds(); }
-
 			//	Pop our Matrix
 			ci::gl::popModelView();
 		}
@@ -824,9 +828,11 @@ namespace po
 			return ci::vec2();
 		}
 
-		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint )
+		ci::vec2 View::windowToLocal( const ci::vec2& windowPoint, bool calculateMatricesForEvent )
 		{
-			calculateMatrices();
+			if( calculateMatricesForEvent ) {
+				calculateMatrices();
+			}
 
 			return mMatrix.globalToLocal( windowPoint );
 		}
@@ -834,7 +840,6 @@ namespace po
 		ci::vec2 View::localToWindow( const ci::vec2& scenePoint )
 		{
 			if( mHasScene ) {
-				calculateMatrices();
 
 				return mMatrix.localToGlobal( scenePoint );
 			}

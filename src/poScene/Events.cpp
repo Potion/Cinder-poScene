@@ -63,7 +63,7 @@ namespace po
 			ViewRef source = getSource();
 
 			if( source ) {
-				return source->windowToLocal( getWindowPos() );
+				return source->windowToLocal( getWindowPos(), true );
 			}
 
 			return getWindowPos();

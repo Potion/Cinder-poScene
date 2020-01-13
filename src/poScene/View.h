@@ -336,7 +336,7 @@ namespace po
 				//! Transform a point from this View's local space into another View's local space
 				virtual ci::vec2 localToView( const ci::vec2& point, ViewRef View );
 				//! Transform a point from window space to this View's local space
-				virtual ci::vec2 windowToLocal( const ci::vec2& point );
+				virtual ci::vec2 windowToLocal( const ci::vec2& point, bool calculateMatricesForEvent = false );
 				//! Transform a point from this View's local space to window space
 				virtual ci::vec2 localToWindow( const ci::vec2& point );
 
