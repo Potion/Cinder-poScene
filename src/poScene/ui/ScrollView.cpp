@@ -21,6 +21,8 @@ namespace po
 				, mMaxAccel( 0.1 )
 				, mDecel( 0.25 )
 				, mThrowFactor( 2.0 )
+				, mHorizontalSnappingEnabled( false )
+				, mVerticalSnappingEnabled( false )
 				, mHorizontalScrollingEnabled( false )
 				, mVerticalScrollingEnabled( false )
 				, mHorizontalScrollingLocked( false )
@@ -196,6 +198,16 @@ namespace po
 					ci::vec2 targetPos = mContentView->getPosition() + throwDistance;
 
 					mScrollTargetPos = getSnapPos( targetPos );
+
+					if( mHorizontalSnappingEnabled ) {
+						int snapFactorX = round( mScrollTargetPos.x / getSize().x );
+						mScrollTargetPos.x = snapFactorX * getSize().x;
+					}
+
+					if( mVerticalSnappingEnabled ) {
+						int snapFactorY = round( mScrollTargetPos.y / getSize().y );
+						mScrollTargetPos.y = snapFactorY * getSize().y;
+					}
 
 					// Cleanup
 					mIsScrolling = false;
